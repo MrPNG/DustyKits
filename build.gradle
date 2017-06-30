@@ -1,0 +1,56 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+plugins {
+    id "com.github.johnrengelman.shadow" version "1.2.4"
+}
+
+apply plugin: 'java'
+
+group 'br.com.dusty.dKits'
+version '1.0.0'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+def timestamp() {
+    return new Date().format("yyyy-MM-dd'T'HH:mm:ssZ", TimeZone.getDefault())
+}
+
+processResources.outputs.upToDateWhen{ false }
+
+processResources {
+    filter ReplaceTokens, tokens: [
+            'pl.name'   : project.name,
+            'pl.group'  : project.group,
+            'pl.version': '\"' + project.version + ' (Built at ' + timestamp() + ')' + '\"',
+            'pl.authors': 'MrPingu'
+    ]
+}
+
+shadowJar {
+    classifier = null
+    version = null
+}
+
+task copyJar(type: Copy) {
+    from shadowJar
+    into '/run/plugins/'
+}
+
+task runServer(type: Exec) {
+    workingDir '/run/'
+    standardInput = System.in
+
+    commandLine 'cmd', '/c java -Xmx1G -jar spigot.jar'
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    compileOnly group: 'org.spigotmc', name: 'spigot', version: '1.12-R0.1-SNAPSHOT'
+    compile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.11'
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+}
