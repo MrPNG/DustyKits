@@ -1,4 +1,4 @@
-package br.com.dusty.dKits;
+package br.com.dusty.dkits;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;
@@ -21,7 +21,7 @@ public class Main extends JavaPlugin {
 	
 	@Override
 	public void onEnable() {
-
+	
 	}
 	
 	@Override
