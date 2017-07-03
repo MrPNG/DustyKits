@@ -19,12 +19,6 @@ public class Text {
 		return text;
 	}
 	
-	public Text styles(TextStyle style) {
-		styles.add(style);
-		
-		return this;
-	}
-	
 	public Text styles(TextStyle... styles) {
 		this.styles.addAll(Arrays.asList(styles));
 		
@@ -56,7 +50,7 @@ public class Text {
 		return sb.toString();
 	}
 	
-	public static String stripColor(String string) {
+	public static String clearFormatting(String string) {
 		return ChatColor.stripColor(string);
 	}
 }
