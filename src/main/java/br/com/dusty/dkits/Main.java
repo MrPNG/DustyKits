@@ -1,12 +1,12 @@
 package br.com.dusty.dkits;
 
+import br.com.dusty.dkits.command.Commands;
+import br.com.dusty.dkits.listener.Listeners;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class Main extends JavaPlugin {
 	
-	public static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+	//public static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 	
 	public static Main INSTANCE;
 	
@@ -21,7 +21,8 @@ public class Main extends JavaPlugin {
 	
 	@Override
 	public void onEnable() {
-	
+		Commands.registerAll();
+		Listeners.registerAll();
 	}
 	
 	@Override
