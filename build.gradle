@@ -23,7 +23,7 @@ def timestamp() {
 //Get git commit id
 ext {
     git = org.ajoberstar.grgit.Grgit.open(file('.'))
-    revision = git.head().getAbbreviatedId()
+    revision = git.head().getAbbreviatedId(7)
 }
 
 //Always process resources
