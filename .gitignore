@@ -43,6 +43,7 @@ gradle-app.setting
 
 # General
 .idea/
+*.iml
 
 ## File-based project format:
 *.iws
