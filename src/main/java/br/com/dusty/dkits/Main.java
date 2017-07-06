@@ -4,9 +4,13 @@ import br.com.dusty.dkits.command.Commands;
 import br.com.dusty.dkits.listener.Listeners;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Random;
+
 public class Main extends JavaPlugin {
 	
 	//public static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+	
+	public static final Random RANDOM = new Random();
 	
 	/**
 	 * Instância deste {@link JavaPlugin}.
