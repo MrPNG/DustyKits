@@ -2,6 +2,9 @@ package br.com.dusty.dkits.util.text;
 
 import org.bukkit.ChatColor;
 
+/**
+ * Define estilos a serem usados em um {@link Text}.
+ */
 public enum TextStyle {
 	
 	MAGIC(0x10, ChatColor.MAGIC),

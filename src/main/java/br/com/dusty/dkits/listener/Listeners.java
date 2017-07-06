@@ -9,8 +9,14 @@ import java.util.ArrayList;
 
 public class Listeners {
 	
+	/**
+	 * {@link ArrayList} que contém todos os {@link Listener} a serem/já registrados pelo plugin.
+	 */
 	public static final ArrayList<Listener> LISTENERS = new ArrayList<>();
 	
+	/**
+	 * Registra todos os {@link Listener} da {@link ArrayList} LISTENERS.
+	 */
 	public static void registerAll() {
 		//Usage: LISTENERS.add(new FooListener());
 		

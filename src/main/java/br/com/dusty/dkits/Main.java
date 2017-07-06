@@ -8,6 +8,9 @@ public class Main extends JavaPlugin {
 	
 	//public static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 	
+	/**
+	 * Instância deste {@link JavaPlugin}.
+	 */
 	public static Main INSTANCE;
 	
 	public Main() {

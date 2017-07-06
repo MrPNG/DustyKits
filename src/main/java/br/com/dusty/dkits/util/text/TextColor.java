@@ -2,8 +2,10 @@ package br.com.dusty.dkits.util.text;
 
 import org.bukkit.ChatColor;
 
+/**
+ * Define cores a serem usadas em um {@link Text}.
+ */
 public enum TextColor {
-	
 	
 	BLACK(0x0, ChatColor.BLACK),
 	DARK_BLUE(0x1, ChatColor.DARK_BLUE),
