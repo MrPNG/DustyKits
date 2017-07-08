@@ -7,7 +7,7 @@ public class Commands {
 	/**
 	 * {@link ArrayList} que contém todos os {@link CustomCommand} a serem/já registrados pelo plugin.
 	 */
-	public static final ArrayList<CustomCommand> CUSTOM_COMMANDS = new ArrayList<>();
+	private static final ArrayList<CustomCommand> CUSTOM_COMMANDS = new ArrayList<>();
 	
 	/**
 	 * Registra todos os {@link CustomCommand} da {@link ArrayList} CUSTOM_COMMANDS.

@@ -12,7 +12,7 @@ public class Listeners {
 	/**
 	 * {@link ArrayList} que contém todos os {@link Listener} a serem/já registrados pelo plugin.
 	 */
-	public static final ArrayList<Listener> LISTENERS = new ArrayList<>();
+	private static final ArrayList<Listener> LISTENERS = new ArrayList<>();
 	
 	/**
 	 * Registra todos os {@link Listener} da {@link ArrayList} LISTENERS.

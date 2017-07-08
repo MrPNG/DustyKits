@@ -62,11 +62,14 @@ task runServer(type: Exec) {
 repositories {
     mavenCentral()
     mavenLocal()
+    maven {
+        url 'https://repo.inventivetalent.org/content/groups/public/'
+    }
 }
 
 dependencies {
     compileOnly group: 'org.spigotmc', name: 'spigot', version: '1.12-R0.1-SNAPSHOT'
+    compile group: 'joda-time', name: 'joda-time', version: '2.9.9'
     //compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
     //compile group: 'org.codehaus.groovy', name: 'groovy', version: '2.5.0-beta-1'
-    compile group: 'joda-time', name: 'joda-time', version: '2.9.9'
 }
