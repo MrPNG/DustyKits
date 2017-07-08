@@ -18,7 +18,8 @@ public class Listeners {
 	 * Registra todos os {@link Listener} da {@link ArrayList} LISTENERS.
 	 */
 	public static void registerAll() {
-		//Usage: LISTENERS.send(new FooListener());
+		//Usage: LISTENERS.add(new FooListener());
+		LISTENERS.add(new GenericListener());
 		
 		PluginManager pluginManager = Bukkit.getPluginManager();
 		for(Listener listener : LISTENERS){

@@ -46,13 +46,13 @@ public class BossBar {
 			field_PacketPlayOutBoss_h = ProtocolUtils.getAccessibleField(class_PacketPlayOutBoss, "h");
 			field_PacketPlayOutBoss_i = ProtocolUtils.getAccessibleField(class_PacketPlayOutBoss, "i");
 			
-			Class enum_Action = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".PacketPlayOutBoss.Action");
+			Class enum_Action = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".PacketPlayOutBoss$Action");
 			enum_Action_values = enum_Action.getEnumConstants();
 			
-			Class enum_BarColor = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".BossBattle.BarColor");
+			Class enum_BarColor = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".BossBattle$BarColor");
 			enum_BarColor_values = enum_BarColor.getEnumConstants();
 			
-			Class enum_BarStyle = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".BossBattle.BarStyle");
+			Class enum_BarStyle = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".BossBattle$BarStyle");
 			enum_BarStyle_values = enum_BarStyle.getEnumConstants();
 		}catch(ClassNotFoundException | NoSuchFieldException e){
 			e.printStackTrace();

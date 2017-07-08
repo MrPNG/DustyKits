@@ -56,7 +56,7 @@ task runServer(type: Exec) {
     workingDir '/run/'
     standardInput = System.in
 
-    commandLine 'cmd', '/c java -Xmx1G -jar spigot.jar'
+    commandLine 'cmd', '/c java -Xmx512M -jar spigot.jar'
 }
 
 repositories {

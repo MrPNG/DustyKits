@@ -1,5 +1,6 @@
 package br.com.dusty.dkits.util.protocol;
 
+import net.minecraft.server.v1_12_R1.ChatMessage;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Constructor;
@@ -48,7 +49,7 @@ public class ProtocolUtils {
 	}
 	
 	static Object chatMessage(String s) throws IllegalAccessException, InvocationTargetException, InstantiationException {
-		return constructor_ChatMessage.newInstance(s, null);
+		return constructor_ChatMessage.newInstance(s, new Object[0]);
 	}
 	
 	static void sendPacket(Object object_Packet, Player... players) {

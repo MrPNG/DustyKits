@@ -13,7 +13,7 @@ public class Commands {
 	 * Registra todos os {@link CustomCommand} da {@link ArrayList} CUSTOM_COMMANDS.
 	 */
 	public static void registerAll() {
-		//Usage: CUSTOM_COMMANDS.send(new FooCommand());
+		//Usage: CUSTOM_COMMANDS.add(new FooCommand());
 		
 		for(CustomCommand customCommand : CUSTOM_COMMANDS){
 			customCommand.register();
