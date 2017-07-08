@@ -2,6 +2,7 @@ package br.com.dusty.dkits.util.protocol;
 
 import org.bukkit.entity.Player;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -14,12 +15,16 @@ public class ProtocolUtils {
 	public static final String NMS_PACKAGE = "net.minecraft.server.";
 	public static final String NMS_VERSION = "v1_12_R1";
 	
+	private static Constructor constructor_ChatMessage;
 	private static Method method_CraftPlayer_getHandle;
 	private static Field field_playerConnection;
 	private static Method method_PlayerConnection_sendPacket;
 	
 	static {
 		try{
+			Class class_ChatMessage = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".ChatMessage");
+			constructor_ChatMessage = class_ChatMessage.getDeclaredConstructor(String.class, Object[].class);
+			
 			Class class_Packet = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".Packet");
 			
 			Class class_CraftPlayer = Class.forName(ProtocolUtils.CRAFTBUKKIT_PACKAGE + ProtocolUtils.NMS_VERSION + ".entity.CraftPlayer");
@@ -42,13 +47,19 @@ public class ProtocolUtils {
 		return field;
 	}
 	
-	static void sendPacket(Player player, Object object_Packet){
-		try{
-			Object object_EntityPlayer = method_CraftPlayer_getHandle.invoke(player);
-			Object object_PlayerConnection = field_playerConnection.get(object_EntityPlayer);
-			method_PlayerConnection_sendPacket.invoke(object_PlayerConnection, object_Packet);
-		}catch(IllegalAccessException | InvocationTargetException e){
-			e.printStackTrace();
+	static Object chatMessage(String s) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+		return constructor_ChatMessage.newInstance(s, null);
+	}
+	
+	static void sendPacket(Object object_Packet, Player... players) {
+		for(Player player : players){
+			try{
+				Object object_EntityPlayer = method_CraftPlayer_getHandle.invoke(player);
+				Object object_PlayerConnection = field_playerConnection.get(object_EntityPlayer);
+				method_PlayerConnection_sendPacket.invoke(object_PlayerConnection, object_Packet);
+			}catch(IllegalAccessException | InvocationTargetException e){
+				e.printStackTrace();
+			}
 		}
 	}
 }

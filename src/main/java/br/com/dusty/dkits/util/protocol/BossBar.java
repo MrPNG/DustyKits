@@ -1,10 +1,9 @@
 package br.com.dusty.dkits.util.protocol;
 
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.UUID;
 
@@ -13,7 +12,7 @@ public class BossBar {
 	private HashSet<Player> players = new HashSet<Player>();
 	
 	private UUID uuid;
-	private BaseComponent title;
+	private String title;
 	private float progress;
 	private EnumBarColor barColor;
 	private EnumBarStyle barStyle;
@@ -60,11 +59,7 @@ public class BossBar {
 		}
 	}
 	
-	public static BossBar create(BaseComponent title,
-	                             float progress,
-	                             EnumBarColor color,
-	                             EnumBarStyle division,
-	                             EnumFlags flags) {
+	public static BossBar create(String title, float progress, EnumBarColor color, EnumBarStyle division, EnumFlags flags) {
 		BossBar bossBar = new BossBar();
 		
 		bossBar.uuid = UUID.randomUUID();
@@ -77,13 +72,28 @@ public class BossBar {
 		return bossBar;
 	}
 	
-	public void send(Player player) {
-		Object object_PacketPlayOutBoss = class_PacketPlayOutBoss.newInstance();
-		player.spigot().
-	}
-	
 	public void send(Player... players) {
-	
+		Object object_PacketPlayOutBoss = null;
+		
+		try{
+			object_PacketPlayOutBoss = class_PacketPlayOutBoss.newInstance();
+			field_PacketPlayOutBoss_a.set(object_PacketPlayOutBoss, uuid);
+			field_PacketPlayOutBoss_b.set(object_PacketPlayOutBoss, enum_Action_values[EnumAction.ADD.code]);
+			field_PacketPlayOutBoss_c.set(object_PacketPlayOutBoss, ProtocolUtils.chatMessage(title));
+			field_PacketPlayOutBoss_d.set(object_PacketPlayOutBoss, progress);
+			field_PacketPlayOutBoss_e.set(object_PacketPlayOutBoss, enum_BarColor_values[barColor.code]);
+			field_PacketPlayOutBoss_f.set(object_PacketPlayOutBoss, enum_BarStyle_values[barStyle.code]);
+		}catch(IllegalAccessException | InvocationTargetException | InstantiationException e){
+			e.printStackTrace();
+		}
+		
+		switch(flags){
+			case DARKEN_SKY:
+			case PLAY_END_MUSIC:
+			default:
+		}
+		
+		ProtocolUtils.sendPacket(object_PacketPlayOutBoss, players);
 	}
 	
 	private enum EnumAction {
@@ -102,7 +112,7 @@ public class BossBar {
 		}
 	}
 	
-	enum EnumBarColor {
+	public enum EnumBarColor {
 		
 		PINK(0),
 		BLUE(1),
@@ -119,7 +129,7 @@ public class BossBar {
 		}
 	}
 	
-	enum EnumBarStyle {
+	public enum EnumBarStyle {
 		
 		PROGRESS(0),
 		NOTCHED_6(1),
@@ -134,7 +144,7 @@ public class BossBar {
 		}
 	}
 	
-	enum EnumFlags {
+	public enum EnumFlags {
 		
 		NONE(0x0),
 		DARKEN_SKY(0x1),
