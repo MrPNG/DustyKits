@@ -7,7 +7,6 @@ import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class StringUtils {
 	
@@ -76,9 +75,8 @@ public class StringUtils {
 		                                                              .toFormatter();
 		
 		Period period = new Period(millis);
-		String s = periodFormatter.print(period.toPeriod());
 		
-		return s;
+		return periodFormatter.print(period.toPeriod());
 	}
 	
 	/**
@@ -95,7 +93,7 @@ public class StringUtils {
 			}
 		}
 		
-		Collections.sort(arrayList, (s1, s2) -> s1.compareToIgnoreCase(s2));
+		arrayList.sort(String::compareToIgnoreCase);
 		
 		return arrayList;
 	}

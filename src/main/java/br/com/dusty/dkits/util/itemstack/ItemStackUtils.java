@@ -16,8 +16,6 @@ import org.bukkit.material.Dye;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 
-import java.util.Arrays;
-
 /**
  * Criação/personalização de {@link org.bukkit.inventory.ItemStack}
  */
