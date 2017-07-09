@@ -80,13 +80,49 @@ public class Text {
 	}
 	
 	/**
-	 * Define o {@link Text} a ser anexado a este.
+	 * Anexa um {@link Text} a este.
 	 *
 	 * @param text
 	 * @return Este {@link Text}.
 	 */
 	public Text append(Text text) {
 		append = text.toString();
+		
+		return this;
+	}
+	
+	/**
+	 * Anexa uma {@link String} a este {@link Text}.
+	 *
+	 * @param s
+	 * @return Este {@link Text}.
+	 */
+	public Text append(String s) {
+		append = s;
+		
+		return this;
+	}
+	
+	/**
+	 * Anexa um 'int' a este {@link Text}.
+	 *
+	 * @param i
+	 * @return Este {@link Text}.
+	 */
+	public Text append(int i) {
+		append = String.valueOf(i);
+		
+		return this;
+	}
+	
+	/**
+	 * Anexa um 'boolean' a este {@link Text}.
+	 *
+	 * @param b
+	 * @return Este {@link Text}.
+	 */
+	public Text append(boolean b) {
+		append = String.valueOf(b);
 		
 		return this;
 	}
