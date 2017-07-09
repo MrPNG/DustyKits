@@ -30,6 +30,32 @@ public class Text {
 	}
 	
 	/**
+	 * Cria um {@link Text} a partir do 'int' dado como parâmetro.
+	 *
+	 * @param i
+	 * @return O {@link Text} criado.
+	 */
+	public static Text of(int i) {
+		Text text = new Text();
+		text.string = String.valueOf(i);
+		
+		return text;
+	}
+	
+	/**
+	 * Cria um {@link Text} a partir do 'boolean' dado como parâmetro.
+	 *
+	 * @param bool
+	 * @return O {@link Text} criado.
+	 */
+	public static Text of(boolean bool) {
+		Text text = new Text();
+		text.string = String.valueOf(bool);
+		
+		return text;
+	}
+	
+	/**
 	 * Define um array de {@link TextStyle} a serem usados como estilos.
 	 *
 	 * @param styles
@@ -73,11 +99,14 @@ public class Text {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
+		sb.append(TextStyle.RESET);
+		
 		for(TextStyle style : styles){
 			sb.append(style);
 		}
 		sb.append(color);
 		sb.append(string);
+		
 		if(append != null)
 			sb.append(append);
 		

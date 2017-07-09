@@ -26,11 +26,13 @@ public class StringUtils {
 		for(int i = 0; i < fragments.length; i++){
 			StringBuilder fragment = new StringBuilder();
 			fragment.append(fragments[i]);
+			
 			while(i + 1 < fragments.length && (fragment.length() + 1 + fragments[i + 1].length()) <= max){
 				fragment.append(" ");
 				fragment.append(fragments[i + 1]);
 				i++;
 			}
+			
 			arrayList.add(fragment.toString());
 		}
 		

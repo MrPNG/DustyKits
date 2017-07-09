@@ -1,6 +1,5 @@
 package br.com.dusty.dkits.util.protocol;
 
-import net.minecraft.server.v1_12_R1.ChatMessage;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Constructor;
@@ -16,14 +15,14 @@ public class ProtocolUtils {
 	public static final String NMS_PACKAGE = "net.minecraft.server.";
 	public static final String NMS_VERSION = "v1_12_R1";
 	
-	private static Constructor constructor_ChatMessage;
+	private static Constructor<? extends Object> constructor_ChatMessage;
 	private static Method method_CraftPlayer_getHandle;
 	private static Field field_playerConnection;
 	private static Method method_PlayerConnection_sendPacket;
 	
 	static {
 		try{
-			Class class_ChatMessage = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".ChatMessage");
+			Class<? extends Object> class_ChatMessage = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".ChatMessage");
 			constructor_ChatMessage = class_ChatMessage.getDeclaredConstructor(String.class, Object[].class);
 			
 			Class class_Packet = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".Packet");
@@ -41,7 +40,7 @@ public class ProtocolUtils {
 		}
 	}
 	
-	static Field getAccessibleField(Class clazz, String name) throws NoSuchFieldException {
+	static Field getAccessibleField(Class<?> clazz, String name) throws NoSuchFieldException {
 		Field field = clazz.getDeclaredField(name);
 		field.setAccessible(true);
 		
