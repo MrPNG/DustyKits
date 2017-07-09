@@ -1,5 +1,7 @@
 package br.com.dusty.dkits.util.scoreboard;
 
+import br.com.dusty.dkits.gamer.Gamer;
+import br.com.dusty.dkits.gamer.GamerRegistry;
 import br.com.dusty.dkits.util.text.Text;
 import br.com.dusty.dkits.util.text.TextColor;
 import org.bukkit.Bukkit;
@@ -24,7 +26,9 @@ public class ScoreboardUtils {
 		objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 	}
 	
-	public static void update(Player player) {
+	public static void update(Gamer gamer) {
+		Player player = gamer.getPlayer();
+		
 		Scoreboard scoreboard = player.getScoreboard();
 		clear(scoreboard);
 		
@@ -41,14 +45,8 @@ public class ScoreboardUtils {
 		}
 	}
 	
-	public static void update(Player... players) {
-		for(Player player : players){
-			update(player);
-		}
-	}
-	
 	public static void updateAll() {
-		Bukkit.getOnlinePlayers().forEach(ScoreboardUtils::update);
+		GamerRegistry.getOnlineGamers().forEach(ScoreboardUtils::update);
 	}
 	
 	public static void clear(Scoreboard scoreboard) {

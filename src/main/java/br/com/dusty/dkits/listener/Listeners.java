@@ -1,6 +1,7 @@
 package br.com.dusty.dkits.listener;
 
 import br.com.dusty.dkits.Main;
+import br.com.dusty.dkits.listener.login.PlayerJoinListener;
 import br.com.dusty.dkits.listener.login.ServerListPingListener;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
@@ -20,7 +21,9 @@ public class Listeners {
 	 */
 	public static void registerAll() {
 		//Usage: LISTENERS.add(new FooListener());
-		LISTENERS.add(new GenericListener());
+		
+		//Login
+		LISTENERS.add(new PlayerJoinListener());
 		LISTENERS.add(new ServerListPingListener());
 		
 		PluginManager pluginManager = Bukkit.getPluginManager();
