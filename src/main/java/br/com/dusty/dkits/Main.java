@@ -2,6 +2,7 @@ package br.com.dusty.dkits;
 
 import br.com.dusty.dkits.command.Commands;
 import br.com.dusty.dkits.listener.Listeners;
+import com.google.gson.Gson;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -9,9 +10,10 @@ import java.util.Random;
 
 public class Main extends JavaPlugin {
 	
-	//public static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+	//TODO: public static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 	
 	public static final Random RANDOM = new Random();
+	public static final Gson GSON = new Gson();
 	
 	public static final int MAX_PLAYERS = 150;
 	

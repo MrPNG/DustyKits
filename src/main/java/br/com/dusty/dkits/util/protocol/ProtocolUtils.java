@@ -9,16 +9,21 @@ import java.lang.reflect.Method;
 
 public class ProtocolUtils {
 	
-	public static final int PROTOCOL_VERSION = 0;
+	public static final int PROTOCOL_VERSION = 335;
 	
-	public static final String CRAFTBUKKIT_PACKAGE = "org.bukkit.craftbukkit.";
-	public static final String NMS_PACKAGE = "net.minecraft.server.";
-	public static final String NMS_VERSION = "v1_12_R1";
+	static final String CRAFTBUKKIT_PACKAGE = "org.bukkit.craftbukkit.";
+	static final String NMS_PACKAGE = "net.minecraft.server.";
+	static final String NMS_VERSION = "v1_12_R1";
 	
-	private static Constructor<? extends Object> constructor_ChatMessage;
+	static final String PROTOCOL_SUPPORT_PACKAGE = "protocolsupport.api.";
+	
+	private static Constructor<?> constructor_ChatMessage;
 	private static Method method_CraftPlayer_getHandle;
 	private static Field field_playerConnection;
 	private static Method method_PlayerConnection_sendPacket;
+	
+	private static Method method_ProtocolSupportAPI_getProtocolVersion;
+	private static Method method_ProtocolVersion_getId;
 	
 	static {
 		try{
@@ -35,6 +40,13 @@ public class ProtocolUtils {
 			
 			Class class_PlayerConnection = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".PlayerConnection");
 			method_PlayerConnection_sendPacket = class_PlayerConnection.getDeclaredMethod("sendPacket", class_Packet);
+			
+			Class class_ProtocolSupportAPI = Class.forName(PROTOCOL_SUPPORT_PACKAGE + "ProtocolSupportAPI");
+			method_ProtocolSupportAPI_getProtocolVersion = class_ProtocolSupportAPI.getDeclaredMethod("getProtocolVersion",
+			                                                                                          Player.class);
+			
+			Class class_ProtocolVersion = Class.forName(PROTOCOL_SUPPORT_PACKAGE + "ProtocolVersion");
+			method_ProtocolVersion_getId = class_ProtocolVersion.getDeclaredMethod("getId");
 		}catch(ClassNotFoundException | NoSuchMethodException | NoSuchFieldException e){
 			e.printStackTrace();
 		}
@@ -49,6 +61,12 @@ public class ProtocolUtils {
 	
 	static Object chatMessage(String s) throws IllegalAccessException, InvocationTargetException, InstantiationException {
 		return constructor_ChatMessage.newInstance(s, new Object[0]);
+	}
+	
+	public static Integer protocolVersion(Player player) throws InvocationTargetException, IllegalAccessException {
+		Object object_ProtocolVersion = method_ProtocolSupportAPI_getProtocolVersion.invoke(null, player);
+		
+		return (Integer) method_ProtocolVersion_getId.invoke(object_ProtocolVersion);
 	}
 	
 	static void sendPacket(Object object_Packet, Player... players) {
