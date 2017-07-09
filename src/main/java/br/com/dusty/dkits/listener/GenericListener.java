@@ -21,5 +21,6 @@ public class GenericListener implements Listener {
 		Bukkit.broadcastMessage("Sent BossBar!");
 		
 		ScoreboardUtils.create(player);
+		ScoreboardUtils.updateAll();
 	}
 }

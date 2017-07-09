@@ -13,6 +13,10 @@ public class Main extends JavaPlugin {
 	
 	public static final Random RANDOM = new Random();
 	
+	public static final int MAX_PLAYERS = 150;
+	
+	public static EnumServerStatus serverStatus = EnumServerStatus.ONLINE;
+	
 	/**
 	 * Instância deste {@link JavaPlugin}.
 	 */

@@ -1,6 +1,6 @@
 package br.com.dusty.dkits.command;
 
-import br.com.dusty.dkits.enumeration.EnumRank;
+import br.com.dusty.dkits.gamer.EnumRank;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;

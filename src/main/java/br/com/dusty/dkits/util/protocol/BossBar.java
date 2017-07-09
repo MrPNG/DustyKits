@@ -89,8 +89,11 @@ public class BossBar {
 		
 		switch(flags){
 			case DARKEN_SKY:
+				break;
 			case PLAY_END_MUSIC:
+				break;
 			default:
+				break;
 		}
 		
 		ProtocolUtils.sendPacket(object_PacketPlayOutBoss, players);

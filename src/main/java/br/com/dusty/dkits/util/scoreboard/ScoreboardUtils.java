@@ -22,27 +22,33 @@ public class ScoreboardUtils {
 		Objective objective = scoreboard.registerNewObjective(player.getName(), "dummy");
 		objective.setDisplayName(player.getDisplayName());
 		objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+	}
+	
+	public static void update(Player player) {
+		Scoreboard scoreboard = player.getScoreboard();
+		clear(scoreboard);
 		
-		update(player);
+		Objective objective = scoreboard.getObjective(player.getName());
+		
+		String[] values = {Text.of("Value1").color(TextColor.YELLOW).toString(),
+		                   Text.of("Value2").color(TextColor.YELLOW).toString(),
+		                   "",
+		                   Text.of("ValueX").color(TextColor.YELLOW).toString()};
+		
+		for(int i = 0; i < LABELS.length; i++){
+			String score = LABELS[i] + ": " + values[i];
+			objective.getScore(score).setScore(LABELS.length - i);
+		}
 	}
 	
 	public static void update(Player... players) {
 		for(Player player : players){
-			Scoreboard scoreboard = player.getScoreboard();
-			clear(scoreboard);
-			
-			Objective objective = scoreboard.getObjective(player.getName());
-			
-			String[] values = {Text.of("Value1").color(TextColor.YELLOW).toString(),
-			                   Text.of("Value2").color(TextColor.YELLOW).toString(),
-			                   "",
-			                   Text.of("ValueX").color(TextColor.YELLOW).toString()};
-			
-			for(int i = 0; i < LABELS.length; i++){
-				String score = LABELS[i] + ": " + values[i];
-				objective.getScore(score).setScore(LABELS.length - i);
-			}
+			update(player);
 		}
+	}
+	
+	public static void updateAll() {
+		Bukkit.getOnlinePlayers().forEach(ScoreboardUtils::update);
 	}
 	
 	public static void clear(Scoreboard scoreboard) {

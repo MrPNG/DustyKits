@@ -1,4 +1,4 @@
-package br.com.dusty.dkits.enumeration;
+package br.com.dusty.dkits.gamer;
 
 import br.com.dusty.dkits.util.text.Text;
 import br.com.dusty.dkits.util.text.TextColor;
