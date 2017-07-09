@@ -9,7 +9,7 @@ import java.util.Random;
 
 public class Main extends JavaPlugin {
 	
-	//public static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+	//TODO: public static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 	
 	public static final Random RANDOM = new Random();
 	
