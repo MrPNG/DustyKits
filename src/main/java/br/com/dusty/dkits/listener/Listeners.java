@@ -3,8 +3,8 @@ package br.com.dusty.dkits.listener;
 import br.com.dusty.dkits.Main;
 import br.com.dusty.dkits.listener.login.PlayerJoinListener;
 import br.com.dusty.dkits.listener.login.PlayerLoginListener;
-import br.com.dusty.dkits.listener.login.PlayerQuitListener;
-import br.com.dusty.dkits.listener.login.ServerListPingListener;
+import br.com.dusty.dkits.listener.mechanics.*;
+import br.com.dusty.dkits.listener.quit.PlayerQuitListener;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
@@ -25,9 +25,18 @@ public class Listeners {
 		//Usage: LISTENERS.add(new FooListener());
 		
 		//Login
-		LISTENERS.add(new PlayerLoginListener());
 		LISTENERS.add(new PlayerJoinListener());
+		LISTENERS.add(new PlayerLoginListener());
+		
+		//Gameplay
+		
+		//Mechanincs
+		LISTENERS.add(new FoodLevelChangeListener());
+		LISTENERS.add(new ItemSpawnListener());
+		LISTENERS.add(new LeavesDecayListener());
 		LISTENERS.add(new ServerListPingListener());
+		LISTENERS.add(new SignChangeListener());
+		LISTENERS.add(new WeatherChangeListener());
 		
 		//Quit
 		LISTENERS.add(new PlayerQuitListener());

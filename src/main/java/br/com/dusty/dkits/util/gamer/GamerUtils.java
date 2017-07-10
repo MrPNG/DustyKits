@@ -11,7 +11,12 @@ public class GamerUtils {
 		
 		Player player = gamer.getPlayer();
 		
+		player.setHealth(20);
+		player.setFoodLevel(20);
+		player.setLevel(0);
+		
 		player.getInventory().clear();
+		
 		for(PotionEffect potionEffect : player.getActivePotionEffects())
 			player.removePotionEffect(potionEffect.getType());
 	}

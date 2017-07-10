@@ -1,9 +1,9 @@
-package br.com.dusty.dkits.listener.login;
+package br.com.dusty.dkits.listener.quit;
 
 import br.com.dusty.dkits.gamer.EnumRank;
 import br.com.dusty.dkits.gamer.Gamer;
 import br.com.dusty.dkits.gamer.GamerRegistry;
-import br.com.dusty.dkits.util.scoreboard.ScoreboardUtils;
+import br.com.dusty.dkits.util.ScoreboardUtils;
 import br.com.dusty.dkits.util.text.Text;
 import br.com.dusty.dkits.util.text.TextColor;
 import org.bukkit.entity.Player;
@@ -22,8 +22,8 @@ public class PlayerQuitListener implements Listener {
 	                                                      .toString();
 	
 	@EventHandler
-	public void onPlayerQuit(PlayerQuitEvent e) {
-		Player player = e.getPlayer();
+	public void onPlayerQuit(PlayerQuitEvent event) {
+		Player player = event.getPlayer();
 		
 		Gamer gamer = Gamer.of(player);
 		GamerRegistry.unregister(gamer);
@@ -31,8 +31,8 @@ public class PlayerQuitListener implements Listener {
 		ScoreboardUtils.updateAll();
 		
 		if(gamer.getRank().isLowerThan(EnumRank.MOD))
-			e.setQuitMessage(QUIT_MESSAGE_PREFIX + player.getName());
+			event.setQuitMessage(QUIT_MESSAGE_PREFIX + player.getName());
 		else
-			e.setQuitMessage(null);
+			event.setQuitMessage(null);
 	}
 }

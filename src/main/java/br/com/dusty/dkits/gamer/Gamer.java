@@ -2,7 +2,7 @@ package br.com.dusty.dkits.gamer;
 
 import br.com.dusty.dkits.util.gamer.GamerUtils;
 import br.com.dusty.dkits.util.protocol.ProtocolUtils;
-import br.com.dusty.dkits.util.tag.TagUtils;
+import br.com.dusty.dkits.util.gamer.TagUtils;
 import br.com.dusty.dkits.util.text.Text;
 import br.com.dusty.dkits.util.text.TextColor;
 import org.bukkit.GameMode;

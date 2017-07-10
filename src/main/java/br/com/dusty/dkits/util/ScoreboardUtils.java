@@ -1,4 +1,4 @@
-package br.com.dusty.dkits.util.scoreboard;
+package br.com.dusty.dkits.util;
 
 import br.com.dusty.dkits.gamer.Gamer;
 import br.com.dusty.dkits.gamer.GamerRegistry;

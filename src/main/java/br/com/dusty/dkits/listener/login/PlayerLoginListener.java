@@ -28,14 +28,14 @@ public class PlayerLoginListener implements Listener {
 	                                                    .toString();
 	
 	@EventHandler
-	public void onPlayerLogin(PlayerLoginEvent e) {
-		if(e.getResult().equals(PlayerLoginEvent.Result.KICK_FULL)){
-			Player player = e.getPlayer();
+	public void onPlayerLogin(PlayerLoginEvent event) {
+		if(event.getResult().equals(PlayerLoginEvent.Result.KICK_FULL)){
+			Player player = event.getPlayer();
 			
 			if(canLogin(player))
-				e.allow();
+				event.allow();
 			else
-				e.disallow(PlayerLoginEvent.Result.KICK_FULL, KICK_FULL_MESSAGE);
+				event.disallow(PlayerLoginEvent.Result.KICK_FULL, KICK_FULL_MESSAGE);
 		}
 	}
 	

@@ -1,4 +1,4 @@
-package br.com.dusty.dkits.util.login;
+package br.com.dusty.dkits.util;
 
 import br.com.dusty.dkits.Main;
 import br.com.dusty.dkits.util.text.Text;

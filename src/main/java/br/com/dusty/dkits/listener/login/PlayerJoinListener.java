@@ -3,7 +3,7 @@ package br.com.dusty.dkits.listener.login;
 import br.com.dusty.dkits.gamer.EnumRank;
 import br.com.dusty.dkits.gamer.Gamer;
 import br.com.dusty.dkits.util.bossbar.BossBarUtils;
-import br.com.dusty.dkits.util.scoreboard.ScoreboardUtils;
+import br.com.dusty.dkits.util.ScoreboardUtils;
 import br.com.dusty.dkits.util.text.Text;
 import br.com.dusty.dkits.util.text.TextColor;
 import org.bukkit.entity.Player;
@@ -22,8 +22,8 @@ public class PlayerJoinListener implements Listener {
 	                                                      .toString();
 	
 	@EventHandler
-	public void onPlayerJoin(PlayerJoinEvent e) {
-		Player player = e.getPlayer();
+	public void onPlayerJoin(PlayerJoinEvent event) {
+		Player player = event.getPlayer();
 		
 		Gamer gamer = Gamer.of(player);
 		
@@ -33,8 +33,8 @@ public class PlayerJoinListener implements Listener {
 		BossBarUtils.MAIN.send(player);
 		
 		if(gamer.getRank().isLowerThan(EnumRank.MOD))
-			e.setJoinMessage(JOIN_MESSAGE_PREFIX + player.getName());
+			event.setJoinMessage(JOIN_MESSAGE_PREFIX + player.getName());
 		else
-			e.setJoinMessage(null);
+			event.setJoinMessage(null);
 	}
 }
