@@ -8,7 +8,8 @@ public class MOTDUtils {
 	
 	private static final String MOTD_MAIN = Text.of("Dusty")
 	                                            .color(TextColor.GOLD)
-	                                            .append(Text.of(" - ").color(TextColor.GRAY))
+	                                            .append(" - ")
+	                                            .color(TextColor.GRAY)
 	                                            .toString();
 	
 	private static final String[] MOTD_ALTERNATE = {Text.of("Venha jogar!").color(TextColor.DARK_AQUA).toString(),

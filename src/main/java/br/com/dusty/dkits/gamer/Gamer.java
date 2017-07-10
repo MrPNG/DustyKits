@@ -6,7 +6,6 @@ import br.com.dusty.dkits.util.text.Text;
 import br.com.dusty.dkits.util.text.TextColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -51,7 +50,7 @@ public class Gamer {
 		}else{
 			setMode(EnumMode.ADMIN);
 		}
-	
+		
 		for(Gamer gamer : GamerRegistry.getOnlineGamers()){
 			if(rank.isBelow(gamer.visibleTo))
 				player.hidePlayer(gamer.getPlayer());
@@ -76,9 +75,15 @@ public class Gamer {
 		}
 		
 		if(!rank.isBelow(EnumRank.MOD))
-			player.sendMessage(Text.of("Agora você está visível apenas para ")
+			player.sendMessage(Text.of("Agora você está ")
 			                       .color(TextColor.GRAY)
-			                       .append(Text.of(visibleTo.name).append(Text.of(" e acima!").color(TextColor.GRAY)))
+			                       .append("visível")
+			                       .color(TextColor.GREEN)
+			                       .append(" apenas para ")
+			                       .color(TextColor.GRAY)
+			                       .append(visibleTo.name)
+			                       .append(" e acima!")
+			                       .color(TextColor.GRAY)
 			                       .toString());
 	}
 	

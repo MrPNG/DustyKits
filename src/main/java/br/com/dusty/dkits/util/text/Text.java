@@ -14,7 +14,7 @@ public class Text {
 	private final HashSet<TextStyle> styles = new HashSet<>();
 	private TextColor color = TextColor.WHITE;
 	private String string = null;
-	private String append = null;
+	private Text append = null;
 	
 	/**
 	 * Cria um {@link Text} a partir da {@link String} dada como parâmetro.
@@ -80,27 +80,16 @@ public class Text {
 	}
 	
 	/**
-	 * Anexa um {@link Text} a este.
-	 *
-	 * @param text
-	 * @return Este {@link Text}.
-	 */
-	public Text append(Text text) {
-		append = text.toString();
-		
-		return this;
-	}
-	
-	/**
 	 * Anexa uma {@link String} a este {@link Text}.
 	 *
 	 * @param s
 	 * @return Este {@link Text}.
 	 */
 	public Text append(String s) {
-		append = s;
+		Text text = of(s);
+		text.append = this;
 		
-		return this;
+		return text;
 	}
 	
 	/**
@@ -110,9 +99,10 @@ public class Text {
 	 * @return Este {@link Text}.
 	 */
 	public Text append(int i) {
-		append = String.valueOf(i);
+		Text text = of(i);
+		text.append = this;
 		
-		return this;
+		return text;
 	}
 	
 	/**
@@ -122,19 +112,24 @@ public class Text {
 	 * @return Este {@link Text}.
 	 */
 	public Text append(boolean b) {
-		append = String.valueOf(b);
+		Text text = of(b);
+		text.append = this;
 		
-		return this;
+		return text;
 	}
 	
 	/**
-	 * Processa este {@link Text} em uma {@link String}, aplciando cor e estilos e anexando outro {@link Text}, se houver.
+	 * Processa este {@link Text} em uma {@link String}, aplicando cor e estilos e anexando outro {@link Text}, se houver.
 	 *
 	 * @return {@link String} formatada a partir deste {@link Text} e acrescentada de outros {@link Text}, se houver.
 	 */
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
+		
+		if(append != null)
+			sb.append(append.toString());
+		
 		sb.append(TextStyle.RESET);
 		
 		for(TextStyle style : styles){
@@ -142,9 +137,6 @@ public class Text {
 		}
 		sb.append(color);
 		sb.append(string);
-		
-		if(append != null)
-			sb.append(append);
 		
 		return sb.toString();
 	}

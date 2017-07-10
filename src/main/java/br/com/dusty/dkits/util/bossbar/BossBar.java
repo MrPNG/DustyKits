@@ -1,5 +1,6 @@
-package br.com.dusty.dkits.util.protocol;
+package br.com.dusty.dkits.util.bossbar;
 
+import br.com.dusty.dkits.util.protocol.ProtocolUtils;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Field;

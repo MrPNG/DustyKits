@@ -12,8 +12,8 @@ public class ProtocolUtils {
 	public static final int PROTOCOL_VERSION = 335;
 	
 	static final String CRAFTBUKKIT_PACKAGE = "org.bukkit.craftbukkit.";
-	static final String NMS_PACKAGE = "net.minecraft.server.";
-	static final String NMS_VERSION = "v1_12_R1";
+	public static final String NMS_PACKAGE = "net.minecraft.server.";
+	public static final String NMS_VERSION = "v1_12_R1";
 	
 	static final String PROTOCOL_SUPPORT_PACKAGE = "protocolsupport.api.";
 	
@@ -52,14 +52,14 @@ public class ProtocolUtils {
 		}
 	}
 	
-	static Field getAccessibleField(Class<?> clazz, String name) throws NoSuchFieldException {
+	public static Field getAccessibleField(Class<?> clazz, String name) throws NoSuchFieldException {
 		Field field = clazz.getDeclaredField(name);
 		field.setAccessible(true);
 		
 		return field;
 	}
 	
-	static Object chatMessage(String s) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+	public static Object chatMessage(String s) throws IllegalAccessException, InvocationTargetException, InstantiationException {
 		return constructor_ChatMessage.newInstance(s, new Object[0]);
 	}
 	
@@ -69,7 +69,7 @@ public class ProtocolUtils {
 		return (Integer) method_ProtocolVersion_getId.invoke(object_ProtocolVersion);
 	}
 	
-	static void sendPacket(Object object_Packet, Player... players) {
+	public static void sendPacket(Object object_Packet, Player... players) {
 		for(Player player : players){
 			try{
 				Object object_EntityPlayer = method_CraftPlayer_getHandle.invoke(player);
