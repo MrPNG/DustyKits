@@ -61,7 +61,7 @@ public class ScoreboardUtils {
 		GamerRegistry.getOnlineGamers().forEach(ScoreboardUtils::update);
 	}
 	
-	public static void clear(Scoreboard scoreboard) {
+	private static void clear(Scoreboard scoreboard) {
 		scoreboard.getEntries().forEach(scoreboard::resetScores);
 	}
 }

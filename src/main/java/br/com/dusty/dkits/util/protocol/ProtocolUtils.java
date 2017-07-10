@@ -27,25 +27,25 @@ public class ProtocolUtils {
 	
 	static {
 		try{
-			Class<? extends Object> class_ChatMessage = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".ChatMessage");
+			Class<?> class_ChatMessage = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".ChatMessage");
 			constructor_ChatMessage = class_ChatMessage.getDeclaredConstructor(String.class, Object[].class);
 			
 			Class class_Packet = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".Packet");
 			
-			Class class_CraftPlayer = Class.forName(ProtocolUtils.CRAFTBUKKIT_PACKAGE + ProtocolUtils.NMS_VERSION + ".entity.CraftPlayer");
+			Class<?> class_CraftPlayer = Class.forName(ProtocolUtils.CRAFTBUKKIT_PACKAGE + ProtocolUtils.NMS_VERSION + ".entity.CraftPlayer");
 			method_CraftPlayer_getHandle = class_CraftPlayer.getDeclaredMethod("getHandle");
 			
 			Class class_EntityPlayer = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".EntityPlayer");
 			field_playerConnection = class_EntityPlayer.getDeclaredField("playerConnection");
 			
-			Class class_PlayerConnection = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".PlayerConnection");
+			Class<?> class_PlayerConnection = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".PlayerConnection");
 			method_PlayerConnection_sendPacket = class_PlayerConnection.getDeclaredMethod("sendPacket", class_Packet);
 			
-			Class class_ProtocolSupportAPI = Class.forName(PROTOCOL_SUPPORT_PACKAGE + "ProtocolSupportAPI");
+			Class<?> class_ProtocolSupportAPI = Class.forName(PROTOCOL_SUPPORT_PACKAGE + "ProtocolSupportAPI");
 			method_ProtocolSupportAPI_getProtocolVersion = class_ProtocolSupportAPI.getDeclaredMethod("getProtocolVersion",
 			                                                                                          Player.class);
 			
-			Class class_ProtocolVersion = Class.forName(PROTOCOL_SUPPORT_PACKAGE + "ProtocolVersion");
+			Class<?> class_ProtocolVersion = Class.forName(PROTOCOL_SUPPORT_PACKAGE + "ProtocolVersion");
 			method_ProtocolVersion_getId = class_ProtocolVersion.getDeclaredMethod("getId");
 		}catch(ClassNotFoundException | NoSuchMethodException | NoSuchFieldException e){
 			e.printStackTrace();

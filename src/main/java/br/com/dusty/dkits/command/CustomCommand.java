@@ -20,11 +20,11 @@ public abstract class CustomCommand extends Command {
 	/**
 	 * Prefixo de todos os comandos encontrado ao pressionar 'TAB' no chat.
 	 */
-	protected static final String PREFIX = "dusty";
+	private static final String PREFIX = "dusty";
 	/**
 	 * 'Placeholder' para comandos não autorizados a jogadores aleatórios.
 	 */
-	protected static final String UNKNOWN = "Unknown command. Type \"/help\" for help.";
+	private static final String UNKNOWN = "Unknown command. Type \"/help\" for help.";
 	
 	/**
 	 * {@link CommandMap} onde este comando será registrado.
@@ -35,7 +35,7 @@ public abstract class CustomCommand extends Command {
 	 * {@link EnumRank} mínimo necessário para usar este comando (embora o {@link org.bukkit.command.ConsoleCommandSender}
 	 * sempre esteja autorizado).
 	 */
-	protected final EnumRank rank;
+	private final EnumRank rank;
 	
 	protected CustomCommand(String command, EnumRank rank) {
 		super(command, UNKNOWN, UNKNOWN, Collections.emptyList());

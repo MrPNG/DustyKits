@@ -2,7 +2,7 @@ package br.com.dusty.dkits.gamer;
 
 import java.util.UUID;
 
-public class PrimitiveGamer {
+class PrimitiveGamer {
 	
 	private String uuid;
 	

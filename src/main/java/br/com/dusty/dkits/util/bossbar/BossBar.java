@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public class BossBar {
 	
-	private HashSet<Player> players = new HashSet<Player>();
+	private HashSet<Player> players = new HashSet<>();
 	
 	private UUID uuid;
 	private String title;
