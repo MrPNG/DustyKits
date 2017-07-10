@@ -2,6 +2,7 @@ package br.com.dusty.dkits.gamer;
 
 import br.com.dusty.dkits.util.gamer.GamerUtils;
 import br.com.dusty.dkits.util.protocol.ProtocolUtils;
+import br.com.dusty.dkits.util.tag.TagUtils;
 import br.com.dusty.dkits.util.text.Text;
 import br.com.dusty.dkits.util.text.TextColor;
 import org.bukkit.GameMode;
@@ -19,7 +20,7 @@ public class Gamer {
 	private float xp = 0, money = 0;
 	private int hgWins = 0, hgLoses = 0;
 	
-	private EnumRank rank = EnumRank.MOD;
+	private EnumRank rank = EnumRank.ADMIN;
 	
 	/**
 	 * Menor {@link EnumRank} que pode ver este jogador.
@@ -44,7 +45,7 @@ public class Gamer {
 		
 		//TODO: Get PrimitiveGamer data
 		
-		if(rank.isBelow(EnumRank.MOD)){
+		if(rank.isLowerThan(EnumRank.MOD)){
 			setMode(EnumMode.PLAY);
 			setVisibleTo(EnumRank.DEFAULT);
 		}else{
@@ -52,9 +53,11 @@ public class Gamer {
 		}
 		
 		for(Gamer gamer : GamerRegistry.getOnlineGamers()){
-			if(rank.isBelow(gamer.visibleTo))
+			if(rank.isLowerThan(gamer.visibleTo))
 				player.hidePlayer(gamer.getPlayer());
 		}
+		
+		TagUtils.applyTag(this);
 	}
 	
 	public static Gamer of(Player player) {
@@ -68,23 +71,26 @@ public class Gamer {
 		this.visibleTo = visibleTo;
 		
 		for(Gamer gamer : GamerRegistry.getOnlineGamers()){
-			if(gamer.rank.isBelow(rank))
+			if(gamer.rank.isLowerThan(rank))
 				gamer.player.hidePlayer(player);
 			else
 				gamer.player.showPlayer(player);
 		}
 		
-		if(!rank.isBelow(EnumRank.MOD))
-			player.sendMessage(Text.of("Agora você está ")
-			                       .color(TextColor.GRAY)
-			                       .append("visível")
-			                       .color(TextColor.GREEN)
-			                       .append(" apenas para ")
-			                       .color(TextColor.GRAY)
-			                       .append(visibleTo.name)
-			                       .append(" e acima!")
-			                       .color(TextColor.GRAY)
-			                       .toString());
+		if(rank.isGreaterThanOrEquals(EnumRank.MOD)){
+			Text text = Text.of("Agora você está ")
+			                .color(TextColor.GRAY)
+			                .append("visível")
+			                .color(TextColor.GREEN)
+			                .append(" apenas para ")
+			                .color(TextColor.GRAY)
+			                .append(visibleTo.name);
+			
+			if(rank.hasNext())
+				text = text.append(" e acima!").color(TextColor.GRAY);
+			
+			player.sendMessage(text.toString());
+		}
 	}
 	
 	public void setMode(EnumMode mode) {

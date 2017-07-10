@@ -43,6 +43,19 @@ public class Text {
 	}
 	
 	/**
+	 * Cria um {@link Text} a partir do 'float' dado como parâmetro.
+	 *
+	 * @param f
+	 * @return O {@link Text} criado.
+	 */
+	public static Text of(float f) {
+		Text text = new Text();
+		text.string = String.valueOf(f);
+		
+		return text;
+	}
+	
+	/**
 	 * Cria um {@link Text} a partir do 'boolean' dado como parâmetro.
 	 *
 	 * @param bool
@@ -62,7 +75,8 @@ public class Text {
 	 * @return Este {@link Text}.
 	 */
 	public Text styles(TextStyle... styles) {
-		this.styles.addAll(Arrays.asList(styles));
+		if(styles != null)
+			this.styles.addAll(Arrays.asList(styles));
 		
 		return this;
 	}
@@ -74,7 +88,8 @@ public class Text {
 	 * @return Este {@link Text}.
 	 */
 	public Text color(TextColor color) {
-		this.color = color;
+		if(color != null)
+			this.color = color;
 		
 		return this;
 	}
@@ -100,6 +115,19 @@ public class Text {
 	 */
 	public Text append(int i) {
 		Text text = of(i);
+		text.append = this;
+		
+		return text;
+	}
+	
+	/**
+	 * Anexa um 'float' a este {@link Text}.
+	 *
+	 * @param f
+	 * @return Este {@link Text}.
+	 */
+	public Text append(float f) {
+		Text text = of(f);
 		text.append = this;
 		
 		return text;
@@ -132,10 +160,9 @@ public class Text {
 		
 		sb.append(TextStyle.RESET);
 		
-		for(TextStyle style : styles){
-			sb.append(style);
-		}
 		sb.append(color);
+		for(TextStyle style : styles)
+			sb.append(style);
 		sb.append(string);
 		
 		return sb.toString();

@@ -18,7 +18,7 @@ public class PlayerLoginListener implements Listener {
 	                                                    .append(" ou um ")
 	                                                    .color(TextColor.GRAY)
 	                                                    .append("Slot Reservado")
-	                                                    .color(TextColor.GRAY)
+	                                                    .color(TextColor.GOLD)
 	                                                    .append(" no site ")
 	                                                    .color(TextColor.GRAY)
 	                                                    .append("loja.dusty.com.br")
@@ -36,7 +36,6 @@ public class PlayerLoginListener implements Listener {
 				e.allow();
 			else
 				e.disallow(PlayerLoginEvent.Result.KICK_FULL, KICK_FULL_MESSAGE);
-			
 		}
 	}
 	

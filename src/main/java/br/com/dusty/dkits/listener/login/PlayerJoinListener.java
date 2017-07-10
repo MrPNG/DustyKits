@@ -1,18 +1,15 @@
 package br.com.dusty.dkits.listener.login;
 
-import br.com.dusty.dkits.Main;
 import br.com.dusty.dkits.gamer.EnumRank;
 import br.com.dusty.dkits.gamer.Gamer;
 import br.com.dusty.dkits.util.bossbar.BossBarUtils;
 import br.com.dusty.dkits.util.scoreboard.ScoreboardUtils;
 import br.com.dusty.dkits.util.text.Text;
 import br.com.dusty.dkits.util.text.TextColor;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.scheduler.BukkitScheduler;
 
 public class PlayerJoinListener implements Listener {
 	
@@ -35,7 +32,7 @@ public class PlayerJoinListener implements Listener {
 		
 		BossBarUtils.MAIN.send(player);
 		
-		if(gamer.getRank().isBelow(EnumRank.MOD))
+		if(gamer.getRank().isLowerThan(EnumRank.MOD))
 			e.setJoinMessage(JOIN_MESSAGE_PREFIX + player.getName());
 		else
 			e.setJoinMessage(null);

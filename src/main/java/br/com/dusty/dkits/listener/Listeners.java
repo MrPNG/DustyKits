@@ -2,6 +2,7 @@ package br.com.dusty.dkits.listener;
 
 import br.com.dusty.dkits.Main;
 import br.com.dusty.dkits.listener.login.PlayerJoinListener;
+import br.com.dusty.dkits.listener.login.PlayerLoginListener;
 import br.com.dusty.dkits.listener.login.PlayerQuitListener;
 import br.com.dusty.dkits.listener.login.ServerListPingListener;
 import org.bukkit.Bukkit;
@@ -24,6 +25,7 @@ public class Listeners {
 		//Usage: LISTENERS.add(new FooListener());
 		
 		//Login
+		LISTENERS.add(new PlayerLoginListener());
 		LISTENERS.add(new PlayerJoinListener());
 		LISTENERS.add(new ServerListPingListener());
 		

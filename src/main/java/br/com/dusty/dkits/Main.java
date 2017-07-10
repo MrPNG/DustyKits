@@ -3,7 +3,6 @@ package br.com.dusty.dkits;
 import br.com.dusty.dkits.command.Commands;
 import br.com.dusty.dkits.listener.Listeners;
 import com.google.gson.Gson;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Random;

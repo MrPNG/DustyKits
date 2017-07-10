@@ -10,14 +10,18 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
-import java.util.Arrays;
-
 public class ScoreboardUtils {
 	
-	private static final String[] LABELS = {Text.of("Score1").color(TextColor.GOLD).toString(),
-	                                        Text.of("Score2").color(TextColor.GOLD).toString(),
-	                                        Text.of("...").color(TextColor.GOLD).toString(),
-	                                        Text.of("ScoreX").color(TextColor.GOLD).toString()};
+	private static final String[] LABELS = {Text.of("| XP: ").color(TextColor.GOLD).toString(),
+	                                        Text.of("| Créditos: ").color(TextColor.GOLD).toString(),
+	                                        Text.of("------------").color(TextColor.YELLOW).toString(),
+	                                        Text.of("| Kills: ").color(TextColor.RED).toString(),
+	                                        Text.of("| Deaths: ").color(TextColor.RED).toString(),
+	                                        Text.of("| Killstreak: ").color(TextColor.RED).toString(),
+	                                        Text.of("------------ ").color(TextColor.YELLOW).toString(),
+	                                        //Text.of("| Kit: ").color(TextColor.AQUA).toString(),
+	                                        //Text.of("| Combate: ").color(TextColor.AQUA).toString(),
+	                                        Text.of("| Players: ").color(TextColor.AQUA).toString()};
 	
 	public static void create(Player player) {
 		Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
@@ -36,13 +40,19 @@ public class ScoreboardUtils {
 		
 		Objective objective = scoreboard.getObjective(player.getName());
 		
-		String[] values = {Text.of("Value1").color(TextColor.YELLOW).toString(),
-		                   Text.of("Value2").color(TextColor.YELLOW).toString(),
+		String[] values = {Text.of(Math.round(gamer.getXp())).color(TextColor.YELLOW).toString(),
+		                   Text.of(Math.round(gamer.getMoney())).color(TextColor.YELLOW).toString(),
 		                   "",
-		                   Text.of("ValueX").color(TextColor.YELLOW).toString()};
+		                   Text.of(gamer.getKills()).color(TextColor.YELLOW).toString(),
+		                   Text.of(gamer.getDeaths()).color(TextColor.YELLOW).toString(),
+		                   Text.of(gamer.getKillStreak()).color(TextColor.YELLOW).toString(),
+		                   "",
+		                   //Text.of(gamer.getKit()).color(TextColor.YELLOW).toString(),
+		                   //Text.of(gamer.isInCombat() ? "Sim" : "Não").color(TextColor.YELLOW).toString(),
+		                   Text.of(GamerRegistry.getOnlineGamers().size()).color(TextColor.YELLOW).toString()};
 		
 		for(int i = 0; i < LABELS.length; i++){
-			String score = LABELS[i] + ": " + values[i];
+			String score = LABELS[i] + values[i];
 			objective.getScore(score).setScore(LABELS.length - i);
 		}
 	}

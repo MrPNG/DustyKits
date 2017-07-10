@@ -30,21 +30,26 @@ public enum EnumRank {
 	}
 	
 	int level;
+	TextColor color;
+	TextStyle[] styles;
 	String name;
 	
 	EnumRank(int level) {
 		this.level = level;
-		name = Text.of(name()).toString();
+		name = format(name());
 	}
 	
 	EnumRank(int level, TextColor color) {
 		this.level = level;
-		name = Text.of(name()).color(color).toString();
+		this.color = color;
+		name = format(name());
 	}
 	
 	EnumRank(int level, TextColor color, TextStyle... styles) {
 		this.level = level;
-		name = Text.of(name()).color(color).styles(styles).toString();
+		this.color = color;
+		this.styles = styles;
+		name = format(name());
 	}
 	
 	/**
@@ -64,7 +69,7 @@ public enum EnumRank {
 	 * @param rank
 	 * @return <b>true</b> se este {@link EnumRank} está hierarquicamente <b>acima</b> do parâmetro 'rank'.
 	 */
-	public boolean isAbove(EnumRank rank) {
+	public boolean isGreaterThan(EnumRank rank) {
 		return level > rank.level;
 	}
 	
@@ -74,8 +79,28 @@ public enum EnumRank {
 	 * @param rank
 	 * @return <b>true</b> se este {@link EnumRank} está hierarquicamente <b>abaixo</b> do parâmetro 'rank'.
 	 */
-	public boolean isBelow(EnumRank rank) {
+	public boolean isLowerThan(EnumRank rank) {
 		return level < rank.level;
+	}
+	
+	/**
+	 * Retorna <b>true</b> se este {@link EnumRank} não está hierarquicamente <b>abaixo</b> do parâmetro 'rank'.
+	 *
+	 * @param rank
+	 * @return <b>true</b> se este {@link EnumRank} não está hierarquicamente <b>abaixo</b> do parâmetro 'rank'.
+	 */
+	public boolean isGreaterThanOrEquals(EnumRank rank) {
+		return level >= rank.level;
+	}
+	
+	/**
+	 * Retorna <b>true</b> se este {@link EnumRank} não está hierarquicamente <b>acima</b> do parâmetro 'rank'.
+	 *
+	 * @param rank
+	 * @return <b>true</b> se este {@link EnumRank} não está hierarquicamente <b>acima</b> do parâmetro 'rank'.
+	 */
+	public boolean isLowerThanOrEquals(EnumRank rank) {
+		return level <= rank.level;
 	}
 	
 	/**
@@ -130,5 +155,9 @@ public enum EnumRank {
 		while(rank == null);
 		
 		return rank;
+	}
+	
+	public String format(String s) {
+		return Text.of(s).color(color).styles(styles).toString();
 	}
 }

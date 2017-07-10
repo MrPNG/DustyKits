@@ -30,7 +30,7 @@ public class PlayerQuitListener implements Listener {
 		
 		ScoreboardUtils.updateAll();
 		
-		if(gamer.getRank().isBelow(EnumRank.MOD))
+		if(gamer.getRank().isLowerThan(EnumRank.MOD))
 			e.setQuitMessage(QUIT_MESSAGE_PREFIX + player.getName());
 		else
 			e.setQuitMessage(null);

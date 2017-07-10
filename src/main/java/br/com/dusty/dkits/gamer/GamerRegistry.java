@@ -26,11 +26,11 @@ public class GamerRegistry {
 		return gamer;
 	}
 	
-	public static void unregister(Gamer gamer){
+	public static void unregister(Gamer gamer) {
 		GAMER_BY_PLAYER.remove(gamer.getPlayer());
 	}
 	
-	public static Collection<Gamer> getOnlineGamers(){
+	public static Collection<Gamer> getOnlineGamers() {
 		return GAMER_BY_PLAYER.values();
 	}
 	
