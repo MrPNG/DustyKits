@@ -27,8 +27,6 @@ public class Listeners {
 		LISTENERS.add(new ServerListPingListener());
 		
 		PluginManager pluginManager = Bukkit.getPluginManager();
-		for(Listener listener : LISTENERS){
-			pluginManager.registerEvents(listener, Main.INSTANCE);
-		}
+		LISTENERS.forEach(listener -> pluginManager.registerEvents(listener, Main.INSTANCE));
 	}
 }

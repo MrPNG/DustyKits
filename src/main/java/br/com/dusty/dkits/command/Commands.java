@@ -15,8 +15,6 @@ public class Commands {
 	public static void registerAll() {
 		//Usage: CUSTOM_COMMANDS.add(new FooCommand());
 		
-		for(CustomCommand customCommand : CUSTOM_COMMANDS){
-			customCommand.register();
-		}
+		CUSTOM_COMMANDS.forEach(CustomCommand::register);
 	}
 }
