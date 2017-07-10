@@ -10,6 +10,8 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
+import java.util.Arrays;
+
 public class ScoreboardUtils {
 	
 	private static final String[] LABELS = {Text.of("Score1").color(TextColor.GOLD).toString(),
@@ -50,7 +52,6 @@ public class ScoreboardUtils {
 	}
 	
 	public static void clear(Scoreboard scoreboard) {
-		for(String s : scoreboard.getEntries())
-			scoreboard.resetScores(s);
+		scoreboard.getEntries().forEach(scoreboard::resetScores);
 	}
 }

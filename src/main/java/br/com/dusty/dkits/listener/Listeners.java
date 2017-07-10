@@ -2,6 +2,7 @@ package br.com.dusty.dkits.listener;
 
 import br.com.dusty.dkits.Main;
 import br.com.dusty.dkits.listener.login.PlayerJoinListener;
+import br.com.dusty.dkits.listener.login.PlayerQuitListener;
 import br.com.dusty.dkits.listener.login.ServerListPingListener;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
@@ -25,6 +26,9 @@ public class Listeners {
 		//Login
 		LISTENERS.add(new PlayerJoinListener());
 		LISTENERS.add(new ServerListPingListener());
+		
+		//Quit
+		LISTENERS.add(new PlayerQuitListener());
 		
 		PluginManager pluginManager = Bukkit.getPluginManager();
 		LISTENERS.forEach(listener -> pluginManager.registerEvents(listener, Main.INSTANCE));
