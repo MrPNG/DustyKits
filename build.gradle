@@ -72,6 +72,7 @@ repositories {
 dependencies {
     compileOnly group: 'org.spigotmc', name: 'spigot', version: '1.12-R0.1-SNAPSHOT'
     compile group: 'joda-time', name: 'joda-time', version: '2.9.9'
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.3'
     //compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
     //compile group: 'org.codehaus.groovy', name: 'groovy', version: '2.5.0-beta-1'
 }

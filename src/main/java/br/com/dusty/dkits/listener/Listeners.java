@@ -1,6 +1,7 @@
 package br.com.dusty.dkits.listener;
 
 import br.com.dusty.dkits.Main;
+import br.com.dusty.dkits.listener.login.AsyncPlayerPreLoginListener;
 import br.com.dusty.dkits.listener.login.PlayerJoinListener;
 import br.com.dusty.dkits.listener.login.PlayerLoginListener;
 import br.com.dusty.dkits.listener.mechanics.*;
@@ -25,6 +26,7 @@ public class Listeners {
 		//Usage: LISTENERS.add(new FooListener());
 		
 		//Login
+		LISTENERS.add(new AsyncPlayerPreLoginListener());
 		LISTENERS.add(new PlayerJoinListener());
 		LISTENERS.add(new PlayerLoginListener());
 		

@@ -2,8 +2,8 @@ package br.com.dusty.dkits.listener.login;
 
 import br.com.dusty.dkits.gamer.EnumRank;
 import br.com.dusty.dkits.gamer.Gamer;
-import br.com.dusty.dkits.util.bossbar.BossBarUtils;
 import br.com.dusty.dkits.util.ScoreboardUtils;
+import br.com.dusty.dkits.util.bossbar.BossBarUtils;
 import br.com.dusty.dkits.util.text.Text;
 import br.com.dusty.dkits.util.text.TextColor;
 import org.bukkit.entity.Player;

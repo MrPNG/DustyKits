@@ -2,47 +2,21 @@ package br.com.dusty.dkits.gamer;
 
 import java.util.UUID;
 
-class PrimitiveGamer {
+public class PrimitiveGamer {
 	
 	private String uuid;
 	
-	private int kills, deaths, killStreak, maxKillStreak;
-	private float xp, money;
-	private int hgWins, hgLoses;
+	private int id;
 	
-	int getKills() {
-		return kills;
-	}
-	
-	int getDeaths() {
-		return deaths;
-	}
-	
-	int getKillStreak() {
-		return killStreak;
-	}
-	
-	int getMaxKillStreak() {
-		return maxKillStreak;
-	}
-	
-	float getXp() {
-		return xp;
-	}
-	
-	float getMoney() {
-		return money;
-	}
-	
-	int getHgWins() {
-		return hgWins;
-	}
-	
-	int getHgLoses() {
-		return hgLoses;
-	}
+	int kills = 0, deaths = 0, killStreak = 0, maxKillStreak = 0;
+	float xp = 0, money = 0;
+	int hgWins = 0, hgLoses = 0;
 	
 	UUID getUUID() {
 		return UUID.fromString(uuid);
+	}
+	
+	void setUUID(UUID uuid){
+		this.uuid = uuid.toString();
 	}
 }

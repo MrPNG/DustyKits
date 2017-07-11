@@ -13,11 +13,14 @@ public class GamerRegistry {
 	private static final HashMap<Player, Gamer> GAMER_BY_PLAYER = new HashMap<>();
 	
 	static Gamer getGamerByPlayer(Player player) {
-		Gamer gamer = null;
+		Gamer gamer;
 		
 		if(!GAMER_BY_PLAYER.containsKey(player)){
-			gamer = new Gamer(player);
+			UUID uuid = player.getUniqueId();
 			
+			gamer = new Gamer(player, PRIMITIVE_GAMER_BY_UUID.get(uuid));
+			
+			PRIMITIVE_GAMER_BY_UUID.remove(uuid);
 			GAMER_BY_PLAYER.put(player, gamer);
 		}else{
 			gamer = GAMER_BY_PLAYER.get(player);
@@ -34,25 +37,20 @@ public class GamerRegistry {
 		return GAMER_BY_PLAYER.values();
 	}
 	
-	private static Gamer fromPrimitive(Player player, UUID uuid) {
-		PrimitiveGamer primitiveGamer = PRIMITIVE_GAMER_BY_UUID.get(uuid);
+	public static PrimitiveGamer fromJson(String json, UUID uuid) {
+		if(json == null)
+			return null;
 		
-		Gamer gamer = new Gamer(player);
-		gamer.setKills(primitiveGamer.getKills());
-		gamer.setDeaths(primitiveGamer.getDeaths());
-		gamer.setKillStreak(primitiveGamer.getKillStreak());
-		gamer.setMaxKillStreak(primitiveGamer.getMaxKillStreak());
-		gamer.setXp(primitiveGamer.getXp());
-		gamer.setMoney(primitiveGamer.getMoney());
-		gamer.setHgWins(primitiveGamer.getHgWins());
-		gamer.setHgLoses(primitiveGamer.getHgLoses());
+		PrimitiveGamer primitiveGamer = null;
 		
-		return gamer;
-	}
-	
-	private static PrimitiveGamer fromJson(String json) {
-		PrimitiveGamer primitiveGamer = Main.GSON.fromJson(json, PrimitiveGamer.class);
-		PRIMITIVE_GAMER_BY_UUID.put(primitiveGamer.getUUID(), primitiveGamer);
+		if(json.equals("null")){
+			primitiveGamer = new PrimitiveGamer();
+			primitiveGamer.setUUID(uuid);
+		}else{
+			Main.GSON.fromJson(json, PrimitiveGamer.class);
+		}
+		
+		PRIMITIVE_GAMER_BY_UUID.put(uuid, primitiveGamer);
 		
 		return primitiveGamer;
 	}
