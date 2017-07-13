@@ -14,26 +14,20 @@ import org.bukkit.event.player.PlayerLoginEvent;
 
 public class PlayerLoginListener implements Listener {
 	
-	private static final String KICK_NOT_READY = Text.of("O servidor ainda não está aberto!\n\nVolte em alguns segundos...")
-	                                                 .color(TextColor.RED)
-	                                                 .toString();
+	private static final String KICK_NOT_READY = Text.negativeOf(
+			"O servidor ainda não está aberto!\n\nVolte em alguns segundos...").toString();
 	
-	private static final String KICK_FULL_MESSAGE = Text.of("O servidor está cheio!\n\n")
-	                                                    .color(TextColor.RED)
-	                                                    .append("Compre ")
-	                                                    .color(TextColor.GRAY)
+	private static final String KICK_FULL_MESSAGE = Text.negativeOf("O servidor está cheio!\n\n")
+	                                                    .neutral("Compre ")
 	                                                    .append("PRO")
 	                                                    .color(TextColor.GOLD)
-	                                                    .append(" ou um ")
-	                                                    .color(TextColor.GRAY)
+	                                                    .neutral(" ou um ")
 	                                                    .append("Slot Reservado")
 	                                                    .color(TextColor.GOLD)
-	                                                    .append(" no site ")
-	                                                    .color(TextColor.GRAY)
+	                                                    .neutral(" no site ")
 	                                                    .append("loja.dusty.com.br")
 	                                                    .color(TextColor.GOLD)
-	                                                    .append(" e entre agora!")
-	                                                    .color(TextColor.GRAY)
+	                                                    .neutral(" e entre agora!")
 	                                                    .toString();
 	
 	@EventHandler

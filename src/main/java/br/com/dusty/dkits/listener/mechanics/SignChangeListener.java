@@ -12,33 +12,23 @@ import org.bukkit.event.block.SignChangeEvent;
 public class SignChangeListener implements Listener {
 	
 	private static final String[] SOUP_SIGN = {Text.of("=-=-=-=-=-=-=-=-=-=-=-=-=-=").color(TextColor.RED).toString(),
-	                                           Text.of("[")
-	                                               .color(TextColor.GRAY)
-	                                               .append("Grátis")
-	                                               .color(TextColor.GREEN)
-	                                               .append("]")
-	                                               .color(TextColor.GRAY).toString(),
+	                                           Text.neutralOf("[").positive("Grátis").neutral("]").toString(),
 	                                           Text.of("Sopa").color(TextColor.YELLOW).toString(),
 	                                           Text.of("=-=-=-=-=-=-=-=-=-=-=-=-=-=").color(TextColor.RED).toString()};
 	
 	private static final String[] RECRAFT_SIGN = {Text.of("=-=-=-=-=-=-=-=-=-=-=-=-=-=").color(TextColor.RED).toString(),
-	                                              Text.of("[")
-	                                                  .color(TextColor.GRAY)
-	                                                  .append("Grátis")
-	                                                  .color(TextColor.GREEN)
-	                                                  .append("]")
-	                                                  .color(TextColor.GRAY).toString(),
+	                                              Text.neutralOf("[").positive("Grátis").neutral("]").toString(),
 	                                              Text.of("Recraft").color(TextColor.YELLOW).toString(),
 	                                              Text.of("=-=-=-=-=-=-=-=-=-=-=-=-=-=").color(TextColor.RED).toString()};
 	
 	private static final String[] MONEY_SIGN = {Text.of("=-=-=-=-=-=-=-=-=-=-=-=-=-=").color(TextColor.RED).toString(),
 	                                            Text.of("Créditos").color(TextColor.YELLOW).toString(),
-	                                            Text.of("+").color(TextColor.GREEN).toString(),
+	                                            Text.positiveOf("+").toString(),
 	                                            Text.of("=-=-=-=-=-=-=-=-=-=-=-=-=-=").color(TextColor.RED).toString()};
 	
 	private static final String[] XP_SIGN = {Text.of("=-=-=-=-=-=-=-=-=-=-=-=-=-=").color(TextColor.RED).toString(),
 	                                         Text.of("XP").color(TextColor.YELLOW).toString(),
-	                                         Text.of("+").color(TextColor.GREEN).toString(),
+	                                         Text.positiveOf("+").toString(),
 	                                         Text.of("=-=-=-=-=-=-=-=-=-=-=-=-=-=").color(TextColor.RED).toString()};
 	
 	@EventHandler

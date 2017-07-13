@@ -3,7 +3,6 @@ package br.com.dusty.dkits.listener.login;
 import br.com.dusty.dkits.gamer.GamerRegistry;
 import br.com.dusty.dkits.gamer.PrimitiveGamer;
 import br.com.dusty.dkits.util.text.Text;
-import br.com.dusty.dkits.util.text.TextColor;
 import br.com.dusty.dkits.util.web.WebAPI;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,9 +12,8 @@ import java.util.UUID;
 
 public class AsyncPlayerPreLoginListener implements Listener {
 	
-	private static final String KICK_NO_PROFILE = Text.of("Não foi possível carregar seu perfil!\n\nVolte em alguns minutos...")
-	                                                  .color(TextColor.RED)
-	                                                  .toString();
+	private static final String KICK_NO_PROFILE = Text.negativeOf(
+			"Não foi possível carregar seu perfil!\n\nVolte em alguns minutos...").toString();
 	
 	@EventHandler
 	public void onAsyncPlayerPreLogin(AsyncPlayerPreLoginEvent event) {

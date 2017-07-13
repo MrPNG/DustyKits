@@ -79,12 +79,9 @@ public class Gamer {
 		}
 		
 		if(rank.isGreaterThanOrEquals(EnumRank.MOD)){
-			Text text = Text.of("Agora você está ")
-			                .color(TextColor.GRAY)
-			                .append("visível")
-			                .color(TextColor.GREEN)
-			                .append(" apenas para ")
-			                .color(TextColor.GRAY)
+			Text text = Text.neutralOf("Agora você está ")
+			                .positive("visível")
+			                .neutral(" apenas para ")
 			                .append(visibleTo.name);
 			
 			if(rank.hasNext())

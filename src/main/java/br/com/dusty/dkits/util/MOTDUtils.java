@@ -20,9 +20,9 @@ public class MOTDUtils {
 	                                                Text.of("Veja seu perfil em dusty.com.br/perfil!")
 	                                                    .color(TextColor.GREEN).toString()};
 	
-	private static final String MOTD_OFFLINE = Text.of("O servidor ainda não está aberto...").color(TextColor.RED).toString();
+	private static final String MOTD_OFFLINE = Text.negativeOf("O servidor ainda não está aberto...").toString();
 	
-	private static final String MOTD_MAINTENANCE = Text.of("Em manutenção...").color(TextColor.RED).toString();
+	private static final String MOTD_MAINTENANCE = Text.negativeOf("Em manutenção...").toString();
 	
 	public static String randomMOTD() {
 		return MOTD_MAIN + MOTD_ALTERNATE[Main.RANDOM.nextInt(MOTD_ALTERNATE.length)] + "\n" + MOTD_SECONDARY[Main.RANDOM.nextInt(

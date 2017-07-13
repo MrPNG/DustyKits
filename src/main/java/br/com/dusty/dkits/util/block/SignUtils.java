@@ -3,7 +3,6 @@ package br.com.dusty.dkits.util.block;
 import br.com.dusty.dkits.gamer.Gamer;
 import br.com.dusty.dkits.util.InventoryUtils;
 import br.com.dusty.dkits.util.text.Text;
-import br.com.dusty.dkits.util.text.TextColor;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 
@@ -19,16 +18,11 @@ public class SignUtils {
 		switch(Text.clearFormatting(sign.getLine(1))){
 			case "[Grátis]":
 				if(gamer.isOnSignCooldown()){
-					player.sendMessage(Text.of("Você ainda deve ")
-					                       .color(TextColor.GRAY)
-					                       .append("esperar")
-					                       .color(TextColor.RED)
-					                       .append(" mais ")
-					                       .color(TextColor.GRAY)
-					                       .append(gamer.getSignCooldown())
-					                       .color(TextColor.RED)
-					                       .append(" segundo(s) para usar essa placa novamente!")
-					                       .color(TextColor.GRAY)
+					player.sendMessage(Text.neutralOf("Você ainda deve ")
+					                       .negative("esperar")
+					                       .neutral(" mais ")
+					                       .negative(gamer.getSignCooldown())
+					                       .neutral(" segundo(s) para usar essa placa novamente!")
 					                       .toString());
 				}else{
 					switch(Text.clearFormatting(sign.getLine(2))){
@@ -53,13 +47,7 @@ public class SignUtils {
 				int amount = Integer.parseInt(sign.getLine(2).substring(3));
 				gamer.addMoney(amount);
 				
-				player.sendMessage(Text.of("Você ")
-				                       .color(TextColor.GRAY)
-				                       .append("ganhou " + amount)
-				                       .color(TextColor.GREEN)
-				                       .append(" créditos!")
-				                       .color(TextColor.GRAY)
-				                       .toString());
+				player.sendMessage(Text.neutralOf("Você ").positive("ganhou " + amount).neutral(" créditos!").toString());
 				
 				break;
 			case "XP":
@@ -67,13 +55,7 @@ public class SignUtils {
 				amount = Integer.parseInt(sign.getLine(2).substring(3));
 				gamer.addXp(amount);
 				
-				player.sendMessage(Text.of("Você ")
-				                       .color(TextColor.GRAY)
-				                       .append("ganhou " + amount)
-				                       .color(TextColor.GREEN)
-				                       .append(" de XP!")
-				                       .color(TextColor.GRAY)
-				                       .toString());
+				player.sendMessage(Text.neutralOf("Você ").positive("ganhou " + amount).neutral(" XP!").toString());
 				
 				break;
 		}

@@ -146,6 +146,78 @@ public class Text {
 		return text;
 	}
 	
+	public static Text neutralOf(String s){
+		return Text.of(s).color(TextColor.GRAY);
+	}
+	
+	public static Text neutralOf(int i){
+		return Text.of(i).color(TextColor.GRAY);
+	}
+	
+	public static Text neutralOf(boolean b){
+		return Text.of(b).color(TextColor.GRAY);
+	}
+	
+	public Text neutral(String s){
+		return append(s).color(TextColor.GRAY);
+	}
+	
+	public Text neutral(int i){
+		return append(i).color(TextColor.GRAY);
+	}
+	
+	public Text neutral(boolean b){
+		return append(b).color(TextColor.GRAY);
+	}
+	
+	public static Text positiveOf(String s){
+		return Text.of(s).color(TextColor.GREEN);
+	}
+	
+	public static Text positiveOf(int i){
+		return Text.of(i).color(TextColor.GREEN);
+	}
+	
+	public static Text positiveOf(boolean b){
+		return Text.of(b).color(TextColor.GREEN);
+	}
+	
+	public Text positive(String s){
+		return append(s).color(TextColor.GREEN);
+	}
+	
+	public Text positive(int i){
+		return append(i).color(TextColor.GREEN);
+	}
+	
+	public Text positive(boolean b){
+		return append(b).color(TextColor.GREEN);
+	}
+	
+	public static Text negativeOf(String s){
+		return Text.of(s).color(TextColor.RED);
+	}
+	
+	public static Text negativeOf(int i){
+		return Text.of(i).color(TextColor.RED);
+	}
+	
+	public static Text negativeOf(boolean b){
+		return Text.of(b).color(TextColor.RED);
+	}
+	
+	public Text negative(String s){
+		return append(s).color(TextColor.RED);
+	}
+	
+	public Text negative(int i){
+		return append(i).color(TextColor.RED);
+	}
+	
+	public Text negative(boolean b){
+		return append(b).color(TextColor.RED);
+	}
+	
 	/**
 	 * Processa este {@link Text} em uma {@link String}, aplicando cor e estilos e anexando outro {@link Text}, se houver.
 	 *

@@ -5,7 +5,6 @@ import br.com.dusty.dkits.gamer.Gamer;
 import br.com.dusty.dkits.gamer.GamerRegistry;
 import br.com.dusty.dkits.util.ScoreboardUtils;
 import br.com.dusty.dkits.util.text.Text;
-import br.com.dusty.dkits.util.text.TextColor;
 import br.com.dusty.dkits.util.web.WebAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,13 +13,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class PlayerQuitListener implements Listener {
 	
-	private static final String QUIT_MESSAGE_PREFIX = Text.of("[")
-	                                                      .color(TextColor.GRAY)
-	                                                      .append("-")
-	                                                      .color(TextColor.RED)
-	                                                      .append("] ")
-	                                                      .color(TextColor.GRAY)
-	                                                      .toString();
+	private static final String QUIT_MESSAGE_PREFIX = Text.neutralOf("[").negative("-").neutral("] ").toString();
 	
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
