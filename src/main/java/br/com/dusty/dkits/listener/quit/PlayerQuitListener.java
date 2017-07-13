@@ -6,6 +6,7 @@ import br.com.dusty.dkits.gamer.GamerRegistry;
 import br.com.dusty.dkits.util.ScoreboardUtils;
 import br.com.dusty.dkits.util.text.Text;
 import br.com.dusty.dkits.util.text.TextColor;
+import br.com.dusty.dkits.util.web.WebAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -27,6 +28,8 @@ public class PlayerQuitListener implements Listener {
 		
 		Gamer gamer = Gamer.of(player);
 		GamerRegistry.unregister(gamer);
+		
+		WebAPI.saveProfiles(gamer);
 		
 		ScoreboardUtils.updateAll();
 		

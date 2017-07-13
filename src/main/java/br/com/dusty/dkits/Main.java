@@ -16,7 +16,7 @@ public class Main extends JavaPlugin {
 	
 	public static final int MAX_PLAYERS = 150;
 	
-	public static EnumServerStatus serverStatus = EnumServerStatus.ONLINE;
+	public static EnumServerStatus serverStatus = EnumServerStatus.OFFLINE;
 	
 	/**
 	 * Instância deste {@link JavaPlugin}.
@@ -36,6 +36,8 @@ public class Main extends JavaPlugin {
 	public void onEnable() {
 		Commands.registerAll();
 		Listeners.registerAll();
+		
+		serverStatus = EnumServerStatus.ONLINE;
 	}
 	
 	@Override

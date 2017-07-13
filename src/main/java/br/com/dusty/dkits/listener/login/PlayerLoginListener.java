@@ -1,5 +1,10 @@
 package br.com.dusty.dkits.listener.login;
 
+import br.com.dusty.dkits.EnumServerStatus;
+import br.com.dusty.dkits.Main;
+import br.com.dusty.dkits.gamer.EnumRank;
+import br.com.dusty.dkits.gamer.Gamer;
+import br.com.dusty.dkits.gamer.GamerRegistry;
 import br.com.dusty.dkits.util.text.Text;
 import br.com.dusty.dkits.util.text.TextColor;
 import org.bukkit.entity.Player;
@@ -8,6 +13,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
 
 public class PlayerLoginListener implements Listener {
+	
+	private static final String KICK_NOT_READY = Text.of("O servidor ainda não está aberto!\n\nVolte em alguns segundos...")
+	                                                 .color(TextColor.RED)
+	                                                 .toString();
 	
 	private static final String KICK_FULL_MESSAGE = Text.of("O servidor está cheio!\n\n")
 	                                                    .color(TextColor.RED)
@@ -29,9 +38,14 @@ public class PlayerLoginListener implements Listener {
 	
 	@EventHandler
 	public void onPlayerLogin(PlayerLoginEvent event) {
-		if(event.getResult().equals(PlayerLoginEvent.Result.KICK_FULL)){
-			Player player = event.getPlayer();
-			
+		Player player = event.getPlayer();
+		
+		if(GamerRegistry.getPrimitiveGamerbyUUID(player.getUniqueId()) == null || (Main.serverStatus != EnumServerStatus.ONLINE && Gamer
+				.of(player)
+				.getRank()
+				.isLowerThan(EnumRank.MOD))){
+			event.disallow(PlayerLoginEvent.Result.KICK_OTHER, KICK_NOT_READY);
+		}else if(event.getResult().equals(PlayerLoginEvent.Result.KICK_FULL)){
 			if(canLogin(player))
 				event.allow();
 			else

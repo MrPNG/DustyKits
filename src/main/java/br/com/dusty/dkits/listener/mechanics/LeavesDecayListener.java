@@ -7,7 +7,7 @@ import org.bukkit.event.block.LeavesDecayEvent;
 public class LeavesDecayListener implements Listener {
 	
 	@EventHandler
-	public static void onLeavesDecay(LeavesDecayEvent event){
+	public static void onLeavesDecay(LeavesDecayEvent event) {
 		event.setCancelled(true);
 	}
 }

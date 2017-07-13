@@ -1,6 +1,5 @@
 package br.com.dusty.dkits.util;
 
-import br.com.dusty.dkits.util.StringUtils;
 import br.com.dusty.dkits.util.text.Text;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;

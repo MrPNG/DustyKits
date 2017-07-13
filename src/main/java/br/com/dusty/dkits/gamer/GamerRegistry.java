@@ -41,17 +41,21 @@ public class GamerRegistry {
 		if(json == null)
 			return null;
 		
-		PrimitiveGamer primitiveGamer = null;
+		PrimitiveGamer primitiveGamer;
 		
 		if(json.equals("null")){
 			primitiveGamer = new PrimitiveGamer();
 			primitiveGamer.setUUID(uuid);
 		}else{
-			Main.GSON.fromJson(json, PrimitiveGamer.class);
+			primitiveGamer = Main.GSON.fromJson(json, PrimitiveGamer.class);
 		}
 		
 		PRIMITIVE_GAMER_BY_UUID.put(uuid, primitiveGamer);
 		
 		return primitiveGamer;
+	}
+	
+	public static PrimitiveGamer getPrimitiveGamerbyUUID(UUID uuid) {
+		return PRIMITIVE_GAMER_BY_UUID.get(uuid);
 	}
 }

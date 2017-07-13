@@ -1,8 +1,9 @@
 package br.com.dusty.dkits.gamer;
 
+import br.com.dusty.dkits.util.ScoreboardUtils;
 import br.com.dusty.dkits.util.gamer.GamerUtils;
-import br.com.dusty.dkits.util.protocol.ProtocolUtils;
 import br.com.dusty.dkits.util.gamer.TagUtils;
+import br.com.dusty.dkits.util.protocol.ProtocolUtils;
 import br.com.dusty.dkits.util.text.Text;
 import br.com.dusty.dkits.util.text.TextColor;
 import org.bukkit.GameMode;
@@ -26,12 +27,12 @@ public class Gamer {
 	private EnumRank visibleTo;
 	private EnumMode mode;
 	
-	private int invincible = -1, frozen = -1;
+	private long invincible = -1, frozen = -1;
 	private long cooldown = -1, signCooldown = -1;
 	private long combatTagged = -1;
 	
-	//TODO: private EnumKit kit;
-	//TODO: private EnumWarp warp;
+	//TODO: private Kit kit;
+	//TODO: private Warp warp;
 	
 	Gamer(Player player, PrimitiveGamer primitiveGamer) {
 		this.player = player;
@@ -137,24 +138,30 @@ public class Gamer {
 		return primitiveGamer.kills;
 	}
 	
-	public void setKills(int kills) {
-		primitiveGamer.kills = kills;
+	public void addKill() {
+		primitiveGamer.kills++;
+		
+		ScoreboardUtils.update(this);
 	}
 	
 	public int getDeaths() {
 		return primitiveGamer.deaths;
 	}
 	
-	public void setDeaths(int deaths) {
-		primitiveGamer.deaths = deaths;
+	public void addDeath() {
+		primitiveGamer.deaths++;
+		
+		ScoreboardUtils.update(this);
 	}
 	
 	public int getKillStreak() {
 		return primitiveGamer.killStreak;
 	}
 	
-	public void setKillStreak(int killStreak) {
-		primitiveGamer.killStreak = killStreak;
+	public void addToKillStreak() {
+		primitiveGamer.killStreak++;
+		
+		ScoreboardUtils.update(this);
 	}
 	
 	public int getMaxKillStreak() {
@@ -169,39 +176,93 @@ public class Gamer {
 		return primitiveGamer.xp;
 	}
 	
-	public void setXp(float xp) {
-		primitiveGamer.xp = xp;
+	public void addXp(float amount) {
+		primitiveGamer.xp += amount;
+		
+		player.sendMessage(Text.of("+" + Math.round(amount) + " XP!").color(TextColor.GOLD).toString());
+		ScoreboardUtils.update(this);
 	}
 	
 	public float getMoney() {
 		return primitiveGamer.money;
 	}
 	
-	public void setMoney(float money) {
-		primitiveGamer.money = money;
+	public void addMoney(float amount) {
+		primitiveGamer.money += amount;
+		
+		player.sendMessage(Text.of("+" + Math.round(amount) + " créditos!").color(TextColor.GOLD).toString());
+		ScoreboardUtils.update(this);
 	}
 	
 	public int getHgWins() {
 		return primitiveGamer.hgWins;
 	}
 	
-	public void setHgWins(int hgWins) {
-		primitiveGamer.hgWins = hgWins;
+	public void addHgWin() {
+		primitiveGamer.hgWins++;
 	}
 	
 	public int getHgLoses() {
 		return primitiveGamer.hgLoses;
 	}
 	
-	public void setHgLoses(int hgLoses) {
-		primitiveGamer.hgLoses = hgLoses;
+	public void addHgLoss() {
+		primitiveGamer.hgLoses++;
+	}
+	
+	public boolean isInvincible() {
+		return invincible > System.currentTimeMillis();
+	}
+	
+	public void makeInvincible(long period) {
+		invincible = System.currentTimeMillis() + period;
+	}
+	
+	public void removeInvincibility() {
+		invincible = -1;
+	}
+	
+	public boolean isFrozen() {
+		return frozen > System.currentTimeMillis();
+	}
+	
+	public void freeze(long period) {
+		frozen = System.currentTimeMillis() + period;
+	}
+	
+	public void removeFreeze() {
+		frozen = -1;
+	}
+	
+	public boolean isOnCooldown() {
+		return cooldown > System.currentTimeMillis();
+	}
+	
+	public void setCooldown(long period) {
+		cooldown = System.currentTimeMillis() + period;
+	}
+	
+	public void removeCooldown() {
+		cooldown = -1;
+	}
+	
+	public boolean isOnSignCooldown() {
+		return signCooldown > System.currentTimeMillis();
+	}
+	
+	public int getSignCooldown() {
+		return Math.round((signCooldown - System.currentTimeMillis()) / 1000);
+	}
+	
+	public void setSignCooldown(long period) {
+		signCooldown = System.currentTimeMillis() + period;
+	}
+	
+	public void removeSignCooldown() {
+		signCooldown = -1;
 	}
 	
 	public EnumRank getRank() {
 		return rank;
-	}
-	
-	public void setRank(EnumRank rank) {
-		this.rank = rank;
 	}
 }
