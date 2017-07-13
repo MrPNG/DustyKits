@@ -1,6 +1,7 @@
 package br.com.dusty.dkits.listener.mechanics;
 
 import br.com.dusty.dkits.util.TaskUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,7 +13,6 @@ public class ItemSpawnListener implements Listener {
 	public void onItemSpawn(ItemSpawnEvent event) {
 		Item item = event.getEntity();
 		
-		if(item.isValid())
-			TaskUtils.sync(item::remove, 300);
+		TaskUtils.sync(item::remove, 100);
 	}
 }

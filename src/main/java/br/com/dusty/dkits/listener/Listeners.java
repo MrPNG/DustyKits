@@ -9,6 +9,7 @@ import br.com.dusty.dkits.listener.mechanics.*;
 import br.com.dusty.dkits.listener.quit.PlayerQuitListener;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.PluginManager;
 
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ public class Listeners {
 		LISTENERS.add(new FoodLevelChangeListener());
 		LISTENERS.add(new ItemSpawnListener());
 		LISTENERS.add(new LeavesDecayListener());
+		LISTENERS.add(new PlayerCommandPreprocessListener());
 		LISTENERS.add(new PlayerMoveListener());
 		LISTENERS.add(new ServerListPingListener());
 		LISTENERS.add(new SignChangeListener());

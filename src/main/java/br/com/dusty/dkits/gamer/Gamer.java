@@ -3,6 +3,7 @@ package br.com.dusty.dkits.gamer;
 import br.com.dusty.dkits.util.ScoreboardUtils;
 import br.com.dusty.dkits.util.gamer.GamerUtils;
 import br.com.dusty.dkits.util.gamer.TagUtils;
+import br.com.dusty.dkits.util.protocol.EnumProtocolVersion;
 import br.com.dusty.dkits.util.protocol.ProtocolUtils;
 import br.com.dusty.dkits.util.text.Text;
 import br.com.dusty.dkits.util.text.TextColor;
@@ -15,7 +16,7 @@ public class Gamer {
 	
 	private Player player;
 	
-	private int protocolVersion = -1;
+	private EnumProtocolVersion protocolVersion;
 	
 	private PrimitiveGamer primitiveGamer;
 	
@@ -37,14 +38,6 @@ public class Gamer {
 	Gamer(Player player, PrimitiveGamer primitiveGamer) {
 		this.player = player;
 		this.primitiveGamer = primitiveGamer;
-		
-		try{
-			this.protocolVersion = ProtocolUtils.protocolVersion(player);
-		}catch(InvocationTargetException | IllegalAccessException e){
-			e.printStackTrace();
-		}
-		
-		//TODO: Get PrimitiveGamer data
 		
 		if(rank.isLowerThan(EnumRank.MOD)){
 			setMode(EnumMode.PLAY);
@@ -79,10 +72,7 @@ public class Gamer {
 		}
 		
 		if(rank.isGreaterThanOrEquals(EnumRank.MOD)){
-			Text text = Text.neutralOf("Agora você está ")
-			                .positive("visível")
-			                .neutral(" apenas para ")
-			                .append(visibleTo.name);
+			Text text = Text.neutralOf("Agora você está ").positive("visível").neutral(" apenas para ").append(visibleTo.name);
 			
 			if(rank.hasNext())
 				text = text.append(" e acima!").color(TextColor.GRAY);
@@ -129,6 +119,18 @@ public class Gamer {
 	
 	public PrimitiveGamer getPrimitiveGamer() {
 		return primitiveGamer;
+	}
+	
+	public EnumProtocolVersion getProtocolVersion() {
+		if(protocolVersion == null){
+			try{
+				this.protocolVersion = EnumProtocolVersion.byVersionNumber(ProtocolUtils.protocolVersion(player));
+			}catch(InvocationTargetException | IllegalAccessException e){
+				e.printStackTrace();
+			}
+		}
+		
+		return protocolVersion;
 	}
 	
 	public int getKills() {

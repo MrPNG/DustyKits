@@ -4,6 +4,8 @@ import br.com.dusty.dkits.gamer.EnumRank;
 import br.com.dusty.dkits.gamer.Gamer;
 import br.com.dusty.dkits.util.ScoreboardUtils;
 import br.com.dusty.dkits.util.bossbar.BossBarUtils;
+import br.com.dusty.dkits.util.protocol.EnumProtocolVersion;
+import br.com.dusty.dkits.util.tab.HeaderFooterUtils;
 import br.com.dusty.dkits.util.text.Text;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,7 +25,11 @@ public class PlayerJoinListener implements Listener {
 		ScoreboardUtils.create(player);
 		ScoreboardUtils.updateAll();
 		
-		BossBarUtils.MAIN.send(player);
+		if(gamer.getProtocolVersion().isLowerThan(EnumProtocolVersion.RELEASE_1_9)){
+			BossBarUtils.MAIN.send(player);
+		}else{
+			HeaderFooterUtils.sendHeaderFooter(gamer);
+		}
 		
 		if(gamer.getRank().isLowerThan(EnumRank.MOD))
 			event.setJoinMessage(JOIN_MESSAGE_PREFIX + player.getName());

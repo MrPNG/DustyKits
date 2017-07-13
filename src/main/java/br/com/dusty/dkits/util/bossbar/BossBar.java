@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.UUID;
 
@@ -13,6 +14,7 @@ public class BossBar {
 	private HashSet<Player> players = new HashSet<>();
 	
 	private UUID uuid;
+	
 	private String title;
 	private float progress;
 	private EnumBarColor barColor;
@@ -74,6 +76,11 @@ public class BossBar {
 	}
 	
 	public void send(Player... players) {
+		if(players.length > 1)
+			this.players.addAll(Arrays.asList(players));
+		else
+			this.players.add(players[0]);
+		
 		Object object_PacketPlayOutBoss = null;
 		
 		try{
@@ -95,6 +102,78 @@ public class BossBar {
 				break;
 			default:
 				break;
+		}
+		
+		ProtocolUtils.sendPacket(object_PacketPlayOutBoss, players);
+	}
+	
+	public void remove(Player... players) {
+		if(players.length > 1)
+			this.players.removeAll(Arrays.asList(players));
+		else
+			this.players.remove(players[0]);
+		
+		Object object_PacketPlayOutBoss = null;
+		
+		try{
+			object_PacketPlayOutBoss = class_PacketPlayOutBoss.newInstance();
+			field_PacketPlayOutBoss_a.set(object_PacketPlayOutBoss, uuid);
+			field_PacketPlayOutBoss_b.set(object_PacketPlayOutBoss, enum_Action_values[EnumAction.REMOVE.code]);
+		}catch(IllegalAccessException | InstantiationException e){
+			e.printStackTrace();
+		}
+		
+		ProtocolUtils.sendPacket(object_PacketPlayOutBoss, players);
+	}
+	
+	public void updateProgress(float progress, Player... players) {
+		this.progress = progress;
+		
+		Object object_PacketPlayOutBoss = null;
+		
+		try{
+			object_PacketPlayOutBoss = class_PacketPlayOutBoss.newInstance();
+			field_PacketPlayOutBoss_a.set(object_PacketPlayOutBoss, uuid);
+			field_PacketPlayOutBoss_b.set(object_PacketPlayOutBoss, enum_Action_values[EnumAction.HEALTH.code]);
+			field_PacketPlayOutBoss_d.set(object_PacketPlayOutBoss, progress);
+		}catch(IllegalAccessException | InstantiationException e){
+			e.printStackTrace();
+		}
+		
+		ProtocolUtils.sendPacket(object_PacketPlayOutBoss, players);
+	}
+	
+	public void updateTitle(String title, Player... players) {
+		this.title = title;
+		
+		Object object_PacketPlayOutBoss = null;
+		
+		try{
+			object_PacketPlayOutBoss = class_PacketPlayOutBoss.newInstance();
+			field_PacketPlayOutBoss_a.set(object_PacketPlayOutBoss, uuid);
+			field_PacketPlayOutBoss_b.set(object_PacketPlayOutBoss, enum_Action_values[EnumAction.TITLE.code]);
+			field_PacketPlayOutBoss_c.set(object_PacketPlayOutBoss, ProtocolUtils.chatMessage(title));
+		}catch(IllegalAccessException | InvocationTargetException | InstantiationException e){
+			e.printStackTrace();
+		}
+		
+		ProtocolUtils.sendPacket(object_PacketPlayOutBoss, players);
+	}
+	
+	public void updateStyle(EnumBarColor barColor, EnumBarStyle barStyle, Player... players) {
+		this.barColor = barColor;
+		this.barStyle = barStyle;
+		
+		Object object_PacketPlayOutBoss = null;
+		
+		try{
+			object_PacketPlayOutBoss = class_PacketPlayOutBoss.newInstance();
+			field_PacketPlayOutBoss_a.set(object_PacketPlayOutBoss, uuid);
+			field_PacketPlayOutBoss_b.set(object_PacketPlayOutBoss, enum_Action_values[EnumAction.STYLE.code]);
+			field_PacketPlayOutBoss_e.set(object_PacketPlayOutBoss, enum_BarColor_values[barColor.code]);
+			field_PacketPlayOutBoss_f.set(object_PacketPlayOutBoss, enum_BarStyle_values[barStyle.code]);
+		}catch(IllegalAccessException | InstantiationException e){
+			e.printStackTrace();
 		}
 		
 		ProtocolUtils.sendPacket(object_PacketPlayOutBoss, players);
