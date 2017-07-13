@@ -7,8 +7,6 @@ import org.bukkit.potion.PotionEffect;
 public class GamerUtils {
 	
 	public static void clear(Gamer gamer) {
-		//TODO: Remove kit
-		
 		Player player = gamer.getPlayer();
 		
 		player.setHealth(20);
@@ -21,10 +19,10 @@ public class GamerUtils {
 			player.removePotionEffect(potionEffect.getType());
 	}
 	
-	public static void flight(Gamer gamer, boolean flight) {
+	public static void fly(Gamer gamer, boolean fly) {
 		Player player = gamer.getPlayer();
 		
-		player.setAllowFlight(flight);
-		player.setFlying(flight);
+		player.setAllowFlight(fly);
+		player.setFlying(fly);
 	}
 }

@@ -18,6 +18,12 @@ public class EntityDamageListener implements Listener {
 			
 			if(gamer.isInvincible())
 				event.setCancelled(true);
+			
+			if(event.getCause() == EntityDamageEvent.DamageCause.FALL && gamer.hasNoFall()){
+				gamer.setNoFall(false);
+				
+				event.setCancelled(true);
+			}
 		}
 	}
 }

@@ -23,13 +23,13 @@ public class PlayerQuitListener implements Listener {
 		Gamer gamer = Gamer.of(player);
 		GamerRegistry.unregister(gamer);
 		
-		ScoreboardUtils.updateAll();
-		
 		TaskUtils.async(() -> WebAPI.saveProfiles(gamer));
 		
 		if(gamer.getRank().isLowerThan(EnumRank.MOD))
 			event.setQuitMessage(QUIT_MESSAGE_PREFIX + player.getName());
 		else
 			event.setQuitMessage(null);
+		
+		ScoreboardUtils.updateAll();
 	}
 }

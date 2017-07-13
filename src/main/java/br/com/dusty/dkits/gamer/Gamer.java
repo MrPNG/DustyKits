@@ -32,12 +32,20 @@ public class Gamer {
 	private long cooldown = -1, signCooldown = -1;
 	private long combatTagged = -1;
 	
+	private boolean noFall;
+	
 	//TODO: private Kit kit;
 	//TODO: private Warp warp;
 	
 	Gamer(Player player, PrimitiveGamer primitiveGamer) {
 		this.player = player;
 		this.primitiveGamer = primitiveGamer;
+		
+		try{
+			this.protocolVersion = EnumProtocolVersion.byVersionNumber(ProtocolUtils.protocolVersion(player));
+		}catch(InvocationTargetException | IllegalAccessException e){
+			e.printStackTrace();
+		}
 		
 		if(rank.isLowerThan(EnumRank.MOD)){
 			setMode(EnumMode.PLAY);
@@ -94,7 +102,7 @@ public class Gamer {
 		switch(mode){
 			case PLAY:
 				GamerUtils.clear(this);
-				GamerUtils.flight(this, false);
+				GamerUtils.fly(this, false);
 				
 				//TODO: SURVIVAL on MiniHG
 				player.setGameMode(GameMode.ADVENTURE);
@@ -106,7 +114,7 @@ public class Gamer {
 			case ADMIN:
 				player.setGameMode(GameMode.CREATIVE);
 				
-				GamerUtils.flight(this, true);
+				GamerUtils.fly(this, true);
 				
 				setVisibleTo(rank);
 				break;
@@ -122,14 +130,6 @@ public class Gamer {
 	}
 	
 	public EnumProtocolVersion getProtocolVersion() {
-		if(protocolVersion == null){
-			try{
-				this.protocolVersion = EnumProtocolVersion.byVersionNumber(ProtocolUtils.protocolVersion(player));
-			}catch(InvocationTargetException | IllegalAccessException e){
-				e.printStackTrace();
-			}
-		}
-		
 		return protocolVersion;
 	}
 	
@@ -259,6 +259,14 @@ public class Gamer {
 	
 	public void removeSignCooldown() {
 		signCooldown = -1;
+	}
+	
+	public boolean hasNoFall(){
+		return noFall;
+	}
+	
+	public void setNoFall(boolean noFall){
+		this.noFall = noFall;
 	}
 	
 	public EnumRank getRank() {

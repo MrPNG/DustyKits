@@ -20,11 +20,6 @@ import org.bukkit.potion.PotionType;
  */
 public class ItemStackUtils {
 	
-	private static final ItemStack[] ARMOR_FULLIRON = new ItemStack[]{new ItemStack(Material.IRON_HELMET),
-	                                                                  new ItemStack(Material.IRON_CHESTPLATE),
-	                                                                  new ItemStack(Material.IRON_LEGGINGS),
-	                                                                  new ItemStack(Material.IRON_BOOTS)};
-	
 	public static ItemStack rename(ItemStack itemStack, String name) {
 		if(itemStack != null){
 			ItemMeta itemMeta = itemStack.getItemMeta();
@@ -64,20 +59,6 @@ public class ItemStackUtils {
 		dye.setColor(c);
 		
 		return dye.toItemStack(1);
-	}
-	
-	/**
-	 * Aplica um {@link ItemStack}[] contendo, nessa ordem, 'helmet', 'chestplate', 'leggings' e 'boots' como armadura de um {@link Player}.
-	 *
-	 * @param player
-	 * @param itemStacks
-	 */
-	public static void setArmor(Player player, ItemStack[] itemStacks) {
-		PlayerInventory playerInventory = player.getInventory();
-		playerInventory.setHelmet(itemStacks[0]);
-		playerInventory.setChestplate(itemStacks[1]);
-		playerInventory.setLeggings(itemStacks[2]);
-		playerInventory.setBoots(itemStacks[3]);
 	}
 	
 	public static ItemStack potions(int amount, boolean extended, boolean upgraded, PotionType potionType, boolean splash) {
