@@ -146,75 +146,183 @@ public class Text {
 		return text;
 	}
 	
-	public static Text neutralOf(String s){
+	/**
+	 * Cria um {@link Text} neutro.
+	 *
+	 * @param s
+	 * @return
+	 */
+	public static Text neutralOf(String s) {
 		return Text.of(s).color(TextColor.GRAY);
 	}
 	
-	public static Text neutralOf(int i){
+	/**
+	 * Cria um {@link Text} neutro.
+	 *
+	 * @param i
+	 * @return
+	 */
+	public static Text neutralOf(int i) {
 		return Text.of(i).color(TextColor.GRAY);
 	}
 	
-	public static Text neutralOf(boolean b){
+	/**
+	 * Cria um {@link Text} neutro.
+	 *
+	 * @param b
+	 * @return
+	 */
+	public static Text neutralOf(boolean b) {
 		return Text.of(b).color(TextColor.GRAY);
 	}
 	
-	public Text neutral(String s){
+	/**
+	 * Anexa um {@link Text} neutro.
+	 *
+	 * @param s
+	 * @return
+	 */
+	public Text neutral(String s) {
 		return append(s).color(TextColor.GRAY);
 	}
 	
-	public Text neutral(int i){
+	/**
+	 * Anexa um {@link Text} neutro.
+	 *
+	 * @param i
+	 * @return
+	 */
+	public Text neutral(int i) {
 		return append(i).color(TextColor.GRAY);
 	}
 	
-	public Text neutral(boolean b){
+	/**
+	 * Anexa um {@link Text} neutro.
+	 *
+	 * @param b
+	 * @return
+	 */
+	public Text neutral(boolean b) {
 		return append(b).color(TextColor.GRAY);
 	}
 	
-	public static Text positiveOf(String s){
+	/**
+	 * Cria um {@link Text} positivo.
+	 *
+	 * @param s
+	 * @return
+	 */
+	public static Text positiveOf(String s) {
 		return Text.of(s).color(TextColor.GREEN);
 	}
 	
-	public static Text positiveOf(int i){
+	/**
+	 * Cria um {@link Text} positivo.
+	 *
+	 * @param i
+	 * @return
+	 */
+	public static Text positiveOf(int i) {
 		return Text.of(i).color(TextColor.GREEN);
 	}
 	
-	public static Text positiveOf(boolean b){
+	/**
+	 * Cria um {@link Text} positivo.
+	 *
+	 * @param b
+	 * @return
+	 */
+	public static Text positiveOf(boolean b) {
 		return Text.of(b).color(TextColor.GREEN);
 	}
 	
-	public Text positive(String s){
+	/**
+	 * Anexa um {@link Text} positivo.
+	 *
+	 * @param s
+	 * @return
+	 */
+	public Text positive(String s) {
 		return append(s).color(TextColor.GREEN);
 	}
 	
-	public Text positive(int i){
+	/**
+	 * Anexa um {@link Text} positivo.
+	 *
+	 * @param i
+	 * @return
+	 */
+	public Text positive(int i) {
 		return append(i).color(TextColor.GREEN);
 	}
 	
-	public Text positive(boolean b){
+	/**
+	 * Anexa um {@link Text} positivo.
+	 *
+	 * @param b
+	 * @return
+	 */
+	public Text positive(boolean b) {
 		return append(b).color(TextColor.GREEN);
 	}
 	
-	public static Text negativeOf(String s){
+	/**
+	 * Cria um {@link Text} negativo.
+	 *
+	 * @param s
+	 * @return
+	 */
+	public static Text negativeOf(String s) {
 		return Text.of(s).color(TextColor.RED);
 	}
 	
-	public static Text negativeOf(int i){
+	/**
+	 * Cria um {@link Text} negativo.
+	 *
+	 * @param i
+	 * @return
+	 */
+	public static Text negativeOf(int i) {
 		return Text.of(i).color(TextColor.RED);
 	}
 	
-	public static Text negativeOf(boolean b){
+	/**
+	 * Cria um {@link Text} negativo.
+	 *
+	 * @param b
+	 * @return
+	 */
+	public static Text negativeOf(boolean b) {
 		return Text.of(b).color(TextColor.RED);
 	}
 	
-	public Text negative(String s){
+	/**
+	 * Anexa um {@link Text} negativo.
+	 *
+	 * @param s
+	 * @return
+	 */
+	public Text negative(String s) {
 		return append(s).color(TextColor.RED);
 	}
 	
-	public Text negative(int i){
+	/**
+	 * Anexa um {@link Text} negativo.
+	 *
+	 * @param i
+	 * @return
+	 */
+	public Text negative(int i) {
 		return append(i).color(TextColor.RED);
 	}
 	
-	public Text negative(boolean b){
+	/**
+	 * Anexa um {@link Text} negativo.
+	 *
+	 * @param b
+	 * @return
+	 */
+	public Text negative(boolean b) {
 		return append(b).color(TextColor.RED);
 	}
 	
