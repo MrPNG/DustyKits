@@ -1,13 +1,17 @@
 package br.com.dusty.dkits.command;
 
 import br.com.dusty.dkits.gamer.EnumRank;
+import br.com.dusty.dkits.gamer.Gamer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -37,8 +41,9 @@ public abstract class CustomCommand extends Command {
 	 */
 	private final EnumRank rank;
 	
-	protected CustomCommand(String command, EnumRank rank) {
-		super(command, UNKNOWN, UNKNOWN, Collections.emptyList());
+	protected CustomCommand(EnumRank rank, String... aliases) {
+		super(aliases[0], UNKNOWN, UNKNOWN, Arrays.asList(aliases));
+		
 		this.rank = rank;
 		
 		if(commandMap == null){
@@ -107,8 +112,14 @@ public abstract class CustomCommand extends Command {
 	 */
 	@Override
 	public boolean testPermission(CommandSender sender) {
-		//TODO: return sender instanceof Player ? !Gamer.of((Player) sender).getRank().isBelow(rank) : sender instanceof ConsoleCommandSender;
-		return false;
+		boolean b = sender instanceof Player ? Gamer.of((Player) sender)
+		                                            .getRank()
+		                                            .isGreaterThanOrEquals(rank) : sender instanceof ConsoleCommandSender;
+		
+		if(!b)
+			sender.sendMessage(UNKNOWN);
+		
+		return b;
 	}
 	
 	/**

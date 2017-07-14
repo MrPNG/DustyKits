@@ -1,5 +1,6 @@
 package br.com.dusty.dkits.gamer;
 
+import br.com.dusty.dkits.kit.Kit;
 import br.com.dusty.dkits.util.ScoreboardUtils;
 import br.com.dusty.dkits.util.gamer.GamerUtils;
 import br.com.dusty.dkits.util.gamer.TagUtils;
@@ -20,7 +21,7 @@ public class Gamer {
 	
 	private PrimitiveGamer primitiveGamer;
 	
-	private EnumRank rank = EnumRank.ADMIN;
+	private EnumRank rank = EnumRank.MOD;
 	
 	/**
 	 * Menor {@link EnumRank} que pode ver este jogador.
@@ -34,7 +35,7 @@ public class Gamer {
 	
 	private boolean noFall;
 	
-	//TODO: private Kit kit;
+	private Kit kit;
 	//TODO: private Warp warp;
 	
 	Gamer(Player player, PrimitiveGamer primitiveGamer) {
@@ -82,7 +83,7 @@ public class Gamer {
 		if(rank.isGreaterThanOrEquals(EnumRank.MOD)){
 			Text text = Text.neutralOf("Agora você está ").positive("visível").neutral(" apenas para ").append(visibleTo.name);
 			
-			if(rank.hasNext())
+			if(visibleTo.hasNext())
 				text = text.append(" e acima!").color(TextColor.GRAY);
 			
 			player.sendMessage(text.toString());
@@ -99,13 +100,15 @@ public class Gamer {
 		
 		this.mode = mode;
 		
+		player.sendMessage(Text.neutralOf("Agora você está no modo ").positive(mode.name()).neutral("!").toString());
+		
 		switch(mode){
 			case PLAY:
-				GamerUtils.clear(this);
-				GamerUtils.fly(this, false);
-				
 				//TODO: SURVIVAL on MiniHG
 				player.setGameMode(GameMode.ADVENTURE);
+				
+				GamerUtils.clear(this);
+				GamerUtils.fly(this, false);
 				
 				setVisibleTo(EnumRank.DEFAULT);
 				break;
@@ -261,15 +264,28 @@ public class Gamer {
 		signCooldown = -1;
 	}
 	
-	public boolean hasNoFall(){
+	public boolean hasNoFall() {
 		return noFall;
 	}
 	
-	public void setNoFall(boolean noFall){
+	public void setNoFall(boolean noFall) {
 		this.noFall = noFall;
 	}
 	
 	public EnumRank getRank() {
 		return rank;
+	}
+	
+	//TODO: Gamer.hasKit()
+	public boolean hasKit(Kit kit){
+		return true;
+	}
+	
+	public Kit getKit() {
+		return this.kit;
+	}
+	
+	public Kit setKit(Kit kit) {
+		return this.kit = kit;
 	}
 }

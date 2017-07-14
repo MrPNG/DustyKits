@@ -21,6 +21,14 @@ public class Kits {
 		KITS.forEach(Kits::loadData);
 	}
 	
+	public static Kit byName(String name){
+		for(Kit kit : KITS)
+			if(kit.NAME.toLowerCase().startsWith(name.toLowerCase()))
+				return kit;
+		
+		return null;
+	}
+	
 	private static void loadData(Kit kit) {
 		File file = new File(Main.ROOT + "/kit", kit.NAME.toLowerCase() + ".json");
 		

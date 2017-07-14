@@ -34,7 +34,7 @@ public class PlayerMoveListener implements Listener {
 	private static void boost(Gamer gamer, Location location){
 		Player player = gamer.getPlayer();
 		
-		player.setVelocity(new Vector(0, 2, 0));
+		player.setVelocity(new Vector(0, 1.5, 0));
 		
 		gamer.setNoFall(true);
 	}
