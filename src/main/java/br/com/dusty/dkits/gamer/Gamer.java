@@ -2,14 +2,17 @@ package br.com.dusty.dkits.gamer;
 
 import br.com.dusty.dkits.kit.Kit;
 import br.com.dusty.dkits.util.ScoreboardUtils;
+import br.com.dusty.dkits.util.TaskUtils;
 import br.com.dusty.dkits.util.gamer.GamerUtils;
 import br.com.dusty.dkits.util.gamer.TagUtils;
 import br.com.dusty.dkits.util.protocol.EnumProtocolVersion;
 import br.com.dusty.dkits.util.protocol.ProtocolUtils;
 import br.com.dusty.dkits.util.text.Text;
 import br.com.dusty.dkits.util.text.TextColor;
+import br.com.dusty.dkits.warp.Warp;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -21,7 +24,7 @@ public class Gamer {
 	
 	private PrimitiveGamer primitiveGamer;
 	
-	private EnumRank rank = EnumRank.MOD;
+	private EnumRank rank = EnumRank.ADMIN;
 	
 	/**
 	 * Menor {@link EnumRank} que pode ver este jogador.
@@ -29,14 +32,18 @@ public class Gamer {
 	private EnumRank visibleTo;
 	private EnumMode mode;
 	
-	private long invincible = -1, frozen = -1;
+	private long invincibility = -1, freeze = -1;
 	private long cooldown = -1, signCooldown = -1;
-	private long combatTagged = -1;
+	
+	private long combatTag = -1;
+	private BukkitTask combatTask;
 	
 	private boolean noFall;
 	
 	private Kit kit;
-	//TODO: private Warp warp;
+	private Warp warp;
+	
+	private BukkitTask warpTask;
 	
 	Gamer(Player player, PrimitiveGamer primitiveGamer) {
 		this.player = player;
@@ -213,27 +220,27 @@ public class Gamer {
 	}
 	
 	public boolean isInvincible() {
-		return invincible > System.currentTimeMillis();
+		return invincibility > System.currentTimeMillis();
 	}
 	
 	public void makeInvincible(long period) {
-		invincible = System.currentTimeMillis() + period;
+		invincibility = System.currentTimeMillis() + period;
 	}
 	
 	public void removeInvincibility() {
-		invincible = -1;
+		invincibility = -1;
 	}
 	
 	public boolean isFrozen() {
-		return frozen > System.currentTimeMillis();
+		return freeze > System.currentTimeMillis();
 	}
 	
 	public void freeze(long period) {
-		frozen = System.currentTimeMillis() + period;
+		freeze = System.currentTimeMillis() + period;
 	}
 	
 	public void removeFreeze() {
-		frozen = -1;
+		freeze = -1;
 	}
 	
 	public boolean isOnCooldown() {
@@ -264,6 +271,56 @@ public class Gamer {
 		signCooldown = -1;
 	}
 	
+	public boolean isCombatTagged() {
+		return combatTag > System.currentTimeMillis();
+	}
+	
+	public int getCombatTag() {
+		return Math.round((combatTag - System.currentTimeMillis()) / 1000);
+	}
+	
+	public void setCombatTag(long period) {
+		if(!isCombatTagged()){
+			player.sendMessage(Text.neutralOf("Você ")
+			                       .negative("entrou")
+			                       .neutral(" em ")
+			                       .negative("combate")
+			                       .neutral("!")
+			                       .toString());
+		}else if(warpTask != null){
+			warpTask.cancel();
+			
+			player.sendMessage(Text.neutralOf("Você entrou em ")
+			                       .negative("combate")
+			                       .neutral(" novamente, teleporte ")
+			                       .negative("cancelado")
+			                       .neutral("!")
+			                       .toString());
+		}
+		
+		combatTag = System.currentTimeMillis() + period;
+		
+		if(combatTask != null)
+			combatTask.cancel();
+		
+		combatTask = TaskUtils.sync(() -> ScoreboardUtils.update(this), 200);
+	}
+	
+	public void removeCombatTag() {
+		if(isCombatTagged())
+			player.sendMessage(Text.neutralOf("Você ")
+			                       .positive("saiu")
+			                       .neutral(" em ")
+			                       .positive("combate")
+			                       .neutral("!")
+			                       .toString());
+		
+		combatTag = -1;
+		
+		if(combatTask != null)
+			combatTask.cancel();
+	}
+	
 	public boolean hasNoFall() {
 		return noFall;
 	}
@@ -277,7 +334,7 @@ public class Gamer {
 	}
 	
 	//TODO: Gamer.hasKit()
-	public boolean hasKit(Kit kit){
+	public boolean hasKit(Kit kit) {
 		return true;
 	}
 	
@@ -285,7 +342,37 @@ public class Gamer {
 		return this.kit;
 	}
 	
-	public Kit setKit(Kit kit) {
-		return this.kit = kit;
+	public void setKit(Kit kit) {
+		this.kit = kit;
+	}
+	
+	public Warp getWarp() {
+		return this.warp;
+	}
+	
+	public void sendToWarp(Warp warp) {
+		if(warpTask != null)
+			warpTask.cancel();
+		
+		if(isCombatTagged()){
+			long ticks = (long) Math.ceil((combatTag - System.currentTimeMillis()) / 50.0);
+			int seconds = Math.round(ticks / 20);
+			
+			warpTask = TaskUtils.sync(() -> sendToWarp(warp), ticks);
+			
+			player.sendMessage(Text.neutralOf("Você será teleportado em ")
+			                       .negative(seconds)
+			                       .neutral(" segundo(s), ")
+			                       .negative("não")
+			                       .neutral(" se ")
+			                       .negative("mova")
+			                       .neutral("!")
+			                       .toString());
+		}else{
+			GamerUtils.clear(this);
+			
+			this.warp = warp;
+			warp.receiveGamer(this);
+		}
 	}
 }

@@ -47,8 +47,8 @@ public class ScoreboardUtils {
 		                   Text.of(gamer.getDeaths()).color(TextColor.YELLOW).toString(),
 		                   Text.of(gamer.getKillStreak()).color(TextColor.YELLOW).toString(),
 		                   "",
-		                   //Text.of(gamer.getKit()).color(TextColor.YELLOW).toString(),
-		                   //Text.of(gamer.isInCombat() ? "Sim" : "Não").color(TextColor.YELLOW).toString(),
+		                   Text.of(gamer.getKit().getName()).color(TextColor.YELLOW).toString(),
+		                   Text.of(gamer.isCombatTagged() ? "Sim" : "Não").color(TextColor.YELLOW).toString(),
 		                   Text.of(GamerRegistry.getOnlineGamers().size()).color(TextColor.YELLOW).toString()};
 		
 		for(int i = 0; i < LABELS.length; i++){

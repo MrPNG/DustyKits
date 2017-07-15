@@ -1,5 +1,9 @@
 package br.com.dusty.dkits.command;
 
+import br.com.dusty.dkits.command.gameplay.KitCommand;
+import br.com.dusty.dkits.command.staff.AdminCommand;
+import br.com.dusty.dkits.command.staff.DisableCommand;
+import br.com.dusty.dkits.command.staff.EnableCommand;
 import br.com.dusty.dkits.gamer.EnumRank;
 
 import java.util.ArrayList;
@@ -18,7 +22,9 @@ public class Commands {
 		//Usage: CUSTOM_COMMANDS.add(new FooCommand());
 		
 		//Staff
-		CUSTOM_COMMANDS.add(new AdminCommand(EnumRank.ADMIN, "admin"));
+		CUSTOM_COMMANDS.add(new AdminCommand(EnumRank.MOD, "admin"));
+		CUSTOM_COMMANDS.add(new DisableCommand(EnumRank.ADMIN, "disable"));
+		CUSTOM_COMMANDS.add(new EnableCommand(EnumRank.ADMIN, "enable"));
 		
 		//Gameplay
 		CUSTOM_COMMANDS.add(new KitCommand(EnumRank.DEFAULT, "kit"));

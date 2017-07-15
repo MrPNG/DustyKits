@@ -1,6 +1,6 @@
-package br.com.dusty.dkits.command;
+package br.com.dusty.dkits.command.gameplay;
 
-import br.com.dusty.dkits.gamer.EnumMode;
+import br.com.dusty.dkits.command.CustomCommand;
 import br.com.dusty.dkits.gamer.EnumRank;
 import br.com.dusty.dkits.gamer.Gamer;
 import br.com.dusty.dkits.kit.Kit;
@@ -14,12 +14,10 @@ import java.util.List;
 
 public class KitCommand extends CustomCommand {
 	
-	public KitCommand(EnumRank rank, String aliases) {
-		super(rank, aliases);
+	public KitCommand(EnumRank rank, String alias) {
+		super(rank, alias);
 	}
 	
-	//TODO: Check if the kit is enabled on the warp or if gamer is on admin-mode
-	//TODO: Check if warp isn't MiniHG or if gamer is on admin-mode
 	@Override
 	public boolean execute(CommandSender sender, String alias, String[] args) {
 		if(!testPermission(sender))
@@ -37,43 +35,34 @@ public class KitCommand extends CustomCommand {
 		}else{
 			Kit kit = Kits.byName(args[0]);
 			
-			if(kit == null){
+			if(kit == null)
 				player.sendMessage(Text.negativeOf("Não")
 				                       .neutral(" há um kit com o nome \"")
 				                       .negative(args[0])
 				                       .neutral("\"!")
 				                       .toString());
-			}else if(!gamer.hasKit(kit) && gamer.getMode() != EnumMode.ADMIN){
-				player.sendMessage(Text.neutralOf("Você ")
-				                       .negative("não")
-				                       .neutral(" tem o kit ")
-				                       .negative(kit.NAME)
-				                       .neutral("!")
-				                       .toString());
-			}else{
-				gamer.setKit(kit).apply(gamer);
-				
-				player.sendMessage(Text.neutralOf("Agora você está ")
-				                       .positive("usando")
-				                       .neutral(" o kit ")
-				                       .positive(kit.NAME)
-				                       .neutral("!")
-				                       .toString());
-			}
+			else
+				kit.applyIfAllowed(gamer);
 		}
 		
 		return false;
 	}
 	
-	//TODO: Check if the kit is enabled on the warp or if gamer is on admin-mode
 	@Override
 	public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
 		ArrayList<String> tabCompletions = new ArrayList<>();
 		
+		if(!(sender instanceof Player))
+			return tabCompletions;
+		
+		Player player = (Player) sender;
+		
+		Gamer gamer = Gamer.of(player);
+		
 		for(Kit kit : Kits.KITS)
-			if(kit.DATA.ENABLED)
-				if(args.length == 0 || kit.NAME.toLowerCase().startsWith(args[0].toLowerCase()))
-					tabCompletions.add(kit.NAME.toLowerCase());
+			if(kit.getData().isEnabled() && gamer.getWarp().getEnabledKits().contains(kit))
+				if(args.length == 0 || kit.getName().toLowerCase().startsWith(args[0].toLowerCase()))
+					tabCompletions.add(kit.getName().toLowerCase());
 		
 		return tabCompletions;
 	}

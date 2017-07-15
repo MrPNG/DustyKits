@@ -34,16 +34,18 @@ public class PlayerLoginListener implements Listener {
 	public void onPlayerLogin(PlayerLoginEvent event) {
 		Player player = event.getPlayer();
 		
-		if(GamerRegistry.getPrimitiveGamerbyUUID(player.getUniqueId()) == null || (Main.serverStatus != EnumServerStatus.ONLINE && Gamer
-				.of(player)
-				.getRank()
-				.isLowerThan(EnumRank.MOD))){
-			event.disallow(PlayerLoginEvent.Result.KICK_OTHER, KICK_NOT_READY);
-		}else if(event.getResult().equals(PlayerLoginEvent.Result.KICK_FULL)){
+		if(event.getResult().equals(PlayerLoginEvent.Result.KICK_FULL)){
 			if(canLogin(player))
 				event.allow();
 			else
 				event.disallow(PlayerLoginEvent.Result.KICK_FULL, KICK_FULL_MESSAGE);
+		}else if(GamerRegistry.getPrimitiveGamerbyUUID(player.getUniqueId()) == null || (Main.serverStatus != EnumServerStatus.ONLINE && Gamer
+				.of(player)
+				.getRank()
+				.isLowerThan(EnumRank.MOD))){
+			GamerRegistry.unregister(player.getUniqueId());
+			
+			event.disallow(PlayerLoginEvent.Result.KICK_OTHER, KICK_NOT_READY);
 		}
 	}
 	

@@ -20,8 +20,7 @@ public class PlayerQuitListener implements Listener {
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
 		
-		Gamer gamer = Gamer.of(player);
-		GamerRegistry.unregister(gamer);
+		Gamer gamer = GamerRegistry.unregister(player);
 		
 		TaskUtils.async(() -> WebAPI.saveProfiles(gamer));
 		

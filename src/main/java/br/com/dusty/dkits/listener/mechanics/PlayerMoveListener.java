@@ -31,7 +31,7 @@ public class PlayerMoveListener implements Listener {
 		return from.getX() != to.getX() || from.getY() != to.getY() || from.getZ() != to.getZ();
 	}
 	
-	private static void boost(Gamer gamer, Location location){
+	private static void boost(Gamer gamer, Location location) {
 		Player player = gamer.getPlayer();
 		
 		player.setVelocity(new Vector(0, 1.5, 0));

@@ -2,12 +2,12 @@ package br.com.dusty.dkits.listener.login;
 
 import br.com.dusty.dkits.gamer.EnumRank;
 import br.com.dusty.dkits.gamer.Gamer;
-import br.com.dusty.dkits.kit.Kits;
 import br.com.dusty.dkits.util.ScoreboardUtils;
 import br.com.dusty.dkits.util.bossbar.BossBarUtils;
 import br.com.dusty.dkits.util.protocol.EnumProtocolVersion;
 import br.com.dusty.dkits.util.tab.HeaderFooterUtils;
 import br.com.dusty.dkits.util.text.Text;
+import br.com.dusty.dkits.warp.Warps;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -31,19 +31,19 @@ public class PlayerJoinListener implements Listener {
 			return;
 		}
 		
-		if(gamer.getProtocolVersion().isLowerThan(EnumProtocolVersion.RELEASE_1_9))
-			BossBarUtils.MAIN.send(player);
-		else
-			HeaderFooterUtils.sendHeaderFooter(gamer);
-		
 		if(gamer.getRank().isLowerThan(EnumRank.MOD))
 			event.setJoinMessage(JOIN_MESSAGE_PREFIX + player.getName());
 		else
 			event.setJoinMessage(null);
 		
+		gamer.sendToWarp(Warps.LOBBY);
+		
 		ScoreboardUtils.create(player);
 		ScoreboardUtils.updateAll();
 		
-		Kits.PVP_KIT.apply(gamer);
+		if(gamer.getProtocolVersion().isLowerThan(EnumProtocolVersion.RELEASE_1_9))
+			BossBarUtils.MAIN.send(player);
+		else
+			HeaderFooterUtils.sendHeaderFooter(gamer);
 	}
 }

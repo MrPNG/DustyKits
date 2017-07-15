@@ -7,6 +7,8 @@ import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
 public class StringUtils {
 	
@@ -40,18 +42,21 @@ public class StringUtils {
 	}
 	
 	/**
-	 * Gera uma {@link String} alfanumérica aleatória com diferenciação entre maiúsculas e minúsculas.
+	 * Formata uma {@link Collection} de {@link String} por extenso, separadas por vírgulas.
 	 *
-	 * @param length
+	 * @param collection
 	 * @return
 	 */
-	public static String randomString(int length) {
-		StringBuilder stringBuilder = new StringBuilder(length);
+	public static String format(Collection<String> collection) {
+		StringBuilder stringBuilder = new StringBuilder();
 		
-		for(int i = 0; i <= length - 1; i++){
-			int index = Main.RANDOM.nextInt(ALPHANUMERIC.length);
-			stringBuilder.append(ALPHANUMERIC[index]);
-		}
+		Iterator<String> iterator = collection.iterator();
+		
+		if(iterator.hasNext())
+			stringBuilder.append(iterator.next());
+		
+		while(iterator.hasNext())
+			stringBuilder.append(", ").append(iterator.next());
 		
 		return stringBuilder.toString();
 	}
@@ -79,6 +84,23 @@ public class StringUtils {
 		Period period = new Period(millis);
 		
 		return periodFormatter.print(period.toPeriod());
+	}
+	
+	/**
+	 * Gera uma {@link String} alfanumérica aleatória com diferenciação entre maiúsculas e minúsculas.
+	 *
+	 * @param length
+	 * @return
+	 */
+	public static String randomString(int length) {
+		StringBuilder stringBuilder = new StringBuilder(length);
+		
+		for(int i = 0; i <= length - 1; i++){
+			int index = Main.RANDOM.nextInt(ALPHANUMERIC.length);
+			stringBuilder.append(ALPHANUMERIC[index]);
+		}
+		
+		return stringBuilder.toString();
 	}
 	
 	/**

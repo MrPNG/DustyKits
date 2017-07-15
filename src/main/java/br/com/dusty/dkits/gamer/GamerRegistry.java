@@ -29,8 +29,8 @@ public class GamerRegistry {
 		return gamer;
 	}
 	
-	public static void unregister(Gamer gamer) {
-		GAMER_BY_PLAYER.remove(gamer.getPlayer());
+	public static Gamer unregister(Player player) {
+		return GAMER_BY_PLAYER.remove(player);
 	}
 	
 	public static Collection<Gamer> getOnlineGamers() {
@@ -57,5 +57,9 @@ public class GamerRegistry {
 	
 	public static PrimitiveGamer getPrimitiveGamerbyUUID(UUID uuid) {
 		return PRIMITIVE_GAMER_BY_UUID.get(uuid);
+	}
+	
+	public static PrimitiveGamer unregister(UUID uuid) {
+		return PRIMITIVE_GAMER_BY_UUID.remove(uuid);
 	}
 }

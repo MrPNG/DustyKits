@@ -12,16 +12,14 @@ import java.lang.reflect.InvocationTargetException;
 public class HeaderFooterUtils {
 	
 	private static final String HEADER_MAIN = Text.of("Dusty")
-	                                             .color(TextColor.RED)
-	                                             .append(" - ")
-	                                             .color(TextColor.WHITE)
-	                                             .append("dusty.com.br")
-	                                             .color(TextColor.GOLD)
-	                                             .toString();
+	                                              .color(TextColor.RED)
+	                                              .append(" - ")
+	                                              .color(TextColor.WHITE)
+	                                              .append("dusty.com.br")
+	                                              .color(TextColor.GOLD)
+	                                              .toString();
 	
-	private static final String HEADER_BAR = Text.of("--------------------------------")
-	                                            .color(TextColor.RED)
-	                                            .toString();
+	private static final String HEADER_BAR = Text.of("--------------------------------").color(TextColor.RED).toString();
 	
 	private static Class class_PacketPlayOutPlayerListHeaderFooter;
 	private static Field field_PacketPlayOutPlayerListHeaderFooter_a;

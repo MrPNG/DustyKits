@@ -11,6 +11,7 @@ public class GamerUtils {
 		
 		player.setHealth(20);
 		player.setFoodLevel(20);
+		player.setExp(0);
 		player.setLevel(0);
 		
 		player.getInventory().clear();

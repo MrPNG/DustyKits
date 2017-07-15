@@ -1,5 +1,6 @@
-package br.com.dusty.dkits.command;
+package br.com.dusty.dkits.command.staff;
 
+import br.com.dusty.dkits.command.CustomCommand;
 import br.com.dusty.dkits.gamer.EnumMode;
 import br.com.dusty.dkits.gamer.EnumRank;
 import br.com.dusty.dkits.gamer.Gamer;
@@ -8,8 +9,8 @@ import org.bukkit.entity.Player;
 
 public class AdminCommand extends CustomCommand {
 	
-	protected AdminCommand(EnumRank rank, String aliases) {
-		super(rank, aliases);
+	public AdminCommand(EnumRank rank, String alias) {
+		super(rank, alias);
 	}
 	
 	@Override
