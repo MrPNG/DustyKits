@@ -1,6 +1,7 @@
 package br.com.dusty.dkits.util.gamer;
 
 import br.com.dusty.dkits.gamer.Gamer;
+import br.com.dusty.dkits.util.ScoreboardUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 

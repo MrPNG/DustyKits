@@ -1,15 +1,18 @@
 package br.com.dusty.dkits.gamer;
 
 import br.com.dusty.dkits.kit.Kit;
+import br.com.dusty.dkits.kit.Kits;
 import br.com.dusty.dkits.util.ScoreboardUtils;
 import br.com.dusty.dkits.util.TaskUtils;
 import br.com.dusty.dkits.util.gamer.GamerUtils;
 import br.com.dusty.dkits.util.gamer.TagUtils;
 import br.com.dusty.dkits.util.protocol.EnumProtocolVersion;
 import br.com.dusty.dkits.util.protocol.ProtocolUtils;
+import br.com.dusty.dkits.util.tab.HeaderFooterUtils;
 import br.com.dusty.dkits.util.text.Text;
 import br.com.dusty.dkits.util.text.TextColor;
 import br.com.dusty.dkits.warp.Warp;
+import br.com.dusty.dkits.warp.Warps;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
@@ -36,12 +39,13 @@ public class Gamer {
 	private long cooldown = -1, signCooldown = -1;
 	
 	private long combatTag = -1;
+	private Gamer combatPartner;
 	private BukkitTask combatTask;
 	
 	private boolean noFall;
 	
-	private Kit kit;
-	private Warp warp;
+	private Kit kit = Kits.NONE;
+	private Warp warp = Warps.LOBBY;
 	
 	private BukkitTask warpTask;
 	
@@ -153,12 +157,36 @@ public class Gamer {
 		ScoreboardUtils.update(this);
 	}
 	
+	public void addKillMoney() { //TODO: Different money for VIPs
+		addMoney(100);
+		
+		ScoreboardUtils.update(this);
+	}
+	
+	public void addKillXp() {
+		addXp(10);
+		
+		ScoreboardUtils.update(this);
+	}
+	
 	public int getDeaths() {
 		return primitiveGamer.deaths;
 	}
 	
 	public void addDeath() {
 		primitiveGamer.deaths++;
+		
+		ScoreboardUtils.update(this);
+	}
+	
+	public void removeDeathMoney() {
+		removeMoney(50);
+		
+		ScoreboardUtils.update(this);
+	}
+	
+	public void removeDeathXp() {
+		removeXp(5);
 		
 		ScoreboardUtils.update(this);
 	}
@@ -188,7 +216,14 @@ public class Gamer {
 	public void addXp(float amount) {
 		primitiveGamer.xp += amount;
 		
-		player.sendMessage(Text.of("+" + Math.round(amount) + " XP!").color(TextColor.GOLD).toString());
+		player.sendMessage(Text.positiveOf("+").positive(Math.round(amount)).neutral(" XP!").toString());
+		ScoreboardUtils.update(this);
+	}
+	
+	public void removeXp(float amount) {
+		primitiveGamer.xp += amount;
+		
+		player.sendMessage(Text.negativeOf("-").negative(Math.round(amount)).neutral(" XP!").toString());
 		ScoreboardUtils.update(this);
 	}
 	
@@ -199,7 +234,16 @@ public class Gamer {
 	public void addMoney(float amount) {
 		primitiveGamer.money += amount;
 		
-		player.sendMessage(Text.of("+" + Math.round(amount) + " créditos!").color(TextColor.GOLD).toString());
+		player.sendMessage(Text.positiveOf("+").positive(Math.round(amount)).neutral(" créditos!").toString());
+		;
+		ScoreboardUtils.update(this);
+	}
+	
+	public void removeMoney(float amount) {
+		primitiveGamer.money += amount;
+		
+		player.sendMessage(Text.negativeOf("-").negative(Math.round(amount)).neutral(" créditos!").toString());
+		;
 		ScoreboardUtils.update(this);
 	}
 	
@@ -280,23 +324,13 @@ public class Gamer {
 	}
 	
 	public void setCombatTag(long period) {
-		if(!isCombatTagged()){
+		if(!isCombatTagged())
 			player.sendMessage(Text.neutralOf("Você ")
 			                       .negative("entrou")
 			                       .neutral(" em ")
 			                       .negative("combate")
 			                       .neutral("!")
 			                       .toString());
-		}else if(warpTask != null){
-			warpTask.cancel();
-			
-			player.sendMessage(Text.neutralOf("Você entrou em ")
-			                       .negative("combate")
-			                       .neutral(" novamente, teleporte ")
-			                       .negative("cancelado")
-			                       .neutral("!")
-			                       .toString());
-		}
 		
 		combatTag = System.currentTimeMillis() + period;
 		
@@ -304,13 +338,15 @@ public class Gamer {
 			combatTask.cancel();
 		
 		combatTask = TaskUtils.sync(() -> ScoreboardUtils.update(this), 200);
+		
+		ScoreboardUtils.update(this);
 	}
 	
 	public void removeCombatTag() {
 		if(isCombatTagged())
 			player.sendMessage(Text.neutralOf("Você ")
 			                       .positive("saiu")
-			                       .neutral(" em ")
+			                       .neutral(" de ")
 			                       .positive("combate")
 			                       .neutral("!")
 			                       .toString());
@@ -319,6 +355,16 @@ public class Gamer {
 		
 		if(combatTask != null)
 			combatTask.cancel();
+		
+		ScoreboardUtils.update(this);
+	}
+	
+	public Gamer getCombatPartner() {
+		return combatPartner;
+	}
+	
+	public void setCombatPartner(Gamer combatPartner) {
+		this.combatPartner = combatPartner;
 	}
 	
 	public boolean hasNoFall() {
@@ -351,8 +397,10 @@ public class Gamer {
 	}
 	
 	public void sendToWarp(Warp warp) {
-		if(warpTask != null)
+		if(warpTask != null){
 			warpTask.cancel();
+			warpTask = null;
+		}
 		
 		if(isCombatTagged()){
 			long ticks = (long) Math.ceil((combatTag - System.currentTimeMillis()) / 50.0);
@@ -373,6 +421,19 @@ public class Gamer {
 			
 			this.warp = warp;
 			warp.receiveGamer(this);
+			
+			ScoreboardUtils.update(this);
+			
+			if(protocolVersion.isGreaterThanOrEquals(EnumProtocolVersion.RELEASE_1_8))
+				HeaderFooterUtils.update(this);
 		}
+	}
+	
+	public BukkitTask getWarpTask() {
+		return warpTask;
+	}
+	
+	public void setWarpTask(BukkitTask warpTask) {
+		this.warpTask = warpTask;
 	}
 }

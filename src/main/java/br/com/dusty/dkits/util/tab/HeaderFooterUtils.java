@@ -19,7 +19,7 @@ public class HeaderFooterUtils {
 	                                              .color(TextColor.GOLD)
 	                                              .toString();
 	
-	private static final String HEADER_BAR = Text.of("--------------------------------").color(TextColor.RED).toString();
+	private static final String HEADER_BAR = Text.of(" -------------------------------- ").color(TextColor.RED).toString();
 	
 	private static Class class_PacketPlayOutPlayerListHeaderFooter;
 	private static Field field_PacketPlayOutPlayerListHeaderFooter_a;
@@ -39,7 +39,7 @@ public class HeaderFooterUtils {
 		}
 	}
 	
-	public static void sendHeaderFooter(Gamer gamer) {
+	public static void update(Gamer gamer) {
 		Player player = gamer.getPlayer();
 		
 		Object object_PacketPlayOutPlayerListHeaderFooter = null;
@@ -49,7 +49,12 @@ public class HeaderFooterUtils {
 			field_PacketPlayOutPlayerListHeaderFooter_a.set(object_PacketPlayOutPlayerListHeaderFooter,
 			                                                ProtocolUtils.chatMessage(HEADER_MAIN + "\n" + HEADER_BAR));
 			field_PacketPlayOutPlayerListHeaderFooter_b.set(object_PacketPlayOutPlayerListHeaderFooter,
-			                                                ProtocolUtils.chatMessage(HEADER_BAR));
+			                                                ProtocolUtils.chatMessage(HEADER_BAR + "\n" + Text.of("Warp: ")
+			                                                                                                  .color(TextColor.RED)
+			                                                                                                  .append(gamer.getWarp()
+			                                                                                                               .getName())
+			                                                                                                  .color(TextColor.YELLOW)
+			                                                                                                  .toString()));
 		}catch(IllegalAccessException | InstantiationException | InvocationTargetException e){
 			e.printStackTrace();
 		}

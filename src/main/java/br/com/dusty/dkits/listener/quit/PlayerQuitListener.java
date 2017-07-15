@@ -7,6 +7,7 @@ import br.com.dusty.dkits.util.ScoreboardUtils;
 import br.com.dusty.dkits.util.TaskUtils;
 import br.com.dusty.dkits.util.text.Text;
 import br.com.dusty.dkits.util.web.WebAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,6 +22,26 @@ public class PlayerQuitListener implements Listener {
 		Player player = event.getPlayer();
 		
 		Gamer gamer = GamerRegistry.unregister(player);
+		
+		if(gamer.isCombatTagged()){
+			Gamer combatPartner = gamer.getCombatPartner();
+			
+			if(combatPartner != null){
+				combatPartner.addKill();
+				combatPartner.addKillMoney();
+				combatPartner.addKillXp();
+				
+				gamer.addDeath();
+				gamer.removeDeathMoney();
+				gamer.removeDeathXp();
+			}
+			
+			Bukkit.broadcastMessage(Text.negativeOf(player.getName())
+			                            .neutral(" deslogou em ")
+			                            .negative("combate")
+			                            .neutral("!")
+			                            .toString());
+		}
 		
 		TaskUtils.async(() -> WebAPI.saveProfiles(gamer));
 		

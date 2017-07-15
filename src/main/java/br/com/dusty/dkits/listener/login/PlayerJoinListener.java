@@ -36,14 +36,12 @@ public class PlayerJoinListener implements Listener {
 		else
 			event.setJoinMessage(null);
 		
-		gamer.sendToWarp(Warps.LOBBY);
-		
 		ScoreboardUtils.create(player);
 		ScoreboardUtils.updateAll();
 		
-		if(gamer.getProtocolVersion().isLowerThan(EnumProtocolVersion.RELEASE_1_9))
+		gamer.sendToWarp(Warps.LOBBY);
+		
+		if(gamer.getProtocolVersion().isLowerThan(EnumProtocolVersion.RELEASE_1_8))
 			BossBarUtils.MAIN.send(player);
-		else
-			HeaderFooterUtils.sendHeaderFooter(gamer);
 	}
 }

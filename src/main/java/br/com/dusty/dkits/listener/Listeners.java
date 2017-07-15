@@ -1,7 +1,9 @@
 package br.com.dusty.dkits.listener;
 
 import br.com.dusty.dkits.Main;
+import br.com.dusty.dkits.listener.gameplay.EntityDamageByEntityListener;
 import br.com.dusty.dkits.listener.gameplay.PlayerInteractListener;
+import br.com.dusty.dkits.listener.gameplay.PlayerMoveListener;
 import br.com.dusty.dkits.listener.login.AsyncPlayerPreLoginListener;
 import br.com.dusty.dkits.listener.login.PlayerJoinListener;
 import br.com.dusty.dkits.listener.login.PlayerLoginListener;
@@ -32,7 +34,9 @@ public class Listeners {
 		LISTENERS.add(new PlayerLoginListener());
 		
 		//Gameplay
+		LISTENERS.add(new EntityDamageByEntityListener());
 		LISTENERS.add(new PlayerInteractListener());
+		LISTENERS.add(new br.com.dusty.dkits.listener.gameplay.PlayerMoveListener());
 		
 		//Mechanincs
 		LISTENERS.add(new EntityDamageListener());
@@ -40,7 +44,7 @@ public class Listeners {
 		LISTENERS.add(new ItemSpawnListener());
 		LISTENERS.add(new LeavesDecayListener());
 		LISTENERS.add(new PlayerCommandPreprocessListener());
-		LISTENERS.add(new PlayerMoveListener());
+		LISTENERS.add(new br.com.dusty.dkits.listener.mechanics.PlayerMoveListener());
 		LISTENERS.add(new ServerListPingListener());
 		LISTENERS.add(new SignChangeListener());
 		LISTENERS.add(new WeatherChangeListener());

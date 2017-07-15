@@ -14,13 +14,13 @@ public class ScoreboardUtils {
 	
 	private static final String[] LABELS = {Text.of("| XP: ").color(TextColor.GOLD).toString(),
 	                                        Text.of("| Créditos: ").color(TextColor.GOLD).toString(),
-	                                        Text.of("------------").color(TextColor.YELLOW).toString(),
+	                                        Text.of("--------------").color(TextColor.YELLOW).toString(),
 	                                        Text.of("| Kills: ").color(TextColor.RED).toString(),
 	                                        Text.of("| Deaths: ").color(TextColor.RED).toString(),
 	                                        Text.of("| Killstreak: ").color(TextColor.RED).toString(),
-	                                        Text.of("------------ ").color(TextColor.YELLOW).toString(),
-	                                        //Text.of("| Kit: ").color(TextColor.AQUA).toString(),
-	                                        //Text.of("| Combate: ").color(TextColor.AQUA).toString(),
+	                                        Text.of("-------------- ").color(TextColor.YELLOW).toString(),
+	                                        Text.of("| Kit: ").color(TextColor.AQUA).toString(),
+	                                        Text.of("| Combate: ").color(TextColor.AQUA).toString(),
 	                                        Text.of("| Players: ").color(TextColor.AQUA).toString()};
 	
 	public static void create(Player player) {
@@ -52,6 +52,9 @@ public class ScoreboardUtils {
 		                   Text.of(GamerRegistry.getOnlineGamers().size()).color(TextColor.YELLOW).toString()};
 		
 		for(int i = 0; i < LABELS.length; i++){
+			if(values[i].endsWith("None"))
+				continue;
+			
 			String score = LABELS[i] + values[i];
 			objective.getScore(score).setScore(LABELS.length - i);
 		}
