@@ -18,6 +18,16 @@ import org.bukkit.potion.PotionType;
  */
 public class ItemStackUtils {
 	
+	public static boolean hasName(ItemStack itemStack, String name) {
+		if(itemStack != null){
+			ItemMeta itemMeta = itemStack.getItemMeta();
+			if(itemMeta != null && itemMeta.hasDisplayName())
+				return Text.clearFormatting(itemMeta.getDisplayName()).equals(name);
+		}
+		
+		return false;
+	}
+	
 	public static ItemStack rename(ItemStack itemStack, String name) {
 		if(itemStack != null){
 			ItemMeta itemMeta = itemStack.getItemMeta();

@@ -1,5 +1,6 @@
-package br.com.dusty.dkits.util;
+package br.com.dusty.dkits.util.inventory;
 
+import br.com.dusty.dkits.gamer.Gamer;
 import br.com.dusty.dkits.util.text.Text;
 import br.com.dusty.dkits.util.text.TextColor;
 import org.bukkit.Bukkit;
@@ -20,17 +21,18 @@ public class InventoryUtils {
 	private static final String SOUPS_TITLE = Text.of("Sopas").color(TextColor.GOLD).toString();
 	private static final String RECRAFT_TITLE = Text.of("Recraft").color(TextColor.GOLD).toString();
 	
-	private static final ItemStack[] ARMOR_FULLIRON = new ItemStack[]{new ItemStack(Material.IRON_HELMET),
+	private static final ItemStack[] ARMOR_FULL_IRON = new ItemStack[]{new ItemStack(Material.IRON_HELMET),
 	                                                                  new ItemStack(Material.IRON_CHESTPLATE),
 	                                                                  new ItemStack(Material.IRON_LEGGINGS),
 	                                                                  new ItemStack(Material.IRON_BOOTS)};
 	
+	public static final ItemStack BACKGROUND = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 1, (byte) 7);
+	
 	public static Inventory soups(Player player) {
 		Inventory inventory = Bukkit.createInventory(player, 54, SOUPS_TITLE);
 		
-		for(int i = 0; i < 54; i++){
+		for(int i = 0; i < 54; i++)
 			inventory.setItem(i, SOUP);
-		}
 		
 		return inventory;
 	}
@@ -40,13 +42,7 @@ public class InventoryUtils {
 		
 		for(int i = 0; i < 18; i++){
 			inventory.setItem(i * 3, RED_MUSHROOMS);
-		}
-		
-		for(int i = 0; i < 18; i++){
 			inventory.setItem((i * 3) + 1, BROWN_MUSHROOMS);
-		}
-		
-		for(int i = 0; i < 18; i++){
 			inventory.setItem((i * 3) + 2, BOWLS);
 		}
 		
@@ -71,9 +67,16 @@ public class InventoryUtils {
 	 */
 	public static void setArmor(Player player, ItemStack[] itemStacks) {
 		PlayerInventory playerInventory = player.getInventory();
+		
 		playerInventory.setHelmet(itemStacks[0]);
 		playerInventory.setChestplate(itemStacks[1]);
 		playerInventory.setLeggings(itemStacks[2]);
 		playerInventory.setBoots(itemStacks[3]);
+	}
+	
+	public static Inventory background(Inventory inventory){
+		inventory.all(BACKGROUND);
+		
+		return inventory;
 	}
 }

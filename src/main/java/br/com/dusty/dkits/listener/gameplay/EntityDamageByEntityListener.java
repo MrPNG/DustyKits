@@ -3,10 +3,8 @@ package br.com.dusty.dkits.listener.gameplay;
 import br.com.dusty.dkits.gamer.Gamer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 
 public class EntityDamageByEntityListener implements Listener {
 	

@@ -5,7 +5,6 @@ import br.com.dusty.dkits.gamer.Gamer;
 import br.com.dusty.dkits.util.ScoreboardUtils;
 import br.com.dusty.dkits.util.bossbar.BossBarUtils;
 import br.com.dusty.dkits.util.protocol.EnumProtocolVersion;
-import br.com.dusty.dkits.util.tab.HeaderFooterUtils;
 import br.com.dusty.dkits.util.text.Text;
 import br.com.dusty.dkits.warp.Warps;
 import org.bukkit.entity.Player;

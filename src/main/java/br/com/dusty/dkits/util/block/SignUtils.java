@@ -1,7 +1,7 @@
 package br.com.dusty.dkits.util.block;
 
 import br.com.dusty.dkits.gamer.Gamer;
-import br.com.dusty.dkits.util.InventoryUtils;
+import br.com.dusty.dkits.util.inventory.InventoryUtils;
 import br.com.dusty.dkits.util.text.Text;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;

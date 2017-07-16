@@ -142,7 +142,10 @@ public class Warp {
 	}
 	
 	public Location getSpawn() {
-		return SPAWN == null ? SPAWN = new Location(Bukkit.getWorlds().get(0), DATA.SPAWN[0], DATA.SPAWN[1], DATA.SPAWN[2]) : SPAWN;
+		return SPAWN == null ? SPAWN = new Location(Bukkit.getWorlds().get(0),
+		                                            DATA.SPAWN[0],
+		                                            DATA.SPAWN[1],
+		                                            DATA.SPAWN[2]) : SPAWN;
 	}
 	
 	public void setSpawn(Location location) {

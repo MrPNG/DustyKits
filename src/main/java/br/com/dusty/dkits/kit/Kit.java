@@ -3,7 +3,7 @@ package br.com.dusty.dkits.kit;
 import br.com.dusty.dkits.Main;
 import br.com.dusty.dkits.gamer.EnumMode;
 import br.com.dusty.dkits.gamer.Gamer;
-import br.com.dusty.dkits.util.InventoryUtils;
+import br.com.dusty.dkits.util.inventory.InventoryUtils;
 import br.com.dusty.dkits.util.TaskUtils;
 import br.com.dusty.dkits.util.gamer.GamerUtils;
 import br.com.dusty.dkits.util.text.Text;
