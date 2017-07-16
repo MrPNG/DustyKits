@@ -16,21 +16,14 @@ public class LobbyWarp extends Warp {
 		NAME = "Lobby";
 		ICON = new ItemStack(Material.BOOK);
 		
+		ItemStackUtils.rename(ICON, Text.of(NAME).color(TextColor.GOLD).toString());
+		ItemStackUtils.setDescription(ICON, DESCRIPTION);
+		
 		ENTRY_KIT = new LobbyKit();
 		
 		DATA.setSpreadRange(4);
 		
 		loadData();
-	}
-	
-	@Override
-	public void receiveGamer(Gamer gamer) {
-		Player player = gamer.getPlayer();
-		
-		player.teleport(LocationUtils.spread(getSpawn(), DATA.getSpreadRange()));
-		
-		gamer.setKit(ENTRY_KIT);
-		ENTRY_KIT.apply(gamer);
 	}
 	
 	private class LobbyKit extends Kit {

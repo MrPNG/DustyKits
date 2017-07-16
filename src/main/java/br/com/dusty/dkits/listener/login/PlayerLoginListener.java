@@ -18,16 +18,16 @@ public class PlayerLoginListener implements Listener {
 			"O servidor ainda não está aberto!\n\nVolte em alguns segundos...").toString();
 	
 	private static final String KICK_FULL_MESSAGE = Text.negativeOf("O servidor está cheio!\n\n")
-	                                                    .neutral("Compre ")
+	                                                    .basic("Compre ")
 	                                                    .append("PRO")
 	                                                    .color(TextColor.GOLD)
-	                                                    .neutral(" ou um ")
+	                                                    .basic(" ou um ")
 	                                                    .append("Slot Reservado")
 	                                                    .color(TextColor.GOLD)
-	                                                    .neutral(" no site ")
+	                                                    .basic(" no site ")
 	                                                    .append("loja.dusty.com.br")
 	                                                    .color(TextColor.GOLD)
-	                                                    .neutral(" e entre agora!")
+	                                                    .basic(" e entre agora!")
 	                                                    .toString();
 	
 	@EventHandler

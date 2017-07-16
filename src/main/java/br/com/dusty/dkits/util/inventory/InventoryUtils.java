@@ -1,6 +1,6 @@
 package br.com.dusty.dkits.util.inventory;
 
-import br.com.dusty.dkits.gamer.Gamer;
+import br.com.dusty.dkits.util.ItemStackUtils;
 import br.com.dusty.dkits.util.text.Text;
 import br.com.dusty.dkits.util.text.TextColor;
 import org.bukkit.Bukkit;
@@ -22,11 +22,17 @@ public class InventoryUtils {
 	private static final String RECRAFT_TITLE = Text.of("Recraft").color(TextColor.GOLD).toString();
 	
 	private static final ItemStack[] ARMOR_FULL_IRON = new ItemStack[]{new ItemStack(Material.IRON_HELMET),
-	                                                                  new ItemStack(Material.IRON_CHESTPLATE),
-	                                                                  new ItemStack(Material.IRON_LEGGINGS),
-	                                                                  new ItemStack(Material.IRON_BOOTS)};
+	                                                                   new ItemStack(Material.IRON_CHESTPLATE),
+	                                                                   new ItemStack(Material.IRON_LEGGINGS),
+	                                                                   new ItemStack(Material.IRON_BOOTS)};
 	
-	public static final ItemStack BACKGROUND = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 1, (byte) 7);
+	public static final ItemStack BACKGROUND = ItemStackUtils.rename(new ItemStack(Material.STAINED_GLASS_PANE,
+	                                                                               1,
+	                                                                               (short) 1,
+	                                                                               (byte) 7), " ");
+	
+	public static final ItemStack BUTTON_BACK = ItemStackUtils.rename(new ItemStack(Material.CARPET, 1, (short) 1, (byte) 14),
+	                                                                  Text.negativeOf("Voltar").toString());
 	
 	public static Inventory soups(Player player) {
 		Inventory inventory = Bukkit.createInventory(player, 54, SOUPS_TITLE);
@@ -74,8 +80,12 @@ public class InventoryUtils {
 		playerInventory.setBoots(itemStacks[3]);
 	}
 	
-	public static Inventory background(Inventory inventory){
-		inventory.all(BACKGROUND);
+	public static Inventory basic(Inventory inventory, boolean backButton) {
+		for(int i = 0; i < inventory.getSize(); i++)
+			inventory.setItem(i, BACKGROUND);
+		
+		if(backButton)
+			inventory.setItem(0, BUTTON_BACK);
 		
 		return inventory;
 	}

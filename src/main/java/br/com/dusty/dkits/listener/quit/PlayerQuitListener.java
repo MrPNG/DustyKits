@@ -15,7 +15,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class PlayerQuitListener implements Listener {
 	
-	private static final String QUIT_MESSAGE_PREFIX = Text.neutralOf("[").negative("-").neutral("] ").toString();
+	private static final String QUIT_MESSAGE_PREFIX = Text.basicOf("[").negative("-").basic("] ").toString();
 	
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
@@ -37,9 +37,9 @@ public class PlayerQuitListener implements Listener {
 			}
 			
 			Bukkit.broadcastMessage(Text.negativeOf(player.getName())
-			                            .neutral(" deslogou em ")
+			                            .basic(" deslogou em ")
 			                            .negative("combate")
-			                            .neutral("!")
+			                            .basic("!")
 			                            .toString());
 		}
 		

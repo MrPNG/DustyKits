@@ -170,11 +170,12 @@ public class Warp {
 		Player player = gamer.getPlayer();
 		
 		player.teleport(LocationUtils.spread(getSpawn(), DATA.SPREAD_RANGE));
-		player.sendMessage(Text.neutralOf("Você foi ")
+		player.sendMessage(Text.positivePrefix()
+		                       .basic("Você foi ")
 		                       .positive("teleportado")
-		                       .neutral(" para a warp ")
+		                       .basic(" para a warp ")
 		                       .positive(NAME)
-		                       .neutral("!")
+		                       .basic("!")
 		                       .toString());
 		
 		gamer.setKit(ENTRY_KIT);

@@ -147,13 +147,73 @@ public class Text {
 	}
 	
 	/**
+	 * Cria um {@link Text} básico.
+	 *
+	 * @param s
+	 * @return
+	 */
+	public static Text basicOf(String s) {
+		return Text.of(s).color(TextColor.GRAY);
+	}
+	
+	/**
+	 * Cria um {@link Text} básico.
+	 *
+	 * @param i
+	 * @return
+	 */
+	public static Text basicOf(int i) {
+		return Text.of(i).color(TextColor.GRAY);
+	}
+	
+	/**
+	 * Cria um {@link Text} básico.
+	 *
+	 * @param b
+	 * @return
+	 */
+	public static Text basicOf(boolean b) {
+		return Text.of(b).color(TextColor.GRAY);
+	}
+	
+	/**
+	 * Anexa um {@link Text} básico.
+	 *
+	 * @param s
+	 * @return
+	 */
+	public Text basic(String s) {
+		return append(s).color(TextColor.GRAY);
+	}
+	
+	/**
+	 * Anexa um {@link Text} básico.
+	 *
+	 * @param i
+	 * @return
+	 */
+	public Text basic(int i) {
+		return append(i).color(TextColor.GRAY);
+	}
+	
+	/**
+	 * Anexa um {@link Text} básico.
+	 *
+	 * @param b
+	 * @return
+	 */
+	public Text basic(boolean b) {
+		return append(b).color(TextColor.GRAY);
+	}
+	
+	/**
 	 * Cria um {@link Text} neutro.
 	 *
 	 * @param s
 	 * @return
 	 */
 	public static Text neutralOf(String s) {
-		return Text.of(s).color(TextColor.GRAY);
+		return Text.of(s).color(TextColor.YELLOW);
 	}
 	
 	/**
@@ -163,7 +223,7 @@ public class Text {
 	 * @return
 	 */
 	public static Text neutralOf(int i) {
-		return Text.of(i).color(TextColor.GRAY);
+		return Text.of(i).color(TextColor.YELLOW);
 	}
 	
 	/**
@@ -173,7 +233,7 @@ public class Text {
 	 * @return
 	 */
 	public static Text neutralOf(boolean b) {
-		return Text.of(b).color(TextColor.GRAY);
+		return Text.of(b).color(TextColor.YELLOW);
 	}
 	
 	/**
@@ -183,7 +243,7 @@ public class Text {
 	 * @return
 	 */
 	public Text neutral(String s) {
-		return append(s).color(TextColor.GRAY);
+		return append(s).color(TextColor.YELLOW);
 	}
 	
 	/**
@@ -193,7 +253,7 @@ public class Text {
 	 * @return
 	 */
 	public Text neutral(int i) {
-		return append(i).color(TextColor.GRAY);
+		return append(i).color(TextColor.YELLOW);
 	}
 	
 	/**
@@ -203,7 +263,7 @@ public class Text {
 	 * @return
 	 */
 	public Text neutral(boolean b) {
-		return append(b).color(TextColor.GRAY);
+		return append(b).color(TextColor.YELLOW);
 	}
 	
 	/**
@@ -324,6 +384,18 @@ public class Text {
 	 */
 	public Text negative(boolean b) {
 		return append(b).color(TextColor.RED);
+	}
+	
+	public static Text positivePrefix(){
+		return positiveOf("» ");
+	}
+	
+	public static Text neutralPrefix(){
+		return of("≡ ").color(TextColor.YELLOW);
+	}
+	
+	public static Text negativePrefix(){
+		return negativeOf("» ");
 	}
 	
 	/**

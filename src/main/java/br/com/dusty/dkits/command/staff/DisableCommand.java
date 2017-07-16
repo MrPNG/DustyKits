@@ -24,28 +24,31 @@ public class DisableCommand extends CustomCommand {
 					Kit kit = Kits.byName(args[1]);
 					
 					if(kit == null){
-						sender.sendMessage(Text.negativeOf("Não")
-						                       .neutral(" há um kit com o nome \"")
+						sender.sendMessage(Text.negativePrefix()
+						                       .basic("Não")
+						                       .basic(" há um kit com o nome \"")
 						                       .negative(args[0])
-						                       .neutral("\"!")
+						                       .basic("\"!")
 						                       .toString());
 					}else{
 						if(args.length > 2){
 							//TODO: Disable kit on certain warps
 						}else{
 							if(kit.enabled(false))
-								sender.sendMessage(Text.neutralOf("O kit ")
+								sender.sendMessage(Text.negativePrefix()
+								                       .basic("O kit ")
 								                       .negative(kit.getName())
-								                       .neutral(" foi ")
+								                       .basic(" foi ")
 								                       .negative("desabilitado")
-								                       .neutral("!")
+								                       .basic("!")
 								                       .toString());
 							else
-								sender.sendMessage(Text.neutralOf("O kit ")
+								sender.sendMessage(Text.negativePrefix()
+								                       .basic("O kit ")
 								                       .negative(kit.getName())
-								                       .neutral(" já está ")
+								                       .basic(" já está ")
 								                       .negative("desabilitado")
-								                       .neutral("!")
+								                       .basic("!")
 								                       .toString());
 						}
 					}

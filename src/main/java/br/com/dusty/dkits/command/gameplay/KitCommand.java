@@ -36,10 +36,11 @@ public class KitCommand extends CustomCommand {
 			Kit kit = Kits.byName(args[0]);
 			
 			if(kit == null)
-				player.sendMessage(Text.negativeOf("Não")
-				                       .neutral(" há um kit com o nome \"")
+				player.sendMessage(Text.negativePrefix()
+				                       .basic("Não")
+				                       .basic(" há um kit com o nome \"")
 				                       .negative(args[0])
-				                       .neutral("\"!")
+				                       .basic("\"!")
 				                       .toString());
 			else
 				kit.applyIfAllowed(gamer);

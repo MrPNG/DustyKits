@@ -1,10 +1,8 @@
 package br.com.dusty.dkits.listener.gameplay;
 
-import br.com.dusty.dkits.util.ItemStackUtils;
 import br.com.dusty.dkits.util.block.SignUtils;
-import br.com.dusty.dkits.warp.LobbyWarp;
+import br.com.dusty.dkits.util.inventory.WarpMenu;
 import br.com.dusty.dkits.warp.Warps;
-import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
@@ -39,7 +37,9 @@ public class PlayerInteractListener implements Listener {
 			
 			switch(itemStack.getType()){
 				case EMPTY_MAP:
-					if(itemStack.equals(Warps.LOBBY.getEntryKit().getItems()[0])){ //TODO: Open warp menu
+					if(itemStack.equals(Warps.LOBBY.getEntryKit().getItems()[0])){
+						player.openInventory(WarpMenu.menuWarpMain(player));
+						
 						event.setCancelled(true);
 					}
 					

@@ -92,12 +92,12 @@ public class Gamer {
 		}
 		
 		if(rank.isGreaterThanOrEquals(EnumRank.MOD)){
-			Text text = Text.neutralOf("Agora você está ").positive("visível").neutral(" apenas para ").append(visibleTo.name);
+			Text text = Text.basicOf("Agora você está ").positive("visível").basic(" apenas para ").append(visibleTo.name);
 			
 			if(visibleTo.hasNext())
-				text = text.append(" e acima!").color(TextColor.GRAY);
+				text = text.basic(" e acima");
 			
-			player.sendMessage(text.toString());
+			player.sendMessage(text.basic("!").toString());
 		}
 	}
 	
@@ -111,7 +111,7 @@ public class Gamer {
 		
 		this.mode = mode;
 		
-		player.sendMessage(Text.neutralOf("Agora você está no modo ").positive(mode.name()).neutral("!").toString());
+		player.sendMessage(Text.basicOf("Agora você está no modo ").positive(mode.name()).basic("!").toString());
 		
 		switch(mode){
 			case PLAY:
@@ -216,14 +216,14 @@ public class Gamer {
 	public void addXp(float amount) {
 		primitiveGamer.xp += amount;
 		
-		player.sendMessage(Text.positiveOf("+").positive(Math.round(amount)).neutral(" XP!").toString());
+		player.sendMessage(Text.positiveOf("+").positive(Math.round(amount)).basic(" XP!").toString());
 		ScoreboardUtils.update(this);
 	}
 	
 	public void removeXp(float amount) {
 		primitiveGamer.xp += amount;
 		
-		player.sendMessage(Text.negativeOf("-").negative(Math.round(amount)).neutral(" XP!").toString());
+		player.sendMessage(Text.negativeOf("-").negative(Math.round(amount)).basic(" XP!").toString());
 		ScoreboardUtils.update(this);
 	}
 	
@@ -234,7 +234,7 @@ public class Gamer {
 	public void addMoney(float amount) {
 		primitiveGamer.money += amount;
 		
-		player.sendMessage(Text.positiveOf("+").positive(Math.round(amount)).neutral(" créditos!").toString());
+		player.sendMessage(Text.positiveOf("+").positive(Math.round(amount)).basic(" créditos!").toString());
 		;
 		ScoreboardUtils.update(this);
 	}
@@ -242,7 +242,7 @@ public class Gamer {
 	public void removeMoney(float amount) {
 		primitiveGamer.money += amount;
 		
-		player.sendMessage(Text.negativeOf("-").negative(Math.round(amount)).neutral(" créditos!").toString());
+		player.sendMessage(Text.negativeOf("-").negative(Math.round(amount)).basic(" créditos!").toString());
 		;
 		ScoreboardUtils.update(this);
 	}
@@ -325,11 +325,12 @@ public class Gamer {
 	
 	public void setCombatTag(long period) {
 		if(!isCombatTagged())
-			player.sendMessage(Text.neutralOf("Você ")
+			player.sendMessage(Text.negativePrefix()
+			                       .basic("Você ")
 			                       .negative("entrou")
-			                       .neutral(" em ")
+			                       .basic(" em ")
 			                       .negative("combate")
-			                       .neutral("!")
+			                       .basic("!")
 			                       .toString());
 		
 		combatTag = System.currentTimeMillis() + period;
@@ -337,19 +338,19 @@ public class Gamer {
 		if(combatTask != null)
 			combatTask.cancel();
 		
-		combatTask = TaskUtils.sync(() -> ScoreboardUtils.update(this), 200);
+		combatTask = TaskUtils.sync(this::removeCombatTag, 200);
 		
 		ScoreboardUtils.update(this);
 	}
 	
 	public void removeCombatTag() {
-		if(isCombatTagged())
-			player.sendMessage(Text.neutralOf("Você ")
-			                       .positive("saiu")
-			                       .neutral(" de ")
-			                       .positive("combate")
-			                       .neutral("!")
-			                       .toString());
+		player.sendMessage(Text.positivePrefix()
+		                       .basic("Você ")
+		                       .positive("saiu")
+		                       .basic(" de ")
+		                       .positive("combate")
+		                       .basic("!")
+		                       .toString());
 		
 		combatTag = -1;
 		
@@ -390,6 +391,8 @@ public class Gamer {
 	
 	public void setKit(Kit kit) {
 		this.kit = kit;
+		
+		ScoreboardUtils.update(this);
 	}
 	
 	public Warp getWarp() {
@@ -408,13 +411,14 @@ public class Gamer {
 			
 			warpTask = TaskUtils.sync(() -> sendToWarp(warp), ticks);
 			
-			player.sendMessage(Text.neutralOf("Você será teleportado em ")
-			                       .negative(seconds)
-			                       .neutral(" segundo(s), ")
-			                       .negative("não")
-			                       .neutral(" se ")
-			                       .negative("mova")
-			                       .neutral("!")
+			player.sendMessage(Text.neutralPrefix()
+			                       .basic("Você será teleportado em ")
+			                       .neutral(seconds)
+			                       .basic(" segundo(s), ")
+			                       .neutral("não")
+			                       .basic(" se ")
+			                       .neutral("mova")
+			                       .basic("!")
 			                       .toString());
 		}else{
 			GamerUtils.clear(this);

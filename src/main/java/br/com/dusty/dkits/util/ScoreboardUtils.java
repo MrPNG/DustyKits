@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 
 public class ScoreboardUtils {
@@ -52,11 +53,13 @@ public class ScoreboardUtils {
 		                   Text.of(GamerRegistry.getOnlineGamers().size()).color(TextColor.YELLOW).toString()};
 		
 		for(int i = 0; i < LABELS.length; i++){
-			if(values[i].endsWith("None"))
+			if(gamer.getKit().isDummy() && values[i].endsWith("None"))
 				continue;
 			
-			String score = LABELS[i] + values[i];
-			objective.getScore(score).setScore(LABELS.length - i);
+			Score score = objective.getScore(LABELS[i] + values[i]);
+			
+			if(score != null)
+				score.setScore(LABELS.length - i);
 		}
 	}
 	

@@ -2,6 +2,7 @@ package br.com.dusty.dkits.listener;
 
 import br.com.dusty.dkits.Main;
 import br.com.dusty.dkits.listener.gameplay.EntityDamageByEntityListener;
+import br.com.dusty.dkits.listener.gameplay.InventoryClickListener;
 import br.com.dusty.dkits.listener.gameplay.PlayerInteractListener;
 import br.com.dusty.dkits.listener.login.AsyncPlayerPreLoginListener;
 import br.com.dusty.dkits.listener.login.PlayerJoinListener;
@@ -29,6 +30,7 @@ public class Listeners {
 		
 		//Login
 		LISTENERS.add(new AsyncPlayerPreLoginListener());
+		LISTENERS.add(new InventoryClickListener());
 		LISTENERS.add(new PlayerJoinListener());
 		LISTENERS.add(new PlayerLoginListener());
 		

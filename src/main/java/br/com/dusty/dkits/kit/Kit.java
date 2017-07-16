@@ -3,9 +3,10 @@ package br.com.dusty.dkits.kit;
 import br.com.dusty.dkits.Main;
 import br.com.dusty.dkits.gamer.EnumMode;
 import br.com.dusty.dkits.gamer.Gamer;
-import br.com.dusty.dkits.util.inventory.InventoryUtils;
+import br.com.dusty.dkits.util.ScoreboardUtils;
 import br.com.dusty.dkits.util.TaskUtils;
 import br.com.dusty.dkits.util.gamer.GamerUtils;
+import br.com.dusty.dkits.util.inventory.InventoryUtils;
 import br.com.dusty.dkits.util.text.Text;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -23,6 +24,7 @@ public class Kit {
 	protected ItemStack[] ARMOR = {null, null, null, null};
 	protected ItemStack[] ITEMS = {};
 	
+	protected boolean DUMMY = true;
 	protected boolean BROADCAST = false;
 	
 	protected Data DATA = new Data();
@@ -43,36 +45,42 @@ public class Kit {
 	public void applyIfAllowed(Gamer gamer) {
 		Player player = gamer.getPlayer();
 		
-		if(gamer.getMode() != EnumMode.ADMIN && gamer.getKit() != Kits.NONE){ //TODO: If not on MiniHG
-			player.sendMessage(Text.neutralOf("Você ")
+		if(gamer.getMode() != EnumMode.ADMIN && !gamer.getKit().isDummy()){ //TODO: If not on MiniHG
+			player.sendMessage(Text.negativePrefix()
+			                       .basic("Você ")
 			                       .negative("já")
-			                       .neutral(" está ")
+			                       .basic(" está ")
 			                       .negative("usando")
-			                       .neutral(" um kit!")
+			                       .basic(" um kit!")
 			                       .toString());
 		}else if(gamer.getMode() != EnumMode.ADMIN && !gamer.getWarp().getEnabledKits().contains(this)){
-			player.sendMessage(Text.neutralOf("Você ")
+			player.sendMessage(Text.negativePrefix()
+			                       .basic("Você ")
 			                       .negative("não pode")
-			                       .neutral(" usar o kit ")
+			                       .basic(" usar o kit ")
 			                       .negative(NAME)
-			                       .neutral(" nesta warp!")
+			                       .basic(" nesta warp!")
 			                       .toString());
 		}else if(gamer.getMode() != EnumMode.ADMIN && !gamer.hasKit(this)){
-			player.sendMessage(Text.neutralOf("Você ")
+			player.sendMessage(Text.negativePrefix()
+			                       .basic("Você ")
 			                       .negative("não")
-			                       .neutral(" tem o kit ")
+			                       .basic(" tem o kit ")
 			                       .negative(NAME)
-			                       .neutral("!")
+			                       .basic("!")
 			                       .toString());
 		}else{
 			gamer.setKit(this);
 			apply(gamer);
 			
-			player.sendMessage(Text.neutralOf("Agora você está ")
+			ScoreboardUtils.update(gamer);
+			
+			player.sendMessage(Text.positivePrefix()
+			                       .basic("Agora você está ")
 			                       .positive("usando")
-			                       .neutral(" o kit ")
+			                       .basic(" o kit ")
 			                       .positive(NAME)
-			                       .neutral("!")
+			                       .basic("!")
 			                       .toString());
 		}
 	}
@@ -144,6 +152,10 @@ public class Kit {
 	
 	public ItemStack[] getItems() {
 		return ITEMS;
+	}
+	
+	public boolean isDummy() {
+		return DUMMY;
 	}
 	
 	public boolean isBroadcast() {

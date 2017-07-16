@@ -12,12 +12,12 @@ import org.bukkit.event.block.SignChangeEvent;
 public class SignChangeListener implements Listener {
 	
 	private static final String[] SOUP_SIGN = {Text.of("=-=-=-=-=-=-=-=-=-=-=-=-=-=").color(TextColor.RED).toString(),
-	                                           Text.neutralOf("[").positive("Grátis").neutral("]").toString(),
+	                                           Text.basicOf("[").positive("Grátis").basic("]").toString(),
 	                                           Text.of("Sopa").color(TextColor.YELLOW).toString(),
 	                                           Text.of("=-=-=-=-=-=-=-=-=-=-=-=-=-=").color(TextColor.RED).toString()};
 	
 	private static final String[] RECRAFT_SIGN = {Text.of("=-=-=-=-=-=-=-=-=-=-=-=-=-=").color(TextColor.RED).toString(),
-	                                              Text.neutralOf("[").positive("Grátis").neutral("]").toString(),
+	                                              Text.basicOf("[").positive("Grátis").basic("]").toString(),
 	                                              Text.of("Recraft").color(TextColor.YELLOW).toString(),
 	                                              Text.of("=-=-=-=-=-=-=-=-=-=-=-=-=-=").color(TextColor.RED).toString()};
 	

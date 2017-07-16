@@ -18,11 +18,12 @@ public class SignUtils {
 		switch(Text.clearFormatting(sign.getLine(1))){
 			case "[Grátis]":
 				if(gamer.isOnSignCooldown()){
-					player.sendMessage(Text.neutralOf("Você ainda deve ")
+					player.sendMessage(Text.negativePrefix()
+					                       .basic("Você ainda deve ")
 					                       .negative("esperar")
-					                       .neutral(" mais ")
+					                       .basic(" mais ")
 					                       .negative(gamer.getSignCooldown())
-					                       .neutral(" segundo(s) para usar essa placa novamente!")
+					                       .basic(" segundo(s) para usar essa placa novamente!")
 					                       .toString());
 				}else{
 					switch(Text.clearFormatting(sign.getLine(2))){
@@ -47,7 +48,11 @@ public class SignUtils {
 				int amount = Integer.parseInt(sign.getLine(2).substring(3));
 				gamer.addMoney(amount);
 				
-				player.sendMessage(Text.neutralOf("Você ").positive("ganhou " + amount).neutral(" créditos!").toString());
+				player.sendMessage(Text.positivePrefix()
+				                       .basic("Você ")
+				                       .positive("ganhou " + amount)
+				                       .basic(" créditos!")
+				                       .toString());
 				
 				break;
 			case "XP":
@@ -55,7 +60,7 @@ public class SignUtils {
 				amount = Integer.parseInt(sign.getLine(2).substring(3));
 				gamer.addXp(amount);
 				
-				player.sendMessage(Text.neutralOf("Você ").positive("ganhou " + amount).neutral(" XP!").toString());
+				player.sendMessage(Text.positivePrefix().basic("Você ").positive("ganhou " + amount).basic(" XP!").toString());
 				
 				break;
 		}

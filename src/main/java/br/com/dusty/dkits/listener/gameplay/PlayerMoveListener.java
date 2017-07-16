@@ -19,11 +19,12 @@ public class PlayerMoveListener implements Listener {
 			gamer.getWarpTask().cancel();
 			gamer.setWarpTask(null);
 			
-			player.sendMessage(Text.neutralOf("Você se ")
+			player.sendMessage(Text.negativePrefix()
+			                       .basic("Você se ")
 			                       .negative("moveu")
-			                       .neutral(", teleporte ")
+			                       .basic(", teleporte ")
 			                       .negative("cancelado")
-			                       .neutral("!")
+			                       .basic("!")
 			                       .toString());
 		}
 	}

@@ -17,7 +17,7 @@ public class PlayerJoinListener implements Listener {
 	private static final String KICK_NOT_READY = Text.negativeOf(
 			"O servidor ainda não está pronto!\n\nVolte em alguns segundos...").toString();
 	
-	private static final String JOIN_MESSAGE_PREFIX = Text.neutralOf("[").positive("+").neutral("] ").toString();
+	private static final String JOIN_MESSAGE_PREFIX = Text.basicOf("[").positive("+").basic("] ").toString();
 	
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
