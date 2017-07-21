@@ -23,7 +23,7 @@ public class WebAPI {
 	
 	private static final HttpClient HTTP_CLIENT = HttpClientBuilder.create().build();
 	
-	private static final String ENDPOINT = "http://ianszot.duckdns.org/dustypvp/api/handler.php";
+	private static final String ENDPOINT = "http://localhost/api/handler.php";
 	
 	public static String getProfile(UUID uuid) {
 		String json = null;

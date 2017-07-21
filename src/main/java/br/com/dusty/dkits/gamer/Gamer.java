@@ -10,7 +10,6 @@ import br.com.dusty.dkits.util.protocol.EnumProtocolVersion;
 import br.com.dusty.dkits.util.protocol.ProtocolUtils;
 import br.com.dusty.dkits.util.tab.HeaderFooterUtils;
 import br.com.dusty.dkits.util.text.Text;
-import br.com.dusty.dkits.util.text.TextColor;
 import br.com.dusty.dkits.warp.Warp;
 import br.com.dusty.dkits.warp.Warps;
 import org.bukkit.GameMode;
@@ -48,6 +47,8 @@ public class Gamer {
 	private Warp warp = Warps.LOBBY;
 	
 	private BukkitTask warpTask;
+	
+	private EnumChat chat;
 	
 	Gamer(Player player, PrimitiveGamer primitiveGamer) {
 		this.player = player;
@@ -91,7 +92,7 @@ public class Gamer {
 				gamer.player.showPlayer(player);
 		}
 		
-		if(rank.isGreaterThanOrEquals(EnumRank.MOD)){
+		if(rank.isHigherThanOrEquals(EnumRank.MOD)){
 			Text text = Text.basicOf("Agora você está ").positive("visível").basic(" apenas para ").append(visibleTo.name);
 			
 			if(visibleTo.hasNext())
@@ -439,5 +440,13 @@ public class Gamer {
 	
 	public void setWarpTask(BukkitTask warpTask) {
 		this.warpTask = warpTask;
+	}
+	
+	public EnumChat getChat() {
+		return chat;
+	}
+	
+	public void setChat(EnumChat chat) {
+		this.chat = chat;
 	}
 }

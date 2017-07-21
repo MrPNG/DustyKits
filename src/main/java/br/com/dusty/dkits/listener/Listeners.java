@@ -11,6 +11,7 @@ import br.com.dusty.dkits.listener.mechanics.*;
 import br.com.dusty.dkits.listener.quit.PlayerQuitListener;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.PluginManager;
 
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ public class Listeners {
 		LISTENERS.add(new br.com.dusty.dkits.listener.gameplay.PlayerMoveListener());
 		
 		//Mechanincs
+		LISTENERS.add(new AsyncPlayerChatListener());
 		LISTENERS.add(new EntityDamageListener());
 		LISTENERS.add(new FoodLevelChangeListener());
 		LISTENERS.add(new ItemSpawnListener());

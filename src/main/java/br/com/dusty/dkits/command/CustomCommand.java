@@ -114,7 +114,7 @@ public abstract class CustomCommand extends Command {
 	public boolean testPermission(CommandSender sender) {
 		boolean b = sender instanceof Player ? Gamer.of((Player) sender)
 		                                            .getRank()
-		                                            .isGreaterThanOrEquals(rank) : sender instanceof ConsoleCommandSender;
+		                                            .isHigherThanOrEquals(rank) : sender instanceof ConsoleCommandSender;
 		
 		if(!b)
 			sender.sendMessage(UNKNOWN);

@@ -43,32 +43,6 @@ public class Text {
 	}
 	
 	/**
-	 * Cria um {@link Text} a partir do 'float' dado como parâmetro.
-	 *
-	 * @param f
-	 * @return O {@link Text} criado.
-	 */
-	public static Text of(float f) {
-		Text text = new Text();
-		text.string = String.valueOf(f);
-		
-		return text;
-	}
-	
-	/**
-	 * Cria um {@link Text} a partir do 'boolean' dado como parâmetro.
-	 *
-	 * @param bool
-	 * @return O {@link Text} criado.
-	 */
-	public static Text of(boolean bool) {
-		Text text = new Text();
-		text.string = String.valueOf(bool);
-		
-		return text;
-	}
-	
-	/**
 	 * Define um array de {@link TextStyle} a serem usados como estilos.
 	 *
 	 * @param styles
@@ -121,32 +95,6 @@ public class Text {
 	}
 	
 	/**
-	 * Anexa um 'float' a este {@link Text}.
-	 *
-	 * @param f
-	 * @return Este {@link Text}.
-	 */
-	public Text append(float f) {
-		Text text = of(f);
-		text.append = this;
-		
-		return text;
-	}
-	
-	/**
-	 * Anexa um 'boolean' a este {@link Text}.
-	 *
-	 * @param b
-	 * @return Este {@link Text}.
-	 */
-	public Text append(boolean b) {
-		Text text = of(b);
-		text.append = this;
-		
-		return text;
-	}
-	
-	/**
 	 * Cria um {@link Text} básico.
 	 *
 	 * @param s
@@ -164,16 +112,6 @@ public class Text {
 	 */
 	public static Text basicOf(int i) {
 		return Text.of(i).color(TextColor.GRAY);
-	}
-	
-	/**
-	 * Cria um {@link Text} básico.
-	 *
-	 * @param b
-	 * @return
-	 */
-	public static Text basicOf(boolean b) {
-		return Text.of(b).color(TextColor.GRAY);
 	}
 	
 	/**
@@ -196,15 +134,6 @@ public class Text {
 		return append(i).color(TextColor.GRAY);
 	}
 	
-	/**
-	 * Anexa um {@link Text} básico.
-	 *
-	 * @param b
-	 * @return
-	 */
-	public Text basic(boolean b) {
-		return append(b).color(TextColor.GRAY);
-	}
 	
 	/**
 	 * Cria um {@link Text} neutro.
@@ -224,16 +153,6 @@ public class Text {
 	 */
 	public static Text neutralOf(int i) {
 		return Text.of(i).color(TextColor.YELLOW);
-	}
-	
-	/**
-	 * Cria um {@link Text} neutro.
-	 *
-	 * @param b
-	 * @return
-	 */
-	public static Text neutralOf(boolean b) {
-		return Text.of(b).color(TextColor.YELLOW);
 	}
 	
 	/**
@@ -257,16 +176,6 @@ public class Text {
 	}
 	
 	/**
-	 * Anexa um {@link Text} neutro.
-	 *
-	 * @param b
-	 * @return
-	 */
-	public Text neutral(boolean b) {
-		return append(b).color(TextColor.YELLOW);
-	}
-	
-	/**
 	 * Cria um {@link Text} positivo.
 	 *
 	 * @param s
@@ -284,16 +193,6 @@ public class Text {
 	 */
 	public static Text positiveOf(int i) {
 		return Text.of(i).color(TextColor.GREEN);
-	}
-	
-	/**
-	 * Cria um {@link Text} positivo.
-	 *
-	 * @param b
-	 * @return
-	 */
-	public static Text positiveOf(boolean b) {
-		return Text.of(b).color(TextColor.GREEN);
 	}
 	
 	/**
@@ -317,16 +216,6 @@ public class Text {
 	}
 	
 	/**
-	 * Anexa um {@link Text} positivo.
-	 *
-	 * @param b
-	 * @return
-	 */
-	public Text positive(boolean b) {
-		return append(b).color(TextColor.GREEN);
-	}
-	
-	/**
 	 * Cria um {@link Text} negativo.
 	 *
 	 * @param s
@@ -344,16 +233,6 @@ public class Text {
 	 */
 	public static Text negativeOf(int i) {
 		return Text.of(i).color(TextColor.RED);
-	}
-	
-	/**
-	 * Cria um {@link Text} negativo.
-	 *
-	 * @param b
-	 * @return
-	 */
-	public static Text negativeOf(boolean b) {
-		return Text.of(b).color(TextColor.RED);
 	}
 	
 	/**
@@ -376,25 +255,15 @@ public class Text {
 		return append(i).color(TextColor.RED);
 	}
 	
-	/**
-	 * Anexa um {@link Text} negativo.
-	 *
-	 * @param b
-	 * @return
-	 */
-	public Text negative(boolean b) {
-		return append(b).color(TextColor.RED);
-	}
-	
-	public static Text positivePrefix(){
+	public static Text positivePrefix() {
 		return positiveOf("» ");
 	}
 	
-	public static Text neutralPrefix(){
+	public static Text neutralPrefix() {
 		return of("≡ ").color(TextColor.YELLOW);
 	}
 	
-	public static Text negativePrefix(){
+	public static Text negativePrefix() {
 		return negativeOf("» ");
 	}
 	
@@ -407,14 +276,26 @@ public class Text {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		
-		if(append != null)
+		if(append == null){
+			sb.append(color);
+			
+			for(TextStyle style : styles)
+				sb.append(style);
+		}else{
 			sb.append(append.toString());
+			
+			if(!append.styles.equals(styles)){
+				sb.append(TextStyle.RESET);
+				
+				sb.append(color);
+				
+				for(TextStyle style : styles)
+					sb.append(style);
+			}else if(!append.color.equals(color)){
+				sb.append(color);
+			}
+		}
 		
-		sb.append(TextStyle.RESET);
-		
-		sb.append(color);
-		for(TextStyle style : styles)
-			sb.append(style);
 		sb.append(string);
 		
 		return sb.toString();

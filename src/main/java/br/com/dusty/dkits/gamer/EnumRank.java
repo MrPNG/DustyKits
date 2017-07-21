@@ -69,8 +69,18 @@ public enum EnumRank {
 	 * @param rank
 	 * @return <b>true</b> se este {@link EnumRank} está hierarquicamente <b>acima</b> do parâmetro 'rank'.
 	 */
-	public boolean isGreaterThan(EnumRank rank) {
+	public boolean isHigherThan(EnumRank rank) {
 		return level > rank.level;
+	}
+	
+	/**
+	 * Retorna <b>true</b> se este {@link EnumRank} não está hierarquicamente <b>abaixo</b> do parâmetro 'rank'.
+	 *
+	 * @param rank
+	 * @return <b>true</b> se este {@link EnumRank} não está hierarquicamente <b>abaixo</b> do parâmetro 'rank'.
+	 */
+	public boolean isHigherThanOrEquals(EnumRank rank) {
+		return level >= rank.level;
 	}
 	
 	/**
@@ -81,16 +91,6 @@ public enum EnumRank {
 	 */
 	public boolean isLowerThan(EnumRank rank) {
 		return level < rank.level;
-	}
-	
-	/**
-	 * Retorna <b>true</b> se este {@link EnumRank} não está hierarquicamente <b>abaixo</b> do parâmetro 'rank'.
-	 *
-	 * @param rank
-	 * @return <b>true</b> se este {@link EnumRank} não está hierarquicamente <b>abaixo</b> do parâmetro 'rank'.
-	 */
-	public boolean isGreaterThanOrEquals(EnumRank rank) {
-		return level >= rank.level;
 	}
 	
 	/**
