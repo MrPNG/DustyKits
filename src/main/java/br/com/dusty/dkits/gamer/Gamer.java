@@ -48,8 +48,8 @@ public class Gamer {
 	
 	private BukkitTask warpTask;
 	
-	private EnumChat chat;
-	
+	private EnumChat chat = EnumChat.NORMAL;
+		
 	Gamer(Player player, PrimitiveGamer primitiveGamer) {
 		this.player = player;
 		this.primitiveGamer = primitiveGamer;

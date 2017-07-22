@@ -29,7 +29,7 @@ public class InventoryClickListener implements Listener {
 		
 		ItemStack itemStack = event.getCurrentItem();
 		
-		if(!inventory.getTitle().equals(TITLE_CONTAINER_INVENTORY)){
+		if(inventory.getTitle() != null && !inventory.getTitle().equals(TITLE_CONTAINER_INVENTORY)){
 			
 			//Warp menu - main
 			if(inventory.getTitle().equals(WarpMenu.TITLE_MAIN)){

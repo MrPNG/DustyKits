@@ -20,8 +20,8 @@ public class DisableCommand extends CustomCommand {
 		if(!testPermission(sender))
 			return true;
 		
-		if(args.length > 1){
-			switch(args[0]){
+		if(args.length > 1)
+			switch(args[0].toLowerCase()){
 				case "kit":
 					Kit kit = Kits.byName(args[1]);
 					
@@ -115,7 +115,12 @@ public class DisableCommand extends CustomCommand {
 					
 					break;
 			}
-		}
+		else
+			sender.sendMessage(Text.negativePrefix()
+			                       .basic("Uso: /disable ")
+			                       .negative("<kit>/<warp> <nome>")
+			                       .basic(" [warp]")
+			                       .toString());
 		
 		return false;
 	}

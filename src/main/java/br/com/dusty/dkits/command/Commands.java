@@ -1,6 +1,7 @@
 package br.com.dusty.dkits.command;
 
 import br.com.dusty.dkits.command.gameplay.KitCommand;
+import br.com.dusty.dkits.command.gameplay.WarpCommand;
 import br.com.dusty.dkits.command.staff.AdminCommand;
 import br.com.dusty.dkits.command.staff.DisableCommand;
 import br.com.dusty.dkits.command.staff.EnableCommand;
@@ -28,6 +29,7 @@ public class Commands {
 		
 		//Gameplay
 		CUSTOM_COMMANDS.add(new KitCommand(EnumRank.DEFAULT, "kit"));
+		CUSTOM_COMMANDS.add(new WarpCommand(EnumRank.DEFAULT, "warp"));
 		
 		CUSTOM_COMMANDS.forEach(CustomCommand::register);
 	}
