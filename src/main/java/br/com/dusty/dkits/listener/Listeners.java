@@ -3,6 +3,7 @@ package br.com.dusty.dkits.listener;
 import br.com.dusty.dkits.Main;
 import br.com.dusty.dkits.listener.gameplay.EntityDamageByEntityListener;
 import br.com.dusty.dkits.listener.gameplay.InventoryClickListener;
+import br.com.dusty.dkits.listener.gameplay.PlayerDeathListener;
 import br.com.dusty.dkits.listener.gameplay.PlayerInteractListener;
 import br.com.dusty.dkits.listener.login.AsyncPlayerPreLoginListener;
 import br.com.dusty.dkits.listener.login.PlayerJoinListener;
@@ -37,6 +38,7 @@ public class Listeners {
 		
 		//Gameplay
 		LISTENERS.add(new EntityDamageByEntityListener());
+		LISTENERS.add(new PlayerDeathListener());
 		LISTENERS.add(new PlayerInteractListener());
 		LISTENERS.add(new br.com.dusty.dkits.listener.gameplay.PlayerMoveListener());
 		
