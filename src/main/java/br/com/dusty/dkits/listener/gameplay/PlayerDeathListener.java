@@ -4,6 +4,7 @@ import br.com.dusty.dkits.gamer.Gamer;
 import br.com.dusty.dkits.util.TaskUtils;
 import br.com.dusty.dkits.util.protocol.ProtocolUtils;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
@@ -28,6 +29,7 @@ public class PlayerDeathListener implements Listener {
 		}
 	}
 	
+	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent event) {
 		Player player = event.getEntity();
 		
