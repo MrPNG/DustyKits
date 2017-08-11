@@ -1,5 +1,6 @@
 package br.com.dusty.dkits;
 
+import br.com.dusty.dkits.ability.Abilities;
 import br.com.dusty.dkits.command.Commands;
 import br.com.dusty.dkits.kit.Kits;
 import br.com.dusty.dkits.listener.Listeners;
@@ -44,6 +45,7 @@ public class Main extends JavaPlugin {
 	public void onEnable() {
 		Commands.registerAll();
 		Listeners.registerAll();
+		Abilities.registerAll();
 		Kits.registerAll();
 		Warps.registerAll();
 		
