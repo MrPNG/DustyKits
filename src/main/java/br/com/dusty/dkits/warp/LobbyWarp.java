@@ -1,20 +1,17 @@
 package br.com.dusty.dkits.warp;
 
-import br.com.dusty.dkits.gamer.Gamer;
 import br.com.dusty.dkits.kit.Kit;
 import br.com.dusty.dkits.util.ItemStackUtils;
-import br.com.dusty.dkits.util.LocationUtils;
 import br.com.dusty.dkits.util.text.Text;
 import br.com.dusty.dkits.util.text.TextColor;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class LobbyWarp extends Warp {
 	
 	{
 		NAME = "Lobby";
-		ICON = new ItemStack(Material.BOOK);
+		ICON = new ItemStack(Material.MAP);
 		
 		ItemStackUtils.rename(ICON, Text.of(NAME).color(TextColor.GOLD).toString());
 		ItemStackUtils.setDescription(ICON, DESCRIPTION);
