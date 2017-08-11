@@ -5,7 +5,7 @@ import org.bukkit.ChatColor
 /**
  * Define cores a serem usadas em um [Text].
  */
-enum class TextColor private constructor(internal var code: Int, chatColor: ChatColor) {
+enum class TextColor private constructor(val code: Int, chatColor: ChatColor) {
 
     BLACK(0x0, ChatColor.BLACK),
     DARK_BLUE(0x1, ChatColor.DARK_BLUE),
@@ -24,11 +24,7 @@ enum class TextColor private constructor(internal var code: Int, chatColor: Chat
     YELLOW(0xE, ChatColor.YELLOW),
     WHITE(0xF, ChatColor.WHITE);
 
-    internal var string: String
-
-    init {
-        string = chatColor.toString()
-    }
+    val string: String = chatColor.toString()
 
     override fun toString(): String {
         return string

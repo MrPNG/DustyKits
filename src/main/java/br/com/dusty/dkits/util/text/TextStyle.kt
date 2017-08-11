@@ -5,7 +5,7 @@ import org.bukkit.ChatColor
 /**
  * Define estilos a serem usados em um [Text].
  */
-enum class TextStyle private constructor(internal var code: Int, chatColor: ChatColor) {
+enum class TextStyle private constructor(val code: Int, chatColor: ChatColor) {
 
     MAGIC(0x10, ChatColor.MAGIC),
     BOLD(0x11, ChatColor.BOLD),
@@ -14,11 +14,7 @@ enum class TextStyle private constructor(internal var code: Int, chatColor: Chat
     ITALIC(0x14, ChatColor.ITALIC),
     RESET(0x15, ChatColor.RESET);
 
-    internal var string: String
-
-    init {
-        string = chatColor.toString()
-    }
+    val string: String = chatColor.toString()
 
     override fun toString(): String {
         return string
