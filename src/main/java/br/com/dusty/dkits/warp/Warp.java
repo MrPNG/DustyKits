@@ -4,9 +4,11 @@ import br.com.dusty.dkits.Main;
 import br.com.dusty.dkits.gamer.Gamer;
 import br.com.dusty.dkits.kit.Kit;
 import br.com.dusty.dkits.kit.Kits;
+import br.com.dusty.dkits.util.ItemStackUtils;
 import br.com.dusty.dkits.util.LocationUtils;
 import br.com.dusty.dkits.util.TaskUtils;
 import br.com.dusty.dkits.util.text.Text;
+import br.com.dusty.dkits.util.text.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -33,6 +35,9 @@ public class Warp implements Listener {
 	
 	Data DATA = new Data();
 	
+	static Kit GAME_WARP_KIT = new GameWarpKit();
+	static Kit EVENT_WARP_KIT = new EventWarpKit();
+	
 	public boolean enabled(boolean enabled) {
 		if(DATA.ENABLED == enabled)
 			return false;
@@ -54,7 +59,7 @@ public class Warp implements Listener {
 		
 		if(DATA.LIST_ENABLED_KITS){
 			DATA.KITS = ENABLED_KITS.stream()
-			                        .map(enabledKit -> enabledKit.getName())
+			                        .map(Kit::getName)
 			                        .collect(Collectors.toCollection(HashSet::new))
 			                        .toArray(new String[0]);
 		}else{
@@ -62,7 +67,7 @@ public class Warp implements Listener {
 			disabledKits.removeAll(ENABLED_KITS);
 			
 			DATA.KITS = disabledKits.stream()
-			                        .map(enabledKit -> enabledKit.getName())
+			                        .map(Kit::getName)
 			                        .collect(Collectors.toCollection(HashSet::new))
 			                        .toArray(new String[0]);
 		}
@@ -185,7 +190,7 @@ public class Warp implements Listener {
 	
 	public enum EnumWarpType {
 		GAME,
-		EVENT;
+		EVENT
 	}
 	
 	public static class Data {
@@ -233,6 +238,40 @@ public class Warp implements Listener {
 		
 		public void setSpawnRadius(float spawnRadius) {
 			this.SPAWN_RADIUS = spawnRadius;
+		}
+	}
+	
+	private static class GameWarpKit extends Kit {
+		
+		{
+			ITEMS = new ItemStack[]{ItemStackUtils.rename(new ItemStack(Material.CHEST),
+			                                              Text.of("Kits").color(TextColor.GOLD).toString()),
+			                        null,
+			                        null,
+			                        null,
+			                        ItemStackUtils.rename(new ItemStack(Material.EMERALD),
+			                                              Text.of("Shop").color(TextColor.GOLD).toString()),
+			                        null,
+			                        null,
+			                        null,
+			                        ItemStackUtils.rename(new ItemStack(Material.MAP),
+			                                              Text.of("Warps").color(TextColor.GOLD).toString())};
+		}
+	}
+	
+	private static class EventWarpKit extends Kit {
+		
+		{
+			ITEMS = new ItemStack[]{null,
+			                        null,
+			                        null,
+			                        null,
+			                        null,
+			                        null,
+			                        null,
+			                        null,
+			                        ItemStackUtils.rename(new ItemStack(Material.MAP),
+			                                              Text.of("Warps").color(TextColor.GOLD).toString())};
 		}
 	}
 }

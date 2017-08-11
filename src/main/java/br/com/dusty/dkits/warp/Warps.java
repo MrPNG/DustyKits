@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public class Warps {
 	
+	public static final ArenaWarp ARENA = new ArenaWarp();
 	public static final LobbyWarp LOBBY = new LobbyWarp();
 	
 	public static final ArrayList<Warp> WARPS = new ArrayList<>();
@@ -15,6 +16,7 @@ public class Warps {
 	public static void registerAll() {
 		//Usage: WARPS.add(FOO_WARP);
 		
+		WARPS.add(ARENA);
 		WARPS.add(LOBBY);
 		
 		PluginManager pluginManager = Bukkit.getPluginManager();
