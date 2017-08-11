@@ -14,7 +14,7 @@ import java.util.Random;
 public class Main extends JavaPlugin {
 	
 	/**
-	 * Instância deste {@link JavaPlugin}.
+	 * <b>Singleton</b> deste {@link JavaPlugin}.
 	 */
 	public static Main INSTANCE;
 	

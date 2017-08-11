@@ -1,5 +1,9 @@
 package br.com.dusty.dkits.warp;
 
+import br.com.dusty.dkits.Main;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.PluginManager;
+
 import java.util.ArrayList;
 
 public class Warps {
@@ -12,6 +16,9 @@ public class Warps {
 		//Usage: WARPS.add(FOO_WARP);
 		
 		WARPS.add(LOBBY);
+		
+		PluginManager pluginManager = Bukkit.getPluginManager();
+		WARPS.forEach(warp -> pluginManager.registerEvents(warp, Main.INSTANCE));
 	}
 	
 	public static Warp byName(String name) {

@@ -1,6 +1,7 @@
 package br.com.dusty.dkits.kit;
 
 import br.com.dusty.dkits.Main;
+import br.com.dusty.dkits.ability.Ability;
 import br.com.dusty.dkits.gamer.EnumMode;
 import br.com.dusty.dkits.gamer.Gamer;
 import br.com.dusty.dkits.util.ScoreboardUtils;
@@ -24,12 +25,12 @@ public class Kit {
 	protected ItemStack[] ARMOR = {null, null, null, null};
 	protected ItemStack[] ITEMS = {};
 	
+	protected Ability ABILITY = null;
+	
 	protected boolean DUMMY = true;
 	protected boolean BROADCAST = false;
 	
 	protected Data DATA = new Data();
-	
-	//TODO: protected Ability ABILITY = null;
 	
 	public void apply(Gamer gamer) {
 		GamerUtils.clear(gamer);
@@ -152,6 +153,10 @@ public class Kit {
 	
 	public ItemStack[] getItems() {
 		return ITEMS;
+	}
+	
+	public Ability getAbility() {
+		return ABILITY;
 	}
 	
 	public boolean isDummy() {

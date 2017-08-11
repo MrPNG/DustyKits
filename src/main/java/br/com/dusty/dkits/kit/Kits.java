@@ -10,7 +10,7 @@ public class Kits {
 	public static final ArrayList<Kit> KITS = new ArrayList<>();
 	
 	public static void registerAll() {
-		//Usage: WARPS.add(FOO_KIT);
+		//Usage: KITS.add(FOO_KIT);
 		
 		KITS.add(NONE);
 		KITS.add(PVP);
