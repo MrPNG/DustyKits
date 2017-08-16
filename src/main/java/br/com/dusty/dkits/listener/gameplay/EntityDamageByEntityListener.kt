@@ -6,7 +6,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 
-class EntityDamageByEntityListener: Listener {
+object EntityDamageByEntityListener: Listener {
 
 	@EventHandler
 	fun onEntityDamage(event: EntityDamageByEntityEvent) {

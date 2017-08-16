@@ -202,6 +202,10 @@ public class Gamer {
 		ScoreboardUtils.update(this);
 	}
 	
+	public void resetKillStreak() {
+		primitiveGamer.killStreak = 0;
+	}
+	
 	public int getMaxKillStreak() {
 		return primitiveGamer.maxKillStreak;
 	}

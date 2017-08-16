@@ -2,12 +2,11 @@ package br.com.dusty.dkits.listener.gameplay
 
 import br.com.dusty.dkits.gamer.Gamer
 import br.com.dusty.dkits.util.text.Text
-import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerMoveEvent
 
-class PlayerMoveListener: Listener {
+object PlayerMoveListener: Listener {
 
 	@EventHandler
 	fun onPlayerMove(event: PlayerMoveEvent) {

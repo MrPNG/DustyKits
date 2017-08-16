@@ -24,7 +24,6 @@ object PlayerMoveListener: Listener {
 			event.isCancelled = true
 		else when (to.clone().add(0.0, -0.5, 0.0).block.type) {
 			Material.SPONGE -> boost(gamer, to)
-			else            -> TODO()
 		}
 	}
 

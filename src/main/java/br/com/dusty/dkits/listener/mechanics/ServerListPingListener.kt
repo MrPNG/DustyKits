@@ -18,7 +18,6 @@ object ServerListPingListener: Listener {
 			EnumServerStatus.ONLINE      -> event.motd = MOTDUtils.randomMOTD()
 			EnumServerStatus.OFFLINE     -> event.motd = MOTDUtils.offlineMOTD()
 			EnumServerStatus.MAINTENANCE -> event.motd = MOTDUtils.maintenanceMOTD()
-			else                         -> TODO()
 		}
 	}
 }

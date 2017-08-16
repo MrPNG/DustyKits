@@ -42,7 +42,6 @@ object AsyncPlayerChatListener: Listener {
 					it.player.sendMessage(if (it.chat == EnumChat.STAFF) message_neutral else message_negative)
 				}
 			}
-			else            -> TODO()
 		}
 	}
 }
