@@ -44,7 +44,7 @@ public class Main extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		Commands.registerAll();
-		Listeners.registerAll();
+		Listeners.INSTANCE.registerAll();
 		Abilities.registerAll();
 		Kits.registerAll();
 		Warps.registerAll();
