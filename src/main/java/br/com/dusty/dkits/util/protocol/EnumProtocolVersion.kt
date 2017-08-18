@@ -64,8 +64,8 @@ enum class EnumProtocolVersion {
 
 	companion object {
 
-		fun byVersionNumber(version: Int): EnumProtocolVersion {
-			return values().firstOrNull { it.min <= version && it.max >= version } ?: UNKNOWN
+		fun byVersionNumber(version: Int?): EnumProtocolVersion {
+			return if (version == null) UNKNOWN else (values().firstOrNull { it.min <= version && it.max >= version } ?: UNKNOWN)
 		}
 	}
 }

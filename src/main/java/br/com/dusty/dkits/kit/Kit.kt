@@ -8,6 +8,8 @@ import br.com.dusty.dkits.util.ScoreboardUtils
 import br.com.dusty.dkits.util.TaskUtils
 import br.com.dusty.dkits.util.gamer.GamerUtils
 import br.com.dusty.dkits.util.inventory.InventoryUtils
+import br.com.dusty.dkits.util.inventory.addItemStacks
+import br.com.dusty.dkits.util.inventory.setArmor
 import br.com.dusty.dkits.util.text.Text
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -33,14 +35,14 @@ open class Kit {
 	var data = Data()
 
 	fun apply(gamer: Gamer) {
-		GamerUtils.clear(gamer)
+		gamer.clear()
 
 		val player = gamer.player
 
 		player.inventory.setItem(0, weapon)
 
-		InventoryUtils.setArmor(player, armor)
-		InventoryUtils.addItemStacks(player.inventory, items)
+		player.setArmor(armor)
+		player.inventory.addItemStacks(items)
 	}
 
 	fun applyIfAllowed(gamer: Gamer) {

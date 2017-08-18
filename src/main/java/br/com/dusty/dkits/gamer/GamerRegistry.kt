@@ -51,8 +51,8 @@ object GamerRegistry {
 		return primitiveGamer
 	}
 
-	fun getPrimitiveGamerbyUUID(uuid: UUID): PrimitiveGamer {
-		return PRIMITIVE_GAMER_BY_UUID[uuid]!!
+	fun getPrimitiveGamerByUniqueId(uuid: UUID): PrimitiveGamer? {
+		return PRIMITIVE_GAMER_BY_UUID[uuid]
 	}
 
 	fun unregister(uuid: UUID): PrimitiveGamer {

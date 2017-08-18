@@ -4,8 +4,8 @@ import br.com.dusty.dkits.Main
 import br.com.dusty.dkits.gamer.Gamer
 import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.kit.Kits
-import br.com.dusty.dkits.util.ItemStackUtils
 import br.com.dusty.dkits.util.TaskUtils
+import br.com.dusty.dkits.util.rename
 import br.com.dusty.dkits.util.spread
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
@@ -126,18 +126,15 @@ open class Warp: Listener {
 	private class GameWarpKit: Kit() {
 
 		init {
-			items = arrayOf(ItemStackUtils.rename(ItemStack(Material.CHEST),
-			                                      Text.of("Kits").color(TextColor.GOLD).toString()),
+			items = arrayOf(ItemStack(Material.CHEST).rename(Text.of("Kits").color(TextColor.GOLD).toString()),
 			                null,
 			                null,
 			                null,
-			                ItemStackUtils.rename(ItemStack(Material.EMERALD),
-			                                      Text.of("Shop").color(TextColor.GOLD).toString()),
+			                ItemStack(Material.EMERALD).rename(Text.of("Shop").color(TextColor.GOLD).toString()),
 			                null,
 			                null,
 			                null,
-			                ItemStackUtils.rename(ItemStack(Material.MAP),
-			                                      Text.of("Warps").color(TextColor.GOLD).toString()))
+			                ItemStack(Material.MAP).rename(Text.of("Warps").color(TextColor.GOLD).toString()))
 		}
 	}
 
@@ -152,8 +149,7 @@ open class Warp: Listener {
 			                null,
 			                null,
 			                null,
-			                ItemStackUtils.rename(ItemStack(Material.MAP),
-			                                      Text.of("Warps").color(TextColor.GOLD).toString()))
+			                ItemStack(Material.MAP).rename(Text.of("Warps").color(TextColor.GOLD).toString()))
 		}
 	}
 

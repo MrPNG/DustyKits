@@ -1,7 +1,8 @@
 package br.com.dusty.dkits.warp
 
 import br.com.dusty.dkits.kit.Kit
-import br.com.dusty.dkits.util.ItemStackUtils
+import br.com.dusty.dkits.util.rename
+import br.com.dusty.dkits.util.setDescription
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
 import org.bukkit.Material
@@ -13,8 +14,8 @@ object LobbyWarp: Warp() {
 		name = "Lobby"
 		icon = ItemStack(Material.MAP)
 
-		ItemStackUtils.rename(icon, Text.of(name).color(TextColor.GOLD).toString())
-		ItemStackUtils.setDescription(icon, description)
+		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
+		icon.setDescription(description)
 
 		entryKit = LobbyKit()
 
@@ -27,17 +28,15 @@ object LobbyWarp: Warp() {
 
 		init {
 			//TODO: Rules book
-			items = arrayOf(ItemStackUtils.rename(ItemStack(Material.EMPTY_MAP),
-			                                                 Text.of("Warps").color(TextColor.GOLD).toString()),
-			                           null,
-			                           null,
-			                           null,
-			                           null,
-			                           null,
-			                           null,
-			                           null,
-			                           ItemStackUtils.rename(ItemStack(Material.WRITTEN_BOOK),
-			                                                 Text.of("Regras").color(TextColor.GOLD).toString()))
+			items = arrayOf(ItemStack(Material.EMPTY_MAP).rename(Text.of("Warps").color(TextColor.GOLD).toString()),
+			                null,
+			                null,
+			                null,
+			                null,
+			                null,
+			                null,
+			                null,
+			                ItemStack(Material.WRITTEN_BOOK).rename(Text.of("Regras").color(TextColor.GOLD).toString()))
 		}
 	}
 }

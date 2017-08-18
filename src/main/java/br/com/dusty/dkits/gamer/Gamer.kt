@@ -4,7 +4,6 @@ import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.util.ScoreboardUtils
 import br.com.dusty.dkits.util.TaskUtils
-import br.com.dusty.dkits.util.gamer.GamerUtils
 import br.com.dusty.dkits.util.gamer.TagUtils
 import br.com.dusty.dkits.util.protocol.EnumProtocolVersion
 import br.com.dusty.dkits.util.protocol.ProtocolUtils
@@ -18,11 +17,7 @@ import org.bukkit.scheduler.BukkitTask
 
 class Gamer internal constructor(val player: Player, val primitiveGamer: PrimitiveGamer) {
 
-	val protocolVersion: EnumProtocolVersion = try {
-		EnumProtocolVersion.byVersionNumber(ProtocolUtils.protocolVersion(player))
-	} catch (e: Exception) {
-		EnumProtocolVersion.UNKNOWN
-	}
+	val protocolVersion: EnumProtocolVersion = EnumProtocolVersion.byVersionNumber(ProtocolUtils.protocolVersion(player))
 
 	val rank = EnumRank.ADMIN
 
@@ -66,8 +61,8 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 				EnumMode.PLAY     -> {
 					player.gameMode = GameMode.ADVENTURE
 
-					GamerUtils.clear(this)
-					GamerUtils.fly(this, false)
+					clear()
+					fly(false)
 
 					visibleTo = EnumRank.DEFAULT
 				}
@@ -75,7 +70,7 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 				EnumMode.ADMIN    -> {
 					player.gameMode = GameMode.CREATIVE
 
-					GamerUtils.fly(this, true)
+					fly(true)
 
 					visibleTo = rank
 				}
@@ -342,7 +337,7 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 					                   .basic("!")
 					                   .toString())
 		} else {
-			GamerUtils.clear(this)
+			clear()
 
 			this.warp = warp
 			warp.receiveGamer(this)
@@ -352,6 +347,27 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 			if (protocolVersion.isGreaterThanOrEquals(EnumProtocolVersion.RELEASE_1_8))
 				HeaderFooterUtils.update(this)
 		}
+	}
+
+	fun clear() {
+		val player = player
+
+		player.health = 20.0
+		player.foodLevel = 20
+		player.exp = 0f
+		player.level = 0
+
+		player.inventory.clear()
+
+		for (potionEffect in player.activePotionEffects)
+			player.removePotionEffect(potionEffect.type)
+	}
+
+	fun fly(fly: Boolean) {
+		val player = player
+
+		player.allowFlight = fly
+		player.isFlying = fly
 	}
 
 	init {

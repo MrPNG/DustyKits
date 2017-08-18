@@ -38,10 +38,10 @@ object PlayerLoginListener: Listener {
 				event.allow()
 			else
 				event.disallow(PlayerLoginEvent.Result.KICK_FULL, KICK_FULL_MESSAGE)
-		} else if (GamerRegistry.getPrimitiveGamerbyUUID(player.uniqueId) == null || Main.serverStatus != EnumServerStatus.ONLINE && Gamer
+		} else if (GamerRegistry.getPrimitiveGamerByUniqueId(player.uniqueId) == null || (Main.serverStatus != EnumServerStatus.ONLINE && Gamer
 				.of(player)
 				.rank
-				.isLowerThan(EnumRank.MOD)) {
+				.isLowerThan(EnumRank.MOD))) {
 			GamerRegistry.unregister(player.uniqueId)
 
 			event.disallow(PlayerLoginEvent.Result.KICK_OTHER, KICK_NOT_READY)

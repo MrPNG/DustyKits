@@ -33,7 +33,7 @@ public class WarpCommand extends CustomCommand {
 		Gamer gamer = Gamer.Companion.of(player);
 		
 		if(args.length == 0){
-			player.openInventory(WarpMenu.menuWarpMain(player));
+			player.openInventory(WarpMenu.INSTANCE.menuWarpMain(player));
 		}else{
 			Warp warp = Warps.INSTANCE.byName(args[0]);
 			
