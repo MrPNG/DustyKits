@@ -38,7 +38,7 @@ object AsyncPlayerChatListener: Listener {
 						.negative(event.message)
 						.toString()
 
-				GamerRegistry.getOnlineGamers().filter { it.rank.isHigherThanOrEquals(EnumRank.MOD) }.forEach {
+				GamerRegistry.onlineGamers.filter { it.rank.isHigherThanOrEquals(EnumRank.MOD) }.forEach {
 					it.player.sendMessage(if (it.chat == EnumChat.STAFF) message_neutral else message_negative)
 				}
 			}

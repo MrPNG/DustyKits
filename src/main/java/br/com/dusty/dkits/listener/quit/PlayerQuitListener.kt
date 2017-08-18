@@ -26,10 +26,12 @@ object PlayerQuitListener: Listener {
 
 			if (combatPartner != null) {
 				combatPartner.addKill()
+				combatPartner.addKillStreak()
 				combatPartner.addKillMoney()
 				combatPartner.addKillXp()
 
 				gamer.addDeath()
+				gamer.resetKillStreak()
 				gamer.removeDeathMoney()
 				gamer.removeDeathXp()
 			}

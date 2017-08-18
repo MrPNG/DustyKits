@@ -21,7 +21,7 @@ public class AdminCommand extends CustomCommand {
 		if(!(sender instanceof Player))
 			return true;
 		
-		Gamer gamer = Gamer.of((Player) sender);
+		Gamer gamer = Gamer.Companion.of((Player) sender);
 		
 		gamer.setMode(gamer.getMode() == EnumMode.ADMIN ? EnumMode.PLAY : EnumMode.ADMIN);
 		

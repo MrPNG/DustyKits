@@ -15,7 +15,7 @@ object PlayerMoveListener: Listener {
 		val gamer = Gamer.of(player)
 
 		if (gamer.warpTask != null) {
-			gamer.warpTask.cancel()
+			gamer.warpTask!!.cancel()
 			gamer.warpTask = null
 
 			player.sendMessage(Text.negativePrefix()

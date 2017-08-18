@@ -18,7 +18,7 @@ object PlayerCommandPreprocessListener: Listener {
 
 		when (event.message.split(" ".toRegex())[0]) {
 			"/stop" -> {
-				val gamers = HashSet(GamerRegistry.getOnlineGamers())
+				val gamers = HashSet(GamerRegistry.onlineGamers)
 				gamers.forEach { gamer -> gamer.player.kickPlayer(KICK_SHUTDOWN) }
 
 				WebAPI.saveProfiles(*gamers.toTypedArray())

@@ -112,7 +112,7 @@ public abstract class CustomCommand extends Command {
 	 */
 	@Override
 	public boolean testPermission(CommandSender sender) {
-		boolean b = sender instanceof Player ? Gamer.of((Player) sender)
+		boolean b = sender instanceof Player ? Gamer.Companion.of((Player) sender)
 		                                            .getRank()
 		                                            .isHigherThanOrEquals(rank) : sender instanceof ConsoleCommandSender;
 		

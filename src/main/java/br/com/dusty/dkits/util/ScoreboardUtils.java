@@ -64,7 +64,7 @@ public class ScoreboardUtils {
 			                   "",
 			                   Text.of(gamer.getKit().getName()).color(TextColor.YELLOW).toString(),
 			                   Text.of(gamer.isCombatTagged() ? "Sim" : "Não").color(TextColor.YELLOW).toString(),
-			                   Text.of(GamerRegistry.getOnlineGamers().size()).color(TextColor.YELLOW).toString()};
+			                   Text.of(GamerRegistry.INSTANCE.getOnlineGamers().size()).color(TextColor.YELLOW).toString()};
 			
 			for(int i = 0; i < LABELS.length; i++){
 				if(gamer.getKit().isDummy() && values[i].endsWith("None"))
@@ -85,7 +85,7 @@ public class ScoreboardUtils {
 			                       "",
 			                       ChatColor.YELLOW + "" + gamer.getKit().getName(),
 			                       ChatColor.YELLOW + "" + (gamer.isCombatTagged() ? "Sim" : "Não"),
-			                       ChatColor.YELLOW + "" + GamerRegistry.getOnlineGamers().size()};
+			                       ChatColor.YELLOW + "" + GamerRegistry.INSTANCE.getOnlineGamers().size()};
 			
 			for(int i = 0; i < LABELS_OLD.length; i++){
 				if(gamer.getKit().isDummy() && values_old[i].endsWith("None"))
@@ -100,7 +100,7 @@ public class ScoreboardUtils {
 	}
 	
 	public static void updateAll() {
-		GamerRegistry.getOnlineGamers().forEach(ScoreboardUtils::update);
+		GamerRegistry.INSTANCE.getOnlineGamers().forEach(ScoreboardUtils::update);
 	}
 	
 	private static void clear(Scoreboard scoreboard) {

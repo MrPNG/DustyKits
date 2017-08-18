@@ -30,7 +30,7 @@ public class WarpCommand extends CustomCommand {
 		
 		Player player = (Player) sender;
 		
-		Gamer gamer = Gamer.of(player);
+		Gamer gamer = Gamer.Companion.of(player);
 		
 		if(args.length == 0){
 			player.openInventory(WarpMenu.menuWarpMain(player));

@@ -28,7 +28,7 @@ public class KitCommand extends CustomCommand {
 		
 		Player player = (Player) sender;
 		
-		Gamer gamer = Gamer.of(player);
+		Gamer gamer = Gamer.Companion.of(player);
 		
 		if(args.length == 0){
 			//TODO: Open kit menu
@@ -58,7 +58,7 @@ public class KitCommand extends CustomCommand {
 		
 		Player player = (Player) sender;
 		
-		Gamer gamer = Gamer.of(player);
+		Gamer gamer = Gamer.Companion.of(player);
 		
 		for(Kit kit : Kits.KITS)
 			if(kit.getData().isEnabled() && gamer.getWarp().getEnabledKits().contains(kit))

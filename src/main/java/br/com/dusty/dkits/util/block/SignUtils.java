@@ -13,7 +13,7 @@ public class SignUtils {
 	}
 	
 	public static void doStuff(Sign sign, Player player) {
-		Gamer gamer = Gamer.of(player);
+		Gamer gamer = Gamer.Companion.of(player);
 		
 		switch(Text.clearFormatting(sign.getLine(1))){
 			case "[Grátis]":
