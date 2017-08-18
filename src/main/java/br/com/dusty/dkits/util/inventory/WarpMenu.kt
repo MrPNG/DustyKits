@@ -1,6 +1,6 @@
 package br.com.dusty.dkits.util.inventory
 
-import br.com.dusty.dkits.util.ItemStackUtils
+import br.com.dusty.dkits.util.rename
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
 import br.com.dusty.dkits.warp.Warp
@@ -10,8 +10,7 @@ import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
-
-import java.util.ArrayList
+import java.util.*
 
 object WarpMenu {
 
@@ -19,13 +18,13 @@ object WarpMenu {
 	val TITLE_GAME = Text.of("Warps de Jogo").color(TextColor.GOLD).toString()
 	val TITLE_EVENT = Text.of("Warps de Evento").color(TextColor.GOLD).toString()
 
-	val BUTTON_GAME = ItemStackUtils.rename(ItemStack(Material.DIAMOND_SWORD), TITLE_GAME)
-	val BUTTON_EVENT = ItemStackUtils.rename(ItemStack(Material.CAKE), TITLE_EVENT)
+	val BUTTON_GAME = ItemStack(Material.DIAMOND_SWORD).rename(TITLE_GAME)
+	val BUTTON_EVENT = ItemStack(Material.CAKE).rename(TITLE_EVENT)
 
 	fun menuWarpMain(player: Player): Inventory {
 		val inventory = Bukkit.createInventory(player, 27, TITLE_MAIN)
 
-		InventoryUtils.basic(inventory, false)
+		inventory.fill(false)
 
 		inventory.setItem(11, BUTTON_GAME)
 		inventory.setItem(15, BUTTON_EVENT)
@@ -36,7 +35,7 @@ object WarpMenu {
 	fun menuWarpGame(player: Player): Inventory {
 		val inventory = Bukkit.createInventory(player, 27, TITLE_GAME)
 
-		InventoryUtils.basic(inventory, true)
+		inventory.fill(true)
 
 		val warps = ArrayList<Warp>()
 
@@ -65,13 +64,9 @@ object WarpMenu {
 	fun menuWarpEvent(player: Player): Inventory {
 		val inventory = Bukkit.createInventory(player, 27, TITLE_EVENT)
 
-		InventoryUtils.basic(inventory, true)
+		inventory.fill(true)
 
-		val warps = ArrayList<Warp>()
-
-		for (warp in Warps.WARPS)
-			if (warp.warpType === Warp.EnumWarpType.EVENT && warp.data.isEnabled)
-				warps.add(warp)
+		val warps = Warps.WARPS.filterTo(ArrayList<Warp>()) { it.warpType == Warp.EnumWarpType.EVENT && it.data.isEnabled }
 
 		if (warps.size > 0)
 			when (warps.size) {

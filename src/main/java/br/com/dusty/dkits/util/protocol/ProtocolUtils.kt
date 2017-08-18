@@ -1,83 +1,73 @@
-package br.com.dusty.dkits.util.protocol;
+package br.com.dusty.dkits.util.protocol
 
-import org.bukkit.entity.Player;
+import org.bukkit.entity.Player
+import java.lang.reflect.Constructor
+import java.lang.reflect.Field
+import java.lang.reflect.Method
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+object ProtocolUtils {
 
-public class ProtocolUtils {
-	
-	public static final int PROTOCOL_VERSION = 335;
-	
-	static final String CRAFTBUKKIT_PACKAGE = "org.bukkit.craftbukkit.";
-	public static final String NMS_PACKAGE = "net.minecraft.server.";
-	public static final String NMS_VERSION = "v1_12_R1";
-	
-	static final String PROTOCOL_SUPPORT_PACKAGE = "protocolsupport.api.";
-	
-	private static Constructor<?> constructor_ChatMessage;
-	private static Method method_CraftPlayer_getHandle;
-	private static Field field_playerConnection;
-	private static Method method_PlayerConnection_sendPacket;
-	
-	private static Method method_ProtocolSupportAPI_getProtocolVersion;
-	private static Method method_ProtocolVersion_getId;
-	
-	static {
-		try{
-			Class<?> class_ChatMessage = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".ChatMessage");
-			constructor_ChatMessage = class_ChatMessage.getDeclaredConstructor(String.class, Object[].class);
-			
-			Class class_Packet = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".Packet");
-			
-			Class<?> class_CraftPlayer = Class.forName(ProtocolUtils.CRAFTBUKKIT_PACKAGE + ProtocolUtils.NMS_VERSION + ".entity.CraftPlayer");
-			method_CraftPlayer_getHandle = class_CraftPlayer.getDeclaredMethod("getHandle");
-			
-			Class class_EntityPlayer = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".EntityPlayer");
-			field_playerConnection = class_EntityPlayer.getDeclaredField("playerConnection");
-			
-			Class<?> class_PlayerConnection = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".PlayerConnection");
-			method_PlayerConnection_sendPacket = class_PlayerConnection.getDeclaredMethod("sendPacket", class_Packet);
-			
-			Class<?> class_ProtocolSupportAPI = Class.forName(PROTOCOL_SUPPORT_PACKAGE + "ProtocolSupportAPI");
-			method_ProtocolSupportAPI_getProtocolVersion = class_ProtocolSupportAPI.getDeclaredMethod("getProtocolVersion",
-			                                                                                          Player.class);
-			
-			Class<?> class_ProtocolVersion = Class.forName(PROTOCOL_SUPPORT_PACKAGE + "ProtocolVersion");
-			method_ProtocolVersion_getId = class_ProtocolVersion.getDeclaredMethod("getId");
-		}catch(ClassNotFoundException | NoSuchMethodException | NoSuchFieldException e){
-			e.printStackTrace();
-		}
+	val PROTOCOL_VERSION = 335
+
+	val CRAFTBUKKIT_PACKAGE = "org.bukkit.craftbukkit."
+	val NMS_PACKAGE = "net.minecraft.server."
+	val NMS_VERSION = "v1_12_R1"
+
+	val PROTOCOL_SUPPORT_PACKAGE = "protocolsupport.api."
+
+	var constructor_ChatMessage: Constructor<*>
+	var method_CraftPlayer_getHandle: Method
+	var field_playerConnection: Field
+	var method_PlayerConnection_sendPacket: Method
+
+	var method_ProtocolSupportAPI_getProtocolVersion: Method
+	var method_ProtocolVersion_getId: Method
+
+	init {
+		val class_ChatMessage = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".ChatMessage")
+		constructor_ChatMessage = class_ChatMessage.getDeclaredConstructor(String::class.java,
+		                                                                   Array<Any>::class.java)
+
+		val class_Packet = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".Packet")
+
+		val class_CraftPlayer = Class.forName(ProtocolUtils.CRAFTBUKKIT_PACKAGE + ProtocolUtils.NMS_VERSION + ".entity.CraftPlayer")
+		method_CraftPlayer_getHandle = class_CraftPlayer.getDeclaredMethod("getHandle")
+
+		val class_EntityPlayer = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".EntityPlayer")
+		field_playerConnection = class_EntityPlayer.getDeclaredField("playerConnection")
+
+		val class_PlayerConnection = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".PlayerConnection")
+		method_PlayerConnection_sendPacket = class_PlayerConnection.getDeclaredMethod("sendPacket", class_Packet)
+
+		val class_ProtocolSupportAPI = Class.forName(PROTOCOL_SUPPORT_PACKAGE + "ProtocolSupportAPI")
+		method_ProtocolSupportAPI_getProtocolVersion = class_ProtocolSupportAPI.getDeclaredMethod("getProtocolVersion",
+		                                                                                          Player::class.java)
+
+		val class_ProtocolVersion = Class.forName(PROTOCOL_SUPPORT_PACKAGE + "ProtocolVersion")
+		method_ProtocolVersion_getId = class_ProtocolVersion.getDeclaredMethod("getId")
 	}
-	
-	public static Field getAccessibleField(Class<?> clazz, String name) throws NoSuchFieldException {
-		Field field = clazz.getDeclaredField(name);
-		field.setAccessible(true);
-		
-		return field;
+
+	fun getAccessibleField(clazz: Class<*>, name: String): Field {
+		val field = clazz.getDeclaredField(name)
+		field.isAccessible = true
+
+		return field
 	}
-	
-	public static Object chatMessage(String s) throws IllegalAccessException, InvocationTargetException, InstantiationException {
-		return constructor_ChatMessage.newInstance(s, new Object[0]);
+
+	fun chatMessage(s: String): Any {
+		return constructor_ChatMessage.newInstance(s, arrayOfNulls<Any>(0))
 	}
-	
-	public static Integer protocolVersion(Player player) throws InvocationTargetException, IllegalAccessException {
-		Object object_ProtocolVersion = method_ProtocolSupportAPI_getProtocolVersion.invoke(null, player);
-		
-		return (Integer) method_ProtocolVersion_getId.invoke(object_ProtocolVersion);
+
+	fun protocolVersion(player: Player): Int? {
+		val object_ProtocolVersion = method_ProtocolSupportAPI_getProtocolVersion.invoke(null, player)
+
+		return method_ProtocolVersion_getId.invoke(object_ProtocolVersion) as Int
 	}
-	
-	public static void sendPacket(Object object_Packet, Player... players) {
-		for(Player player : players){
-			try{
-				Object object_EntityPlayer = method_CraftPlayer_getHandle.invoke(player);
-				Object object_PlayerConnection = field_playerConnection.get(object_EntityPlayer);
-				method_PlayerConnection_sendPacket.invoke(object_PlayerConnection, object_Packet);
-			}catch(IllegalAccessException | InvocationTargetException e){
-				e.printStackTrace();
-			}
-		}
+
+	fun sendPacket(object_Packet: Any, vararg players: Player) {
+		players
+				.map { method_CraftPlayer_getHandle.invoke(it) }
+				.map { field_playerConnection.get(it) }
+				.forEach { method_PlayerConnection_sendPacket.invoke(it, object_Packet) }
 	}
 }

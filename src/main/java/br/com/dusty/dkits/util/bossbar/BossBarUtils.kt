@@ -12,7 +12,7 @@ object BossBarUtils {
 			                          .append("dusty.com.br")
 			                          .color(TextColor.GOLD)
 			                          .toString(),
-	                          1,
+	                          1f,
 	                          BossBar.EnumBarColor.PINK,
 	                          BossBar.EnumBarStyle.PROGRESS,
 	                          BossBar.EnumFlags.NONE)

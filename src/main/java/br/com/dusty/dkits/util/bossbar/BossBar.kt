@@ -2,12 +2,8 @@ package br.com.dusty.dkits.util.bossbar
 
 import br.com.dusty.dkits.util.protocol.ProtocolUtils
 import org.bukkit.entity.Player
-
 import java.lang.reflect.Field
-import java.lang.reflect.InvocationTargetException
-import java.util.Arrays
-import java.util.HashSet
-import java.util.UUID
+import java.util.*
 
 class BossBar {
 
@@ -15,11 +11,11 @@ class BossBar {
 
 	private var uuid: UUID? = null
 
-	private var title: String? = null
+	private var title: String = ""
 	private var progress: Float = 0.toFloat()
-	private var barColor: EnumBarColor? = null
-	private var barStyle: EnumBarStyle? = null
-	private var flags: EnumFlags? = null
+	private var barColor = EnumBarColor.WHITE
+	private var barStyle = EnumBarStyle.PROGRESS
+	private var flags = EnumFlags.NONE
 
 	fun send(vararg players: Player) {
 		if (players.size > 1)
@@ -27,34 +23,24 @@ class BossBar {
 		else
 			this.players.add(players[0])
 
-		var object_PacketPlayOutBoss: Any? = null
-
-		try {
-			object_PacketPlayOutBoss = class_PacketPlayOutBoss!!.newInstance()
-			field_PacketPlayOutBoss_a!!.set(object_PacketPlayOutBoss, uuid)
-			field_PacketPlayOutBoss_b!!.set(object_PacketPlayOutBoss, enum_Action_values!![EnumAction.ADD.code])
-			field_PacketPlayOutBoss_c!!.set(object_PacketPlayOutBoss, ProtocolUtils.chatMessage(title!!))
-			field_PacketPlayOutBoss_d!!.set(object_PacketPlayOutBoss, progress)
-			field_PacketPlayOutBoss_e!!.set(object_PacketPlayOutBoss, enum_BarColor_values!![barColor!!.code])
-			field_PacketPlayOutBoss_f!!.set(object_PacketPlayOutBoss, enum_BarStyle_values!![barStyle!!.code])
-		} catch (e: IllegalAccessException) {
-			e.printStackTrace()
-		} catch (e: InvocationTargetException) {
-			e.printStackTrace()
-		} catch (e: InstantiationException) {
-			e.printStackTrace()
-		}
+		val object_PacketPlayOutBoss = class_PacketPlayOutBoss.newInstance()
+		field_PacketPlayOutBoss_a.set(object_PacketPlayOutBoss, uuid)
+		field_PacketPlayOutBoss_b.set(object_PacketPlayOutBoss, enum_Action_values[EnumAction.ADD.code])
+		field_PacketPlayOutBoss_c.set(object_PacketPlayOutBoss, ProtocolUtils.chatMessage(title))
+		field_PacketPlayOutBoss_d.set(object_PacketPlayOutBoss, progress)
+		field_PacketPlayOutBoss_e.set(object_PacketPlayOutBoss, enum_BarColor_values[barColor.code])
+		field_PacketPlayOutBoss_f.set(object_PacketPlayOutBoss, enum_BarStyle_values[barStyle.code])
 
 		when (flags) {
-			BossBar.EnumFlags.DARKEN_SKY     -> {
+			EnumFlags.NONE           -> {
 			}
-			BossBar.EnumFlags.PLAY_END_MUSIC -> {
+			EnumFlags.DARKEN_SKY     -> {
 			}
-			else                             -> {
+			EnumFlags.PLAY_END_MUSIC -> {
 			}
 		}
 
-		ProtocolUtils.sendPacket(object_PacketPlayOutBoss!!, *players)
+		ProtocolUtils.sendPacket(object_PacketPlayOutBoss, *players)
 	}
 
 	fun remove(vararg players: Player) {
@@ -63,80 +49,46 @@ class BossBar {
 		else
 			this.players.remove(players[0])
 
-		var object_PacketPlayOutBoss: Any? = null
+		val object_PacketPlayOutBoss = class_PacketPlayOutBoss.newInstance()
+		field_PacketPlayOutBoss_a.set(object_PacketPlayOutBoss, uuid)
+		field_PacketPlayOutBoss_b.set(object_PacketPlayOutBoss, enum_Action_values[EnumAction.REMOVE.code])
 
-		try {
-			object_PacketPlayOutBoss = class_PacketPlayOutBoss!!.newInstance()
-			field_PacketPlayOutBoss_a!!.set(object_PacketPlayOutBoss, uuid)
-			field_PacketPlayOutBoss_b!!.set(object_PacketPlayOutBoss, enum_Action_values!![EnumAction.REMOVE.code])
-		} catch (e: IllegalAccessException) {
-			e.printStackTrace()
-		} catch (e: InstantiationException) {
-			e.printStackTrace()
-		}
-
-		ProtocolUtils.sendPacket(object_PacketPlayOutBoss!!, *players)
+		ProtocolUtils.sendPacket(object_PacketPlayOutBoss, *players)
 	}
 
 	fun updateProgress(progress: Float, vararg players: Player) {
 		this.progress = progress
 
-		var object_PacketPlayOutBoss: Any? = null
+		val object_PacketPlayOutBoss = class_PacketPlayOutBoss.newInstance()
+		field_PacketPlayOutBoss_a.set(object_PacketPlayOutBoss, uuid)
+		field_PacketPlayOutBoss_b.set(object_PacketPlayOutBoss, enum_Action_values[EnumAction.HEALTH.code])
+		field_PacketPlayOutBoss_d.set(object_PacketPlayOutBoss, progress)
 
-		try {
-			object_PacketPlayOutBoss = class_PacketPlayOutBoss!!.newInstance()
-			field_PacketPlayOutBoss_a!!.set(object_PacketPlayOutBoss, uuid)
-			field_PacketPlayOutBoss_b!!.set(object_PacketPlayOutBoss, enum_Action_values!![EnumAction.HEALTH.code])
-			field_PacketPlayOutBoss_d!!.set(object_PacketPlayOutBoss, progress)
-		} catch (e: IllegalAccessException) {
-			e.printStackTrace()
-		} catch (e: InstantiationException) {
-			e.printStackTrace()
-		}
-
-		ProtocolUtils.sendPacket(object_PacketPlayOutBoss!!, *players)
+		ProtocolUtils.sendPacket(object_PacketPlayOutBoss, *players)
 	}
 
 	fun updateTitle(title: String, vararg players: Player) {
 		this.title = title
 
-		var object_PacketPlayOutBoss: Any? = null
+		val object_PacketPlayOutBoss = class_PacketPlayOutBoss.newInstance()
+		field_PacketPlayOutBoss_a.set(object_PacketPlayOutBoss, uuid)
+		field_PacketPlayOutBoss_b.set(object_PacketPlayOutBoss, enum_Action_values[EnumAction.TITLE.code])
+		field_PacketPlayOutBoss_c.set(object_PacketPlayOutBoss, ProtocolUtils.chatMessage(title))
 
-		try {
-			object_PacketPlayOutBoss = class_PacketPlayOutBoss!!.newInstance()
-			field_PacketPlayOutBoss_a!!.set(object_PacketPlayOutBoss, uuid)
-			field_PacketPlayOutBoss_b!!.set(object_PacketPlayOutBoss, enum_Action_values!![EnumAction.TITLE.code])
-			field_PacketPlayOutBoss_c!!.set(object_PacketPlayOutBoss, ProtocolUtils.chatMessage(title))
-		} catch (e: IllegalAccessException) {
-			e.printStackTrace()
-		} catch (e: InvocationTargetException) {
-			e.printStackTrace()
-		} catch (e: InstantiationException) {
-			e.printStackTrace()
-		}
-
-		ProtocolUtils.sendPacket(object_PacketPlayOutBoss!!, *players)
+		ProtocolUtils.sendPacket(object_PacketPlayOutBoss, *players)
 	}
 
 	fun updateStyle(barColor: EnumBarColor, barStyle: EnumBarStyle, vararg players: Player) {
 		this.barColor = barColor
 		this.barStyle = barStyle
 
-		var object_PacketPlayOutBoss: Any? = null
+		val object_PacketPlayOutBoss = class_PacketPlayOutBoss.newInstance()
+		field_PacketPlayOutBoss_a.set(object_PacketPlayOutBoss, uuid)
+		field_PacketPlayOutBoss_b.set(object_PacketPlayOutBoss, enum_Action_values[EnumAction.STYLE.code])
+		field_PacketPlayOutBoss_e.set(object_PacketPlayOutBoss, enum_BarColor_values[barColor.code])
+		field_PacketPlayOutBoss_f.set(object_PacketPlayOutBoss, enum_BarStyle_values[barStyle.code])
 
-		try {
-			object_PacketPlayOutBoss = class_PacketPlayOutBoss!!.newInstance()
-			field_PacketPlayOutBoss_a!!.set(object_PacketPlayOutBoss, uuid)
-			field_PacketPlayOutBoss_b!!.set(object_PacketPlayOutBoss, enum_Action_values!![EnumAction.STYLE.code])
-			field_PacketPlayOutBoss_e!!.set(object_PacketPlayOutBoss, enum_BarColor_values!![barColor.code])
-			field_PacketPlayOutBoss_f!!.set(object_PacketPlayOutBoss, enum_BarStyle_values!![barStyle.code])
-		} catch (e: IllegalAccessException) {
-			e.printStackTrace()
-		} catch (e: InstantiationException) {
-			e.printStackTrace()
-		}
-
-		ProtocolUtils.sendPacket(object_PacketPlayOutBoss!!, *players)
+		ProtocolUtils.sendPacket(object_PacketPlayOutBoss, *players)
 	}
 
 	private enum class EnumAction private constructor(internal var code: Int) {
@@ -175,7 +127,7 @@ class BossBar {
 		DARKEN_SKY(0x1),
 		PLAY_END_MUSIC(0x2);
 
-		internal var code: Byte = 0
+		var code: Byte = 0
 
 		init {
 			this.code = code.toByte()
@@ -184,48 +136,40 @@ class BossBar {
 
 	companion object {
 
-		private var class_PacketPlayOutBoss: Class<*>? = null
-		private var field_PacketPlayOutBoss_a: Field? = null
-		private var field_PacketPlayOutBoss_b: Field? = null
-		private var field_PacketPlayOutBoss_c: Field? = null
-		private var field_PacketPlayOutBoss_d: Field? = null
-		private var field_PacketPlayOutBoss_e: Field? = null
-		private var field_PacketPlayOutBoss_f: Field? = null
-		private var field_PacketPlayOutBoss_g: Field? = null
-		private var field_PacketPlayOutBoss_h: Field? = null
-		private var field_PacketPlayOutBoss_i: Field? = null
+		var class_PacketPlayOutBoss: Class<*> = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".PacketPlayOutBoss")
+		var field_PacketPlayOutBoss_a: Field
+		var field_PacketPlayOutBoss_b: Field
+		var field_PacketPlayOutBoss_c: Field
+		var field_PacketPlayOutBoss_d: Field
+		var field_PacketPlayOutBoss_e: Field
+		var field_PacketPlayOutBoss_f: Field
+		var field_PacketPlayOutBoss_g: Field
+		var field_PacketPlayOutBoss_h: Field
+		var field_PacketPlayOutBoss_i: Field
 
-		private var enum_Action_values: Array<Any>? = null
-		private var enum_BarColor_values: Array<Any>? = null
-		private var enum_BarStyle_values: Array<Any>? = null
+		var enum_Action_values: Array<*>
+		var enum_BarColor_values: Array<*>
+		var enum_BarStyle_values: Array<*>
 
 		init {
-			try {
-				class_PacketPlayOutBoss = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".PacketPlayOutBoss")
-				field_PacketPlayOutBoss_a = ProtocolUtils.getAccessibleField(class_PacketPlayOutBoss!!, "a")
-				field_PacketPlayOutBoss_b = ProtocolUtils.getAccessibleField(class_PacketPlayOutBoss!!, "b")
-				field_PacketPlayOutBoss_c = ProtocolUtils.getAccessibleField(class_PacketPlayOutBoss!!, "c")
-				field_PacketPlayOutBoss_d = ProtocolUtils.getAccessibleField(class_PacketPlayOutBoss!!, "d")
-				field_PacketPlayOutBoss_e = ProtocolUtils.getAccessibleField(class_PacketPlayOutBoss!!, "e")
-				field_PacketPlayOutBoss_f = ProtocolUtils.getAccessibleField(class_PacketPlayOutBoss!!, "f")
-				field_PacketPlayOutBoss_g = ProtocolUtils.getAccessibleField(class_PacketPlayOutBoss!!, "g")
-				field_PacketPlayOutBoss_h = ProtocolUtils.getAccessibleField(class_PacketPlayOutBoss!!, "h")
-				field_PacketPlayOutBoss_i = ProtocolUtils.getAccessibleField(class_PacketPlayOutBoss!!, "i")
+			field_PacketPlayOutBoss_a = ProtocolUtils.getAccessibleField(class_PacketPlayOutBoss, "a")
+			field_PacketPlayOutBoss_b = ProtocolUtils.getAccessibleField(class_PacketPlayOutBoss, "b")
+			field_PacketPlayOutBoss_c = ProtocolUtils.getAccessibleField(class_PacketPlayOutBoss, "c")
+			field_PacketPlayOutBoss_d = ProtocolUtils.getAccessibleField(class_PacketPlayOutBoss, "d")
+			field_PacketPlayOutBoss_e = ProtocolUtils.getAccessibleField(class_PacketPlayOutBoss, "e")
+			field_PacketPlayOutBoss_f = ProtocolUtils.getAccessibleField(class_PacketPlayOutBoss, "f")
+			field_PacketPlayOutBoss_g = ProtocolUtils.getAccessibleField(class_PacketPlayOutBoss, "g")
+			field_PacketPlayOutBoss_h = ProtocolUtils.getAccessibleField(class_PacketPlayOutBoss, "h")
+			field_PacketPlayOutBoss_i = ProtocolUtils.getAccessibleField(class_PacketPlayOutBoss, "i")
 
-				val enum_Action = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".PacketPlayOutBoss\$Action")
-				enum_Action_values = enum_Action.getEnumConstants()
+			val enum_Action = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".PacketPlayOutBoss\$Action")
+			enum_Action_values = enum_Action.enumConstants
 
-				val enum_BarColor = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".BossBattle\$BarColor")
-				enum_BarColor_values = enum_BarColor.getEnumConstants()
+			val enum_BarColor = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".BossBattle\$BarColor")
+			enum_BarColor_values = enum_BarColor.enumConstants
 
-				val enum_BarStyle = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".BossBattle\$BarStyle")
-				enum_BarStyle_values = enum_BarStyle.getEnumConstants()
-			} catch (e: ClassNotFoundException) {
-				e.printStackTrace()
-			} catch (e: NoSuchFieldException) {
-				e.printStackTrace()
-			}
-
+			val enum_BarStyle = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".BossBattle\$BarStyle")
+			enum_BarStyle_values = enum_BarStyle.enumConstants
 		}
 
 		fun create(title: String,

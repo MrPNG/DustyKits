@@ -40,7 +40,11 @@ object SignUtils {
 			}
 			"Créditos" -> {
 				//TODO: Send player back to where they came from
-				var amount = Integer.parseInt(sign.getLine(2).substring(3))
+				val amount = try {
+					Integer.parseInt(sign.getLine(2).substring(3))
+				} catch (e: Exception) {
+					0
+				}
 				gamer.addMoney(amount.toFloat())
 
 				player.sendMessage(Text.positivePrefix()
@@ -51,7 +55,11 @@ object SignUtils {
 			}
 			"XP"       -> {
 				//TODO: Send player back to where they came from
-				amount = Integer.parseInt(sign.getLine(2).substring(3))
+				val amount = try {
+					Integer.parseInt(sign.getLine(2).substring(3))
+				} catch (e: Exception) {
+					0
+				}
 				gamer.addXp(amount.toFloat())
 
 				player.sendMessage(Text.positivePrefix().basic("Você ").positive("ganhou " + amount).basic(" XP!").toString())
