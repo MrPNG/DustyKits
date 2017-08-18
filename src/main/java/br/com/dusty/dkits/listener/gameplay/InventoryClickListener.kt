@@ -1,6 +1,7 @@
 package br.com.dusty.dkits.listener.gameplay
 
 import br.com.dusty.dkits.gamer.Gamer
+import br.com.dusty.dkits.gamer.EnumMode
 import br.com.dusty.dkits.util.inventory.InventoryUtils.BUTTON_BACK
 import br.com.dusty.dkits.util.inventory.WarpMenu.*
 import br.com.dusty.dkits.warp.Warps
@@ -19,7 +20,7 @@ object InventoryClickListener: Listener {
 
 		val gamer = Gamer.of(player)
 
-		if (gamer.kit.isDummy)
+		if (gamer.kit.isDummy && gamer.mode != EnumMode.ADMIN)
 			event.isCancelled = true
 
 		val inventory = event.clickedInventory

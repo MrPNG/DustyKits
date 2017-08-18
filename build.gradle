@@ -74,15 +74,12 @@ task runServer(type: Exec) {
 repositories {
     mavenCentral()
     mavenLocal()
-    maven {
-        url 'https://repo.inventivetalent.org/content/groups/public/'
-    }
 }
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:1.1.4"
 
-    compileOnly group: 'org.spigotmc', name: 'spigot', version: '1.12-R0.1-SNAPSHOT'
+    compileOnly group: 'org.spigotmc', name: 'spigot', version: '1.12.1-R0.1-SNAPSHOT'
 
     compile group: 'joda-time', name: 'joda-time', version: '2.9.9'
     compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.3'

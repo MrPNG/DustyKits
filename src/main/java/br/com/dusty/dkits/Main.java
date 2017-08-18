@@ -46,8 +46,8 @@ public class Main extends JavaPlugin {
 		Commands.registerAll();
 		Listeners.INSTANCE.registerAll();
 		Abilities.registerAll();
-		Kits.registerAll();
-		Warps.registerAll();
+		Kits.INSTANCE.registerAll();
+		Warps.INSTANCE.registerAll();
 		
 		serverStatus = EnumServerStatus.ONLINE;
 	}

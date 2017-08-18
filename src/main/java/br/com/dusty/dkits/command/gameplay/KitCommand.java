@@ -33,7 +33,7 @@ public class KitCommand extends CustomCommand {
 		if(args.length == 0){
 			//TODO: Open kit menu
 		}else{
-			Kit kit = Kits.byName(args[0]);
+			Kit kit = Kits.INSTANCE.byName(args[0]);
 			
 			if(kit == null)
 				player.sendMessage(Text.negativePrefix()
@@ -60,7 +60,7 @@ public class KitCommand extends CustomCommand {
 		
 		Gamer gamer = Gamer.Companion.of(player);
 		
-		for(Kit kit : Kits.KITS)
+		for(Kit kit : Kits.INSTANCE.getKITS())
 			if(kit.getData().isEnabled() && gamer.getWarp().getEnabledKits().contains(kit))
 				if(args.length == 0 || kit.getName().toLowerCase().startsWith(args[0].toLowerCase()))
 					tabCompletions.add(kit.getName().toLowerCase());

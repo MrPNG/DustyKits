@@ -19,7 +19,9 @@ enum class EnumProtocolVersion {
 	RELEASE_1_11(315, "1.11.0", EnumProtocolSafety.REGULAR),
 	RELEASE_1_11_2(316, "1.11.1-1.11.2", EnumProtocolSafety.GOOD),
 	SNAPSHOT_1_12(317, 334, "snapshot_1.12", EnumProtocolSafety.TERRIBLE),
-	RELEASE_1_12(335, "1.12", EnumProtocolSafety.EXCELLENT);
+	RELEASE_1_12(335, "1.12", EnumProtocolSafety.EXCELLENT),
+	SNAPSHOT_1_12_1(336, 337, "snapshot_1.12.1", EnumProtocolSafety.TERRIBLE),
+	RELEASE_1_12_1(338, "1.12.1", EnumProtocolSafety.EXCELLENT);
 
 	var min: Int = 0
 	var max: Int = 0

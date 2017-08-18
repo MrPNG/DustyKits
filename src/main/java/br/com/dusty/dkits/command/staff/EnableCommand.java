@@ -23,7 +23,7 @@ public class EnableCommand extends CustomCommand {
 		if(args.length > 1)
 			switch(args[0].toLowerCase()){
 				case "kit":
-					Kit kit = Kits.byName(args[1]);
+					Kit kit = Kits.INSTANCE.byName(args[1]);
 					
 					if(kit == null){
 						sender.sendMessage(Text.positivePrefix()
@@ -34,7 +34,7 @@ public class EnableCommand extends CustomCommand {
 						                       .toString());
 					}else{
 						if(args.length > 2){
-							Warp warp = Warps.byName(args[2]);
+							Warp warp = Warps.INSTANCE.byName(args[2]);
 							
 							if(warp == null){
 								sender.sendMessage(Text.negativePrefix()
@@ -87,7 +87,7 @@ public class EnableCommand extends CustomCommand {
 					
 					break;
 				case "warp":
-					Warp warp = Warps.byName(args[1]);
+					Warp warp = Warps.INSTANCE.byName(args[1]);
 					
 					if(warp == null){
 						sender.sendMessage(Text.negativePrefix()

@@ -40,8 +40,8 @@ public class WarpMenu {
 		
 		ArrayList<Warp> warps = new ArrayList<>();
 		
-		for(Warp warp : Warps.WARPS)
-			if(warp.getType() == Warp.EnumWarpType.GAME && warp.getData().isEnabled())
+		for(Warp warp : Warps.INSTANCE.getWARPS())
+			if(warp.getWarpType() == Warp.EnumWarpType.GAME && warp.getData().isEnabled())
 				warps.add(warp);
 		
 		if(warps.size() > 0)
@@ -85,8 +85,8 @@ public class WarpMenu {
 		
 		ArrayList<Warp> warps = new ArrayList<>();
 		
-		for(Warp warp : Warps.WARPS)
-			if(warp.getType() == Warp.EnumWarpType.EVENT && warp.getData().isEnabled())
+		for(Warp warp : Warps.INSTANCE.getWARPS())
+			if(warp.getWarpType() == Warp.EnumWarpType.EVENT && warp.getData().isEnabled())
 				warps.add(warp);
 		
 		if(warps.size() > 0)

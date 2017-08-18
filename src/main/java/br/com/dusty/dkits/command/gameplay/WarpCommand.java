@@ -35,7 +35,7 @@ public class WarpCommand extends CustomCommand {
 		if(args.length == 0){
 			player.openInventory(WarpMenu.menuWarpMain(player));
 		}else{
-			Warp warp = Warps.byName(args[0]);
+			Warp warp = Warps.INSTANCE.byName(args[0]);
 			
 			if(warp == null || (!warp.getData().isEnabled() && gamer.getMode() != EnumMode.ADMIN))
 				player.sendMessage(Text.negativePrefix()
@@ -58,7 +58,7 @@ public class WarpCommand extends CustomCommand {
 		if(!(sender instanceof Player))
 			return tabCompletions;
 		
-		for(Warp warp : Warps.WARPS)
+		for(Warp warp : Warps.INSTANCE.getWARPS())
 			if(warp.getData().isEnabled())
 				if(args.length == 0 || warp.getName().toLowerCase().startsWith(args[0].toLowerCase()))
 					tabCompletions.add(warp.getName().toLowerCase());
