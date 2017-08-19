@@ -11,7 +11,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import java.util.*
 
-class WarpCommand(rank: EnumRank, alias: String): CustomCommand(rank, alias) {
+object WarpCommand: CustomCommand(EnumRank.DEFAULT, "warp") {
 
 	override fun execute(sender: CommandSender, alias: String, args: Array<String>): Boolean {
 		if (!testPermission(sender))

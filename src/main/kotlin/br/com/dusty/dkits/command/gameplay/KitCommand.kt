@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import java.util.*
 
-class KitCommand(rank: EnumRank, alias: String): CustomCommand(rank, alias) {
+object KitCommand: CustomCommand(EnumRank.DEFAULT, "kit") {
 
 	override fun execute(sender: CommandSender, alias: String, args: Array<String>): Boolean {
 		if (!testPermission(sender))

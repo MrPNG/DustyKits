@@ -9,7 +9,7 @@ import br.com.dusty.dkits.warp.Warp
 import br.com.dusty.dkits.warp.Warps
 import org.bukkit.command.CommandSender
 
-class DisableCommand(rank: EnumRank, alias: String): CustomCommand(rank, alias) {
+object DisableCommand: CustomCommand(EnumRank.ADMIN, "disable") {
 
 	override fun execute(sender: CommandSender, alias: String, args: Array<String>): Boolean {
 		if (!testPermission(sender))

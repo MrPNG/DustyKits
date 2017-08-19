@@ -22,13 +22,13 @@ object Commands {
 		//Usage: CUSTOM_COMMANDS.add(FooCommand());
 
 		//Staff
-		CUSTOM_COMMANDS.add(AdminCommand(EnumRank.MOD, "admin"))
-		CUSTOM_COMMANDS.add(DisableCommand(EnumRank.ADMIN, "disable"))
-		CUSTOM_COMMANDS.add(EnableCommand(EnumRank.ADMIN, "enable"))
+		CUSTOM_COMMANDS.add(AdminCommand)
+		CUSTOM_COMMANDS.add(DisableCommand)
+		CUSTOM_COMMANDS.add(EnableCommand)
 
 		//Gameplay
-		CUSTOM_COMMANDS.add(KitCommand(EnumRank.DEFAULT, "kit"))
-		CUSTOM_COMMANDS.add(WarpCommand(EnumRank.DEFAULT, "warp"))
+		CUSTOM_COMMANDS.add(KitCommand)
+		CUSTOM_COMMANDS.add(WarpCommand)
 
 		CUSTOM_COMMANDS.forEach({ it.register() })
 	}
