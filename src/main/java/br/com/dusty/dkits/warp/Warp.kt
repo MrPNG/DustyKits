@@ -76,7 +76,7 @@ open class Warp: Listener {
 	}
 
 	fun loadData() {
-		val dir = File(Main.ROOT, "warp")
+		val dir = File(Main.CONFIG_DIR, "warp")
 		val file = File(dir, name.toLowerCase() + ".json")
 
 		if (file.exists())
@@ -96,7 +96,7 @@ open class Warp: Listener {
 	}
 
 	fun saveData() {
-		val dir = File(Main.ROOT, "warp")
+		val dir = File(Main.CONFIG_DIR, "warp")
 		val file = File(dir, name.toLowerCase() + ".json")
 
 		dir.mkdirs()

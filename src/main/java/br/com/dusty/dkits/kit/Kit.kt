@@ -6,13 +6,10 @@ import br.com.dusty.dkits.gamer.EnumMode
 import br.com.dusty.dkits.gamer.Gamer
 import br.com.dusty.dkits.util.ScoreboardUtils
 import br.com.dusty.dkits.util.TaskUtils
-import br.com.dusty.dkits.util.gamer.GamerUtils
-import br.com.dusty.dkits.util.inventory.InventoryUtils
 import br.com.dusty.dkits.util.inventory.addItemStacks
 import br.com.dusty.dkits.util.inventory.setArmor
 import br.com.dusty.dkits.util.text.Text
 import org.bukkit.Material
-import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
 import java.io.*
@@ -100,7 +97,7 @@ open class Kit {
 	}
 
 	fun loadData() {
-		val dir = File(Main.ROOT, "kit")
+		val dir = File(Main.CONFIG_DIR, "kit")
 		val file = File(dir, name.toLowerCase() + ".json")
 
 		if (file.exists())
@@ -114,7 +111,7 @@ open class Kit {
 	}
 
 	fun saveData() {
-		val dir = File(Main.ROOT, "kit")
+		val dir = File(Main.CONFIG_DIR, "kit")
 		val file = File(dir, name.toLowerCase() + ".json")
 
 		var printWriter: PrintWriter? = null

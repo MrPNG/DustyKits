@@ -13,10 +13,11 @@ import java.io.File
 import java.util.Random
 
 class Main: JavaPlugin() {
+
 	init {
 		INSTANCE = this
 
-		ROOT.mkdirs()
+		CONFIG_DIR.mkdirs()
 	}
 
 	override fun onLoad() {
@@ -42,14 +43,14 @@ class Main: JavaPlugin() {
 		/**
 		 * **Singleton** deste [JavaPlugin].
 		 */
-		var INSTANCE: Main
+		lateinit var INSTANCE: Main
 
 		//TODO: public static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
 		val RANDOM = Random()
 		val GSON = Gson()
 
-		val ROOT = File(Bukkit.getWorldContainer(), "config")
+		val CONFIG_DIR = File(Bukkit.getWorldContainer(), "config")
 
 		val MAX_PLAYERS = 150
 
