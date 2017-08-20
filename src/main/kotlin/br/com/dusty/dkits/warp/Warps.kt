@@ -2,8 +2,7 @@ package br.com.dusty.dkits.warp
 
 import br.com.dusty.dkits.Main
 import org.bukkit.Bukkit
-
-import java.util.ArrayList
+import java.util.*
 
 object Warps {
 

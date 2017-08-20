@@ -130,5 +130,5 @@ open class Kit {
 		}
 	}
 
-	data class Data (var price: Int = -1, var isEnabled: Boolean = false)
+	data class Data(var price: Int = -1, var isEnabled: Boolean = false)
 }

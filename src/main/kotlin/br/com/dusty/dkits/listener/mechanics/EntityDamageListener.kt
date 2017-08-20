@@ -19,8 +19,8 @@ object EntityDamageListener: Listener {
 			if (gamer.isInvincible)
 				event.isCancelled = true
 
-			if (event.cause == EntityDamageEvent.DamageCause.FALL && gamer.hasNoFall()) {
-				gamer.setNoFall(false)
+			if (event.cause == EntityDamageEvent.DamageCause.FALL && gamer.isNoFall) {
+				gamer.isNoFall = false
 
 				event.isCancelled = true
 			}

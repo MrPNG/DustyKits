@@ -2,10 +2,8 @@ package br.com.dusty.dkits.command.staff
 
 import br.com.dusty.dkits.command.CustomCommand
 import br.com.dusty.dkits.gamer.EnumRank
-import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.util.text.Text
-import br.com.dusty.dkits.warp.Warp
 import br.com.dusty.dkits.warp.Warps
 import org.bukkit.command.CommandSender
 
@@ -116,5 +114,13 @@ object DisableCommand: CustomCommand(EnumRank.ADMIN, "disable") {
 					                   .toString())
 
 		return false
+	}
+
+	override fun tabComplete(sender: CommandSender, alias: String, args: Array<String>): MutableList<String>? {
+		return when {
+			args.isEmpty()   -> arrayListOf("kit", "warp")
+			args[0] == "kit" -> Warps.WARPS.filter { it.data.isEnabled }.map { it.name.toLowerCase() }.toMutableList()
+			else             -> Kits.KITS.filter { it.data.isEnabled }.map { it.name.toLowerCase() }.toMutableList()
+		}
 	}
 }

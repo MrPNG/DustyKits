@@ -36,6 +36,6 @@ object PlayerMoveListener: Listener {
 
 		player.velocity = Vector(0.0, 1.5, 0.0)
 
-		gamer.setNoFall(true)
+		gamer.isNoFall = true
 	}
 }

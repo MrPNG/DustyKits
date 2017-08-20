@@ -1,12 +1,11 @@
 package br.com.dusty.dkits.gamer
 
-import java.util.UUID
+import java.util.*
 
 class PrimitiveGamer {
 
-	private var uuid = ""
-
-	private val id = -1
+	var uuid = ""
+	var id = -1
 
 	var kills = 0
 	var deaths = 0
@@ -17,11 +16,11 @@ class PrimitiveGamer {
 	var hgWins = 0
 	var hgLosses = 0
 
-	internal fun getUniqueId(): UUID {
+	fun getUniqueId(): UUID {
 		return UUID.fromString(uuid)
 	}
 
-	internal fun setUniqueId(uuid: UUID) {
+	fun setUniqueId(uuid: UUID) {
 		this.uuid = uuid.toString()
 	}
 }

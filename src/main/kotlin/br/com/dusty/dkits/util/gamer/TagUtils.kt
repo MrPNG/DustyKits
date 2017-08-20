@@ -1,7 +1,6 @@
 package br.com.dusty.dkits.util.gamer
 
 import br.com.dusty.dkits.gamer.Gamer
-import org.bukkit.entity.Player
 
 object TagUtils {
 

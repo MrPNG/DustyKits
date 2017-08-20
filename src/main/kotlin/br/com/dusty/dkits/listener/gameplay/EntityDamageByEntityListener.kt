@@ -14,10 +14,10 @@ object EntityDamageByEntityListener: Listener {
 			val gamer = Gamer.of(event.entity as Player)
 			val damager = Gamer.of(event.damager as Player)
 
-			gamer.setCombatTag(10000)
+			gamer.combatTag = 10000
 			gamer.combatPartner = damager
 
-			damager.setCombatTag(10000)
+			damager.combatTag = 10000
 			damager.combatPartner = gamer
 		}
 	}

@@ -16,28 +16,27 @@ object SignUtils {
 		val gamer = Gamer.of(player)
 
 		when (Text.clearFormatting(sign.getLine(1))) {
-			"[Grátis]" -> if (gamer.isOnSignCooldown) {
+			"[Grátis]" -> if (gamer.isOnSignCooldown)
 				player.sendMessage(Text.negativePrefix()
 						                   .basic("Você ainda deve ")
 						                   .negative("esperar")
 						                   .basic(" mais ")
-						                   .negative(gamer.getSignCooldown())
+						                   .negative(gamer.signCooldown.toInt())
 						                   .basic(" segundo(s) para usar essa placa novamente!")
 						                   .toString())
-			} else {
+			else
 				when (Text.clearFormatting(sign.getLine(2))) {
 					"Sopa"    -> {
 						player.openInventory(InventoryUtils.soups(player))
 
-						gamer.setSignCooldown(10000)
+						gamer.signCooldown = 10000
 					}
 					"Recraft" -> {
 						player.openInventory(InventoryUtils.recraft(player))
 
-						gamer.setSignCooldown(10000)
+						gamer.signCooldown = 10000
 					}
 				}
-			}
 			"Créditos" -> {
 				//TODO: Send player back to where they came from
 				val amount = try {

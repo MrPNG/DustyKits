@@ -26,7 +26,7 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 	 */
 	var visibleTo = EnumRank.ADMIN
 		set(visibleTo) {
-			if (this.visibleTo == visibleTo)
+			if (field == visibleTo)
 				return
 
 			field = visibleTo
@@ -50,7 +50,7 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 
 	var mode = EnumMode.PLAY
 		set(mode) {
-			if (this.mode == mode)
+			if (field == mode)
 				return
 
 			field = mode
@@ -212,66 +212,55 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 		freeze = -1
 	}
 
-	private var cooldown: Long = -1
+	var cooldown: Long = -1
+		set(period) {
+			field = System.currentTimeMillis() + period
+		}
 
 	val isOnCooldown: Boolean
 		get() = cooldown > System.currentTimeMillis()
-
-	fun setCooldown(period: Long) {
-		cooldown = System.currentTimeMillis() + period
-	}
 
 	fun removeCooldown() {
 		cooldown = -1
 	}
 
-	private var signCooldown: Long = -1
+	var signCooldown: Long = -1
+		get() = Math.round(((field - System.currentTimeMillis()) / 1000).toFloat()).toLong()
+		set(period) {
+			field = System.currentTimeMillis() + period
+		}
 
 	val isOnSignCooldown: Boolean
 		get() = signCooldown > System.currentTimeMillis()
-
-	fun getSignCooldown(): Int {
-		return Math.round(((signCooldown - System.currentTimeMillis()) / 1000).toFloat())
-	}
-
-	fun setSignCooldown(period: Long) {
-		signCooldown = System.currentTimeMillis() + period
-	}
 
 	fun removeSignCooldown() {
 		signCooldown = -1
 	}
 
-	private var combatTag: Long = -1
-	var combatPartner: Gamer? = null
-	private var combatTask: BukkitTask? = null
+	var combatTag: Long = -1
+		get() = Math.round(((field - System.currentTimeMillis()) / 1000).toFloat()).toLong()
+		set(period) {
+			if (!isCombatTagged)
+				player.sendMessage(Text.negativePrefix()
+						                   .basic("Você ")
+						                   .negative("entrou")
+						                   .basic(" em ")
+						                   .negative("combate")
+						                   .basic("!")
+						                   .toString())
+
+			field = System.currentTimeMillis() + period
+
+			if (combatTask != null)
+				combatTask!!.cancel()
+
+			combatTask = TaskUtils.sync(Runnable { this.removeCombatTag() }, 200)
+
+			ScoreboardUtils.update(this)
+		}
 
 	val isCombatTagged: Boolean
 		get() = combatTag > System.currentTimeMillis()
-
-	fun getCombatTag(): Int {
-		return Math.round(((combatTag - System.currentTimeMillis()) / 1000).toFloat())
-	}
-
-	fun setCombatTag(period: Long) {
-		if (!isCombatTagged)
-			player.sendMessage(Text.negativePrefix()
-					                   .basic("Você ")
-					                   .negative("entrou")
-					                   .basic(" em ")
-					                   .negative("combate")
-					                   .basic("!")
-					                   .toString())
-
-		combatTag = System.currentTimeMillis() + period
-
-		if (combatTask != null)
-			combatTask!!.cancel()
-
-		combatTask = TaskUtils.sync(Runnable { this.removeCombatTag() }, 200)
-
-		ScoreboardUtils.update(this)
-	}
 
 	fun removeCombatTag() {
 		player.sendMessage(Text.positivePrefix()
@@ -290,15 +279,13 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 		ScoreboardUtils.update(this)
 	}
 
-	private var noFall: Boolean = false
+	var combatPartner: Gamer? = null
+	var combatTask: BukkitTask? = null
 
-	fun hasNoFall(): Boolean {
-		return noFall
-	}
-
-	fun setNoFall(noFall: Boolean) {
-		this.noFall = noFall
-	}
+	var isNoFall: Boolean = false
+		set(value) {
+			field = value
+		}
 
 	var kit: Kit = Kits.NONE
 		set(kit) {
@@ -371,12 +358,15 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 	}
 
 	init {
-		if (rank.isLowerThan(EnumRank.MOD)) {
-			mode = EnumMode.PLAY
-			visibleTo = EnumRank.DEFAULT
-		} else {
-			mode = EnumMode.ADMIN
-			visibleTo = rank
+		when {
+			rank.isLowerThan(EnumRank.MOD) -> {
+				mode = EnumMode.PLAY
+				visibleTo = EnumRank.DEFAULT
+			}
+			else                           -> {
+				mode = EnumMode.ADMIN
+				visibleTo = rank
+			}
 		}
 
 		GamerRegistry.onlineGamers

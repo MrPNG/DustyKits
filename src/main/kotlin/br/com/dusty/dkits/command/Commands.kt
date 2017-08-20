@@ -5,7 +5,6 @@ import br.com.dusty.dkits.command.gameplay.WarpCommand
 import br.com.dusty.dkits.command.staff.AdminCommand
 import br.com.dusty.dkits.command.staff.DisableCommand
 import br.com.dusty.dkits.command.staff.EnableCommand
-import br.com.dusty.dkits.gamer.EnumRank
 import java.util.*
 
 object Commands {

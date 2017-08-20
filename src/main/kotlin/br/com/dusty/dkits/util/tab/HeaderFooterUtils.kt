@@ -36,15 +36,15 @@ object HeaderFooterUtils {
 
 		val object_PacketPlayOutPlayerListHeaderFooter = class_PacketPlayOutPlayerListHeaderFooter.newInstance()
 		field_PacketPlayOutPlayerListHeaderFooter_a.set(object_PacketPlayOutPlayerListHeaderFooter,
-		                                                  ProtocolUtils.chatMessage(HEADER_MAIN + "\n" + HEADER_BAR))
+		                                                ProtocolUtils.chatMessage(HEADER_MAIN + "\n" + HEADER_BAR))
 		field_PacketPlayOutPlayerListHeaderFooter_b.set(object_PacketPlayOutPlayerListHeaderFooter,
-		                                                  ProtocolUtils.chatMessage(HEADER_BAR + "\n" + Text.of(
-				                                                  "Warp: ")
-				                                                  .color(TextColor.RED)
-				                                                  .append(gamer.warp
-						                                                          .name)
-				                                                  .color(TextColor.YELLOW)
-				                                                  .toString()))
+		                                                ProtocolUtils.chatMessage(HEADER_BAR + "\n" + Text.of(
+				                                                "Warp: ")
+				                                                .color(TextColor.RED)
+				                                                .append(gamer.warp
+						                                                        .name)
+				                                                .color(TextColor.YELLOW)
+				                                                .toString()))
 
 		ProtocolUtils.sendPacket(object_PacketPlayOutPlayerListHeaderFooter, player)
 	}

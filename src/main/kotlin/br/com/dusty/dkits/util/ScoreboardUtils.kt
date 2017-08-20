@@ -13,7 +13,7 @@ import org.bukkit.scoreboard.Scoreboard
 
 object ScoreboardUtils {
 
-	private val LABELS = arrayOf(Text.of("XP: ").color(TextColor.GOLD).toString(),
+	val LABELS = arrayOf(Text.of("XP: ").color(TextColor.GOLD).toString(),
 	                             Text.of("Créditos: ").color(TextColor.GOLD).toString(),
 	                             Text.of("------------").color(TextColor.YELLOW).toString(),
 	                             Text.of("Kills: ").color(TextColor.RED).toString(),
@@ -24,7 +24,7 @@ object ScoreboardUtils {
 	                             Text.of("Combate: ").color(TextColor.AQUA).toString(),
 	                             Text.of("Players: ").color(TextColor.AQUA).toString())
 
-	private val LABELS_OLD = arrayOf(ChatColor.GOLD.toString() + "XP: ",
+	val LABELS_OLD = arrayOf(ChatColor.GOLD.toString() + "XP: ",
 	                                 ChatColor.GOLD.toString() + "$: ",
 	                                 ChatColor.YELLOW.toString() + "=-=-=-=-=-=-",
 	                                 ChatColor.RED.toString() + "Kills: ",
@@ -101,7 +101,7 @@ object ScoreboardUtils {
 		GamerRegistry.onlineGamers.forEach({ update(it) })
 	}
 
-	private fun clear(scoreboard: Scoreboard) {
+	fun clear(scoreboard: Scoreboard) {
 		scoreboard.entries.forEach({ scoreboard.resetScores(it) })
 	}
 }

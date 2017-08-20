@@ -1,5 +1,3 @@
-@file:JvmName("MOTDUtils")
-
 package br.com.dusty.dkits.util
 
 import br.com.dusty.dkits.Main

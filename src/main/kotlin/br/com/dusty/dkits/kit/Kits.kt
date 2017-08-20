@@ -6,6 +6,7 @@ object Kits {
 
 	val NONE = NoneKit
 	val PVP = PvpKit
+	val SNAIL = SnailKit
 
 	val KITS = ArrayList<Kit>()
 
@@ -14,6 +15,7 @@ object Kits {
 
 		KITS.add(NONE)
 		KITS.add(PVP)
+		KITS.add(SNAIL)
 	}
 
 	fun byName(name: String): Kit? {

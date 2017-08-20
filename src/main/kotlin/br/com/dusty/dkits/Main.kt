@@ -8,9 +8,8 @@ import br.com.dusty.dkits.warp.Warps
 import com.google.gson.Gson
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
-
 import java.io.File
-import java.util.Random
+import java.util.*
 
 class Main: JavaPlugin() {
 

@@ -1,24 +1,27 @@
-package br.com.dusty.dkits.warp
+package br.com.dusty.dkits.kit
 
+import br.com.dusty.dkits.util.color
 import br.com.dusty.dkits.util.rename
 import br.com.dusty.dkits.util.setDescription
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
+import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
-object ArenaWarp: Warp() {
+object SnailKit: Kit() {
 
 	init {
-		name = "Arena"
-		icon = ItemStack(Material.STONE_SWORD)
+		name = "Snail"
 
 		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
 		icon.setDescription(description)
 
-		entryKit = Warp.GAME_WARP_KIT
+		weapon = ItemStack(Material.STONE_SWORD)
+		armor = arrayOf(null, ItemStack(Material.LEATHER_CHESTPLATE).color(Color.fromRGB(0xCCD0E1)), null, null)
 
-		data.spreadRange = 4f
+		isDummy = false
+		isBroadcast = true
 
 		loadData()
 	}

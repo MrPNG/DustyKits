@@ -158,17 +158,12 @@ open class Warp: Listener {
 		EVENT
 	}
 
-	class Data {
-
-		var isEnabled = false
-
-		var isListEnabledKits = true
-		var kits = arrayOf<String>()
-
-		var spawn = floatArrayOf(0f, 0f, 0f)
-		var spawnRadius = 0f
-		var spreadRange = 0f
-	}
+	data class Data(var isEnabled: Boolean = false,
+	                var isListEnabledKits: Boolean = true,
+	                var kits: Array<String> = arrayOf(),
+	                var spawn: Array<Float> = arrayOf(0f, 0f, 0f),
+	                var spawnRadius: Float = 0f,
+	                var spreadRange: Float = 0f)
 
 	companion object {
 
