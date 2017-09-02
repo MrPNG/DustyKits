@@ -5,6 +5,7 @@ import br.com.dusty.dkits.command.gameplay.WarpCommand
 import br.com.dusty.dkits.command.staff.AdminCommand
 import br.com.dusty.dkits.command.staff.DisableCommand
 import br.com.dusty.dkits.command.staff.EnableCommand
+import br.com.dusty.dkits.command.staff.InvSeeCommand
 import java.util.*
 
 object Commands {
@@ -24,6 +25,7 @@ object Commands {
 		CUSTOM_COMMANDS.add(AdminCommand)
 		CUSTOM_COMMANDS.add(DisableCommand)
 		CUSTOM_COMMANDS.add(EnableCommand)
+		CUSTOM_COMMANDS.add(InvSeeCommand)
 
 		//Gameplay
 		CUSTOM_COMMANDS.add(KitCommand)
