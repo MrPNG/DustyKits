@@ -30,7 +30,7 @@ object AsyncPlayerChatListener: Listener {
 
 				val messageNegative = STAFF_CHAT_PREFIX_NEGATIVE.append("<").append(player.displayName).append("> ").negative(event.message).toString()
 
-				GamerRegistry.onlineGamers.filter { it.rank.isHigherThanOrEquals(EnumRank.MOD) }.forEach {
+				GamerRegistry.onlineGamers().filter { it.rank.isHigherThanOrEquals(EnumRank.MOD) }.forEach {
 					it.player.sendMessage(if (it.chat == EnumChat.STAFF) messageNeutral else messageNegative)
 				}
 			}

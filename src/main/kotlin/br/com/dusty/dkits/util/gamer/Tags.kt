@@ -2,7 +2,7 @@ package br.com.dusty.dkits.util.gamer
 
 import br.com.dusty.dkits.gamer.Gamer
 
-object TagUtils {
+object Tags {
 
 	fun applyTag(gamer: Gamer) {
 		val player = gamer.player

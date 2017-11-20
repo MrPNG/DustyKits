@@ -4,7 +4,7 @@ import br.com.dusty.dkits.Main
 import br.com.dusty.dkits.gamer.Gamer
 import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.kit.Kits
-import br.com.dusty.dkits.util.TaskUtils
+import br.com.dusty.dkits.util.Tasks
 import br.com.dusty.dkits.util.rename
 import br.com.dusty.dkits.util.spread
 import br.com.dusty.dkits.util.text.Text
@@ -47,12 +47,12 @@ open class Warp: Listener {
 
 	var data = Data()
 
-	fun enabled(enabled: Boolean): Boolean {
+	fun enable(enabled: Boolean): Boolean {
 		if (data.isEnabled == enabled) return false
 
 		data.isEnabled = enabled
 
-		TaskUtils.async(Runnable { this.saveData() })
+		Tasks.async(Runnable { this.saveData() })
 
 		return true
 	}
@@ -63,7 +63,7 @@ open class Warp: Listener {
 		if (data.isListEnabledKits) data.kits = enabledKits.map { it.name }.toTypedArray()
 		else data.kits = Kits.KITS.filter { !enabledKits.contains(it) }.map { it.name }.toTypedArray()
 
-		TaskUtils.async(Runnable { this.saveData() })
+		Tasks.async(Runnable { this.saveData() })
 
 		return b
 	}
@@ -96,6 +96,7 @@ open class Warp: Listener {
 
 		player.teleport(spawn!!.spread(data.spreadRange))
 		player.sendMessage(Text.positivePrefix().basic("Você foi ").positive("teleportado").basic(" para a warp ").positive(name).basic("!").toString())
+		//TODO: Titles/subtitles for 1.8+ players
 
 		gamer.kit = entryKit
 		entryKit.apply(gamer)

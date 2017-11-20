@@ -1,6 +1,6 @@
 package br.com.dusty.dkits.listener.mechanics
 
-import br.com.dusty.dkits.util.TaskUtils
+import br.com.dusty.dkits.util.Tasks
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.ItemSpawnEvent
@@ -11,6 +11,6 @@ object ItemSpawnListener: Listener {
 	fun onItemSpawn(event: ItemSpawnEvent) {
 		val item = event.entity
 
-		TaskUtils.sync(Runnable { item.remove() }, 100)
+		Tasks.sync(Runnable { item.remove() }, 100)
 	}
 }

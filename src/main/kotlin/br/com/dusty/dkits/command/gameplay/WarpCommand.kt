@@ -22,7 +22,7 @@ object WarpCommand: CustomCommand(EnumRank.DEFAULT, "warp") {
 			} else {
 				val warp = Warps[args[0]]
 
-				if (warp == Warps.NONE || !warp.data.isEnabled && gamer.mode !== EnumMode.ADMIN) sender.sendMessage(Text.negativePrefix().basic("Não").basic(" há uma warp com o nome \"").negative(
+				if (warp == Warps.NONE || !warp.data.isEnabled && gamer.mode != EnumMode.ADMIN) sender.sendMessage(Text.negativePrefix().basic("Não").basic(" há uma warp com o nome \"").negative(
 						args[0]).basic("\"!").toString())
 				else gamer.sendToWarp(warp)
 			}

@@ -5,7 +5,7 @@ import java.lang.reflect.Constructor
 import java.lang.reflect.Field
 import java.lang.reflect.Method
 
-object ProtocolUtils {
+object Protocols {
 
 	val PROTOCOL_VERSION = 335
 
@@ -24,18 +24,18 @@ object ProtocolUtils {
 	var method_ProtocolVersion_getId: Method
 
 	init {
-		val class_ChatMessage = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".ChatMessage")
+		val class_ChatMessage = Class.forName(Protocols.NMS_PACKAGE + Protocols.NMS_VERSION + ".ChatMessage")
 		constructor_ChatMessage = class_ChatMessage.getDeclaredConstructor(String::class.java, Array<Any>::class.java)
 
-		val class_Packet = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".Packet")
+		val class_Packet = Class.forName(Protocols.NMS_PACKAGE + Protocols.NMS_VERSION + ".Packet")
 
-		val class_CraftPlayer = Class.forName(ProtocolUtils.CRAFTBUKKIT_PACKAGE + ProtocolUtils.NMS_VERSION + ".entity.CraftPlayer")
+		val class_CraftPlayer = Class.forName(Protocols.CRAFTBUKKIT_PACKAGE + Protocols.NMS_VERSION + ".entity.CraftPlayer")
 		method_CraftPlayer_getHandle = class_CraftPlayer.getDeclaredMethod("getHandle")
 
-		val class_EntityPlayer = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".EntityPlayer")
+		val class_EntityPlayer = Class.forName(Protocols.NMS_PACKAGE + Protocols.NMS_VERSION + ".EntityPlayer")
 		field_playerConnection = class_EntityPlayer.getDeclaredField("playerConnection")
 
-		val class_PlayerConnection = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".PlayerConnection")
+		val class_PlayerConnection = Class.forName(Protocols.NMS_PACKAGE + Protocols.NMS_VERSION + ".PlayerConnection")
 		method_PlayerConnection_sendPacket = class_PlayerConnection.getDeclaredMethod("sendPacket", class_Packet)
 
 		val class_ProtocolSupportAPI = Class.forName(PROTOCOL_SUPPORT_PACKAGE + "ProtocolSupportAPI")

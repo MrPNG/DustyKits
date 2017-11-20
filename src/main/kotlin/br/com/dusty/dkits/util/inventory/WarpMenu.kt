@@ -39,7 +39,7 @@ object WarpMenu {
 
 		val warps = ArrayList<Warp>()
 
-		for (warp in Warps.WARPS) if (warp.warpType === Warp.EnumWarpType.GAME && warp.data.isEnabled) warps.add(warp)
+		for (warp in Warps.WARPS) if (warp.warpType == Warp.EnumWarpType.GAME && warp.data.isEnabled) warps.add(warp)
 
 		if (warps.size > 0) when (warps.size) {
 			1    -> inventory.setItem(13, warps[0].icon)

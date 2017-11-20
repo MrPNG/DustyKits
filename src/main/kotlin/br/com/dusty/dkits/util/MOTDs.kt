@@ -4,7 +4,7 @@ import br.com.dusty.dkits.Main
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
 
-object MOTDUtils {
+object MOTDs {
 
 	val MOTD_MAIN = Text.of("Dusty").color(TextColor.GOLD).append(" - ").color(TextColor.GRAY).toString()
 	val MOTD_ALTERNATE = arrayOf(Text.of("Venha jogar!").color(TextColor.DARK_AQUA).toString(), Text.of("Divirta-se com seus amigos!").color(TextColor.DARK_AQUA).toString())

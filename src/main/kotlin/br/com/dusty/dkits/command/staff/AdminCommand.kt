@@ -13,7 +13,7 @@ object AdminCommand: CustomCommand(EnumRank.MOD, "admin") {
 		!testPermission(sender) || sender !is Player -> true
 		else                                         -> {
 			val gamer = Gamer[sender]
-			gamer.mode = if (gamer.mode === EnumMode.ADMIN) EnumMode.PLAY else EnumMode.ADMIN
+			gamer.mode = if (gamer.mode == EnumMode.ADMIN) EnumMode.PLAY else EnumMode.ADMIN
 
 			false
 		}

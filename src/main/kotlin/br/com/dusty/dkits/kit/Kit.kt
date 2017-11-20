@@ -4,14 +4,12 @@ import br.com.dusty.dkits.Main
 import br.com.dusty.dkits.ability.Ability
 import br.com.dusty.dkits.gamer.EnumMode
 import br.com.dusty.dkits.gamer.Gamer
-import br.com.dusty.dkits.util.ScoreboardUtils
-import br.com.dusty.dkits.util.TaskUtils
+import br.com.dusty.dkits.util.Tasks
 import br.com.dusty.dkits.util.inventory.addItemStacks
 import br.com.dusty.dkits.util.inventory.setArmor
 import br.com.dusty.dkits.util.text.Text
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
-
 import java.io.*
 
 open class Kit {
@@ -42,31 +40,38 @@ open class Kit {
 		player.inventory.addItemStacks(items)
 	}
 
-	fun applyIfAllowed(gamer: Gamer) {
+	fun setAndApplyIfAllowed(gamer: Gamer) {
 		val player = gamer.player
 
-		if (gamer.mode !== EnumMode.ADMIN && !gamer.kit.isDummy) { //TODO: If not on MiniHG
-			player.sendMessage(Text.negativePrefix().basic("Você ").negative("já").basic(" está ").negative("usando").basic(" um kit!").toString())
-		} else if (gamer.mode !== EnumMode.ADMIN && !gamer.warp.enabledKits.contains(this)) {
-			player.sendMessage(Text.negativePrefix().basic("Você ").negative("não pode").basic(" usar o kit ").negative(name).basic(" nesta warp!").toString())
-		} else if (gamer.mode !== EnumMode.ADMIN && !gamer.hasKit(this)) {
-			player.sendMessage(Text.negativePrefix().basic("Você ").negative("não").basic(" tem o kit ").negative(name).basic("!").toString())
-		} else {
-			gamer.kit = this
-			apply(gamer)
+		//TODO: If not on MiniHG
+		when {
+			gamer.mode != EnumMode.ADMIN && !gamer.kit.isDummy                     -> {
+				player.sendMessage(Text.negativePrefix().basic("Você ").negative("já").basic(" está ").negative("usando").basic(" um kit!").toString())
+			}
+			gamer.mode != EnumMode.ADMIN && !gamer.warp.enabledKits.contains(this) -> {
+				player.sendMessage(Text.negativePrefix().basic("Você ").negative("não pode").basic(" usar o kit ").negative(name).basic(" nesta warp!").toString())
+			}
+			gamer.mode != EnumMode.ADMIN && !gamer.hasKit(this)                    -> {
+				player.sendMessage(Text.negativePrefix().basic("Você ").negative("não").basic(" possui o kit ").negative(name).basic("!").toString())
+			}
+			else                                                                   -> {
+				gamer.kit = this
+				apply(gamer)
 
-			ScoreboardUtils.update(gamer)
+				gamer.updateScoreboard()
 
-			player.sendMessage(Text.positivePrefix().basic("Agora você está ").positive("usando").basic(" o kit ").positive(name).basic("!").toString())
+				player.sendMessage(Text.positivePrefix().basic("Agora você está ").positive("usando").basic(" o kit ").positive(name).basic("!").toString())
+				//TODO: Titles/subtitles for 1.8+ players
+			}
 		}
 	}
 
-	fun enabled(enabled: Boolean): Boolean {
+	fun enable(enabled: Boolean): Boolean {
 		if (data.isEnabled == enabled) return false
 
 		data.isEnabled = enabled
 
-		TaskUtils.async(Runnable { this.saveData() })
+		Tasks.async(Runnable { this.saveData() })
 
 		return true
 	}

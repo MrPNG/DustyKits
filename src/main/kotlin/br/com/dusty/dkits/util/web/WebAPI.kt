@@ -15,7 +15,7 @@ object WebAPI {
 
 	private val HTTP_CLIENT = HttpClientBuilder.create().build()
 
-	private val ENDPOINT = "http://localhost/api/handler.php"
+	private val ENDPOINT = "http://ec2-54-207-118-164.sa-east-1.compute.amazonaws.com/api/handler.php"
 
 	fun getProfile(uuid: UUID): String? {
 		val httpGet = HttpGet(ENDPOINT + "?type=perfil&uuid=" + uuid)

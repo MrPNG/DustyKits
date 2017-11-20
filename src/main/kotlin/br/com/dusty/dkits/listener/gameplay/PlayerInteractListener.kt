@@ -1,6 +1,6 @@
 package br.com.dusty.dkits.listener.gameplay
 
-import br.com.dusty.dkits.util.block.SignUtils
+import br.com.dusty.dkits.util.block.Signs
 import br.com.dusty.dkits.util.inventory.WarpMenu
 import br.com.dusty.dkits.warp.Warps
 import org.bukkit.Material
@@ -23,7 +23,7 @@ object PlayerInteractListener: Listener {
 				Material.WALL_SIGN -> {
 					val sign = block.state as Sign
 
-					if (SignUtils.isSpecialSign(sign)) SignUtils.doStuff(sign, player)
+					if (Signs.isSpecialSign(sign)) Signs.interact(sign, player)
 				}
 			}
 		}

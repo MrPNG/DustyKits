@@ -20,8 +20,8 @@ object KitCommand: CustomCommand(EnumRank.DEFAULT, "kit") {
 			} else {
 				val kit = Kits[args[0]]
 
-				if (kit == Kits.NONE) sender.sendMessage(Text.negativePrefix().basic("Não").basic(" há um kit com o nome \"").negative(args[0]).basic("\"!").toString())
-				else kit.applyIfAllowed(gamer)
+				if (kit == Kits.NONE || !kit.data.isEnabled) sender.sendMessage(Text.negativePrefix().basic("Não").basic(" há um kit com o nome \"").negative(args[0]).basic("\"!").toString())
+				else kit.setAndApplyIfAllowed(gamer)
 			}
 
 			false

@@ -2,8 +2,8 @@ package br.com.dusty.dkits.listener.quit
 
 import br.com.dusty.dkits.gamer.EnumRank
 import br.com.dusty.dkits.gamer.GamerRegistry
-import br.com.dusty.dkits.util.ScoreboardUtils
-import br.com.dusty.dkits.util.TaskUtils
+import br.com.dusty.dkits.util.Scoreboards
+import br.com.dusty.dkits.util.Tasks
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.web.WebAPI
 import org.bukkit.Bukkit
@@ -19,31 +19,33 @@ object PlayerQuitListener: Listener {
 	fun onPlayerQuit(event: PlayerQuitEvent) {
 		val player = event.player
 
-		val gamer = GamerRegistry.unregister(player)
+		val gamer = GamerRegistry.GAMER_BY_PLAYER.remove(player)
 
-		if (gamer.isCombatTagged) {
-			val combatPartner = gamer.combatPartner
+		if (gamer != null) {
+			if (gamer.isCombatTagged()) {
+				val combatPartner = gamer.combatPartner
 
-			if (combatPartner != null) {
-				combatPartner.addKill()
-				combatPartner.addKillStreak()
-				combatPartner.addKillMoney()
-				combatPartner.addKillXp()
+				if (combatPartner != null) {
+					combatPartner.addKill()
+					combatPartner.addKillStreak()
+					combatPartner.addKillMoney()
+					combatPartner.addKillXp()
 
-				gamer.addDeath()
-				gamer.resetKillStreak()
-				gamer.removeDeathMoney()
-				gamer.removeDeathXp()
+					gamer.addDeath()
+					gamer.resetKillStreak()
+					gamer.removeDeathMoney()
+					gamer.removeDeathXp()
+				}
+
+				Bukkit.broadcastMessage(Text.negativeOf(player.name).basic(" deslogou em ").negative("combate").basic("!").toString())
 			}
 
-			Bukkit.broadcastMessage(Text.negativeOf(player.name).basic(" deslogou em ").negative("combate").basic("!").toString())
+			Tasks.async(Runnable { WebAPI.saveProfiles(gamer) })
+
+			if (gamer.rank.isLowerThan(EnumRank.MOD)) event.quitMessage = QUIT_MESSAGE_PREFIX + player.name
+			else event.quitMessage = null
 		}
 
-		TaskUtils.async(Runnable { WebAPI.saveProfiles(gamer) })
-
-		if (gamer.rank.isLowerThan(EnumRank.MOD)) event.quitMessage = QUIT_MESSAGE_PREFIX + player.name
-		else event.quitMessage = null
-
-		ScoreboardUtils.updateAll()
+		Scoreboards.update()
 	}
 }

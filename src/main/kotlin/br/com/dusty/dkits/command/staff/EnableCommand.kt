@@ -17,7 +17,7 @@ object EnableCommand: CustomCommand(EnumRank.ADMIN, "enable") {
 				val kit = Kits[args[1]]
 
 				if (kit == Kits.NONE) {
-					sender.sendMessage(Text.positivePrefix().basic("Não").basic(" há um kit com o nome \"").negative(args[0]).basic("\"!").toString())
+					sender.sendMessage(Text.negativePrefix().basic("Não").basic(" há um kit com o nome \"").negative(args[1]).basic("\"!").toString())
 				} else {
 					if (args.size > 2) {
 						val warp = Warps[args[2]]
@@ -32,7 +32,7 @@ object EnableCommand: CustomCommand(EnumRank.ADMIN, "enable") {
 									"!").toString())
 						}
 					} else {
-						if (kit.enabled(true)) sender.sendMessage(Text.positivePrefix().basic("O kit ").positive(kit.name).basic(" foi ").positive("habilitado").basic("!").toString())
+						if (kit.enable(true)) sender.sendMessage(Text.positivePrefix().basic("O kit ").positive(kit.name).basic(" foi ").positive("habilitado").basic("!").toString())
 						else sender.sendMessage(Text.positivePrefix().basic("O kit ").positive(kit.name).basic(" já está ").positive("habilitado").basic("!").toString())
 					}
 				}
@@ -43,7 +43,7 @@ object EnableCommand: CustomCommand(EnumRank.ADMIN, "enable") {
 				if (warp == Warps.NONE) {
 					sender.sendMessage(Text.negativePrefix().basic("Não").basic(" há uma warp com o nome \"").negative(args[0]).basic("\"!").toString())
 				} else {
-					if (warp.enabled(true)) sender.sendMessage(Text.positivePrefix().basic("A warp ").positive(warp.name).basic(" foi ").positive("habilitada").basic("!").toString())
+					if (warp.enable(true)) sender.sendMessage(Text.positivePrefix().basic("A warp ").positive(warp.name).basic(" foi ").positive("habilitada").basic("!").toString())
 					else sender.sendMessage(Text.positivePrefix().basic("A warp ").positive(warp.name).basic(" já está ").positive("habilitada").basic("!").toString())
 				}
 			}
