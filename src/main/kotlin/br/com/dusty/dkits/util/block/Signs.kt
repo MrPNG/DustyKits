@@ -6,13 +6,13 @@ import br.com.dusty.dkits.util.text.Text
 import org.bukkit.block.Sign
 import org.bukkit.entity.Player
 
-object SignUtils {
+object Signs {
 
-	fun doStuff(sign: Sign, player: Player) {
+	fun interact(sign: Sign, player: Player) {
 		val gamer = Gamer[player]
 
 		when (Text.clearFormatting(sign.getLine(1))) {
-			"[Grátis]" -> if (gamer.isOnSignCooldown) player.sendMessage(Text.negativePrefix().basic("Você ainda deve ").negative("esperar").basic(" mais ").negative(gamer.signCooldown.toInt()).basic(
+			"[Grátis]" -> if (gamer.isOnSignCooldown()) player.sendMessage(Text.negativePrefix().basic("Você ainda deve ").negative("esperar").basic(" mais ").negative(gamer.signCooldown.toInt()).basic(
 					" segundo(s) para usar essa placa novamente!").toString())
 			else when (Text.clearFormatting(sign.getLine(2))) {
 				"Sopa"    -> {
