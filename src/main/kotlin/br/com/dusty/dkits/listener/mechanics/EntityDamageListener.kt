@@ -14,10 +14,9 @@ object EntityDamageListener: Listener {
 		if (event.entity is Player) {
 			val player = event.entity as Player
 
-			val gamer = Gamer.of(player)
+			val gamer = Gamer[player]
 
-			if (gamer.isInvincible)
-				event.isCancelled = true
+			if (gamer.isInvincible) event.isCancelled = true
 
 			if (event.cause == EntityDamageEvent.DamageCause.FALL && gamer.isNoFall) {
 				gamer.isNoFall = false

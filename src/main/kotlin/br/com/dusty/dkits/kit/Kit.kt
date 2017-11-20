@@ -46,48 +46,23 @@ open class Kit {
 		val player = gamer.player
 
 		if (gamer.mode !== EnumMode.ADMIN && !gamer.kit.isDummy) { //TODO: If not on MiniHG
-			player.sendMessage(Text.negativePrefix()
-					                   .basic("Você ")
-					                   .negative("já")
-					                   .basic(" está ")
-					                   .negative("usando")
-					                   .basic(" um kit!")
-					                   .toString())
+			player.sendMessage(Text.negativePrefix().basic("Você ").negative("já").basic(" está ").negative("usando").basic(" um kit!").toString())
 		} else if (gamer.mode !== EnumMode.ADMIN && !gamer.warp.enabledKits.contains(this)) {
-			player.sendMessage(Text.negativePrefix()
-					                   .basic("Você ")
-					                   .negative("não pode")
-					                   .basic(" usar o kit ")
-					                   .negative(name)
-					                   .basic(" nesta warp!")
-					                   .toString())
+			player.sendMessage(Text.negativePrefix().basic("Você ").negative("não pode").basic(" usar o kit ").negative(name).basic(" nesta warp!").toString())
 		} else if (gamer.mode !== EnumMode.ADMIN && !gamer.hasKit(this)) {
-			player.sendMessage(Text.negativePrefix()
-					                   .basic("Você ")
-					                   .negative("não")
-					                   .basic(" tem o kit ")
-					                   .negative(name)
-					                   .basic("!")
-					                   .toString())
+			player.sendMessage(Text.negativePrefix().basic("Você ").negative("não").basic(" tem o kit ").negative(name).basic("!").toString())
 		} else {
 			gamer.kit = this
 			apply(gamer)
 
 			ScoreboardUtils.update(gamer)
 
-			player.sendMessage(Text.positivePrefix()
-					                   .basic("Agora você está ")
-					                   .positive("usando")
-					                   .basic(" o kit ")
-					                   .positive(name)
-					                   .basic("!")
-					                   .toString())
+			player.sendMessage(Text.positivePrefix().basic("Agora você está ").positive("usando").basic(" o kit ").positive(name).basic("!").toString())
 		}
 	}
 
 	fun enabled(enabled: Boolean): Boolean {
-		if (data.isEnabled == enabled)
-			return false
+		if (data.isEnabled == enabled) return false
 
 		data.isEnabled = enabled
 
@@ -100,14 +75,12 @@ open class Kit {
 		val dir = File(Main.CONFIG_DIR, "kit")
 		val file = File(dir, name.toLowerCase() + ".json")
 
-		if (file.exists())
-			try {
-				data = Main.GSON.fromJson(FileReader(file), Kit.Data::class.java)
-			} catch (e: FileNotFoundException) {
-				e.printStackTrace()
-			}
-		else
-			saveData()
+		if (file.exists()) try {
+			data = Main.GSON.fromJson(FileReader(file), Kit.Data::class.java)
+		} catch (e: FileNotFoundException) {
+			e.printStackTrace()
+		}
+		else saveData()
 	}
 
 	fun saveData() {
@@ -125,8 +98,7 @@ open class Kit {
 		} catch (e: IOException) {
 			e.printStackTrace()
 		} finally {
-			if (printWriter != null)
-				printWriter.close()
+			if (printWriter != null) printWriter.close()
 		}
 	}
 

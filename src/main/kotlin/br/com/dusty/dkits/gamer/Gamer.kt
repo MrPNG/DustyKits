@@ -17,7 +17,7 @@ import org.bukkit.scheduler.BukkitTask
 
 class Gamer internal constructor(val player: Player, val primitiveGamer: PrimitiveGamer) {
 
-	val protocolVersion: EnumProtocolVersion = EnumProtocolVersion.byVersionNumber(ProtocolUtils.protocolVersion(player))
+	val protocolVersion: EnumProtocolVersion = EnumProtocolVersion[ProtocolUtils.protocolVersion(player)]
 
 	val rank = EnumRank.ADMIN
 
@@ -26,23 +26,17 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 	 */
 	var visibleTo = EnumRank.ADMIN
 		set(visibleTo) {
-			if (field == visibleTo)
-				return
+			if (field == visibleTo) return
 
 			field = visibleTo
 
-			for (gamer in GamerRegistry.onlineGamers) {
-				if (gamer.rank.isLowerThan(rank))
-					gamer.player.hidePlayer(player)
-				else
-					gamer.player.showPlayer(player)
-			}
+			for (gamer in GamerRegistry.onlineGamers) if (gamer.rank.isLowerThan(rank)) gamer.player.hidePlayer(player)
+			else gamer.player.showPlayer(player)
 
 			if (rank.isHigherThanOrEquals(EnumRank.MOD)) {
 				var text = Text.basicOf("Agora você está ").positive("visível").basic(" apenas para ").append(visibleTo.toString())
 
-				if (visibleTo.hasNext())
-					text = text.basic(" e acima")
+				if (visibleTo.hasNext()) text = text.basic(" e acima")
 
 				player.sendMessage(text.basic("!").toString())
 			}
@@ -50,8 +44,7 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 
 	var mode = EnumMode.PLAY
 		set(mode) {
-			if (field == mode)
-				return
+			if (field == mode) return
 
 			field = mode
 
@@ -240,19 +233,11 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 	var combatTag: Long = -1
 		get() = Math.round(((field - System.currentTimeMillis()) / 1000).toFloat()).toLong()
 		set(period) {
-			if (!isCombatTagged)
-				player.sendMessage(Text.negativePrefix()
-						                   .basic("Você ")
-						                   .negative("entrou")
-						                   .basic(" em ")
-						                   .negative("combate")
-						                   .basic("!")
-						                   .toString())
+			if (!isCombatTagged) player.sendMessage(Text.negativePrefix().basic("Você ").negative("entrou").basic(" em ").negative("combate").basic("!").toString())
 
 			field = System.currentTimeMillis() + period
 
-			if (combatTask != null)
-				combatTask!!.cancel()
+			if (combatTask != null) combatTask!!.cancel()
 
 			combatTask = TaskUtils.sync(Runnable { this.removeCombatTag() }, 200)
 
@@ -263,18 +248,11 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 		get() = combatTag > System.currentTimeMillis()
 
 	fun removeCombatTag() {
-		player.sendMessage(Text.positivePrefix()
-				                   .basic("Você ")
-				                   .positive("saiu")
-				                   .basic(" de ")
-				                   .positive("combate")
-				                   .basic("!")
-				                   .toString())
+		player.sendMessage(Text.positivePrefix().basic("Você ").positive("saiu").basic(" de ").positive("combate").basic("!").toString())
 
 		combatTag = -1
 
-		if (combatTask != null)
-			combatTask!!.cancel()
+		if (combatTask != null) combatTask!!.cancel()
 
 		ScoreboardUtils.update(this)
 	}
@@ -283,9 +261,6 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 	var combatTask: BukkitTask? = null
 
 	var isNoFall: Boolean = false
-		set(value) {
-			field = value
-		}
 
 	var kit: Kit = Kits.NONE
 		set(kit) {
@@ -314,15 +289,7 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 
 			warpTask = TaskUtils.sync(Runnable { sendToWarp(warp) }, ticks)
 
-			player.sendMessage(Text.neutralPrefix()
-					                   .basic("Você será teleportado em ")
-					                   .neutral(seconds)
-					                   .basic(" segundo(s), ")
-					                   .neutral("não")
-					                   .basic(" se ")
-					                   .neutral("mova")
-					                   .basic("!")
-					                   .toString())
+			player.sendMessage(Text.neutralPrefix().basic("Você será teleportado em ").neutral(seconds).basic(" segundo(s), ").neutral("não").basic(" se ").neutral("mova").basic("!").toString())
 		} else {
 			clear()
 
@@ -331,8 +298,7 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 
 			ScoreboardUtils.update(this)
 
-			if (protocolVersion.isGreaterThanOrEquals(EnumProtocolVersion.RELEASE_1_8))
-				HeaderFooterUtils.update(this)
+			if (protocolVersion.isGreaterThanOrEquals(EnumProtocolVersion.RELEASE_1_8)) HeaderFooterUtils.update(this)
 		}
 	}
 
@@ -346,8 +312,7 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 
 		player.inventory.clear()
 
-		for (potionEffect in player.activePotionEffects)
-			player.removePotionEffect(potionEffect.type)
+		for (potionEffect in player.activePotionEffects) player.removePotionEffect(potionEffect.type)
 	}
 
 	fun fly(fly: Boolean) {
@@ -369,17 +334,13 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 			}
 		}
 
-		GamerRegistry.onlineGamers
-				.filter { rank.isLowerThan(it.visibleTo) }
-				.forEach { player.hidePlayer(it.player) }
+		GamerRegistry.onlineGamers.filter { rank.isLowerThan(it.visibleTo) }.forEach { player.hidePlayer(it.player) }
 
 		TagUtils.applyTag(this)
 	}
 
 	companion object {
 
-		fun of(player: Player): Gamer {
-			return GamerRegistry.getGamerByPlayer(player)
-		}
+		operator fun get(player: Player): Gamer = GamerRegistry.getGamerByPlayer(player)
 	}
 }

@@ -34,10 +34,9 @@ object SignChangeListener: Listener {
 	fun onSignChange(event: SignChangeEvent) {
 		val player = event.player
 
-		val gamer = Gamer.of(player)
+		val gamer = Gamer[player]
 
-		if (gamer.mode != EnumMode.ADMIN)
-			return
+		if (gamer.mode != EnumMode.ADMIN) return
 
 		when (event.getLine(0)) {
 			"soup"    -> for (i in 0 .. 3) event.setLine(i, SOUP_SIGN[i])
@@ -49,8 +48,7 @@ object SignChangeListener: Listener {
 					0
 				}
 
-				for (i in 0 .. 3)
-					event.setLine(i, MONEY_SIGN[i])
+				for (i in 0 .. 3) event.setLine(i, MONEY_SIGN[i])
 
 				event.setLine(2, event.getLine(2) + amount)
 			}
@@ -61,8 +59,7 @@ object SignChangeListener: Listener {
 					0
 				}
 
-				for (i in 0 .. 3)
-					event.setLine(i, XP_SIGN[i])
+				for (i in 0 .. 3) event.setLine(i, XP_SIGN[i])
 
 				event.setLine(2, event.getLine(2) + amount)
 			}

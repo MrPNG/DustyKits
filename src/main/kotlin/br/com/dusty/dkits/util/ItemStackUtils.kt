@@ -14,16 +14,14 @@ import org.bukkit.potion.PotionType
 
 fun ItemStack.hasName(name: String): Boolean {
 	val itemMeta = this.itemMeta
-	if (itemMeta != null && itemMeta.hasDisplayName())
-		return Text.clearFormatting(itemMeta.displayName) == name
+	if (itemMeta != null && itemMeta.hasDisplayName()) return Text.clearFormatting(itemMeta.displayName) == name
 
 	return false
 }
 
 fun ItemStack.rename(name: String): ItemStack? {
 	val itemMeta = this.itemMeta
-	if (itemMeta != null)
-		itemMeta.displayName = name
+	if (itemMeta != null) itemMeta.displayName = name
 
 	this.itemMeta = itemMeta
 
@@ -31,8 +29,7 @@ fun ItemStack.rename(name: String): ItemStack? {
 }
 
 fun ItemStack.enchant(level: Int, vararg enchantments: Enchantment): ItemStack? {
-	for (enchantment in enchantments)
-		this.addUnsafeEnchantment(enchantment, level)
+	for (enchantment in enchantments) this.addUnsafeEnchantment(enchantment, level)
 
 	return this
 }
@@ -67,10 +64,8 @@ fun ItemStack.setDescription(description: String): ItemStack {
 fun ItemStack.getUnformattedDisplayName(): String? {
 	val itemMeta = this.itemMeta
 
-	val displayName = if (itemMeta != null && itemMeta.hasDisplayName())
-		itemMeta.displayName
-	else
-		this.type.name
+	val displayName = if (itemMeta != null && itemMeta.hasDisplayName()) itemMeta.displayName
+	else this.type.name
 
 	return Text.clearFormatting(displayName)
 }

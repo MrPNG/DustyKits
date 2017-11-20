@@ -18,7 +18,5 @@ object Kits {
 		KITS.add(SNAIL)
 	}
 
-	fun byName(name: String): Kit? {
-		return KITS.firstOrNull { it.name.startsWith(name, true) }
-	}
+	operator fun get(name: String): Kit = KITS.firstOrNull { it.name.startsWith(name, true) } ?: NONE
 }

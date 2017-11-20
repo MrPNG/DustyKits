@@ -11,8 +11,8 @@ object EntityDamageByEntityListener: Listener {
 	@EventHandler
 	fun onEntityDamage(event: EntityDamageByEntityEvent) {
 		if (event.entity is Player && event.damager is Player) {
-			val gamer = Gamer.of(event.entity as Player)
-			val damager = Gamer.of(event.damager as Player)
+			val gamer = Gamer[event.entity as Player]
+			val damager = Gamer[event.damager as Player]
 
 			gamer.combatTag = 10000
 			gamer.combatPartner = damager

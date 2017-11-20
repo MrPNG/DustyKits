@@ -9,15 +9,13 @@ import org.bukkit.entity.Player
 
 object AdminCommand: CustomCommand(EnumRank.MOD, "admin") {
 
-	override fun execute(sender: CommandSender, alias: String, args: Array<String>): Boolean {
-		return when {
-			!testPermission(sender) || sender !is Player -> true
-			else                                         -> {
-				val gamer = Gamer.of(sender)
-				gamer.mode = if (gamer.mode === EnumMode.ADMIN) EnumMode.PLAY else EnumMode.ADMIN
+	override fun execute(sender: CommandSender, alias: String, args: Array<String>): Boolean = when {
+		!testPermission(sender) || sender !is Player -> true
+		else                                         -> {
+			val gamer = Gamer[sender]
+			gamer.mode = if (gamer.mode === EnumMode.ADMIN) EnumMode.PLAY else EnumMode.ADMIN
 
-				false
-			}
+			false
 		}
 	}
 }

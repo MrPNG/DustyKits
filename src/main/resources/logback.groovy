@@ -1,4 +1,5 @@
-import ch.qos.logback.classic.encoder.PatternLayoutEncoder
+import org.apache.logging.log4j.core.appender.ConsoleAppender
+import org.apache.logging.log4j.core.appender.FileAppender
 
 appender("STDOUT", ConsoleAppender) {
     encoder(PatternLayoutEncoder) {

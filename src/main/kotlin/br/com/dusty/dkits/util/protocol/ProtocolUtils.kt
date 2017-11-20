@@ -25,8 +25,7 @@ object ProtocolUtils {
 
 	init {
 		val class_ChatMessage = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".ChatMessage")
-		constructor_ChatMessage = class_ChatMessage.getDeclaredConstructor(String::class.java,
-		                                                                   Array<Any>::class.java)
+		constructor_ChatMessage = class_ChatMessage.getDeclaredConstructor(String::class.java, Array<Any>::class.java)
 
 		val class_Packet = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".Packet")
 
@@ -40,8 +39,7 @@ object ProtocolUtils {
 		method_PlayerConnection_sendPacket = class_PlayerConnection.getDeclaredMethod("sendPacket", class_Packet)
 
 		val class_ProtocolSupportAPI = Class.forName(PROTOCOL_SUPPORT_PACKAGE + "ProtocolSupportAPI")
-		method_ProtocolSupportAPI_getProtocolVersion = class_ProtocolSupportAPI.getDeclaredMethod("getProtocolVersion",
-		                                                                                          Player::class.java)
+		method_ProtocolSupportAPI_getProtocolVersion = class_ProtocolSupportAPI.getDeclaredMethod("getProtocolVersion", Player::class.java)
 
 		val class_ProtocolVersion = Class.forName(PROTOCOL_SUPPORT_PACKAGE + "ProtocolVersion")
 		method_ProtocolVersion_getId = class_ProtocolVersion.getDeclaredMethod("getId")
@@ -54,9 +52,7 @@ object ProtocolUtils {
 		return field
 	}
 
-	fun chatMessage(s: String): Any {
-		return constructor_ChatMessage.newInstance(s, arrayOfNulls<Any>(0))
-	}
+	fun chatMessage(s: String): Any = constructor_ChatMessage.newInstance(s, arrayOfNulls<Any>(0))
 
 	fun protocolVersion(player: Player): Int? {
 		val object_ProtocolVersion = method_ProtocolSupportAPI_getProtocolVersion.invoke(null, player)
@@ -65,9 +61,6 @@ object ProtocolUtils {
 	}
 
 	fun sendPacket(object_Packet: Any, vararg players: Player) {
-		players
-				.map { method_CraftPlayer_getHandle.invoke(it) }
-				.map { field_playerConnection.get(it) }
-				.forEach { method_PlayerConnection_sendPacket.invoke(it, object_Packet) }
+		players.map { method_CraftPlayer_getHandle.invoke(it) }.map { field_playerConnection.get(it) }.forEach { method_PlayerConnection_sendPacket.invoke(it, object_Packet) }
 	}
 }

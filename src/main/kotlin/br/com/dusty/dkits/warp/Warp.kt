@@ -28,11 +28,7 @@ open class Warp: Listener {
 
 	var spawn: Location? = null
 		get() {
-			if (field == null)
-				field = Location(Bukkit.getWorlds()[0],
-				                 data.spawn[0].toDouble(),
-				                 data.spawn[1].toDouble(),
-				                 data.spawn[2].toDouble())
+			if (field == null) field = Location(Bukkit.getWorlds()[0], data.spawn[0].toDouble(), data.spawn[1].toDouble(), data.spawn[2].toDouble())
 
 			return field
 		}
@@ -52,8 +48,7 @@ open class Warp: Listener {
 	var data = Data()
 
 	fun enabled(enabled: Boolean): Boolean {
-		if (data.isEnabled == enabled)
-			return false
+		if (data.isEnabled == enabled) return false
 
 		data.isEnabled = enabled
 
@@ -65,10 +60,8 @@ open class Warp: Listener {
 	fun enableKit(kit: Kit, enable: Boolean): Boolean {
 		val b: Boolean = if (enable) enabledKits.add(kit) else enabledKits.remove(kit)
 
-		if (data.isListEnabledKits)
-			data.kits = enabledKits.map { it.name }.toTypedArray()
-		else
-			data.kits = Kits.KITS.filter { !enabledKits.contains(it) }.map { it.name }.toTypedArray()
+		if (data.isListEnabledKits) data.kits = enabledKits.map { it.name }.toTypedArray()
+		else data.kits = Kits.KITS.filter { !enabledKits.contains(it) }.map { it.name }.toTypedArray()
 
 		TaskUtils.async(Runnable { this.saveData() })
 
@@ -79,20 +72,11 @@ open class Warp: Listener {
 		val dir = File(Main.CONFIG_DIR, "warp")
 		val file = File(dir, name.toLowerCase() + ".json")
 
-		if (file.exists())
-			data = Main.GSON.fromJson(FileReader(file), Warp.Data::class.java)
-		else
-			saveData()
+		if (file.exists()) data = Main.GSON.fromJson(FileReader(file), Warp.Data::class.java)
+		else saveData()
 
-		if (data.isListEnabledKits)
-			data.kits
-					.mapNotNull { Kits.byName(it) }
-					.filter { it.data.isEnabled }
-					.forEach { enabledKits.add(it) }
-		else
-			Kits.KITS
-					.filter { it.data.isEnabled && !data.kits.contains(it.name) }
-					.forEach { enabledKits.add(it) }
+		if (data.isListEnabledKits) data.kits.mapNotNull { Kits[it] }.filter { it.data.isEnabled }.forEach { enabledKits.add(it) }
+		else Kits.KITS.filter { it.data.isEnabled && !data.kits.contains(it.name) }.forEach { enabledKits.add(it) }
 	}
 
 	fun saveData() {
@@ -111,13 +95,7 @@ open class Warp: Listener {
 		val player = gamer.player
 
 		player.teleport(spawn!!.spread(data.spreadRange))
-		player.sendMessage(Text.positivePrefix()
-				                   .basic("Você foi ")
-				                   .positive("teleportado")
-				                   .basic(" para a warp ")
-				                   .positive(name)
-				                   .basic("!")
-				                   .toString())
+		player.sendMessage(Text.positivePrefix().basic("Você foi ").positive("teleportado").basic(" para a warp ").positive(name).basic("!").toString())
 
 		gamer.kit = entryKit
 		entryKit.apply(gamer)
@@ -141,15 +119,7 @@ open class Warp: Listener {
 	private class EventWarpKit: Kit() {
 
 		init {
-			items = arrayOf(null,
-			                null,
-			                null,
-			                null,
-			                null,
-			                null,
-			                null,
-			                null,
-			                ItemStack(Material.MAP).rename(Text.of("Warps").color(TextColor.GOLD).toString()))
+			items = arrayOf(null, null, null, null, null, null, null, null, ItemStack(Material.MAP).rename(Text.of("Warps").color(TextColor.GOLD).toString()))
 		}
 	}
 

@@ -26,7 +26,7 @@ object PlayerDeathListener: Listener {
 	fun onPlayerDeath(event: PlayerDeathEvent) {
 		val player = event.entity
 
-		val gamer = Gamer.of(player)
+		val gamer = Gamer.get(player)
 
 		val object_PacketPlayInClientCommand = class_PacketPlayInClientCommand.newInstance()
 		field_PacketPlayInClientCommand_a.set(object_PacketPlayInClientCommand, enum_EnumClientCommand_values[0])

@@ -14,26 +14,26 @@ import org.bukkit.scoreboard.Scoreboard
 object ScoreboardUtils {
 
 	val LABELS = arrayOf(Text.of("XP: ").color(TextColor.GOLD).toString(),
-	                             Text.of("Créditos: ").color(TextColor.GOLD).toString(),
-	                             Text.of("------------").color(TextColor.YELLOW).toString(),
-	                             Text.of("Kills: ").color(TextColor.RED).toString(),
-	                             Text.of("Deaths: ").color(TextColor.RED).toString(),
-	                             Text.of("Killstreak: ").color(TextColor.RED).toString(),
-	                             Text.of("------------ ").color(TextColor.YELLOW).toString(),
-	                             Text.of("Kit: ").color(TextColor.AQUA).toString(),
-	                             Text.of("Combate: ").color(TextColor.AQUA).toString(),
-	                             Text.of("Players: ").color(TextColor.AQUA).toString())
+	                     Text.of("Créditos: ").color(TextColor.GOLD).toString(),
+	                     Text.of("------------").color(TextColor.YELLOW).toString(),
+	                     Text.of("Kills: ").color(TextColor.RED).toString(),
+	                     Text.of("Deaths: ").color(TextColor.RED).toString(),
+	                     Text.of("Killstreak: ").color(TextColor.RED).toString(),
+	                     Text.of("------------ ").color(TextColor.YELLOW).toString(),
+	                     Text.of("Kit: ").color(TextColor.AQUA).toString(),
+	                     Text.of("Combate: ").color(TextColor.AQUA).toString(),
+	                     Text.of("Players: ").color(TextColor.AQUA).toString())
 
 	val LABELS_OLD = arrayOf(ChatColor.GOLD.toString() + "XP: ",
-	                                 ChatColor.GOLD.toString() + "$: ",
-	                                 ChatColor.YELLOW.toString() + "=-=-=-=-=-=-",
-	                                 ChatColor.RED.toString() + "Kills: ",
-	                                 ChatColor.RED.toString() + "Deaths: ",
-	                                 ChatColor.RED.toString() + "KS: ",
-	                                 ChatColor.YELLOW.toString() + "-=-=-=-=-=-=",
-	                                 ChatColor.AQUA.toString() + "Kit: ",
-	                                 ChatColor.AQUA.toString() + "Combate: ",
-	                                 ChatColor.AQUA.toString() + "Players: ")
+	                         ChatColor.GOLD.toString() + "$: ",
+	                         ChatColor.YELLOW.toString() + "=-=-=-=-=-=-",
+	                         ChatColor.RED.toString() + "Kills: ",
+	                         ChatColor.RED.toString() + "Deaths: ",
+	                         ChatColor.RED.toString() + "KS: ",
+	                         ChatColor.YELLOW.toString() + "-=-=-=-=-=-=",
+	                         ChatColor.AQUA.toString() + "Kit: ",
+	                         ChatColor.AQUA.toString() + "Combate: ",
+	                         ChatColor.AQUA.toString() + "Players: ")
 
 	fun create(player: Player) {
 		val scoreboard = Bukkit.getScoreboardManager().newScoreboard
@@ -65,13 +65,11 @@ object ScoreboardUtils {
 			                     Text.of(GamerRegistry.onlineGamers.size).color(TextColor.YELLOW).toString())
 
 			for (i in LABELS.indices) {
-				if (gamer.kit.isDummy && values[i].endsWith("None"))
-					continue
+				if (gamer.kit.isDummy && values[i].endsWith("None")) continue
 
 				val score = objective.getScore(LABELS[i] + values[i])
 
-				if (score != null)
-					score.score = LABELS.size - i
+				if (score != null) score.score = LABELS.size - i
 			}
 		} else {
 			val values_old = arrayOf(ChatColor.YELLOW.toString() + "" + Math.round(gamer.xp),
@@ -86,13 +84,11 @@ object ScoreboardUtils {
 			                         ChatColor.YELLOW.toString() + "" + GamerRegistry.onlineGamers.size)
 
 			for (i in LABELS_OLD.indices) {
-				if (gamer.kit.isDummy && values_old[i].endsWith("None"))
-					continue
+				if (gamer.kit.isDummy && values_old[i].endsWith("None")) continue
 
 				val score = objective.getScore(LABELS_OLD[i] + values_old[i])
 
-				if (score != null)
-					score.score = LABELS_OLD.size - i
+				if (score != null) score.score = LABELS_OLD.size - i
 			}
 		}
 	}

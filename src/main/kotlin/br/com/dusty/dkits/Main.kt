@@ -19,9 +19,7 @@ class Main: JavaPlugin() {
 		CONFIG_DIR.mkdirs()
 	}
 
-	override fun onLoad() {
-
-	}
+	override fun onLoad() {}
 
 	override fun onEnable() {
 		Commands.registerAll()
@@ -33,9 +31,7 @@ class Main: JavaPlugin() {
 		serverStatus = EnumServerStatus.ONLINE
 	}
 
-	override fun onDisable() {
-
-	}
+	override fun onDisable() {}
 
 	companion object {
 

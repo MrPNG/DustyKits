@@ -12,19 +12,13 @@ object PlayerMoveListener: Listener {
 	fun onPlayerMove(event: PlayerMoveEvent) {
 		val player = event.player
 
-		val gamer = Gamer.of(player)
+		val gamer = Gamer[player]
 
 		if (gamer.warpTask != null) {
 			gamer.warpTask!!.cancel()
 			gamer.warpTask = null
 
-			player.sendMessage(Text.negativePrefix()
-					                   .basic("Você se ")
-					                   .negative("moveu")
-					                   .basic(", teleporte ")
-					                   .negative("cancelado")
-					                   .basic("!")
-					                   .toString())
+			player.sendMessage(Text.negativePrefix().basic("Você se ").negative("moveu").basic(", teleporte ").negative("cancelado").basic("!").toString())
 		}
 	}
 }

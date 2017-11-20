@@ -36,19 +36,13 @@ object PlayerQuitListener: Listener {
 				gamer.removeDeathXp()
 			}
 
-			Bukkit.broadcastMessage(Text.negativeOf(player.name)
-					                        .basic(" deslogou em ")
-					                        .negative("combate")
-					                        .basic("!")
-					                        .toString())
+			Bukkit.broadcastMessage(Text.negativeOf(player.name).basic(" deslogou em ").negative("combate").basic("!").toString())
 		}
 
 		TaskUtils.async(Runnable { WebAPI.saveProfiles(gamer) })
 
-		if (gamer.rank.isLowerThan(EnumRank.MOD))
-			event.quitMessage = QUIT_MESSAGE_PREFIX + player.name
-		else
-			event.quitMessage = null
+		if (gamer.rank.isLowerThan(EnumRank.MOD)) event.quitMessage = QUIT_MESSAGE_PREFIX + player.name
+		else event.quitMessage = null
 
 		ScoreboardUtils.updateAll()
 	}

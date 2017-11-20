@@ -21,10 +21,7 @@ abstract class CustomCommand constructor(
 		 * [EnumRank] mínimo necessário para usar este comando (embora o [org.bukkit.command.ConsoleCommandSender]
 		 * sempre esteja autorizado).
 		 */
-		val rank: EnumRank, vararg aliases: String): Command(aliases[0],
-                                                             UNKNOWN,
-                                                             UNKNOWN,
-                                                             Arrays.asList(*aliases)) {
+		val rank: EnumRank, vararg aliases: String): Command(aliases[0], UNKNOWN, UNKNOWN, Arrays.asList(*aliases)) {
 
 	init {
 		if (commandMap == null) {
@@ -42,9 +39,7 @@ abstract class CustomCommand constructor(
 	 * @param args   Argumentos do comando, vindos da separação por espaços do comando enviado (i.e. '/[alias] [arg1] [arg2] [...]').
 	 * @return **true**, se algo deu errado/não foi autorizado, **false** se tudo ocorreu como previsto.
 	 */
-	override fun execute(sender: CommandSender, alias: String, args: Array<String>): Boolean {
-		return false
-	}
+	override fun execute(sender: CommandSender, alias: String, args: Array<String>): Boolean = false
 
 	/**
 	 * Define a [java.util.ArrayList] de 'aliases' a ser retornada quando 'TAB' é pressionado.
@@ -55,9 +50,7 @@ abstract class CustomCommand constructor(
 	 * @return [java.util.ArrayList] de 'aliases' (pode ser vazia, mas não 'null').
 	 * @throws IllegalArgumentException Caso a [List] seja 'null'.
 	 */
-	override fun tabComplete(sender: CommandSender, alias: String, args: Array<String>): MutableList<String>? {
-		return arrayListOf()
-	}
+	override fun tabComplete(sender: CommandSender, alias: String, args: Array<String>): MutableList<String>? = arrayListOf()
 
 	/**
 	 * Usar 'tabComplete(CommandSender sender, String alias, String[] args)'.
@@ -69,12 +62,7 @@ abstract class CustomCommand constructor(
 	 * @return
 	 * @throws IllegalArgumentException
 	 */
-	override fun tabComplete(sender: CommandSender,
-	                         alias: String,
-	                         args: Array<String>,
-	                         location: Location?): MutableList<String>? {
-		return tabComplete(sender, alias, args)
-	}
+	override fun tabComplete(sender: CommandSender, alias: String, args: Array<String>, location: Location?): MutableList<String>? = tabComplete(sender, alias, args)
 
 	/**
 	 * Verfica se o [CommandSender] 'sender' está autorizado a utilizar este comando.
@@ -84,15 +72,10 @@ abstract class CustomCommand constructor(
 	 * caso contrário.
 	 */
 	override fun testPermission(sender: CommandSender): Boolean {
-		val b = if (sender is Player)
-			Gamer.of(sender)
-					.rank
-					.isHigherThanOrEquals(rank)
-		else
-			sender is ConsoleCommandSender
+		val b = if (sender is Player) Gamer[sender].rank.isHigherThanOrEquals(rank)
+		else sender is ConsoleCommandSender
 
-		if (!b)
-			sender.sendMessage(UNKNOWN)
+		if (!b) sender.sendMessage(UNKNOWN)
 
 		return b
 	}

@@ -33,8 +33,7 @@ class Text {
 	 * @return Este [Text].
 	 */
 	fun color(color: TextColor?): Text {
-		if (color != null)
-			this.color = color
+		if (color != null) this.color = color
 
 		return this
 	}
@@ -71,9 +70,7 @@ class Text {
 	 * @param s
 	 * @return
 	 */
-	fun basic(s: String): Text {
-		return append(s).color(TextColor.GRAY)
-	}
+	fun basic(s: String): Text = append(s).color(TextColor.GRAY)
 
 	/**
 	 * Anexa um [Text] básico.
@@ -81,9 +78,7 @@ class Text {
 	 * @param i
 	 * @return
 	 */
-	fun basic(i: Int): Text {
-		return append(i).color(TextColor.GRAY)
-	}
+	fun basic(i: Int): Text = append(i).color(TextColor.GRAY)
 
 	/**
 	 * Anexa um [Text] neutro.
@@ -91,9 +86,7 @@ class Text {
 	 * @param s
 	 * @return
 	 */
-	fun neutral(s: String): Text {
-		return append(s).color(TextColor.YELLOW)
-	}
+	fun neutral(s: String): Text = append(s).color(TextColor.YELLOW)
 
 	/**
 	 * Anexa um [Text] neutro.
@@ -101,9 +94,7 @@ class Text {
 	 * @param i
 	 * @return
 	 */
-	fun neutral(i: Int): Text {
-		return append(i).color(TextColor.YELLOW)
-	}
+	fun neutral(i: Int): Text = append(i).color(TextColor.YELLOW)
 
 	/**
 	 * Anexa um [Text] positivo.
@@ -111,9 +102,7 @@ class Text {
 	 * @param s
 	 * @return
 	 */
-	fun positive(s: String): Text {
-		return append(s).color(TextColor.GREEN)
-	}
+	fun positive(s: String): Text = append(s).color(TextColor.GREEN)
 
 	/**
 	 * Anexa um [Text] positivo.
@@ -121,9 +110,7 @@ class Text {
 	 * @param i
 	 * @return
 	 */
-	fun positive(i: Int): Text {
-		return append(i).color(TextColor.GREEN)
-	}
+	fun positive(i: Int): Text = append(i).color(TextColor.GREEN)
 
 	/**
 	 * Anexa um [Text] negativo.
@@ -131,9 +118,7 @@ class Text {
 	 * @param s
 	 * @return
 	 */
-	fun negative(s: String): Text {
-		return append(s).color(TextColor.RED)
-	}
+	fun negative(s: String): Text = append(s).color(TextColor.RED)
 
 	/**
 	 * Anexa um [Text] negativo.
@@ -141,9 +126,7 @@ class Text {
 	 * @param i
 	 * @return
 	 */
-	fun negative(i: Int): Text {
-		return append(i).color(TextColor.RED)
-	}
+	fun negative(i: Int): Text = append(i).color(TextColor.RED)
 
 	/**
 	 * Processa este [Text] em uma [String], aplicando cor e estilos e anexando outro [Text], se houver.
@@ -156,8 +139,7 @@ class Text {
 		if (append == null) {
 			sb.append(color)
 
-			for (style in styles)
-				sb.append(style)
+			for (style in styles) sb.append(style)
 		} else {
 			sb.append(append!!.toString())
 
@@ -166,8 +148,7 @@ class Text {
 
 				sb.append(color)
 
-				for (style in styles)
-					sb.append(style)
+				for (style in styles) sb.append(style)
 			} else if (append!!.color != color) {
 				sb.append(color)
 			}
@@ -212,9 +193,7 @@ class Text {
 		 * @param s
 		 * @return
 		 */
-		fun basicOf(s: String): Text {
-			return Text.of(s).color(TextColor.GRAY)
-		}
+		fun basicOf(s: String): Text = Text.of(s).color(TextColor.GRAY)
 
 		/**
 		 * Cria um [Text] básico.
@@ -222,9 +201,7 @@ class Text {
 		 * @param i
 		 * @return
 		 */
-		fun basicOf(i: Int): Text {
-			return Text.of(i).color(TextColor.GRAY)
-		}
+		fun basicOf(i: Int): Text = Text.of(i).color(TextColor.GRAY)
 
 		/**
 		 * Cria um [Text] neutro.
@@ -232,9 +209,7 @@ class Text {
 		 * @param s
 		 * @return
 		 */
-		fun neutralOf(s: String): Text {
-			return Text.of(s).color(TextColor.YELLOW)
-		}
+		fun neutralOf(s: String): Text = Text.of(s).color(TextColor.YELLOW)
 
 		/**
 		 * Cria um [Text] neutro.
@@ -242,9 +217,7 @@ class Text {
 		 * @param i
 		 * @return
 		 */
-		fun neutralOf(i: Int): Text {
-			return Text.of(i).color(TextColor.YELLOW)
-		}
+		fun neutralOf(i: Int): Text = Text.of(i).color(TextColor.YELLOW)
 
 		/**
 		 * Cria um [Text] positivo.
@@ -252,9 +225,7 @@ class Text {
 		 * @param s
 		 * @return
 		 */
-		fun positiveOf(s: String): Text {
-			return Text.of(s).color(TextColor.GREEN)
-		}
+		fun positiveOf(s: String): Text = Text.of(s).color(TextColor.GREEN)
 
 		/**
 		 * Cria um [Text] positivo.
@@ -262,9 +233,7 @@ class Text {
 		 * @param i
 		 * @return
 		 */
-		fun positiveOf(i: Int): Text {
-			return Text.of(i).color(TextColor.GREEN)
-		}
+		fun positiveOf(i: Int): Text = Text.of(i).color(TextColor.GREEN)
 
 		/**
 		 * Cria um [Text] negativo.
@@ -272,9 +241,7 @@ class Text {
 		 * @param s
 		 * @return
 		 */
-		fun negativeOf(s: String): Text {
-			return Text.of(s).color(TextColor.RED)
-		}
+		fun negativeOf(s: String): Text = Text.of(s).color(TextColor.RED)
 
 		/**
 		 * Cria um [Text] negativo.
@@ -282,21 +249,13 @@ class Text {
 		 * @param i
 		 * @return
 		 */
-		fun negativeOf(i: Int): Text {
-			return Text.of(i).color(TextColor.RED)
-		}
+		fun negativeOf(i: Int): Text = Text.of(i).color(TextColor.RED)
 
-		fun positivePrefix(): Text {
-			return positiveOf("» ")
-		}
+		fun positivePrefix(): Text = positiveOf("» ")
 
-		fun neutralPrefix(): Text {
-			return of("≡ ").color(TextColor.YELLOW)
-		}
+		fun neutralPrefix(): Text = of("≡ ").color(TextColor.YELLOW)
 
-		fun negativePrefix(): Text {
-			return negativeOf("» ")
-		}
+		fun negativePrefix(): Text = negativeOf("» ")
 
 		/**
 		 * Remove qualquer formatação de uma [String], se houver.
@@ -304,8 +263,6 @@ class Text {
 		 * @param string
 		 * @return [String] sem formatação.
 		 */
-		fun clearFormatting(string: String): String {
-			return ChatColor.stripColor(string)
-		}
+		fun clearFormatting(string: String): String = ChatColor.stripColor(string)
 	}
 }

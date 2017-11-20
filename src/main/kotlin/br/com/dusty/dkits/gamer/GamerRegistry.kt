@@ -9,6 +9,9 @@ object GamerRegistry {
 	private val PRIMITIVE_GAMER_BY_UUID = HashMap<UUID, PrimitiveGamer>()
 	private val GAMER_BY_PLAYER = HashMap<Player, Gamer>()
 
+	val onlineGamers: Collection<Gamer>
+		get() = GAMER_BY_PLAYER.values
+
 	internal fun getGamerByPlayer(player: Player): Gamer {
 		val gamer: Gamer
 
@@ -26,16 +29,10 @@ object GamerRegistry {
 		return gamer
 	}
 
-	fun unregister(player: Player): Gamer {
-		return GAMER_BY_PLAYER.remove(player)!!
-	}
-
-	val onlineGamers: Collection<Gamer>
-		get() = GAMER_BY_PLAYER.values
+	fun unregister(player: Player): Gamer = GAMER_BY_PLAYER.remove(player)!!
 
 	fun fromJson(json: String?, uuid: UUID): PrimitiveGamer? {
-		if (json == null)
-			return null
+		if (json == null) return null
 
 		val primitiveGamer: PrimitiveGamer
 
@@ -51,11 +48,7 @@ object GamerRegistry {
 		return primitiveGamer
 	}
 
-	fun getPrimitiveGamerByUniqueId(uuid: UUID): PrimitiveGamer? {
-		return PRIMITIVE_GAMER_BY_UUID[uuid]
-	}
+	fun getPrimitiveGamerByUniqueId(uuid: UUID): PrimitiveGamer? = PRIMITIVE_GAMER_BY_UUID[uuid]
 
-	fun unregister(uuid: UUID): PrimitiveGamer {
-		return PRIMITIVE_GAMER_BY_UUID.remove(uuid)!!
-	}
+	fun unregister(uuid: UUID): PrimitiveGamer = PRIMITIVE_GAMER_BY_UUID.remove(uuid)!!
 }

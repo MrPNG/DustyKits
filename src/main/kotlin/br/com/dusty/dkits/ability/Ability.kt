@@ -6,11 +6,7 @@ import org.bukkit.event.Listener
 
 open class Ability: Listener {
 
-	fun canUse(gamer: Gamer): Boolean {
-		return this.javaClass.isAssignableFrom(gamer.kit.ability.javaClass)
-	}
+	fun canUse(gamer: Gamer): Boolean = this.javaClass.isAssignableFrom(gamer.kit.ability.javaClass)
 
-	fun canUse(damager: Gamer, victim: Gamer): Boolean {
-		return this.javaClass.isAssignableFrom(damager.kit.ability.javaClass) && victim.mode == EnumMode.PLAY
-	}
+	fun canUse(damager: Gamer, victim: Gamer): Boolean = this.javaClass.isAssignableFrom(damager.kit.ability.javaClass) && victim.mode == EnumMode.PLAY
 }

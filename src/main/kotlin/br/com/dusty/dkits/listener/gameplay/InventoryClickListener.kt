@@ -18,10 +18,9 @@ object InventoryClickListener: Listener {
 	fun onInventoryClick(event: InventoryClickEvent) {
 		val player = event.whoClicked as Player
 
-		val gamer = Gamer.of(player)
+		val gamer = Gamer[player]
 
-		if (gamer.kit.isDummy && gamer.mode != EnumMode.ADMIN)
-			event.isCancelled = true
+		if (gamer.kit.isDummy && gamer.mode != EnumMode.ADMIN) event.isCancelled = true
 
 		val inventory = event.clickedInventory
 

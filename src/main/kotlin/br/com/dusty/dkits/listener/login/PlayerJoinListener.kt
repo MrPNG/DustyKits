@@ -21,24 +21,21 @@ object PlayerJoinListener: Listener {
 	fun onPlayerJoin(event: PlayerJoinEvent) {
 		val player = event.player
 
-		val gamer = Gamer.of(player)
+		val gamer = Gamer.get(player)
 
 		if (gamer.protocolVersion == null) {
 			player.kickPlayer(KICK_NOT_READY)
 			return
 		}
 
-		if (gamer.rank.isLowerThan(EnumRank.MOD))
-			event.joinMessage = JOIN_MESSAGE_PREFIX + player.name
-		else
-			event.joinMessage = null
+		if (gamer.rank.isLowerThan(EnumRank.MOD)) event.joinMessage = JOIN_MESSAGE_PREFIX + player.name
+		else event.joinMessage = null
 
 		ScoreboardUtils.create(player)
 		ScoreboardUtils.updateAll()
 
 		gamer.sendToWarp(Warps.LOBBY)
 
-		if (gamer.protocolVersion.isLowerThan(EnumProtocolVersion.RELEASE_1_8))
-			BossBarUtils.MAIN.send(player)
+		if (gamer.protocolVersion.isLowerThan(EnumProtocolVersion.RELEASE_1_8)) BossBarUtils.MAIN.send(player)
 	}
 }

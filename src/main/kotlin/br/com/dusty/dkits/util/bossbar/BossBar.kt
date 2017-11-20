@@ -18,10 +18,8 @@ class BossBar {
 	private var flags = EnumFlags.NONE
 
 	fun send(vararg players: Player) {
-		if (players.size > 1)
-			this.players.addAll(Arrays.asList(*players))
-		else
-			this.players.add(players[0])
+		if (players.size > 1) this.players.addAll(Arrays.asList(*players))
+		else this.players.add(players[0])
 
 		val object_PacketPlayOutBoss = class_PacketPlayOutBoss.newInstance()
 		field_PacketPlayOutBoss_a.set(object_PacketPlayOutBoss, uuid)
@@ -44,10 +42,8 @@ class BossBar {
 	}
 
 	fun remove(vararg players: Player) {
-		if (players.size > 1)
-			this.players.removeAll(Arrays.asList(*players))
-		else
-			this.players.remove(players[0])
+		if (players.size > 1) this.players.removeAll(Arrays.asList(*players))
+		else this.players.remove(players[0])
 
 		val object_PacketPlayOutBoss = class_PacketPlayOutBoss.newInstance()
 		field_PacketPlayOutBoss_a.set(object_PacketPlayOutBoss, uuid)
@@ -172,11 +168,7 @@ class BossBar {
 			enum_BarStyle_values = enum_BarStyle.enumConstants
 		}
 
-		fun create(title: String,
-		           progress: Float,
-		           color: EnumBarColor?,
-		           division: EnumBarStyle?,
-		           flags: EnumFlags?): BossBar {
+		fun create(title: String, progress: Float, color: EnumBarColor?, division: EnumBarStyle?, flags: EnumFlags?): BossBar {
 			val bossBar = BossBar()
 
 			bossBar.uuid = UUID.randomUUID()

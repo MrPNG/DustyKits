@@ -16,7 +16,5 @@ enum class TextStyle constructor(val code: Int, chatColor: ChatColor) {
 
 	val string: String = chatColor.toString()
 
-	override fun toString(): String {
-		return string
-	}
+	override fun toString(): String = string
 }

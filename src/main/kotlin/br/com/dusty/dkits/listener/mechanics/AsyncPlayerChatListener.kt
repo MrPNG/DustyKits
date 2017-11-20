@@ -19,27 +19,19 @@ object AsyncPlayerChatListener: Listener {
 	fun onAsyncPlayerChat(event: AsyncPlayerChatEvent) {
 		val player = event.player
 
-		val gamer = Gamer.of(player)
+		val gamer = Gamer[player]
 
 		when (gamer.chat) {
 			EnumChat.NORMAL -> event.format = "<%s" + TextStyle.RESET + "> %s"
 			EnumChat.STAFF  -> {
 				event.recipients.clear()
 
-				val message_neutral = STAFF_CHAT_PREFIX_NEUTRAL.append("<")
-						.append(player.displayName)
-						.append("> ")
-						.neutral(event.message)
-						.toString()
+				val messageNeutral = STAFF_CHAT_PREFIX_NEUTRAL.append("<").append(player.displayName).append("> ").neutral(event.message).toString()
 
-				val message_negative = STAFF_CHAT_PREFIX_NEGATIVE.append("<")
-						.append(player.displayName)
-						.append("> ")
-						.negative(event.message)
-						.toString()
+				val messageNegative = STAFF_CHAT_PREFIX_NEGATIVE.append("<").append(player.displayName).append("> ").negative(event.message).toString()
 
 				GamerRegistry.onlineGamers.filter { it.rank.isHigherThanOrEquals(EnumRank.MOD) }.forEach {
-					it.player.sendMessage(if (it.chat == EnumChat.STAFF) message_neutral else message_negative)
+					it.player.sendMessage(if (it.chat == EnumChat.STAFF) messageNeutral else messageNegative)
 				}
 			}
 		}

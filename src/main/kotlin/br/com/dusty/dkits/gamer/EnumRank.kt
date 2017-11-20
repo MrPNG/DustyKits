@@ -11,6 +11,7 @@ import java.util.*
  */
 enum class EnumRank {
 
+	NONE(-1),
 	DEFAULT(0),
 	//VIP(2, TextColor.GREEN),
 	//MVP(3, TextColor.BLUE),
@@ -49,9 +50,7 @@ enum class EnumRank {
 	 * @param rank
 	 * @return **true** se este [EnumRank] está hierarquicamente **acima** do parâmetro 'rank'.
 	 */
-	fun isHigherThan(rank: EnumRank): Boolean {
-		return level > rank.level
-	}
+	fun isHigherThan(rank: EnumRank): Boolean = level > rank.level
 
 	/**
 	 * Retorna **true** se este [EnumRank] não está hierarquicamente **abaixo** do parâmetro 'rank'.
@@ -59,9 +58,7 @@ enum class EnumRank {
 	 * @param rank
 	 * @return **true** se este [EnumRank] não está hierarquicamente **abaixo** do parâmetro 'rank'.
 	 */
-	fun isHigherThanOrEquals(rank: EnumRank): Boolean {
-		return level >= rank.level
-	}
+	fun isHigherThanOrEquals(rank: EnumRank): Boolean = level >= rank.level
 
 	/**
 	 * Retorna **true** se este [EnumRank] está hierarquicamente **abaixo** do parâmetro 'rank'.
@@ -69,9 +66,7 @@ enum class EnumRank {
 	 * @param rank
 	 * @return **true** se este [EnumRank] está hierarquicamente **abaixo** do parâmetro 'rank'.
 	 */
-	fun isLowerThan(rank: EnumRank): Boolean {
-		return level < rank.level
-	}
+	fun isLowerThan(rank: EnumRank): Boolean = level < rank.level
 
 	/**
 	 * Retorna **true** se este [EnumRank] não está hierarquicamente **acima** do parâmetro 'rank'.
@@ -79,18 +74,14 @@ enum class EnumRank {
 	 * @param rank
 	 * @return **true** se este [EnumRank] não está hierarquicamente **acima** do parâmetro 'rank'.
 	 */
-	fun isLowerThanOrEquals(rank: EnumRank): Boolean {
-		return level <= rank.level
-	}
+	fun isLowerThanOrEquals(rank: EnumRank): Boolean = level <= rank.level
 
 	/**
 	 * Retorna **true** se este [EnumRank] não é o **maior**.
 	 *
 	 * @return **true** se este [EnumRank] não é o **maior**.
 	 */
-	fun hasNext(): Boolean {
-		return level < ADMIN.level
-	}
+	fun hasNext(): Boolean = level < ADMIN.level
 
 	/**
 	 * Retorna o [EnumRank] imediatamente **acima** deste na hirarquia.
@@ -98,12 +89,12 @@ enum class EnumRank {
 	 * @return [EnumRank] imediatamente **acima** deste na hirarquia, 'null' se este for o mais alto.
 	 */
 	fun next(): EnumRank {
-		var rank: EnumRank? = null
+		var rank: EnumRank?
 
 		var i = level
 		do {
 			i++
-			rank = byLevel(i)
+			rank = EnumRank[i]
 		} while (rank == null)
 
 		return rank
@@ -114,9 +105,7 @@ enum class EnumRank {
 	 *
 	 * @return **true** se este [EnumRank] não é o **menor**.
 	 */
-	fun hasPrev(): Boolean {
-		return level > DEFAULT.level
-	}
+	fun hasPrev(): Boolean = level > DEFAULT.level
 
 	/**
 	 * Retorna o [EnumRank] imediatamente **abaixo** deste na hirarquia.
@@ -124,31 +113,27 @@ enum class EnumRank {
 	 * @return [EnumRank] imediatamente **abaixo** deste na hirarquia, 'null' se este for o mais baixo.
 	 */
 	fun prev(): EnumRank {
-		var rank: EnumRank? = null
+		var rank: EnumRank?
 
 		var i = level
 		do {
 			i--
-			rank = byLevel(i)
+			rank = EnumRank[i]
 		} while (rank == null)
 
 		return rank
 	}
 
-	fun format(s: String): String {
-		return Text.of(s).color(color).styles(*styles).toString()
-	}
+	fun format(s: String): String = Text.of(s).color(color).styles(*styles).toString()
 
-	override fun toString(): String {
-		return string
-	}
+	override fun toString(): String = string
 
 	companion object {
 
 		private val BY_LEVEL = HashMap<Int, EnumRank>()
 
 		init {
-			for (rank in EnumRank.values()) BY_LEVEL.put(rank.level, rank)
+			values().forEach { BY_LEVEL.put(it.level, it) }
 		}
 
 		/**
@@ -158,8 +143,6 @@ enum class EnumRank {
 		 * @return [EnumRank] definido por um valor númerico 'int', 'null' se não houver um valor númerico 'int'
 		 * associado a nenhum [EnumRank].
 		 */
-		fun byLevel(level: Int): EnumRank {
-			return BY_LEVEL.getOrDefault(level, DEFAULT)
-		}
+		operator fun get(level: Int): EnumRank = BY_LEVEL.getOrDefault(level, DEFAULT)
 	}
 }

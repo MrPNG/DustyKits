@@ -17,7 +17,6 @@ object AsyncPlayerPreLoginListener: Listener {
 
 		val primitiveGamer = GamerRegistry.fromJson(WebAPI.getProfile(uuid), uuid)
 
-		if (primitiveGamer == null)
-			event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, KICK_NO_PROFILE)
+		if (primitiveGamer == null) event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, KICK_NO_PROFILE)
 	}
 }

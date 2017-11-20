@@ -23,8 +23,7 @@ object PlayerInteractListener: Listener {
 				Material.WALL_SIGN -> {
 					val sign = block.state as Sign
 
-					if (SignUtils.isSpecialSign(sign))
-						SignUtils.doStuff(sign, player)
+					if (SignUtils.isSpecialSign(sign)) SignUtils.doStuff(sign, player)
 				}
 			}
 		}

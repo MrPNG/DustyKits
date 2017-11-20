@@ -47,11 +47,9 @@ fun Collection<String>.format(): String {
 
 	val iterator = this.iterator()
 
-	if (iterator.hasNext())
-		stringBuilder.append(iterator.next())
+	if (iterator.hasNext()) stringBuilder.append(iterator.next())
 
-	while (iterator.hasNext())
-		stringBuilder.append(", ").append(iterator.next())
+	while (iterator.hasNext()) stringBuilder.append(", ").append(iterator.next())
 
 	return stringBuilder.toString()
 }
@@ -63,18 +61,8 @@ fun Collection<String>.format(): String {
  * @return
  */
 fun Long.periodString(): String {
-	val periodFormatter = PeriodFormatterBuilder().appendDays()
-			.appendSuffix("d")
-			.appendSeparator(" ")
-			.appendHours()
-			.appendSuffix("h")
-			.appendSeparator(" ")
-			.appendMinutes()
-			.appendSuffix("min")
-			.appendSeparator(" ")
-			.appendSeconds()
-			.appendSuffix("s")
-			.toFormatter()
+	val periodFormatter = PeriodFormatterBuilder().appendDays().appendSuffix("d").appendSeparator(" ").appendHours().appendSuffix("h").appendSeparator(" ").appendMinutes().appendSuffix("min").appendSeparator(
+			" ").appendSeconds().appendSuffix("s").toFormatter()
 
 	val period = Period(this)
 
@@ -89,9 +77,7 @@ fun Long.periodString(): String {
  * @return
  */
 fun ArrayList<String>.sortOut(start: String): ArrayList<String> {
-	this
-			.filterNot { it.startsWith(start, true) }
-			.forEach { this.remove(it) }
+	this.filterNot { it.startsWith(start, true) }.forEach { this.remove(it) }
 
 	this.sortWith(Comparator { obj, str -> obj.compareTo(str, ignoreCase = true) })
 
@@ -111,7 +97,7 @@ object StringUtils {
 	fun randomString(length: Int): String {
 		val stringBuilder = StringBuilder(length)
 
-		for (i in 0 .. length - 1) {
+		for (i in 0 until length) {
 			val index = Main.RANDOM.nextInt(ALPHANUMERIC.size)
 			stringBuilder.append(ALPHANUMERIC[index])
 		}

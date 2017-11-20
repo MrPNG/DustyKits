@@ -16,9 +16,7 @@ class PrimitiveGamer {
 	var hgWins = 0
 	var hgLosses = 0
 
-	fun getUniqueId(): UUID {
-		return UUID.fromString(uuid)
-	}
+	fun getUniqueId(): UUID = UUID.fromString(uuid)
 
 	fun setUniqueId(uuid: UUID) {
 		this.uuid = uuid.toString()

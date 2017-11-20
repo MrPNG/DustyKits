@@ -12,39 +12,27 @@ import org.bukkit.entity.Player
 
 object WarpCommand: CustomCommand(EnumRank.DEFAULT, "warp") {
 
-	override fun execute(sender: CommandSender, alias: String, args: Array<String>): Boolean {
-		return when (sender) {
-			!is Player -> true
-			else       -> {
-				val gamer = Gamer.of(sender)
+	override fun execute(sender: CommandSender, alias: String, args: Array<String>): Boolean = when (sender) {
+		!is Player -> true
+		else       -> {
+			val gamer = Gamer[sender]
 
-				if (args.isEmpty()) {
-					sender.openInventory(WarpMenu.menuWarpMain(sender))
-				} else {
-					val warp = Warps.byName(args[0])
+			if (args.isEmpty()) {
+				sender.openInventory(WarpMenu.menuWarpMain(sender))
+			} else {
+				val warp = Warps[args[0]]
 
-					if (warp == null || !warp.data.isEnabled && gamer.mode !== EnumMode.ADMIN)
-						sender.sendMessage(Text.negativePrefix()
-								                   .basic("Não")
-								                   .basic(" há uma warp com o nome \"")
-								                   .negative(args[0])
-								                   .basic("\"!")
-								                   .toString())
-					else
-						gamer.sendToWarp(warp)
-				}
-
-				false
+				if (warp == Warps.NONE || !warp.data.isEnabled && gamer.mode !== EnumMode.ADMIN) sender.sendMessage(Text.negativePrefix().basic("Não").basic(" há uma warp com o nome \"").negative(
+						args[0]).basic("\"!").toString())
+				else gamer.sendToWarp(warp)
 			}
+
+			false
 		}
 	}
 
 	override fun tabComplete(sender: CommandSender, alias: String, args: Array<String>): MutableList<String>? {
-		return if (sender !is Player)
-			arrayListOf()
-		else
-			Warps.WARPS
-					.filter { it.data.isEnabled && (args.isEmpty() || it.name.startsWith(args[0], true)) }
-					.map { it.name.toLowerCase() }.toMutableList()
+		return if (sender !is Player) arrayListOf()
+		else Warps.WARPS.filter { it.data.isEnabled && (args.isEmpty() || it.name.startsWith(args[0], true)) }.map { it.name.toLowerCase() }.toMutableList()
 	}
 }

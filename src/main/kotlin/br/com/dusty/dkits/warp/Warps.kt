@@ -6,6 +6,7 @@ import java.util.*
 
 object Warps {
 
+	val NONE = NoneWarp
 	val ARENA = ArenaWarp
 	val LOBBY = LobbyWarp
 
@@ -21,7 +22,5 @@ object Warps {
 		WARPS.forEach { warp -> pluginManager.registerEvents(warp, Main.INSTANCE) }
 	}
 
-	fun byName(name: String): Warp? {
-		return WARPS.firstOrNull { it.name.toLowerCase().startsWith(name.toLowerCase()) }
-	}
+	operator fun get(name: String): Warp = WARPS.firstOrNull { it.name.toLowerCase().startsWith(name.toLowerCase()) } ?: NONE
 }
