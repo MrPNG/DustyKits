@@ -1,3 +1,3 @@
 package br.com.dusty.dkits.warp
 
-object NoneWarp: Warp() {}
+object NoneWarp: Warp()

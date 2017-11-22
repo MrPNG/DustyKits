@@ -2,7 +2,7 @@ package br.com.dusty.dkits.gamer
 
 import java.util.*
 
-class PrimitiveGamer (var uuid: String) {
+class PrimitiveGamer(var uuid: String) {
 
 	var id = -1
 

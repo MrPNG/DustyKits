@@ -24,7 +24,7 @@ open class Warp: Listener {
 	var name = "None"
 	var description = ""
 	var icon = ItemStack(Material.STONE_SWORD)
-	var warpType = EnumWarpType.GAME
+	var type = EnumWarpType.GAME
 
 	var spawn: Location? = null
 		get() {
@@ -91,18 +91,18 @@ open class Warp: Listener {
 		printWriter.close()
 	}
 
-	fun receiveGamer(gamer: Gamer) {
+	fun receiveGamer(gamer: Gamer, announce: Boolean) {
 		val player = gamer.player
 
 		player.teleport(spawn!!.spread(data.spreadRange))
-		player.sendMessage(Text.positivePrefix().basic("Você foi ").positive("teleportado").basic(" para a warp ").positive(name).basic("!").toString())
+		if(announce) player.sendMessage(Text.positivePrefix().basic("Você foi ").positive("teleportado").basic(" para a warp ").positive(name).basic("!").toString())
 		//TODO: Titles/subtitles for 1.8+ players
 
 		gamer.kit = entryKit
 		entryKit.apply(gamer)
 	}
 
-	private class GameWarpKit: Kit() {
+	object GameWarpKit: Kit() {
 
 		init {
 			items = arrayOf(ItemStack(Material.CHEST).rename(Text.of("Kits").color(TextColor.GOLD).toString()),
@@ -117,7 +117,7 @@ open class Warp: Listener {
 		}
 	}
 
-	private class EventWarpKit: Kit() {
+	object EventWarpKit: Kit() {
 
 		init {
 			items = arrayOf(null, null, null, null, null, null, null, null, ItemStack(Material.MAP).rename(Text.of("Warps").color(TextColor.GOLD).toString()))
@@ -135,10 +135,4 @@ open class Warp: Listener {
 	                var spawn: Array<Float> = arrayOf(0f, 0f, 0f),
 	                var spawnRadius: Float = 0f,
 	                var spreadRange: Float = 0f)
-
-	companion object {
-
-		internal val GAME_WARP_KIT: Kit = GameWarpKit()
-		internal val EVENT_WARP_KIT: Kit = EventWarpKit()
-	}
 }

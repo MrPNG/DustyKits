@@ -3,8 +3,8 @@ package br.com.dusty.dkits.listener.login
 import br.com.dusty.dkits.EnumServerStatus
 import br.com.dusty.dkits.Main
 import br.com.dusty.dkits.gamer.EnumRank
-import br.com.dusty.dkits.gamer.Gamer
 import br.com.dusty.dkits.gamer.GamerRegistry
+import br.com.dusty.dkits.gamer.gamer
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
 import org.bukkit.event.EventHandler
@@ -28,7 +28,7 @@ object PlayerLoginListener: Listener {
 			return
 		}
 
-		val gamer = Gamer[player]
+		val gamer = player.gamer()
 
 		if (Main.serverStatus != EnumServerStatus.ONLINE && gamer.rank.isLowerThan(EnumRank.MOD)) {
 			GamerRegistry.PRIMITIVE_GAMER_BY_UUID.remove(player.uniqueId)

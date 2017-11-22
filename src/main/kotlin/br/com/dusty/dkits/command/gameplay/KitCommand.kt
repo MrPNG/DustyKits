@@ -2,7 +2,7 @@ package br.com.dusty.dkits.command.gameplay
 
 import br.com.dusty.dkits.command.CustomCommand
 import br.com.dusty.dkits.gamer.EnumRank
-import br.com.dusty.dkits.gamer.Gamer
+import br.com.dusty.dkits.gamer.gamer
 import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.util.text.Text
 import org.bukkit.command.CommandSender
@@ -13,7 +13,7 @@ object KitCommand: CustomCommand(EnumRank.DEFAULT, "kit") {
 	override fun execute(sender: CommandSender, alias: String, args: Array<String>): Boolean = when (sender) {
 		!is Player -> true
 		else       -> {
-			val gamer = Gamer[sender]
+			val gamer = sender.gamer()
 
 			if (args.isEmpty()) {
 				//TODO: Open kit menu
@@ -31,7 +31,7 @@ object KitCommand: CustomCommand(EnumRank.DEFAULT, "kit") {
 	override fun tabComplete(sender: CommandSender, alias: String, args: Array<String>): MutableList<String>? {
 		return if (sender !is Player) arrayListOf()
 		else Kits.KITS.filter {
-			it.data.isEnabled && Gamer[sender].warp.enabledKits.contains(it) && (args.isEmpty() || it.name.startsWith(args[0], true))
+			it.data.isEnabled && sender.gamer().warp.enabledKits.contains(it) && (args.isEmpty() || it.name.startsWith(args[0], true))
 		}.map { it.name.toLowerCase() }.toMutableList()
 	}
 }

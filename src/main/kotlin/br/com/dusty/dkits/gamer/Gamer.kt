@@ -6,7 +6,6 @@ import br.com.dusty.dkits.util.Scoreboards
 import br.com.dusty.dkits.util.Tasks
 import br.com.dusty.dkits.util.gamer.Tags
 import br.com.dusty.dkits.util.protocol.EnumProtocolVersion
-import br.com.dusty.dkits.util.protocol.Protocols
 import br.com.dusty.dkits.util.tab.HeaderFooters
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.warp.Warp
@@ -14,6 +13,8 @@ import br.com.dusty.dkits.warp.Warps
 import org.bukkit.GameMode
 import org.bukkit.entity.Player
 import org.bukkit.scheduler.BukkitTask
+
+fun Player.gamer() = Gamer[this]
 
 class Gamer internal constructor(val player: Player, val primitiveGamer: PrimitiveGamer) {
 
@@ -59,13 +60,22 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 
 					visibleTo = EnumRank.DEFAULT
 				}
-				EnumMode.SPECTATE -> TODO()
+				EnumMode.SPECTATE -> { //TODO: Spectator mode
+					player.gameMode = GameMode.ADVENTURE
+
+					clear()
+					fly(true)
+
+					visibleTo = rank
+				}
 				EnumMode.ADMIN    -> {
 					player.gameMode = GameMode.CREATIVE
 
 					fly(true)
 
 					visibleTo = rank
+
+					if(isCombatTagged()) combatPartner?.kill(this) else removeCombatTag()
 				}
 			}
 		}
@@ -83,8 +93,8 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 
 	fun addKillMoney() { //TODO: Different money for VIPs
 		addMoney(when {
-			         rank.isHigherThanOrEquals(EnumRank.PRO) -> 200F
-			         else                                    -> 100F
+			         rank.isHigherThanOrEquals(EnumRank.PRO) -> 100F
+			         else                                    -> 50F
 		         })
 
 		updateScoreboard()
@@ -109,7 +119,7 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 	}
 
 	fun removeDeathMoney() {
-		removeMoney(50F)
+		removeMoney(25F)
 
 		updateScoreboard()
 	}
@@ -173,6 +183,22 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 
 		player.sendMessage(Text.negativeOf("-").negative(Math.round(amount)).basic(" créditos!").toString())
 		updateScoreboard()
+	}
+
+	fun kill(gamer: Gamer) {
+		player.sendMessage(Text.positivePrefix().basic("Você ").positive("matou").basic(" o jogador ").positive(gamer.player.displayName).basic("!").toString())
+
+		addKill()
+		addKillStreak()
+		addKillMoney()
+		addKillXp()
+
+		gamer.player.sendMessage(Text.negativePrefix().basic("Você ").negative("foi morto").basic(" pelo jogador ").negative(player.displayName).basic("!").toString())
+
+		gamer.addDeath()
+		gamer.resetKillStreak()
+		gamer.removeDeathMoney()
+		gamer.removeDeathXp()
 	}
 
 	var hgWins: Int
@@ -289,7 +315,7 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 	var warp: Warp = Warps.LOBBY
 	var warpTask: BukkitTask? = null
 
-	fun sendToWarp(warp: Warp) {
+	fun sendToWarp(warp: Warp, announce: Boolean) {
 		if (warpTask != null) {
 			warpTask!!.cancel()
 			warpTask = null
@@ -299,7 +325,7 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 			val ticks = Math.ceil((combatTag - System.currentTimeMillis()) / 50.0).toLong()
 			val seconds = Math.round((ticks / 20).toFloat())
 
-			warpTask = Tasks.sync(Runnable { sendToWarp(warp) }, ticks)
+			warpTask = Tasks.sync(Runnable { sendToWarp(warp, announce) }, ticks)
 
 			player.sendMessage(Text.neutralPrefix().basic("Você será teleportado em ").neutral(seconds).basic(" segundo(s), ").neutral("não").basic(" se ").neutral("mova").basic("!").toString())
 			//TODO: Titles/subtitles for 1.8+ players
@@ -307,7 +333,7 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 			clear()
 
 			this.warp = warp
-			warp.receiveGamer(this)
+			warp.receiveGamer(this, announce)
 
 			updateScoreboard()
 
@@ -318,7 +344,7 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 	fun clear() {
 		player.health = 20.0
 		player.foodLevel = 20
-		player.exp = 0f
+		player.exp = 0F
 		player.level = 0
 
 		player.inventory.clear()

@@ -23,19 +23,7 @@ object PlayerQuitListener: Listener {
 
 		if (gamer != null) {
 			if (gamer.isCombatTagged()) {
-				val combatPartner = gamer.combatPartner
-
-				if (combatPartner != null) {
-					combatPartner.addKill()
-					combatPartner.addKillStreak()
-					combatPartner.addKillMoney()
-					combatPartner.addKillXp()
-
-					gamer.addDeath()
-					gamer.resetKillStreak()
-					gamer.removeDeathMoney()
-					gamer.removeDeathXp()
-				}
+				gamer.combatPartner?.kill(gamer)
 
 				Bukkit.broadcastMessage(Text.negativeOf(player.name).basic(" deslogou em ").negative("combate").basic("!").toString())
 			}

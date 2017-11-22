@@ -1,7 +1,7 @@
 package br.com.dusty.dkits.listener.login
 
 import br.com.dusty.dkits.gamer.EnumRank
-import br.com.dusty.dkits.gamer.Gamer
+import br.com.dusty.dkits.gamer.gamer
 import br.com.dusty.dkits.util.Scoreboards
 import br.com.dusty.dkits.util.bossbar.BossBars
 import br.com.dusty.dkits.util.protocol.EnumProtocolVersion
@@ -21,7 +21,7 @@ object PlayerJoinListener: Listener {
 	@EventHandler
 	fun onPlayerJoin(event: PlayerJoinEvent) {
 		val player = event.player
-		val gamer = Gamer[player]
+		val gamer = player.gamer()
 
 		val protocolVersion = Protocols.protocolVersion(player)
 

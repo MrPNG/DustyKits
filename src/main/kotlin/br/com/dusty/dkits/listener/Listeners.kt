@@ -1,10 +1,7 @@
 package br.com.dusty.dkits.listener
 
 import br.com.dusty.dkits.Main
-import br.com.dusty.dkits.listener.gameplay.EntityDamageByEntityListener
-import br.com.dusty.dkits.listener.gameplay.InventoryClickListener
-import br.com.dusty.dkits.listener.gameplay.PlayerDeathListener
-import br.com.dusty.dkits.listener.gameplay.PlayerInteractListener
+import br.com.dusty.dkits.listener.gameplay.*
 import br.com.dusty.dkits.listener.login.AsyncPlayerPreLoginListener
 import br.com.dusty.dkits.listener.login.PlayerJoinListener
 import br.com.dusty.dkits.listener.login.PlayerLoginListener
@@ -29,7 +26,6 @@ object Listeners {
 
 		//Login
 		LISTENERS.add(AsyncPlayerPreLoginListener)
-		LISTENERS.add(InventoryClickListener)
 		LISTENERS.add(PlayerJoinListener)
 		LISTENERS.add(PlayerLoginListener)
 
@@ -42,10 +38,14 @@ object Listeners {
 		//Mechanincs
 		LISTENERS.add(AsyncPlayerChatListener)
 		LISTENERS.add(EntityDamageListener)
+		LISTENERS.add(EntityPickupItemListener)
 		LISTENERS.add(FoodLevelChangeListener)
+		LISTENERS.add(InventoryClickListener)
 		LISTENERS.add(ItemSpawnListener)
 		LISTENERS.add(LeavesDecayListener)
 		LISTENERS.add(PlayerCommandPreprocessListener)
+		LISTENERS.add(PlayerDropItemListener)
+		LISTENERS.add(PlayerInteractEntityListener)
 		LISTENERS.add(br.com.dusty.dkits.listener.mechanics.PlayerMoveListener)
 		LISTENERS.add(ServerListPingListener)
 		LISTENERS.add(SignChangeListener)

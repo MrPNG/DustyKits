@@ -1,24 +1,24 @@
-package br.com.dusty.dkits.listener.gameplay
+package br.com.dusty.dkits.listener.mechanics
 
 import br.com.dusty.dkits.gamer.EnumMode
-import br.com.dusty.dkits.gamer.Gamer
+import br.com.dusty.dkits.gamer.gamer
 import br.com.dusty.dkits.util.inventory.InventoryUtils.BUTTON_BACK
 import br.com.dusty.dkits.util.inventory.WarpMenu
 import br.com.dusty.dkits.warp.Warps
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 
 object InventoryClickListener: Listener {
 
-	private val TITLE_CONTAINER_INVENTORY = "container.inventory"
+	val TITLE_CONTAINER_INVENTORY = "container.inventory"
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGHEST)
 	fun onInventoryClick(event: InventoryClickEvent) {
 		val player = event.whoClicked as Player
-
-		val gamer = Gamer[player]
+		val gamer = player.gamer()
 
 		if (gamer.kit.isDummy && gamer.mode != EnumMode.ADMIN) event.isCancelled = true
 
@@ -26,7 +26,7 @@ object InventoryClickListener: Listener {
 
 		val itemStack = event.currentItem
 
-		if (inventory.title != null && inventory.title != TITLE_CONTAINER_INVENTORY) {
+		if (inventory != null && inventory.title != null && inventory.title != TITLE_CONTAINER_INVENTORY) {
 
 			when (inventory.title) {
 				WarpMenu.TITLE_MAIN                       -> {
@@ -39,7 +39,7 @@ object InventoryClickListener: Listener {
 					when (itemStack) {
 						BUTTON_BACK -> player.openInventory(WarpMenu.menuWarpMain(player))
 						else        -> Warps.WARPS.filter { it.icon == itemStack }.forEach {
-							gamer.sendToWarp(it)
+							gamer.sendToWarp(it, true)
 							return
 						}
 					}
