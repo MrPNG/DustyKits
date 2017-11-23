@@ -66,10 +66,20 @@ open class Kit {
 		}
 	}
 
-	fun enable(enabled: Boolean): Boolean {
+	fun setEnabled(enabled: Boolean): Boolean {
 		if (data.isEnabled == enabled) return false
 
 		data.isEnabled = enabled
+
+		Tasks.async(Runnable { this.saveData() })
+
+		return true
+	}
+
+	fun setPrice(price: Int): Boolean {
+		if (data.price == price) return false
+
+		data.price = price
 
 		Tasks.async(Runnable { this.saveData() })
 

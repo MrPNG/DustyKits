@@ -1,6 +1,7 @@
 package br.com.dusty.dkits.command
 
 import br.com.dusty.dkits.command.gameplay.KitCommand
+import br.com.dusty.dkits.command.gameplay.ShopCommand
 import br.com.dusty.dkits.command.gameplay.WarpCommand
 import br.com.dusty.dkits.command.staff.*
 import java.util.*
@@ -27,6 +28,7 @@ object Commands {
 
 		//Gameplay
 		CUSTOM_COMMANDS.add(KitCommand)
+		CUSTOM_COMMANDS.add(ShopCommand)
 		CUSTOM_COMMANDS.add(WarpCommand)
 
 		CUSTOM_COMMANDS.forEach({ it.register() })

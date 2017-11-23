@@ -32,7 +32,7 @@ object EnableCommand: CustomCommand(EnumRank.ADMIN, "enable") {
 									"!").toString())
 						}
 					} else {
-						if (kit.enable(true)) sender.sendMessage(Text.positivePrefix().basic("O kit ").positive(kit.name).basic(" foi ").positive("habilitado").basic("!").toString())
+						if (kit.setEnabled(true)) sender.sendMessage(Text.positivePrefix().basic("O kit ").positive(kit.name).basic(" foi ").positive("habilitado").basic("!").toString())
 						else sender.sendMessage(Text.positivePrefix().basic("O kit ").positive(kit.name).basic(" já está ").positive("habilitado").basic("!").toString())
 					}
 				}

@@ -31,7 +31,7 @@ object DisableCommand: CustomCommand(EnumRank.ADMIN, "disable") {
 								"!").toString())
 					}
 				} else {
-					if (kit.enable(false)) sender.sendMessage(Text.negativePrefix().basic("O kit ").negative(kit.name).basic(" foi ").negative("desabilitado").basic("!").toString())
+					if (kit.setEnabled(false)) sender.sendMessage(Text.negativePrefix().basic("O kit ").negative(kit.name).basic(" foi ").negative("desabilitado").basic("!").toString())
 					else sender.sendMessage(Text.negativePrefix().basic("O kit ").negative(kit.name).basic(" já está ").negative("desabilitado").basic("!").toString())
 				}
 			}
