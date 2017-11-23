@@ -95,7 +95,7 @@ open class Warp: Listener {
 		val player = gamer.player
 
 		player.teleport(spawn!!.spread(data.spreadRange))
-		if(announce) player.sendMessage(Text.positivePrefix().basic("Você foi ").positive("teleportado").basic(" para a warp ").positive(name).basic("!").toString())
+		if (announce) player.sendMessage(Text.positivePrefix().basic("Você foi ").positive("teleportado").basic(" para a warp ").positive(name).basic("!").toString())
 		//TODO: Titles/subtitles for 1.8+ players
 
 		gamer.kit = entryKit

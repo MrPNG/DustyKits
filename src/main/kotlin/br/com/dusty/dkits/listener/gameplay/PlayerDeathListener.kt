@@ -31,7 +31,7 @@ object PlayerDeathListener: Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	fun onPlayerDeath(event: PlayerDeathEvent) { //TODO: Handle death
 		event.deathMessage = null
-		event.drops.removeIf { it.type !in ALLOWED_DROPS}
+		event.drops.removeIf { it.type !in ALLOWED_DROPS }
 
 		val player = event.entity
 		val gamer = player.gamer()

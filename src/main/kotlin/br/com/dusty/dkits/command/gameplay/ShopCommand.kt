@@ -5,7 +5,6 @@ import br.com.dusty.dkits.gamer.EnumRank
 import br.com.dusty.dkits.gamer.gamer
 import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.util.text.Text
-import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
 object ShopCommand: PlayerCustomCommand(EnumRank.DEFAULT, "shop") {

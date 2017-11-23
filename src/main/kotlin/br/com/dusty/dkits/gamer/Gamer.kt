@@ -75,7 +75,7 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 
 					visibleTo = rank
 
-					if(isCombatTagged()) combatPartner?.kill(this) else removeCombatTag()
+					if (isCombatTagged()) combatPartner?.kill(this) else removeCombatTag()
 				}
 			}
 		}

@@ -1,7 +1,9 @@
 package br.com.dusty.dkits.listener
 
 import br.com.dusty.dkits.Main
-import br.com.dusty.dkits.listener.gameplay.*
+import br.com.dusty.dkits.listener.gameplay.EntityDamageByEntityListener
+import br.com.dusty.dkits.listener.gameplay.PlayerDeathListener
+import br.com.dusty.dkits.listener.gameplay.PlayerInteractListener
 import br.com.dusty.dkits.listener.login.AsyncPlayerPreLoginListener
 import br.com.dusty.dkits.listener.login.PlayerJoinListener
 import br.com.dusty.dkits.listener.login.PlayerLoginListener
