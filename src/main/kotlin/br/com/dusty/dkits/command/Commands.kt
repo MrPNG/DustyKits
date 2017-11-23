@@ -23,6 +23,7 @@ object Commands {
 		CUSTOM_COMMANDS.add(AdminCommand)
 		CUSTOM_COMMANDS.add(DisableCommand)
 		CUSTOM_COMMANDS.add(EnableCommand)
+		CUSTOM_COMMANDS.add(ForceCommand)
 		CUSTOM_COMMANDS.add(InvisCommand)
 		CUSTOM_COMMANDS.add(InvSeeCommand)
 

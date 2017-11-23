@@ -38,7 +38,7 @@ object PlayerJoinListener: Listener {
 		gamer.createScoreboard()
 		Scoreboards.update()
 
-		gamer.sendToWarp(Warps.LOBBY)
+		gamer.sendToWarp(Warps.LOBBY, false)
 
 		if (gamer.protocolVersion.isLowerThan(EnumProtocolVersion.RELEASE_1_8)) BossBars.MAIN.send(player)
 		//TODO: Titles/subtitles for 1.8+ players

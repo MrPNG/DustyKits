@@ -40,30 +40,34 @@ open class Kit {
 		player.inventory.addItemStacks(items)
 	}
 
-	fun setAndApplyIfAllowed(gamer: Gamer) {
-		val player = gamer.player
+	fun setAndApply(gamer: Gamer) {
+		gamer.kit = this
+		apply(gamer)
 
-		//TODO: If not on MiniHG
-		when {
-			gamer.mode != EnumMode.ADMIN && !gamer.kit.isDummy                     -> {
-				player.sendMessage(Text.negativePrefix().basic("Você ").negative("já").basic(" está ").negative("usando").basic(" um kit!").toString())
-			}
-			gamer.mode != EnumMode.ADMIN && !gamer.warp.enabledKits.contains(this) -> {
-				player.sendMessage(Text.negativePrefix().basic("Você ").negative("não pode").basic(" usar o kit ").negative(name).basic(" nesta warp!").toString())
-			}
-			gamer.mode != EnumMode.ADMIN && !gamer.hasKit(this)                    -> {
-				player.sendMessage(Text.negativePrefix().basic("Você ").negative("não").basic(" possui o kit ").negative(name).basic("!").toString())
-			}
-			else                                                                   -> {
-				gamer.kit = this
-				apply(gamer)
+		gamer.updateScoreboard()
 
-				gamer.updateScoreboard()
+		gamer.player.sendMessage(Text.positivePrefix().basic("Agora você está ").positive("usando").basic(" o kit ").positive(name).basic("!").toString())
+		//TODO: Titles/subtitles for 1.8+ players
+	}
 
-				player.sendMessage(Text.positivePrefix().basic("Agora você está ").positive("usando").basic(" o kit ").positive(name).basic("!").toString())
-				//TODO: Titles/subtitles for 1.8+ players
-			}
+	//TODO: If not on MiniHG
+	fun isAllowed(gamer: Gamer, announce: Boolean): Boolean = when {
+		gamer.mode != EnumMode.ADMIN && !gamer.kit.isDummy                     -> {
+			if (announce) gamer.player.sendMessage(Text.negativePrefix().basic("Você ").negative("já").basic(" está ").negative("usando").basic(" um kit!").toString())
+
+			false
 		}
+		gamer.mode != EnumMode.ADMIN && !gamer.warp.enabledKits.contains(this) -> {
+			if (announce) gamer.player.sendMessage(Text.negativePrefix().basic("Você ").negative("não pode").basic(" usar o kit ").negative(name).basic(" nesta warp!").toString())
+
+			false
+		}
+		gamer.mode != EnumMode.ADMIN && !gamer.hasKit(this)                    -> {
+			if (announce) gamer.player.sendMessage(Text.negativePrefix().basic("Você ").negative("não").basic(" possui o kit ").negative(name).basic("!").toString())
+
+			false
+		}
+		else                                                                   -> true
 	}
 
 	fun setEnabled(enabled: Boolean): Boolean {

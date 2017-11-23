@@ -7,7 +7,7 @@ import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.warp.Warps
 import org.bukkit.command.CommandSender
 
-object EnableCommand: CustomCommand(EnumRank.ADMIN, "enable") {
+object EnableCommand: CustomCommand(EnumRank.MODPLUS, "enable") {
 
 	override fun execute(sender: CommandSender, alias: String, args: Array<String>): Boolean {
 		if (!testPermission(sender)) return true
