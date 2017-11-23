@@ -1,20 +1,27 @@
 package br.com.dusty.dkits.listener.gameplay
 
-import br.com.dusty.dkits.util.block.SignUtils
+import br.com.dusty.dkits.gamer.EnumMode
+import br.com.dusty.dkits.gamer.gamer
+import br.com.dusty.dkits.util.block.interact
+import br.com.dusty.dkits.util.block.isSpecial
 import br.com.dusty.dkits.util.inventory.WarpMenu
 import br.com.dusty.dkits.warp.Warps
 import org.bukkit.Material
 import org.bukkit.block.Sign
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
 
 object PlayerInteractListener: Listener {
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGHEST)
 	fun onPlayerInteract(event: PlayerInteractEvent) {
 		val player = event.player
+		val gamer = player.gamer()
+
+		if (gamer.mode != EnumMode.ADMIN) event.isCancelled = true
 
 		if (event.action == Action.RIGHT_CLICK_BLOCK) {
 			val block = event.clickedBlock
@@ -23,7 +30,7 @@ object PlayerInteractListener: Listener {
 				Material.WALL_SIGN -> {
 					val sign = block.state as Sign
 
-					if (SignUtils.isSpecialSign(sign)) SignUtils.doStuff(sign, player)
+					if (sign.isSpecial()) sign.interact(player)
 				}
 			}
 		}

@@ -1,6 +1,6 @@
 package br.com.dusty.dkits.util.bossbar
 
-import br.com.dusty.dkits.util.protocol.ProtocolUtils
+import br.com.dusty.dkits.util.protocol.Protocols
 import org.bukkit.entity.Player
 import java.lang.reflect.Field
 import java.util.*
@@ -24,7 +24,7 @@ class BossBar {
 		val object_PacketPlayOutBoss = class_PacketPlayOutBoss.newInstance()
 		field_PacketPlayOutBoss_a.set(object_PacketPlayOutBoss, uuid)
 		field_PacketPlayOutBoss_b.set(object_PacketPlayOutBoss, enum_Action_values[EnumAction.ADD.code])
-		field_PacketPlayOutBoss_c.set(object_PacketPlayOutBoss, ProtocolUtils.chatMessage(title))
+		field_PacketPlayOutBoss_c.set(object_PacketPlayOutBoss, Protocols.chatMessage(title))
 		field_PacketPlayOutBoss_d.set(object_PacketPlayOutBoss, progress)
 		field_PacketPlayOutBoss_e.set(object_PacketPlayOutBoss, enum_BarColor_values[barColor.code])
 		field_PacketPlayOutBoss_f.set(object_PacketPlayOutBoss, enum_BarStyle_values[barStyle.code])
@@ -38,7 +38,7 @@ class BossBar {
 			}
 		}
 
-		ProtocolUtils.sendPacket(object_PacketPlayOutBoss, *players)
+		Protocols.sendPacket(object_PacketPlayOutBoss, *players)
 	}
 
 	fun remove(vararg players: Player) {
@@ -49,7 +49,7 @@ class BossBar {
 		field_PacketPlayOutBoss_a.set(object_PacketPlayOutBoss, uuid)
 		field_PacketPlayOutBoss_b.set(object_PacketPlayOutBoss, enum_Action_values[EnumAction.REMOVE.code])
 
-		ProtocolUtils.sendPacket(object_PacketPlayOutBoss, *players)
+		Protocols.sendPacket(object_PacketPlayOutBoss, *players)
 	}
 
 	fun updateProgress(progress: Float, vararg players: Player) {
@@ -60,7 +60,7 @@ class BossBar {
 		field_PacketPlayOutBoss_b.set(object_PacketPlayOutBoss, enum_Action_values[EnumAction.HEALTH.code])
 		field_PacketPlayOutBoss_d.set(object_PacketPlayOutBoss, progress)
 
-		ProtocolUtils.sendPacket(object_PacketPlayOutBoss, *players)
+		Protocols.sendPacket(object_PacketPlayOutBoss, *players)
 	}
 
 	fun updateTitle(title: String, vararg players: Player) {
@@ -69,9 +69,9 @@ class BossBar {
 		val object_PacketPlayOutBoss = class_PacketPlayOutBoss.newInstance()
 		field_PacketPlayOutBoss_a.set(object_PacketPlayOutBoss, uuid)
 		field_PacketPlayOutBoss_b.set(object_PacketPlayOutBoss, enum_Action_values[EnumAction.TITLE.code])
-		field_PacketPlayOutBoss_c.set(object_PacketPlayOutBoss, ProtocolUtils.chatMessage(title))
+		field_PacketPlayOutBoss_c.set(object_PacketPlayOutBoss, Protocols.chatMessage(title))
 
-		ProtocolUtils.sendPacket(object_PacketPlayOutBoss, *players)
+		Protocols.sendPacket(object_PacketPlayOutBoss, *players)
 	}
 
 	fun updateStyle(barColor: EnumBarColor, barStyle: EnumBarStyle, vararg players: Player) {
@@ -84,7 +84,7 @@ class BossBar {
 		field_PacketPlayOutBoss_e.set(object_PacketPlayOutBoss, enum_BarColor_values[barColor.code])
 		field_PacketPlayOutBoss_f.set(object_PacketPlayOutBoss, enum_BarStyle_values[barStyle.code])
 
-		ProtocolUtils.sendPacket(object_PacketPlayOutBoss, *players)
+		Protocols.sendPacket(object_PacketPlayOutBoss, *players)
 	}
 
 	private enum class EnumAction private constructor(internal var code: Int) {
@@ -132,7 +132,7 @@ class BossBar {
 
 	companion object {
 
-		var class_PacketPlayOutBoss: Class<*> = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".PacketPlayOutBoss")
+		var class_PacketPlayOutBoss: Class<*> = Class.forName(Protocols.NMS_PACKAGE + Protocols.NMS_VERSION + ".PacketPlayOutBoss")
 		var field_PacketPlayOutBoss_a: Field
 		var field_PacketPlayOutBoss_b: Field
 		var field_PacketPlayOutBoss_c: Field
@@ -148,23 +148,23 @@ class BossBar {
 		var enum_BarStyle_values: Array<*>
 
 		init {
-			field_PacketPlayOutBoss_a = ProtocolUtils.getAccessibleField(class_PacketPlayOutBoss, "a")
-			field_PacketPlayOutBoss_b = ProtocolUtils.getAccessibleField(class_PacketPlayOutBoss, "b")
-			field_PacketPlayOutBoss_c = ProtocolUtils.getAccessibleField(class_PacketPlayOutBoss, "c")
-			field_PacketPlayOutBoss_d = ProtocolUtils.getAccessibleField(class_PacketPlayOutBoss, "d")
-			field_PacketPlayOutBoss_e = ProtocolUtils.getAccessibleField(class_PacketPlayOutBoss, "e")
-			field_PacketPlayOutBoss_f = ProtocolUtils.getAccessibleField(class_PacketPlayOutBoss, "f")
-			field_PacketPlayOutBoss_g = ProtocolUtils.getAccessibleField(class_PacketPlayOutBoss, "g")
-			field_PacketPlayOutBoss_h = ProtocolUtils.getAccessibleField(class_PacketPlayOutBoss, "h")
-			field_PacketPlayOutBoss_i = ProtocolUtils.getAccessibleField(class_PacketPlayOutBoss, "i")
+			field_PacketPlayOutBoss_a = Protocols.getAccessibleField(class_PacketPlayOutBoss, "a")
+			field_PacketPlayOutBoss_b = Protocols.getAccessibleField(class_PacketPlayOutBoss, "b")
+			field_PacketPlayOutBoss_c = Protocols.getAccessibleField(class_PacketPlayOutBoss, "c")
+			field_PacketPlayOutBoss_d = Protocols.getAccessibleField(class_PacketPlayOutBoss, "d")
+			field_PacketPlayOutBoss_e = Protocols.getAccessibleField(class_PacketPlayOutBoss, "e")
+			field_PacketPlayOutBoss_f = Protocols.getAccessibleField(class_PacketPlayOutBoss, "f")
+			field_PacketPlayOutBoss_g = Protocols.getAccessibleField(class_PacketPlayOutBoss, "g")
+			field_PacketPlayOutBoss_h = Protocols.getAccessibleField(class_PacketPlayOutBoss, "h")
+			field_PacketPlayOutBoss_i = Protocols.getAccessibleField(class_PacketPlayOutBoss, "i")
 
-			val enum_Action = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".PacketPlayOutBoss\$Action")
+			val enum_Action = Class.forName(Protocols.NMS_PACKAGE + Protocols.NMS_VERSION + ".PacketPlayOutBoss\$Action")
 			enum_Action_values = enum_Action.enumConstants
 
-			val enum_BarColor = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".BossBattle\$BarColor")
+			val enum_BarColor = Class.forName(Protocols.NMS_PACKAGE + Protocols.NMS_VERSION + ".BossBattle\$BarColor")
 			enum_BarColor_values = enum_BarColor.enumConstants
 
-			val enum_BarStyle = Class.forName(ProtocolUtils.NMS_PACKAGE + ProtocolUtils.NMS_VERSION + ".BossBattle\$BarStyle")
+			val enum_BarStyle = Class.forName(Protocols.NMS_PACKAGE + Protocols.NMS_VERSION + ".BossBattle\$BarStyle")
 			enum_BarStyle_values = enum_BarStyle.enumConstants
 		}
 

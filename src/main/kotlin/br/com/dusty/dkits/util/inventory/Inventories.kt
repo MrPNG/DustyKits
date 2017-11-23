@@ -40,6 +40,11 @@ fun Inventory.fill(backButton: Boolean): Inventory {
 	return this
 }
 
+fun Player.openInventory(player: Player) {
+	openInventory(player.inventory)
+	sendMessage(Text.positivePrefix().basic("Você está ").positive("vendo").basic(" o inventário de ").positive(player.name).toString())
+}
+
 object InventoryUtils {
 
 	val SOUP = ItemStack(Material.MUSHROOM_SOUP)

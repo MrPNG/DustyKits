@@ -1,10 +1,11 @@
 package br.com.dusty.dkits.listener.mechanics
 
 import br.com.dusty.dkits.gamer.EnumMode
-import br.com.dusty.dkits.gamer.Gamer
+import br.com.dusty.dkits.gamer.gamer
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.block.SignChangeEvent
 
@@ -30,11 +31,11 @@ object SignChangeListener: Listener {
 	                              Text.positiveOf("+").toString(),
 	                              Text.of("=-=-=-=-=-=-=-=-=-=-=-=-=-=").color(TextColor.RED).toString())
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGHEST)
 	fun onSignChange(event: SignChangeEvent) {
 		val player = event.player
 
-		val gamer = Gamer[player]
+		val gamer = player.gamer()
 
 		if (gamer.mode != EnumMode.ADMIN) return
 

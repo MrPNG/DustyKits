@@ -4,7 +4,7 @@ import br.com.dusty.dkits.Main
 import org.bukkit.Bukkit
 import org.bukkit.scheduler.BukkitTask
 
-object TaskUtils {
+object Tasks {
 
 	fun sync(runnable: Runnable): BukkitTask = Bukkit.getScheduler().runTask(Main.INSTANCE, runnable)
 

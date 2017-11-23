@@ -7,7 +7,7 @@ import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.warp.Warps
 import org.bukkit.command.CommandSender
 
-object DisableCommand: CustomCommand(EnumRank.ADMIN, "disable") {
+object DisableCommand: CustomCommand(EnumRank.MODPLUS, "disable") {
 
 	override fun execute(sender: CommandSender, alias: String, args: Array<String>): Boolean {
 		if (!testPermission(sender)) return true
@@ -17,7 +17,7 @@ object DisableCommand: CustomCommand(EnumRank.ADMIN, "disable") {
 				val kit = Kits[args[1]]
 
 				if (kit == Kits.NONE) {
-					sender.sendMessage(Text.negativePrefix().basic("Não").basic(" há um kit com o nome \"").negative(args[0]).basic("\"!").toString())
+					sender.sendMessage(Text.negativePrefix().basic("Não").basic(" há um kit com o nome \"").negative(args[1]).basic("\"!").toString())
 				} else if (args.size > 2) {
 					val warp = Warps[args[2]]
 
@@ -31,7 +31,7 @@ object DisableCommand: CustomCommand(EnumRank.ADMIN, "disable") {
 								"!").toString())
 					}
 				} else {
-					if (kit.enabled(false)) sender.sendMessage(Text.negativePrefix().basic("O kit ").negative(kit.name).basic(" foi ").negative("desabilitado").basic("!").toString())
+					if (kit.setEnabled(false)) sender.sendMessage(Text.negativePrefix().basic("O kit ").negative(kit.name).basic(" foi ").negative("desabilitado").basic("!").toString())
 					else sender.sendMessage(Text.negativePrefix().basic("O kit ").negative(kit.name).basic(" já está ").negative("desabilitado").basic("!").toString())
 				}
 			}
@@ -41,7 +41,7 @@ object DisableCommand: CustomCommand(EnumRank.ADMIN, "disable") {
 				if (warp == Warps.NONE) {
 					sender.sendMessage(Text.negativePrefix().basic("Não").basic(" há uma warp com o nome \"").negative(args[0]).basic("\"!").toString())
 				} else {
-					if (warp.enabled(false)) sender.sendMessage(Text.negativePrefix().basic("A warp ").negative(warp.name).basic(" foi ").negative("desabilitada").basic("!").toString())
+					if (warp.enable(false)) sender.sendMessage(Text.negativePrefix().basic("A warp ").negative(warp.name).basic(" foi ").negative("desabilitada").basic("!").toString())
 					else sender.sendMessage(Text.negativePrefix().basic("A warp ").negative(warp.name).basic(" já está ").negative("desabilitada").basic("!").toString())
 				}
 			}

@@ -1,6 +1,6 @@
 package br.com.dusty.dkits.listener.gameplay
 
-import br.com.dusty.dkits.gamer.Gamer
+import br.com.dusty.dkits.gamer.gamer
 import br.com.dusty.dkits.util.text.Text
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -12,7 +12,7 @@ object PlayerMoveListener: Listener {
 	fun onPlayerMove(event: PlayerMoveEvent) {
 		val player = event.player
 
-		val gamer = Gamer[player]
+		val gamer = player.gamer()
 
 		if (gamer.warpTask != null) {
 			gamer.warpTask!!.cancel()

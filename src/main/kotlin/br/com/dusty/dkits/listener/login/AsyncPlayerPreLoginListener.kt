@@ -9,13 +9,13 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent
 
 object AsyncPlayerPreLoginListener: Listener {
 
-	private val KICK_NO_PROFILE = Text.negativeOf("Não foi possível carregar seu perfil!\n\nVolte em alguns minutos...").toString()
+	private val KICK_NO_PROFILE = Text.negativeOf("Não foi possível carregar seu perfil!\n\nVolte em alguns instantes...").toString()
 
 	@EventHandler
 	fun onAsyncPlayerPreLogin(event: AsyncPlayerPreLoginEvent) {
 		val uuid = event.uniqueId
 
-		val primitiveGamer = GamerRegistry.fromJson(WebAPI.getProfile(uuid), uuid)
+		val primitiveGamer = GamerRegistry.primitiveGamerFromJson(WebAPI.getProfile(uuid), uuid)
 
 		if (primitiveGamer == null) event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, KICK_NO_PROFILE)
 	}

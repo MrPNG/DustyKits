@@ -1,7 +1,7 @@
 package br.com.dusty.dkits.command
 
 import br.com.dusty.dkits.gamer.EnumRank
-import br.com.dusty.dkits.gamer.Gamer
+import br.com.dusty.dkits.gamer.gamer
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.command.Command
@@ -72,8 +72,7 @@ abstract class CustomCommand constructor(
 	 * caso contrário.
 	 */
 	override fun testPermission(sender: CommandSender): Boolean {
-		val b = if (sender is Player) Gamer[sender].rank.isHigherThanOrEquals(rank)
-		else sender is ConsoleCommandSender
+		val b = (sender as? Player)?.gamer()?.rank?.isHigherThanOrEquals(rank) ?: sender is ConsoleCommandSender
 
 		if (!b) sender.sendMessage(UNKNOWN)
 

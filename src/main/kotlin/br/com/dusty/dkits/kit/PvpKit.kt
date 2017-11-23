@@ -11,6 +11,7 @@ object PvpKit: Kit() {
 
 	init {
 		name = "PvP"
+		description = "O kit mais básico de todos :)"
 
 		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
 		icon.setDescription(description)

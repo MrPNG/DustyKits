@@ -21,27 +21,27 @@ enum class EnumRank {
 	MODPLUS(9, TextColor.DARK_PURPLE, TextStyle.ITALIC),
 	ADMIN(Integer.MAX_VALUE, TextColor.RED, TextStyle.ITALIC);
 
-	internal var level: Int = 0
-	internal var color = TextColor.WHITE
-	internal var styles: Array<TextStyle> = arrayOf()
-	internal var string = ""
+	var level: Int = 0
+	var color = TextColor.WHITE
+	var styles: Array<TextStyle> = arrayOf()
+	var string = ""
 
 	constructor(level: Int) {
 		this.level = level
-		this.string = format(string)
+		this.string = format(name)
 	}
 
 	constructor(level: Int, color: TextColor) {
 		this.level = level
 		this.color = color
-		this.string = format(string)
+		this.string = format(name)
 	}
 
 	constructor(level: Int, color: TextColor, vararg styles: TextStyle) {
 		this.level = level
 		this.color = color
 		this.styles = styles as Array<TextStyle>
-		this.string = format(string)
+		this.string = format(name)
 	}
 
 	/**

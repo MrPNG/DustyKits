@@ -1,6 +1,6 @@
 package br.com.dusty.dkits.listener.mechanics
 
-import br.com.dusty.dkits.gamer.Gamer
+import br.com.dusty.dkits.gamer.gamer
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
@@ -14,7 +14,7 @@ object EntityDamageListener: Listener {
 		if (event.entity is Player) {
 			val player = event.entity as Player
 
-			val gamer = Gamer[player]
+			val gamer = player.gamer()
 
 			if (gamer.isInvincible) event.isCancelled = true
 
