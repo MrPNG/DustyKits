@@ -3,6 +3,7 @@ package br.com.dusty.dkits.gamer
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
 import br.com.dusty.dkits.util.text.TextStyle
+import java.lang.Exception
 import java.util.*
 
 /**
@@ -16,7 +17,8 @@ enum class EnumRank {
 	//VIP(2, TextColor.GREEN),
 	//MVP(3, TextColor.BLUE),
 	PRO(4, TextColor.GOLD),
-	YOUTUBER(6, TextColor.AQUA),
+	PRO_YOUTUBER(6, TextColor.AQUA),
+	YOUTUBER(6, TextColor.AQUA, TextStyle.ITALIC),
 	MOD(8, TextColor.DARK_PURPLE),
 	MODPLUS(9, TextColor.DARK_PURPLE, TextStyle.ITALIC),
 	ADMIN(Integer.MAX_VALUE, TextColor.RED, TextStyle.ITALIC);
@@ -28,20 +30,20 @@ enum class EnumRank {
 
 	constructor(level: Int) {
 		this.level = level
-		this.string = format(name)
+		this.string = format(name.replace("_", " "))
 	}
 
 	constructor(level: Int, color: TextColor) {
 		this.level = level
 		this.color = color
-		this.string = format(name)
+		this.string = format(name.replace("_", " "))
 	}
 
 	constructor(level: Int, color: TextColor, vararg styles: TextStyle) {
 		this.level = level
 		this.color = color
 		this.styles = styles as Array<TextStyle>
-		this.string = format(name)
+		this.string = format(name.replace("_", " "))
 	}
 
 	/**
@@ -89,13 +91,13 @@ enum class EnumRank {
 	 * @return [EnumRank] imediatamente **acima** deste na hirarquia, 'null' se este for o mais alto.
 	 */
 	fun next(): EnumRank {
-		var rank: EnumRank?
+		var rank: EnumRank
 
 		var i = level
 		do {
 			i++
 			rank = EnumRank[i]
-		} while (rank == null)
+		} while (rank == NONE)
 
 		return rank
 	}
@@ -113,13 +115,13 @@ enum class EnumRank {
 	 * @return [EnumRank] imediatamente **abaixo** deste na hirarquia, 'null' se este for o mais baixo.
 	 */
 	fun prev(): EnumRank {
-		var rank: EnumRank?
+		var rank: EnumRank
 
 		var i = level
 		do {
 			i--
 			rank = EnumRank[i]
-		} while (rank == null)
+		} while (rank == NONE)
 
 		return rank
 	}
@@ -140,9 +142,22 @@ enum class EnumRank {
 		 * Retorna o [EnumRank] definido por um valor númerico 'int'.
 		 *
 		 * @param level
-		 * @return [EnumRank] definido por um valor númerico 'int', 'null' se não houver um valor númerico 'int'
+		 * @return [EnumRank] definido por um valor númerico 'int', [NONE] se não houver um valor númerico 'int'
 		 * associado a nenhum [EnumRank].
 		 */
-		operator fun get(level: Int): EnumRank = BY_LEVEL.getOrDefault(level, DEFAULT)
+		operator fun get(level: Int) = BY_LEVEL.getOrDefault(level, NONE)
+
+		/**
+		 * Retorna o [EnumRank] definido pelo seu nome.
+		 *
+		 * @param name
+		 * @return [EnumRank] definido pelo seu nome, [NONE] se não houver nenhum com tal nome
+		 * associado a nenhum [EnumRank].
+		 */
+		operator fun get(name: String) = try {
+			EnumRank.valueOf(name.toUpperCase())
+		} catch (e: Exception) {
+			EnumRank.NONE
+		}
 	}
 }

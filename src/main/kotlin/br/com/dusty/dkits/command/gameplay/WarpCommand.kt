@@ -10,7 +10,7 @@ import br.com.dusty.dkits.warp.Warps
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-object WarpCommand: PlayerCustomCommand(EnumRank.DEFAULT, "warp", "spawn", "lobby", "goto") {
+object WarpCommand: PlayerCustomCommand(EnumRank.DEFAULT, "warp", "spawn", "lobby", "goto", *Warps.enabledWarpsNames) {
 
 	override fun execute(sender: Player, alias: String, args: Array<String>): Boolean {
 		val gamer = sender.gamer()
@@ -22,7 +22,7 @@ object WarpCommand: PlayerCustomCommand(EnumRank.DEFAULT, "warp", "spawn", "lobb
 				} else {
 					val warp = Warps[args[0]]
 
-					if (warp == Warps.NONE || !warp.data.isEnabled && gamer.mode != EnumMode.ADMIN) sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há uma warp com o nome \"").negative(
+					if (warp == Warps.NONE || (!warp.data.isEnabled && gamer.mode != EnumMode.ADMIN)) sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há uma warp com o nome \"").negative(
 							args[0]).basic("\"!").toString())
 					else gamer.sendToWarp(warp, true)
 				}
@@ -37,12 +37,18 @@ object WarpCommand: PlayerCustomCommand(EnumRank.DEFAULT, "warp", "spawn", "lobb
 				if (gamer.mode == EnumMode.ADMIN) {
 					val warp = Warps[args[0]]
 
-					if (warp == Warps.NONE || !warp.data.isEnabled && gamer.mode != EnumMode.ADMIN) sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há uma warp com o nome \"").negative(
-							args[0]).basic("\"!").toString())
+					if (warp == Warps.NONE) sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há uma warp com o nome \"").negative(args[0]).basic("\"!").toString())
 					else sender.teleport(warp.spawn)
 				} else if (gamer.rank.isLowerThan(EnumRank.MOD)) {
 					sender.sendMessage(UNKNOWN)
 				}
+			}
+			else    -> {
+				val warp = Warps[alias]
+
+				if (warp == Warps.NONE || (!warp.data.isEnabled && gamer.mode != EnumMode.ADMIN)) sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há uma warp com o nome \"").negative(
+						args[0]).basic("\"!").toString())
+				else gamer.sendToWarp(warp, true)
 			}
 		}
 
@@ -50,8 +56,8 @@ object WarpCommand: PlayerCustomCommand(EnumRank.DEFAULT, "warp", "spawn", "lobb
 	}
 
 	override fun tabComplete(sender: CommandSender, alias: String, args: Array<String>): MutableList<String>? = when {
-		sender !is Player || alias == "spawn" || alias == "lobby" -> arrayListOf()
-		else                                                      -> Warps.WARPS.filter {
+		sender !is Player || alias == "spawn" || alias == "lobby" || Warps.enabledWarpsNames.contains(alias.toLowerCase()) -> arrayListOf()
+		else                                                                                                               -> Warps.WARPS.filter {
 			(it.data.isEnabled || (alias == "goto" && sender.gamer().mode == EnumMode.ADMIN)) && (args.isEmpty() || it.name.startsWith(args[0], true))
 		}.map { it.name.toLowerCase() }.toMutableList()
 	}

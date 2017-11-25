@@ -41,8 +41,6 @@ object PlayerInteractListener: Listener {
 			when (itemStack.type) {
 				Material.EMPTY_MAP -> if (itemStack == Warps.LOBBY.entryKit.items[0]) {
 					player.openInventory(WarpMenu.menuWarpMain(player))
-
-					event.isCancelled = true
 				}
 			}
 		}

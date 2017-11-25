@@ -72,7 +72,7 @@ abstract class CustomCommand constructor(
 	 * caso contrário.
 	 */
 	override fun testPermission(sender: CommandSender): Boolean {
-		val b = (sender as? Player)?.gamer()?.rank?.isHigherThanOrEquals(rank) ?: sender is ConsoleCommandSender
+		val b: Boolean = (sender is Player && sender.gamer().rank.isHigherThanOrEquals(rank)) || sender is ConsoleCommandSender
 
 		if (!b) sender.sendMessage(UNKNOWN)
 

@@ -12,15 +12,19 @@ object Warps {
 
 	val WARPS = ArrayList<Warp>()
 
+	lateinit var enabledWarpsNames: Array<String>
+
 	fun registerAll() {
 		//Usage: WARPS.add(FOO);
 
 		WARPS.add(ARENA)
 		WARPS.add(LOBBY)
 
+		enabledWarpsNames = Warps.WARPS.filter { it.data.isEnabled }.map { it.name.toLowerCase() }.toTypedArray()
+
 		val pluginManager = Bukkit.getPluginManager()
 		WARPS.forEach { warp -> pluginManager.registerEvents(warp, Main.INSTANCE) }
 	}
 
-	operator fun get(name: String): Warp = WARPS.firstOrNull { it.name.toLowerCase().startsWith(name.toLowerCase()) } ?: NONE
+	operator fun get(name: String): Warp = WARPS.firstOrNull { it.name.toLowerCase() == name.toLowerCase() } ?: NONE
 }

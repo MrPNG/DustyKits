@@ -2,6 +2,7 @@ package br.com.dusty.dkits.command
 
 import br.com.dusty.dkits.command.gameplay.KitCommand
 import br.com.dusty.dkits.command.gameplay.ShopCommand
+import br.com.dusty.dkits.command.gameplay.TellCommand
 import br.com.dusty.dkits.command.gameplay.WarpCommand
 import br.com.dusty.dkits.command.staff.*
 import java.util.*
@@ -21,15 +22,20 @@ object Commands {
 
 		//Staff
 		CUSTOM_COMMANDS.add(AdminCommand)
+		CUSTOM_COMMANDS.add(ChatCommand)
 		CUSTOM_COMMANDS.add(DisableCommand)
 		CUSTOM_COMMANDS.add(EnableCommand)
+		CUSTOM_COMMANDS.add(FlyCommand)
 		CUSTOM_COMMANDS.add(ForceCommand)
-		CUSTOM_COMMANDS.add(InvisCommand)
 		CUSTOM_COMMANDS.add(InvSeeCommand)
+		CUSTOM_COMMANDS.add(SpyCommand)
+		CUSTOM_COMMANDS.add(StaffChatCommand)
+		CUSTOM_COMMANDS.add(VisInvisCommand)
 
 		//Gameplay
 		CUSTOM_COMMANDS.add(KitCommand)
 		CUSTOM_COMMANDS.add(ShopCommand)
+		CUSTOM_COMMANDS.add(TellCommand)
 		CUSTOM_COMMANDS.add(WarpCommand)
 
 		CUSTOM_COMMANDS.forEach({ it.register() })

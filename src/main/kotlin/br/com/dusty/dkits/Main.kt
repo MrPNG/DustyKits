@@ -22,11 +22,11 @@ class Main: JavaPlugin() {
 	override fun onLoad() {}
 
 	override fun onEnable() {
+		Kits.registerAll()
+		Warps.registerAll()
 		Commands.registerAll()
 		Listeners.registerAll()
 		Abilities.registerAll()
-		Kits.registerAll()
-		Warps.registerAll()
 
 		serverStatus = EnumServerStatus.ONLINE
 	}

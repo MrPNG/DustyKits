@@ -1,6 +1,7 @@
 package br.com.dusty.dkits.command.gameplay
 
 import br.com.dusty.dkits.command.PlayerCustomCommand
+import br.com.dusty.dkits.gamer.EnumMode
 import br.com.dusty.dkits.gamer.EnumRank
 import br.com.dusty.dkits.gamer.gamer
 import br.com.dusty.dkits.kit.Kits
@@ -8,18 +9,30 @@ import br.com.dusty.dkits.util.text.Text
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-object KitCommand: PlayerCustomCommand(EnumRank.DEFAULT, "kit") {
+object KitCommand: PlayerCustomCommand(EnumRank.DEFAULT, "kit", *Kits.enabledKitsNames) {
 
 	override fun execute(sender: Player, alias: String, args: Array<String>): Boolean {
 		val gamer = sender.gamer()
 
-		if (args.isEmpty()) {
-			//TODO: Open kit menu
-		} else {
-			val kit = Kits[args[0]]
+		when (alias) {
+			"kit" -> {
+				if (args.isEmpty()) {
+					//TODO: Open kit menu
+				} else {
+					val kit = Kits[args[0]]
 
-			if (kit == Kits.NONE || !kit.data.isEnabled) sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um kit com o nome \"").negative(args[0]).basic("\"!").toString())
-			else if (kit.isAllowed(gamer, true)) kit.setAndApply(gamer)
+					if (kit == Kits.NONE || (!kit.data.isEnabled && gamer.mode != EnumMode.ADMIN)) sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um kit com o nome \"").negative(
+							args[0]).basic("\"!").toString())
+					else if (kit.isAllowed(gamer, true)) kit.setAndApply(gamer, true)
+				}
+			}
+			else  -> {
+				val kit = Kits[alias]
+
+				if (kit == Kits.NONE || (!kit.data.isEnabled && gamer.mode != EnumMode.ADMIN)) sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um kit com o nome \"").negative(
+						args[0]).basic("\"!").toString())
+				else if (kit.isAllowed(gamer, true)) kit.setAndApply(gamer, true)
+			}
 		}
 
 		return false

@@ -25,9 +25,9 @@ object ForceCommand: PlayerCustomCommand(EnumRank.MODPLUS, "force") {
 						player == null   -> sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um jogador online chamado ").negative("\"" + args[1] + "\"").basic("!").toString())
 						kit == Kits.NONE -> sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um kit com o nome ").negative("\"" + args[2] + "\"").basic("!").toString())
 						else             -> {
-							kit.setAndApply(player.gamer())
+							kit.setAndApply(player.gamer(), false)
 
-							sender.sendMessage(Text.negativePrefix().basic("Você ").positive("aplicou").basic(" o kit ").positive(kit.name).basic(" no jogador ").positive(player.name).basic("!").toString())
+							sender.sendMessage(Text.positivePrefix().basic("Você ").positive("aplicou").basic(" o kit ").positive(kit.name).basic(" no jogador ").positive(player.name).basic("!").toString())
 						}
 					}
 				}
@@ -44,7 +44,7 @@ object ForceCommand: PlayerCustomCommand(EnumRank.MODPLUS, "force") {
 							gamer.removeCombatTag()
 							gamer.sendToWarp(warp, false)
 
-							sender.sendMessage(Text.negativePrefix().basic("Você ").positive("enviou").basic(" o jogador ").positive(player.name).basic(" para a warp ").positive(warp.name).basic(
+							sender.sendMessage(Text.positivePrefix().basic("Você ").positive("enviou").basic(" o jogador ").positive(player.name).basic(" para a warp ").positive(warp.name).basic(
 									"!").toString())
 						}
 					}

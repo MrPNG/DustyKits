@@ -113,14 +113,14 @@ open class Warp: Listener {
 			                null,
 			                null,
 			                null,
-			                ItemStack(Material.MAP).rename(Text.of("Warps").color(TextColor.GOLD).toString()))
+			                ItemStack(Material.EMPTY_MAP).rename(Text.of("Warps").color(TextColor.GOLD).toString()))
 		}
 	}
 
 	object EventWarpKit: Kit() {
 
 		init {
-			items = arrayOf(null, null, null, null, null, null, null, null, ItemStack(Material.MAP).rename(Text.of("Warps").color(TextColor.GOLD).toString()))
+			items = arrayOf(null, null, null, null, null, null, null, null, ItemStack(Material.EMPTY_MAP).rename(Text.of("Warps").color(TextColor.GOLD).toString()))
 		}
 	}
 

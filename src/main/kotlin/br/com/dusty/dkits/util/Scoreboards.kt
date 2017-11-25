@@ -50,7 +50,7 @@ object Scoreboards {
 		val scoreboard = player.scoreboard
 		clear(scoreboard)
 
-		val objective = scoreboard.getObjective(player.name)
+		val objective = scoreboard.getObjective(player.name) ?: return
 
 		val values: Array<String> = if (gamer.protocolVersion.isGreaterThanOrEquals(EnumProtocolVersion.RELEASE_1_8)) {
 			arrayOf(Text.of(Math.round(gamer.xp)).color(TextColor.YELLOW).toString(),

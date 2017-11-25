@@ -4,7 +4,6 @@ import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.util.Scoreboards
 import br.com.dusty.dkits.util.Tasks
-import br.com.dusty.dkits.util.gamer.Tags
 import br.com.dusty.dkits.util.protocol.EnumProtocolVersion
 import br.com.dusty.dkits.util.tab.HeaderFooters
 import br.com.dusty.dkits.util.text.Text
@@ -25,9 +24,17 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 	/**
 	 * Menor [EnumRank] que pode ver este jogador.
 	 */
-	var visibleTo = EnumRank.ADMIN
+	var visibleTo = EnumRank.DEFAULT
 		set(visibleTo) {
-			if (field == visibleTo) return
+			if (field == visibleTo) {
+				var text = Text.neutralPrefix().basic("Você já está ").neutral("visível").basic(" apenas para ").append(visibleTo.toString())
+
+				if (visibleTo.hasNext()) text = text.basic(" e acima")
+
+				player.sendMessage(text.basic("!").toString())
+
+				return
+			}
 
 			field = visibleTo
 
@@ -35,7 +42,7 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 			else gamer.player.showPlayer(player)
 
 			if (rank.isHigherThanOrEquals(EnumRank.MOD)) {
-				var text = Text.basicOf("Agora você está ").positive("visível").basic(" apenas para ").append(visibleTo.toString())
+				var text = Text.neutralPrefix().basic("Agora você está ").neutral("visível").basic(" apenas para ").append(visibleTo.toString())
 
 				if (visibleTo.hasNext()) text = text.basic(" e acima")
 
@@ -49,7 +56,7 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 
 			field = mode
 
-			player.sendMessage(Text.basicOf("Agora você está no modo ").positive(mode.name).basic("!").toString())
+			player.sendMessage(Text.neutralPrefix().basic("Agora você está no modo ").neutral(mode.name).basic("!").toString())
 
 			when (mode) {
 				EnumMode.PLAY     -> {
@@ -275,13 +282,17 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 	var combatTag: Long = -1
 		get() = Math.round(((field - System.currentTimeMillis()) / 1000).toFloat()).toLong()
 		set(period) {
-			if (!isCombatTagged()) player.sendMessage(Text.negativePrefix().basic("Você ").negative("entrou").basic(" em ").negative("combate").basic("!").toString())
-
-			field = System.currentTimeMillis() + period
-
 			if (combatTask != null) combatTask!!.cancel()
 
-			combatTask = Tasks.sync(Runnable { this.removeCombatTag() }, 200)
+			if (period == -1L) {
+				field = period
+			} else {
+				if (!isCombatTagged()) player.sendMessage(Text.negativePrefix().basic("Você ").negative("entrou").basic(" em ").negative("combate").basic("!").toString())
+
+				field = System.currentTimeMillis() + period
+
+				combatTask = Tasks.sync(Runnable { this.removeCombatTag() }, 200)
+			}
 
 			updateScoreboard()
 		}
@@ -289,14 +300,15 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 	fun isCombatTagged() = combatTag > System.currentTimeMillis()
 
 	fun removeCombatTag() {
-		player.sendMessage(Text.positivePrefix().basic("Você ").positive("saiu").basic(" de ").positive("combate").basic("!").toString())
+		if (isCombatTagged()) {
+			player.sendMessage(Text.positivePrefix().basic("Você ").positive("saiu").basic(" de ").positive("combate").basic("!").toString())
 
-		combatTag = -1
-
-		if (combatTask != null) combatTask!!.cancel()
-
-		updateScoreboard()
+			combatTag = -1L
+		}
 	}
+
+	var chatPartner: Gamer? = null
+	var chatSpies: ArrayList<Player> = arrayListOf()
 
 	var isNoFall: Boolean = false
 
@@ -355,23 +367,6 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 	fun fly(fly: Boolean) {
 		player.allowFlight = fly
 		player.isFlying = fly
-	}
-
-	init {
-		when {
-			rank.isLowerThan(EnumRank.MOD) -> {
-				mode = EnumMode.PLAY
-				visibleTo = EnumRank.DEFAULT
-			}
-			else                           -> {
-				mode = EnumMode.ADMIN
-				visibleTo = rank
-			}
-		}
-
-		GamerRegistry.onlineGamers().filter { rank.isLowerThan(it.visibleTo) }.forEach { player.hidePlayer(it.player) }
-
-		Tags.applyTag(this)
 	}
 
 	companion object {

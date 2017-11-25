@@ -1,9 +1,13 @@
 package br.com.dusty.dkits.listener.login
 
+import br.com.dusty.dkits.gamer.EnumMode
 import br.com.dusty.dkits.gamer.EnumRank
+import br.com.dusty.dkits.gamer.GamerRegistry
 import br.com.dusty.dkits.gamer.gamer
 import br.com.dusty.dkits.util.Scoreboards
+import br.com.dusty.dkits.util.Tasks
 import br.com.dusty.dkits.util.bossbar.BossBars
+import br.com.dusty.dkits.util.gamer.Tags
 import br.com.dusty.dkits.util.protocol.EnumProtocolVersion
 import br.com.dusty.dkits.util.protocol.Protocols
 import br.com.dusty.dkits.util.text.Text
@@ -23,24 +27,34 @@ object PlayerJoinListener: Listener {
 		val player = event.player
 		val gamer = player.gamer()
 
-		val protocolVersion = Protocols.protocolVersion(player)
+		val protocolVersion = EnumProtocolVersion[Protocols.protocolVersion(player)]
 
-		if (protocolVersion == null) {
+		if (protocolVersion == EnumProtocolVersion.UNKNOWN) {
 			player.kickPlayer(KICK_NOT_READY)
-			return
 		} else {
-			gamer.protocolVersion = EnumProtocolVersion[Protocols.protocolVersion(player)]
+			gamer.protocolVersion = protocolVersion
+
+			if (protocolVersion.isLowerThan(EnumProtocolVersion.RELEASE_1_8)) BossBars.MAIN.send(player)
+			//TODO: Titles/subtitles for 1.8+ players
+
+			if (gamer.rank.isLowerThan(EnumRank.MOD)) event.joinMessage = JOIN_MESSAGE_PREFIX + player.name
+			else event.joinMessage = null
+
+			Tags.applyTag(gamer)
+
+			gamer.createScoreboard()
+			Scoreboards.update()
+
+			gamer.sendToWarp(Warps.LOBBY, false)
+
+			Tasks.sync(Runnable {
+				when {
+					gamer.rank.isLowerThan(EnumRank.MOD) -> gamer.mode = EnumMode.PLAY
+					else                                 -> gamer.mode = EnumMode.ADMIN
+				}
+
+				GamerRegistry.onlineGamers().filter { gamer.rank.isLowerThan(it.visibleTo) }.forEach { player.hidePlayer(it.player) }
+			})
 		}
-
-		if (gamer.rank.isLowerThan(EnumRank.YOUTUBER)) event.joinMessage = JOIN_MESSAGE_PREFIX + player.name
-		else event.joinMessage = null
-
-		gamer.createScoreboard()
-		Scoreboards.update()
-
-		gamer.sendToWarp(Warps.LOBBY, false)
-
-		if (gamer.protocolVersion.isLowerThan(EnumProtocolVersion.RELEASE_1_8)) BossBars.MAIN.send(player)
-		//TODO: Titles/subtitles for 1.8+ players
 	}
 }
