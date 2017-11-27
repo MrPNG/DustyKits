@@ -37,6 +37,8 @@ object WarpMenu {
 		inventory.fill(true)
 		inventory.fillWarps(Warps.WARPS.filter { it.type == Warp.EnumWarpType.GAME && it.data.isEnabled })
 
+		inventory.setItem(0, Inventories.BUTTON_BACK)
+
 		return inventory
 	}
 
@@ -45,6 +47,8 @@ object WarpMenu {
 
 		inventory.fill(true)
 		inventory.fillWarps(Warps.WARPS.filter { it.type == Warp.EnumWarpType.EVENT && it.data.isEnabled })
+
+		inventory.setItem(0, Inventories.BUTTON_BACK)
 
 		return inventory
 	}
@@ -55,8 +59,8 @@ object WarpMenu {
 			2    -> for (i in 0 .. 1) setItem(12 + i * 2, warps[i].icon)
 			3    -> for (i in 0 .. 2) setItem(11 + i * 2, warps[i].icon)
 			4    -> for (i in 0 .. 3) setItem(10 + i * 2, warps[i].icon)
-			5    -> for (i in 0 .. 4) setItem(13 + i, warps[i].icon)
-			else -> for (i in 0 .. 4) setItem(10 + i, warps[i].icon)
+			5    -> for (i in 0 .. 4) setItem(11 + i, warps[i].icon)
+			else -> for (i in 0 until warps.size) setItem(10 + i, warps[i].icon)
 		}
 	}
 }

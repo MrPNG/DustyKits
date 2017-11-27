@@ -11,7 +11,7 @@ fun Sign.interact(player: Player) {
 	val gamer = player.gamer()
 
 	when (getLine(1).clearFormatting()) {
-		"[Grátis]" -> if (gamer.isOnSignCooldown()) player.sendMessage(Text.negativePrefix().basic("Você ainda deve ").negative("esperar").basic(" mais ").negative(gamer.signCooldown.toInt()).basic(
+		"[Grátis]" -> if (gamer.isOnSignCooldown()) player.sendMessage(Text.negativePrefix().basic("Você ainda deve ").negative("esperar").basic(" mais ").negative(gamer.readableSignCooldown().toInt()).basic(
 				" segundo(s) para usar essa placa novamente!").toString())
 		else when (getLine(2).clearFormatting()) {
 			"Sopa"    -> {

@@ -4,6 +4,7 @@ import br.com.dusty.dkits.gamer.gamer
 import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.util.rename
+import br.com.dusty.dkits.util.setDescription
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
 import org.bukkit.Bukkit
@@ -26,11 +27,11 @@ object ShopMenu {
 	val ARMOR = HashMap<ItemStack, Int>()
 
 	init {
-		ARMOR.put(ItemStack(Material.CHAINMAIL_CHESTPLATE), 3500)
-		ARMOR.put(ItemStack(Material.CHAINMAIL_LEGGINGS), 3000)
+		ARMOR.put(ItemStack(Material.CHAINMAIL_CHESTPLATE), 3000)
+		ARMOR.put(ItemStack(Material.CHAINMAIL_LEGGINGS), 4500)
 		ARMOR.put(ItemStack(Material.IRON_CHESTPLATE), 6000)
-		ARMOR.put(ItemStack(Material.IRON_BOOTS), 5000)
-		ARMOR.put(ItemStack(Material.DIAMOND_HELMET), 5500)
+		ARMOR.put(ItemStack(Material.IRON_BOOTS), 3000)
+		ARMOR.put(ItemStack(Material.DIAMOND_HELMET), 6000)
 	}
 
 	fun menuShopMain(player: Player): Inventory {
@@ -50,6 +51,8 @@ object ShopMenu {
 		inventory.fill(true)
 		inventory.fillKits(Kits.KITS.filter { it.data.isEnabled && it.data.price != -1 && player.gamer().hasKit(it) })
 
+		inventory.setItem(0, Inventories.BUTTON_BACK)
+
 		return inventory
 	}
 
@@ -59,17 +62,19 @@ object ShopMenu {
 		inventory.fill(true)
 		inventory.fillArmor(ARMOR.keys.toTypedArray())
 
+		inventory.setItem(0, Inventories.BUTTON_BACK)
+
 		return inventory
 	}
 
 	fun Inventory.fillKits(kits: List<Kit>) {
 		if (kits.isNotEmpty()) when (kits.size) {
-			1    -> setItem(13, kits[0].icon)
-			2    -> for (i in 0 .. 1) setItem(12 + i * 2, kits[i].icon)
-			3    -> for (i in 0 .. 2) setItem(11 + i * 2, kits[i].icon)
-			4    -> for (i in 0 .. 3) setItem(10 + i * 2, kits[i].icon)
-			5    -> for (i in 0 .. 4) setItem(13 + i, kits[i].icon)
-			else -> for (i in 0 .. 4) setItem(10 + i, kits[i].icon)
+			1    -> setItem(13, kits[0].icon.setDescription("Preço: " + kits[0].data.price + " créditos"))
+			2    -> for (i in 0 .. 1) setItem(12 + i * 2, kits[i].icon.setDescription("Preço: " + kits[i].data.price + " créditos"))
+			3    -> for (i in 0 .. 2) setItem(11 + i * 2, kits[i].icon.setDescription("Preço: " + kits[i].data.price + " créditos"))
+			4    -> for (i in 0 .. 3) setItem(10 + i * 2, kits[i].icon.setDescription("Preço: " + kits[i].data.price + " créditos"))
+			5    -> for (i in 0 .. 4) setItem(13 + i, kits[i].icon.setDescription("Preço: " + kits[i].data.price + " créditos"))
+			else -> for (i in 0 .. 4) setItem(10 + i, kits[i].icon.setDescription("Preço: " + kits[i].data.price + " créditos"))
 		}
 		else setItem(13, ALL_KITS)
 	}
@@ -80,8 +85,8 @@ object ShopMenu {
 			2    -> for (i in 0 .. 1) setItem(12 + i * 2, items[i])
 			3    -> for (i in 0 .. 2) setItem(11 + i * 2, items[i])
 			4    -> for (i in 0 .. 3) setItem(10 + i * 2, items[i])
-			5    -> for (i in 0 .. 4) setItem(13 + i, items[i])
-			else -> for (i in 0 .. 4) setItem(10 + i, items[i])
+			5    -> for (i in 0 .. 4) setItem(11 + i, items[i])
+			else -> for (i in 0 until items.size) setItem(10 + i, items[i])
 		}
 	}
 }

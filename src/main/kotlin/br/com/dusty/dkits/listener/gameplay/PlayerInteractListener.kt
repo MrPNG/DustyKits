@@ -41,8 +41,6 @@ object PlayerInteractListener: Listener {
 		if (event.item != null) {
 			val itemStack = event.item
 
-			Warp.GameWarpKit.items.forEach { Bukkit.broadcastMessage("" + (itemStack == it)) }
-
 			when (itemStack.type) {
 				Material.CHEST     -> if (itemStack == Warp.GameWarpKit.items[0]) {
 					player.openInventory(KitMenu.menuKitOwned(player))

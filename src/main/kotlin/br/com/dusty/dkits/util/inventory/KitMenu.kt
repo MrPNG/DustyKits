@@ -48,6 +48,12 @@ object KitMenu {
 	}
 
 	fun Inventory.fillKits(kits: List<Kit>) {
-		for (i in 0 until kits.size) setItem(10 + i, kits[i].icon)
+		var i = -1
+
+		kits.forEach {
+			i += if (i + 2 % 9 == 0) 3 else 1
+
+			setItem(10 + i, it.icon)
+		}
 	}
 }
