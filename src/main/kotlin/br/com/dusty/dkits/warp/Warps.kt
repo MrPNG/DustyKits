@@ -2,6 +2,7 @@ package br.com.dusty.dkits.warp
 
 import br.com.dusty.dkits.Main
 import org.bukkit.Bukkit
+import org.bukkit.inventory.ItemStack
 import java.util.*
 
 object Warps {
@@ -27,4 +28,6 @@ object Warps {
 	}
 
 	operator fun get(name: String): Warp = WARPS.firstOrNull { it.name.toLowerCase() == name.toLowerCase() } ?: NONE
+
+	operator fun get(icon: ItemStack): Warp = WARPS.firstOrNull { it.icon == icon } ?: NONE
 }

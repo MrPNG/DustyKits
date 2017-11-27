@@ -29,6 +29,7 @@ object Commands {
 		CUSTOM_COMMANDS.add(ProtocolCommand)
 		CUSTOM_COMMANDS.add(RamCommand)
 		CUSTOM_COMMANDS.add(SpyCommand)
+		CUSTOM_COMMANDS.add(StopCommand)
 		CUSTOM_COMMANDS.add(SyncCommand)
 		CUSTOM_COMMANDS.add(StaffChatCommand)
 		CUSTOM_COMMANDS.add(VisInvisCommand)

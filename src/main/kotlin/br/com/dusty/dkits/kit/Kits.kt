@@ -1,5 +1,6 @@
 package br.com.dusty.dkits.kit
 
+import org.bukkit.inventory.ItemStack
 import java.util.*
 
 object Kits {
@@ -23,4 +24,6 @@ object Kits {
 	}
 
 	operator fun get(name: String): Kit = KITS.firstOrNull { it.name.toLowerCase() == name.toLowerCase() } ?: NONE
+
+	operator fun get(icon: ItemStack): Kit = KITS.firstOrNull { it.icon == icon } ?: NONE
 }

@@ -10,7 +10,6 @@ import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
-import java.util.*
 
 object WarpMenu {
 
@@ -36,19 +35,7 @@ object WarpMenu {
 		val inventory = Bukkit.createInventory(player, 27, TITLE_GAME)
 
 		inventory.fill(true)
-
-		val warps = ArrayList<Warp>()
-
-		for (warp in Warps.WARPS) if (warp.type == Warp.EnumWarpType.GAME && warp.data.isEnabled) warps.add(warp)
-
-		if (warps.size > 0) when (warps.size) {
-			1    -> inventory.setItem(13, warps[0].icon)
-			2    -> for (i in 0 .. 1) inventory.setItem(12 + i * 2, warps[i].icon)
-			3    -> for (i in 0 .. 2) inventory.setItem(11 + i * 2, warps[i].icon)
-			4    -> for (i in 0 .. 3) inventory.setItem(10 + i * 2, warps[i].icon)
-			5    -> for (i in 0 .. 4) inventory.setItem(13 + i, warps[i].icon)
-			else -> for (i in 0 .. 4) inventory.setItem(10 + i, warps[i].icon)
-		}
+		inventory.fillWarps(Warps.WARPS.filter { it.type == Warp.EnumWarpType.GAME && it.data.isEnabled })
 
 		return inventory
 	}
@@ -57,18 +44,19 @@ object WarpMenu {
 		val inventory = Bukkit.createInventory(player, 27, TITLE_EVENT)
 
 		inventory.fill(true)
-
-		val warps = Warps.WARPS.filterTo(arrayListOf()) { it.type == Warp.EnumWarpType.EVENT && it.data.isEnabled }
-
-		if (warps.size > 0) when (warps.size) {
-			1    -> inventory.setItem(13, warps[0].icon)
-			2    -> for (i in 0 .. 1) inventory.setItem(12 + i * 2, warps[i].icon)
-			3    -> for (i in 0 .. 2) inventory.setItem(11 + i * 2, warps[i].icon)
-			4    -> for (i in 0 .. 3) inventory.setItem(10 + i * 2, warps[i].icon)
-			5    -> for (i in 0 .. 4) inventory.setItem(13 + i, warps[i].icon)
-			else -> for (i in 0 .. 4) inventory.setItem(10 + i, warps[i].icon)
-		}
+		inventory.fillWarps(Warps.WARPS.filter { it.type == Warp.EnumWarpType.EVENT && it.data.isEnabled })
 
 		return inventory
+	}
+
+	fun Inventory.fillWarps(warps: List<Warp>) {
+		if (warps.isNotEmpty()) when (warps.size) {
+			1    -> setItem(13, warps[0].icon)
+			2    -> for (i in 0 .. 1) setItem(12 + i * 2, warps[i].icon)
+			3    -> for (i in 0 .. 2) setItem(11 + i * 2, warps[i].icon)
+			4    -> for (i in 0 .. 3) setItem(10 + i * 2, warps[i].icon)
+			5    -> for (i in 0 .. 4) setItem(13 + i, warps[i].icon)
+			else -> for (i in 0 .. 4) setItem(10 + i, warps[i].icon)
+		}
 	}
 }

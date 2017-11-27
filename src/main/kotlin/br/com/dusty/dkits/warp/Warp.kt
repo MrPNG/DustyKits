@@ -45,6 +45,8 @@ open class Warp: Listener {
 	var entryKit: Kit = Kits.NONE
 	var enabledKits = HashSet<Kit>()
 
+	var hasShop = false
+
 	var data = Data()
 
 	fun enable(enabled: Boolean): Boolean {
@@ -132,7 +134,7 @@ open class Warp: Listener {
 	data class Data(var isEnabled: Boolean = false,
 	                var isListEnabledKits: Boolean = true,
 	                var kits: Array<String> = arrayOf(),
-	                var spawn: Array<Float> = arrayOf(0f, 0f, 0f),
-	                var spawnRadius: Float = 0f,
-	                var spreadRange: Float = 0f)
+	                var spawn: Array<Float> = arrayOf(0F, 0F, 0F),
+	                var spawnRadius: Float = 0F,
+	                var spreadRange: Float = 0F)
 }

@@ -4,8 +4,11 @@ import br.com.dusty.dkits.gamer.EnumMode
 import br.com.dusty.dkits.gamer.gamer
 import br.com.dusty.dkits.util.block.interact
 import br.com.dusty.dkits.util.block.isSpecial
+import br.com.dusty.dkits.util.inventory.KitMenu
+import br.com.dusty.dkits.util.inventory.ShopMenu
 import br.com.dusty.dkits.util.inventory.WarpMenu
-import br.com.dusty.dkits.warp.Warps
+import br.com.dusty.dkits.warp.Warp
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.block.Sign
 import org.bukkit.event.EventHandler
@@ -38,8 +41,16 @@ object PlayerInteractListener: Listener {
 		if (event.item != null) {
 			val itemStack = event.item
 
+			Warp.GameWarpKit.items.forEach { Bukkit.broadcastMessage("" + (itemStack == it)) }
+
 			when (itemStack.type) {
-				Material.EMPTY_MAP -> if (itemStack == Warps.LOBBY.entryKit.items[0]) {
+				Material.CHEST     -> if (itemStack == Warp.GameWarpKit.items[0]) {
+					player.openInventory(KitMenu.menuKitOwned(player))
+				}
+				Material.EMERALD   -> if (itemStack == Warp.GameWarpKit.items[4]) {
+					player.openInventory(ShopMenu.menuShopMain(player))
+				}
+				Material.EMPTY_MAP -> if (itemStack == Warp.GameWarpKit.items[8]) {
 					player.openInventory(WarpMenu.menuWarpMain(player))
 				}
 			}

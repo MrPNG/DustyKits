@@ -45,7 +45,6 @@ object Listeners {
 		LISTENERS.add(InventoryClickListener)
 		LISTENERS.add(ItemSpawnListener)
 		LISTENERS.add(LeavesDecayListener)
-		LISTENERS.add(PlayerCommandPreprocessListener)
 		LISTENERS.add(PlayerDropItemListener)
 		LISTENERS.add(PlayerInteractEntityListener)
 		LISTENERS.add(br.com.dusty.dkits.listener.mechanics.PlayerMoveListener)

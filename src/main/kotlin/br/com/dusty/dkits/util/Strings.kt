@@ -92,7 +92,7 @@ fun ArrayList<String>.sortOut(start: String): ArrayList<String> {
  */
 fun String.clearFormatting(): String = ChatColor.stripColor(this)
 
-object StringUtils {
+object Strings {
 
 	private val ALPHANUMERIC = "ABCDEFGHIKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".toCharArray()
 

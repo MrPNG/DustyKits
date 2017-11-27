@@ -72,7 +72,7 @@ fun ItemStack.getUnformattedDisplayName(): String? {
 /**
  * Criação/personalização de [org.bukkit.inventory.ItemStack]
  */
-object ItemStackUtils {
+object ItemStacks {
 
 	fun dye(c: DyeColor): ItemStack {
 		val dye = Dye()

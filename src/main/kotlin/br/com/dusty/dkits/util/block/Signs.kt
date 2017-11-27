@@ -2,7 +2,7 @@ package br.com.dusty.dkits.util.block
 
 import br.com.dusty.dkits.gamer.gamer
 import br.com.dusty.dkits.util.clearFormatting
-import br.com.dusty.dkits.util.inventory.InventoryUtils
+import br.com.dusty.dkits.util.inventory.Inventories
 import br.com.dusty.dkits.util.text.Text
 import org.bukkit.block.Sign
 import org.bukkit.entity.Player
@@ -15,12 +15,12 @@ fun Sign.interact(player: Player) {
 				" segundo(s) para usar essa placa novamente!").toString())
 		else when (getLine(2).clearFormatting()) {
 			"Sopa"    -> {
-				player.openInventory(InventoryUtils.soups(player))
+				player.openInventory(Inventories.soups(player))
 
 				gamer.signCooldown = 10000
 			}
 			"Recraft" -> {
-				player.openInventory(InventoryUtils.recraft(player))
+				player.openInventory(Inventories.recraft(player))
 
 				gamer.signCooldown = 10000
 			}

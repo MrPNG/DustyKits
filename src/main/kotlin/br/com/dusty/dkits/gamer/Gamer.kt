@@ -162,14 +162,14 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 		get() = primitiveGamer.xp
 
 	fun addXp(amount: Double) {
-		primitiveGamer.xp += amount
+		primitiveGamer.xp += Math.abs(amount)
 
 		player.sendMessage(Text.positiveOf("+").positive(Math.round(amount).toInt()).basic(" XP!").toString())
 		updateScoreboard()
 	}
 
 	fun removeXp(amount: Double) {
-		primitiveGamer.xp += amount
+		primitiveGamer.xp -= Math.abs(amount)
 
 		player.sendMessage(Text.negativeOf("-").negative(Math.round(amount).toInt()).basic(" XP!").toString())
 		updateScoreboard()
@@ -179,14 +179,14 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 		get() = primitiveGamer.money
 
 	fun addMoney(amount: Double) {
-		primitiveGamer.money += amount
+		primitiveGamer.money += Math.abs(amount)
 
 		player.sendMessage(Text.positiveOf("+").positive(Math.round(amount).toInt()).basic(" créditos!").toString())
 		updateScoreboard()
 	}
 
 	fun removeMoney(amount: Double) {
-		primitiveGamer.money += amount
+		primitiveGamer.money -= Math.abs(amount)
 
 		player.sendMessage(Text.negativeOf("-").negative(Math.round(amount).toInt()).basic(" créditos!").toString())
 		updateScoreboard()
@@ -253,22 +253,25 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 		freeze = -1
 	}
 
-	var cooldown: Long = -1
+	var kitCooldown: Long = -1
 		set(period) {
 			field = System.currentTimeMillis() + period
 		}
 
-	fun isOnCooldown() = cooldown > System.currentTimeMillis()
+	fun readableKitCooldown() = Math.round(((kitCooldown - System.currentTimeMillis()) / 1000).toFloat()).toLong()
 
-	fun removeCooldown() {
-		cooldown = -1
+	fun isOnKitCooldown() = kitCooldown > System.currentTimeMillis()
+
+	fun removeKitCooldown() {
+		kitCooldown = -1
 	}
 
 	var signCooldown: Long = -1
-		get() = Math.round(((field - System.currentTimeMillis()) / 1000).toFloat()).toLong()
 		set(period) {
 			field = System.currentTimeMillis() + period
 		}
+
+	fun readableSignCooldown() = Math.round(((signCooldown - System.currentTimeMillis()) / 1000).toFloat()).toLong()
 
 	fun isOnSignCooldown() = signCooldown > System.currentTimeMillis()
 
@@ -319,10 +322,7 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 			updateScoreboard()
 		}
 
-	//TODO: Gamer.hasKit()
-	fun hasKit(kit: Kit): Boolean {
-		return true
-	}
+	fun hasKit(kit: Kit): Boolean = player.hasPermission("dkits.kit." + kit.name.toLowerCase())
 
 	var warp: Warp = Warps.LOBBY
 	var warpTask: BukkitTask? = null
@@ -362,6 +362,9 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 		player.inventory.clear()
 
 		player.activePotionEffects.forEach { player.removePotionEffect(it.type) }
+
+		removeKitCooldown()
+		removeSignCooldown()
 	}
 
 	fun fly(fly: Boolean) {

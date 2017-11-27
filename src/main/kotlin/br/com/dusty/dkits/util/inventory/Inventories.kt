@@ -33,9 +33,9 @@ fun Player.setArmor(itemStacks: Array<ItemStack?>) {
 }
 
 fun Inventory.fill(backButton: Boolean): Inventory {
-	for (i in 0 until this.size) this.setItem(i, InventoryUtils.BACKGROUND)
+	for (i in 0 until this.size) this.setItem(i, Inventories.BACKGROUND)
 
-	if (backButton) this.setItem(0, InventoryUtils.BUTTON_BACK)
+	if (backButton) this.setItem(0, Inventories.BUTTON_BACK)
 
 	return this
 }
@@ -45,7 +45,7 @@ fun Player.openInventory(player: Player) {
 	sendMessage(Text.positivePrefix().basic("Você está ").positive("vendo").basic(" o inventário de ").positive(player.name).toString())
 }
 
-object InventoryUtils {
+object Inventories {
 
 	val SOUP = ItemStack(Material.MUSHROOM_SOUP)
 

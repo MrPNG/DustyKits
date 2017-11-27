@@ -19,7 +19,7 @@ object LobbyWarp: Warp() {
 
 		entryKit = LobbyKit()
 
-		data.spreadRange = 4f
+		data.spreadRange = 4F
 
 		loadData()
 	}
@@ -28,15 +28,7 @@ object LobbyWarp: Warp() {
 
 		init {
 			//TODO: Rules book
-			items = arrayOf(ItemStack(Material.EMPTY_MAP).rename(Text.of("Warps").color(TextColor.GOLD).toString()),
-			                null,
-			                null,
-			                null,
-			                null,
-			                null,
-			                null,
-			                null,
-			                ItemStack(Material.WRITTEN_BOOK).rename(Text.of("Regras").color(TextColor.GOLD).toString()))
+			items = arrayOf(GameWarpKit.items[8], null, null, null, null, null, null, null, ItemStack(Material.WRITTEN_BOOK).rename(Text.of("Regras").color(TextColor.GOLD).toString()))
 		}
 	}
 }

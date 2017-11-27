@@ -18,7 +18,7 @@ object ArenaWarp: Warp() {
 
 		entryKit = GameWarpKit
 
-		data.spreadRange = 4f
+		hasShop = true
 
 		loadData()
 	}
