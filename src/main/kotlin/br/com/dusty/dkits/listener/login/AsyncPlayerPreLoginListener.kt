@@ -2,7 +2,6 @@ package br.com.dusty.dkits.listener.login
 
 import br.com.dusty.dkits.gamer.GamerRegistry
 import br.com.dusty.dkits.util.text.Text
-import br.com.dusty.dkits.util.web.WebAPI
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent
@@ -15,7 +14,9 @@ object AsyncPlayerPreLoginListener: Listener {
 	fun onAsyncPlayerPreLogin(event: AsyncPlayerPreLoginEvent) {
 		val uuid = event.uniqueId
 
-		val primitiveGamer = GamerRegistry.primitiveGamerFromJson(WebAPI.getProfile(uuid), uuid)
+		//TODO: Activate Web API
+//		val primitiveGamer = GamerRegistry.primitiveGamerFromJson(WebAPI.getProfile(uuid), uuid)
+		val primitiveGamer = GamerRegistry.tempPrimitiveGamer(uuid)
 
 		if (primitiveGamer == null) event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, KICK_NO_PROFILE)
 	}

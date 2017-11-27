@@ -24,7 +24,7 @@ object Listeners {
 	 * Registra todos os [Listener] da [ArrayList] LISTENERS.
 	 */
 	fun registerAll() {
-		//Usage: LISTENERS.add(FooListener);
+		//Usage: LISTENERS.add(FooListener)
 
 		//Login
 		LISTENERS.add(AsyncPlayerPreLoginListener)

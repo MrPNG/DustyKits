@@ -1,6 +1,5 @@
 package br.com.dusty.dkits.util
 
-import br.com.dusty.dkits.util.text.Text
 import org.bukkit.Color
 import org.bukkit.DyeColor
 import org.bukkit.Material
@@ -14,7 +13,7 @@ import org.bukkit.potion.PotionType
 
 fun ItemStack.hasName(name: String): Boolean {
 	val itemMeta = this.itemMeta
-	if (itemMeta != null && itemMeta.hasDisplayName()) return Text.clearFormatting(itemMeta.displayName) == name
+	if (itemMeta != null && itemMeta.hasDisplayName()) return itemMeta.displayName.clearFormatting() == name
 
 	return false
 }
@@ -67,7 +66,7 @@ fun ItemStack.getUnformattedDisplayName(): String? {
 	val displayName = if (itemMeta != null && itemMeta.hasDisplayName()) itemMeta.displayName
 	else this.type.name
 
-	return Text.clearFormatting(displayName)
+	return displayName.clearFormatting()
 }
 
 /**

@@ -1,6 +1,7 @@
 package br.com.dusty.dkits.util.block
 
 import br.com.dusty.dkits.gamer.gamer
+import br.com.dusty.dkits.util.clearFormatting
 import br.com.dusty.dkits.util.inventory.InventoryUtils
 import br.com.dusty.dkits.util.text.Text
 import org.bukkit.block.Sign
@@ -9,10 +10,10 @@ import org.bukkit.entity.Player
 fun Sign.interact(player: Player) {
 	val gamer = player.gamer()
 
-	when (Text.clearFormatting(getLine(1))) {
+	when (getLine(1).clearFormatting()) {
 		"[Grátis]" -> if (gamer.isOnSignCooldown()) player.sendMessage(Text.negativePrefix().basic("Você ainda deve ").negative("esperar").basic(" mais ").negative(gamer.signCooldown.toInt()).basic(
 				" segundo(s) para usar essa placa novamente!").toString())
-		else when (Text.clearFormatting(getLine(2))) {
+		else when (getLine(2).clearFormatting()) {
 			"Sopa"    -> {
 				player.openInventory(InventoryUtils.soups(player))
 
@@ -31,7 +32,9 @@ fun Sign.interact(player: Player) {
 			} catch (e: Exception) {
 				0
 			}
-			gamer.addMoney(amount.toFloat())
+
+			gamer.addMoney(amount.toDouble())
+			gamer.sendToWarp(gamer.warp, false)
 
 			player.sendMessage(Text.positivePrefix().basic("Você ").positive("ganhou " + amount).basic(" créditos!").toString())
 		}
@@ -42,7 +45,9 @@ fun Sign.interact(player: Player) {
 			} catch (e: Exception) {
 				0
 			}
-			gamer.addXp(amount.toFloat())
+
+			gamer.addXp(amount.toDouble())
+			gamer.sendToWarp(gamer.warp, false)
 
 			player.sendMessage(Text.positivePrefix().basic("Você ").positive("ganhou " + amount).basic(" XP!").toString())
 		}

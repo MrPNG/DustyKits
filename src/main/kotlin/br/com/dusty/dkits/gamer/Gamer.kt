@@ -100,8 +100,8 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 
 	fun addKillMoney() { //TODO: Different money for VIPs
 		addMoney(when {
-			         rank.isHigherThanOrEquals(EnumRank.PRO) -> 100F
-			         else                                    -> 50F
+			         rank.isHigherThanOrEquals(EnumRank.PRO) -> 100.0
+			         else                                    -> 50.0
 		         })
 
 		updateScoreboard()
@@ -109,8 +109,8 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 
 	fun addKillXp() {
 		addXp(when {
-			      rank.isHigherThanOrEquals(EnumRank.PRO) -> 20F
-			      else                                    -> 10F
+			      rank.isHigherThanOrEquals(EnumRank.PRO) -> 20.0
+			      else                                    -> 10.0
 		      })
 
 		updateScoreboard()
@@ -126,13 +126,13 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 	}
 
 	fun removeDeathMoney() {
-		removeMoney(25F)
+		removeMoney(25.0)
 
 		updateScoreboard()
 	}
 
 	fun removeDeathXp() {
-		removeXp(5F)
+		removeXp(5.0)
 
 		updateScoreboard()
 	}
@@ -158,37 +158,37 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 			primitiveGamer.maxKillStreak = maxKillStreak
 		}
 
-	val xp: Float
+	val xp: Double
 		get() = primitiveGamer.xp
 
-	fun addXp(amount: Float) {
+	fun addXp(amount: Double) {
 		primitiveGamer.xp += amount
 
-		player.sendMessage(Text.positiveOf("+").positive(Math.round(amount)).basic(" XP!").toString())
+		player.sendMessage(Text.positiveOf("+").positive(Math.round(amount).toInt()).basic(" XP!").toString())
 		updateScoreboard()
 	}
 
-	fun removeXp(amount: Float) {
+	fun removeXp(amount: Double) {
 		primitiveGamer.xp += amount
 
-		player.sendMessage(Text.negativeOf("-").negative(Math.round(amount)).basic(" XP!").toString())
+		player.sendMessage(Text.negativeOf("-").negative(Math.round(amount).toInt()).basic(" XP!").toString())
 		updateScoreboard()
 	}
 
-	val money: Float
+	val money: Double
 		get() = primitiveGamer.money
 
-	fun addMoney(amount: Float) {
+	fun addMoney(amount: Double) {
 		primitiveGamer.money += amount
 
-		player.sendMessage(Text.positiveOf("+").positive(Math.round(amount)).basic(" créditos!").toString())
+		player.sendMessage(Text.positiveOf("+").positive(Math.round(amount).toInt()).basic(" créditos!").toString())
 		updateScoreboard()
 	}
 
-	fun removeMoney(amount: Float) {
+	fun removeMoney(amount: Double) {
 		primitiveGamer.money += amount
 
-		player.sendMessage(Text.negativeOf("-").negative(Math.round(amount)).basic(" créditos!").toString())
+		player.sendMessage(Text.negativeOf("-").negative(Math.round(amount).toInt()).basic(" créditos!").toString())
 		updateScoreboard()
 	}
 

@@ -1,9 +1,6 @@
 package br.com.dusty.dkits.command
 
-import br.com.dusty.dkits.command.gameplay.KitCommand
-import br.com.dusty.dkits.command.gameplay.ShopCommand
-import br.com.dusty.dkits.command.gameplay.TellCommand
-import br.com.dusty.dkits.command.gameplay.WarpCommand
+import br.com.dusty.dkits.command.gameplay.*
 import br.com.dusty.dkits.command.staff.*
 import java.util.*
 
@@ -18,7 +15,7 @@ object Commands {
 	 * Registra todos os [CustomCommand] da [ArrayList] CUSTOM_COMMANDS.
 	 */
 	fun registerAll() {
-		//Usage: CUSTOM_COMMANDS.add(FooCommand());
+		//Usage: CUSTOM_COMMANDS.add(FooCommand)
 
 		//Staff
 		CUSTOM_COMMANDS.add(AdminCommand)
@@ -28,12 +25,19 @@ object Commands {
 		CUSTOM_COMMANDS.add(FlyCommand)
 		CUSTOM_COMMANDS.add(ForceCommand)
 		CUSTOM_COMMANDS.add(InvSeeCommand)
+		CUSTOM_COMMANDS.add(IpCheckCommand)
+		CUSTOM_COMMANDS.add(ProtocolCommand)
+		CUSTOM_COMMANDS.add(RamCommand)
 		CUSTOM_COMMANDS.add(SpyCommand)
+		CUSTOM_COMMANDS.add(SyncCommand)
 		CUSTOM_COMMANDS.add(StaffChatCommand)
 		CUSTOM_COMMANDS.add(VisInvisCommand)
+		CUSTOM_COMMANDS.add(WorldCommand)
 
 		//Gameplay
 		CUSTOM_COMMANDS.add(KitCommand)
+		CUSTOM_COMMANDS.add(ProfileCommand)
+		CUSTOM_COMMANDS.add(ReportCommand)
 		CUSTOM_COMMANDS.add(ShopCommand)
 		CUSTOM_COMMANDS.add(TellCommand)
 		CUSTOM_COMMANDS.add(WarpCommand)

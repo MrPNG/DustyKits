@@ -18,12 +18,12 @@ object ForceCommand: PlayerCustomCommand(EnumRank.MODPLUS, "force") {
 			args.size < 3                         -> sender.sendMessage(Text.negativePrefix().negative("Uso:").basic(" /force ").negative("<kit>/<warp> <jogador> <nomeDoKit>/<nomeDaWarp>").toString())
 			else                                  -> when (args[0]) {
 				"kit"  -> {
-					val player = Bukkit.getPlayerExact(args[1])
-					val kit = Kits[args[2]]
+					val kit = Kits[args[1]]
+					val player = Bukkit.getPlayerExact(args[2])
 
 					when {
-						player == null   -> sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um jogador online chamado ").negative("\"" + args[1] + "\"").basic("!").toString())
-						kit == Kits.NONE -> sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um kit com o nome ").negative("\"" + args[2] + "\"").basic("!").toString())
+						kit == Kits.NONE -> sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um kit com o nome ").negative("\"" + args[1] + "\"").basic("!").toString())
+						player == null   -> sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um jogador online chamado ").negative("\"" + args[2] + "\"").basic("!").toString())
 						else             -> {
 							kit.setAndApply(player.gamer(), false)
 
@@ -32,12 +32,12 @@ object ForceCommand: PlayerCustomCommand(EnumRank.MODPLUS, "force") {
 					}
 				}
 				"warp" -> {
-					val player = Bukkit.getPlayerExact(args[1])
-					val warp = Warps[args[2]]
+					val warp = Warps[args[1]]
+					val player = Bukkit.getPlayerExact(args[2])
 
 					when {
-						player == null     -> sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um jogador online chamado ").negative("\"" + args[1] + "\"").basic("!").toString())
-						warp == Warps.NONE -> sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há uma warp chamada ").negative("\"" + args[2] + "\"").basic("!").toString())
+						warp == Warps.NONE -> sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há uma warp chamada ").negative("\"" + args[1] + "\"").basic("!").toString())
+						player == null     -> sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um jogador online chamado ").negative("\"" + args[2] + "\"").basic("!").toString())
 						else               -> {
 							val gamer = player.gamer()
 

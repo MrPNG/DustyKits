@@ -16,7 +16,7 @@ object ChatCommand: PlayerCustomCommand(EnumRank.MODPLUS, "chat") {
 	init {
 		val stringBuilder = StringBuilder()
 
-		for (i in 1 .. 64) stringBuilder.append("\n")
+		for (i in 1 .. 128) stringBuilder.append(" \n")
 
 		CHAT_CLEAR_MESSAGE = stringBuilder.toString()
 	}
@@ -24,34 +24,36 @@ object ChatCommand: PlayerCustomCommand(EnumRank.MODPLUS, "chat") {
 	override fun execute(sender: Player, alias: String, args: Array<String>): Boolean {
 		val gamer = sender.gamer()
 
-		if (args.isEmpty()) {
-			sender.sendMessage(Text.negativePrefix().basic("Uso: /chat ").negative("<clear>/<restrict>").basic(" [rank]").toString())
-		} else {
-			val rank: EnumRank
-
-			if (args.size > 1) {
-				rank = EnumRank[args[1]]
+		if (args.isEmpty()) sender.sendMessage(Text.negativePrefix().basic("Uso: /chat ").negative("<clear>/<restrict>").basic(" [rank]").toString())
+		else when (args[0]) {
+			"clear"    -> {
+				val rank: EnumRank = if (args.size > 1) EnumRank[args[1]] else gamer.rank
 
 				if (rank == EnumRank.NONE) {
 					sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um rank com o nome \"").negative(args[0]).basic("\"!").toString())
 					return false
 				}
-			} else {
-				rank = gamer.rank
+
+				GamerRegistry.onlineGamers().forEach { if (it.rank.isLowerThanOrEquals(rank)) it.player.sendMessage(CHAT_CLEAR_MESSAGE) }
+
+				sender.sendMessage(Text.neutralPrefix().basic("O ").neutral("chat").basic(" foi ").neutral("limpo").basic("!").toString())
 			}
-
-			when (args[0]) {
-				"clear"    -> {
-					GamerRegistry.onlineGamers().forEach { if (it.rank.isLowerThanOrEquals(rank)) it.player.sendMessage(CHAT_CLEAR_MESSAGE) }
-
-					sender.sendMessage(Text.neutralPrefix().basic("O ").neutral("chat").basic(" foi ").neutral("limpo").basic("!").toString())
+			"restrict" -> {
+				val rank: EnumRank = when {
+					args.size > 1                                    -> EnumRank[args[1]]
+					AsyncPlayerChatListener.rank == EnumRank.DEFAULT -> gamer.rank
+					else                                             -> EnumRank.DEFAULT
 				}
-				"restrict" -> {
-					AsyncPlayerChatListener.rank = rank
 
-					if (rank == EnumRank.DEFAULT) Bukkit.broadcastMessage(Text.positivePrefix().basic("O chat agora está ").positive("liberado").basic(" para ").positive("todos").basic(" os jogadores!").toString())
-					else Bukkit.broadcastMessage(Text.negativePrefix().basic("O chat agora está ").negative("restrito").basic(" apenas a ").negative(rank.string).basic(" e acima!").toString())
+				if (rank == EnumRank.NONE) {
+					sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um rank com o nome \"").negative(args[0]).basic("\"!").toString())
+					return false
 				}
+
+				AsyncPlayerChatListener.rank = rank
+
+				if (rank == EnumRank.DEFAULT) Bukkit.broadcastMessage(Text.positivePrefix().basic("O chat agora está ").positive("liberado").basic(" para ").positive("todos").basic(" os jogadores!").toString())
+				else Bukkit.broadcastMessage(Text.negativePrefix().basic("O chat agora está ").negative("restrito").basic(" apenas a ").negative(rank.string).basic(" e acima!").toString())
 			}
 		}
 

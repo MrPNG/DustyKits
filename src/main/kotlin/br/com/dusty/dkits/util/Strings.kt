@@ -1,7 +1,7 @@
 package br.com.dusty.dkits.util
 
 import br.com.dusty.dkits.Main
-import br.com.dusty.dkits.util.text.Text
+import org.bukkit.ChatColor
 import org.joda.time.Period
 import org.joda.time.format.PeriodFormatterBuilder
 import java.util.ArrayList
@@ -17,7 +17,7 @@ import kotlin.Comparator
 fun String.fancySplit(max: Int): ArrayList<String> {
 	val arrayList = ArrayList<String>()
 
-	val fragments = Text.clearFormatting(this).split(" ")
+	val fragments = this.clearFormatting().split(" ")
 	var i = 0
 	while (i < fragments.size) {
 		val fragment = StringBuilder()
@@ -83,6 +83,14 @@ fun ArrayList<String>.sortOut(start: String): ArrayList<String> {
 
 	return this
 }
+
+/**
+ * Remove qualquer formatação de uma [String], se houver.
+ *
+ * @param string
+ * @return [String] sem formatação.
+ */
+fun String.clearFormatting(): String = ChatColor.stripColor(this)
 
 object StringUtils {
 

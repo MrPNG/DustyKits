@@ -10,10 +10,12 @@ class PrimitiveGamer(var uuid: String) {
 	var deaths = 0
 	var killStreak = 0
 	var maxKillStreak = 0
-	var xp = 0f
-	var money = 0f
+	var xp = 0.0
+	var money = 0.0
 	var hgWins = 0
 	var hgLosses = 0
+	var oneVsOneWins = 0
+	var oneVsOneLosses = 0
 
 	fun getUniqueId(): UUID = UUID.fromString(uuid)
 

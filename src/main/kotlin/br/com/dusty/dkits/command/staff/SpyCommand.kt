@@ -15,8 +15,22 @@ object SpyCommand: PlayerCustomCommand(EnumRank.ADMIN, "spy") {
 		} else {
 			val player = Bukkit.getPlayerExact(args[0])
 
-			if (player == null) sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um jogador online com o nome \"").negative(args[0]).basic("\"!").toString())
-			else player.gamer().chatSpies.add(sender)
+			if (player == null) {
+				sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um jogador online com o nome \"").negative(args[0]).basic("\"!").toString())
+			} else {
+				val gamer = player.gamer()
+
+				if (gamer.chatSpies.contains(sender)) {
+					sender.sendMessage(Text.negativePrefix().basic("Agora você ").negative("não").basic(" está mais ").negative("espionando").basic(" as conversas privadas do jogador ").negative(
+							player.name).basic("!").toString())
+
+					gamer.chatSpies.remove(sender)
+				} else {
+					sender.sendMessage(Text.positivePrefix().basic("Agora você está ").positive("espionando").basic(" as conversas privadas do jogador ").positive(player.name).basic("!").toString())
+
+					gamer.chatSpies.add(sender)
+				}
+			}
 		}
 
 		return false

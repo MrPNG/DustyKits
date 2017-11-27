@@ -27,7 +27,7 @@ object PlayerInteractListener: Listener {
 			val block = event.clickedBlock
 
 			when (block.type) {
-				Material.WALL_SIGN -> {
+				Material.WALL_SIGN, Material.SIGN_POST -> {
 					val sign = block.state as Sign
 
 					if (sign.isSpecial()) sign.interact(player)

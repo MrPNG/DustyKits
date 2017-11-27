@@ -3,6 +3,7 @@ package br.com.dusty.dkits.command.gameplay
 import br.com.dusty.dkits.command.PlayerCustomCommand
 import br.com.dusty.dkits.gamer.EnumRank
 import br.com.dusty.dkits.gamer.gamer
+import br.com.dusty.dkits.util.clearFormatting
 import br.com.dusty.dkits.util.text.Text
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
@@ -15,7 +16,7 @@ object TellCommand: PlayerCustomCommand(EnumRank.DEFAULT, "tell", "msg", "w", "r
 		when (alias) {
 			"tell", "msg", "w" -> {
 				if (args.size < 2) {
-					sender.sendMessage(Text.negativePrefix().basic("Uso: /tell ").negative("<jogador>").basic(" <mensagem>").toString())
+					sender.sendMessage(Text.negativePrefix().basic("Uso: /tell ").negative("<jogador> <mensagem>").toString())
 				} else {
 					val player = Bukkit.getPlayerExact(args[0])
 
@@ -24,16 +25,17 @@ object TellCommand: PlayerCustomCommand(EnumRank.DEFAULT, "tell", "msg", "w", "r
 					} else {
 						val partner = player.gamer()
 
+						//TODO: Ignore implementation
 						gamer.chatPartner = partner
 						partner.chatPartner = gamer
 
-						val message = args.copyOfRange(1, args.lastIndex).joinToString(separator = " ")
+						val message = args.copyOfRange(1, args.lastIndex + 1).joinToString(separator = " ")
 
-						sender.sendMessage(Text.basicOf("[" + Text.clearFormatting(player.displayName) + " -> " + Text.clearFormatting(sender.displayName) + "] " + message).toString())
-						player.sendMessage(Text.basicOf("[" + Text.clearFormatting(player.displayName) + " <- " + Text.clearFormatting(sender.displayName) + "] " + message).toString())
+						sender.sendMessage(Text.basicOf("[" + sender.displayName.clearFormatting() + " -> " + player.displayName.clearFormatting() + "] " + message).toString())
+						player.sendMessage(Text.basicOf("[" + player.displayName.clearFormatting() + " <- " + sender.displayName.clearFormatting() + "] " + message).toString())
 
 						gamer.chatSpies.forEach {
-							it.sendMessage(Text.basicOf("[").negative("Spy").basic("]: ").basic(Text.clearFormatting(player.displayName) + " -> " + Text.clearFormatting(sender.displayName) + ": " + message).toString())
+							it.sendMessage(Text.basicOf("[").negative("Spy").basic("] (").basic(sender.displayName.clearFormatting() + " -> " + player.displayName.clearFormatting() + "): " + message).toString())
 						}
 					}
 				}
@@ -49,13 +51,14 @@ object TellCommand: PlayerCustomCommand(EnumRank.DEFAULT, "tell", "msg", "w", "r
 					else                                                              -> {
 						val player = gamer.chatPartner!!.player
 
-						val message = args.copyOfRange(0, args.lastIndex).joinToString(separator = " ")
+						val message = args.copyOfRange(0, args.lastIndex + 1).joinToString(separator = " ")
 
-						sender.sendMessage(Text.basicOf("[" + Text.clearFormatting(player.displayName) + " -> " + Text.clearFormatting(sender.displayName) + "] " + message).toString())
-						player.sendMessage(Text.basicOf("[" + Text.clearFormatting(player.displayName) + " <- " + Text.clearFormatting(sender.displayName) + "] " + message).toString())
+						//TODO: Ignore implementation
+						sender.sendMessage(Text.basicOf("[" + sender.displayName.clearFormatting() + " -> " + player.displayName.clearFormatting() + "] " + message).toString())
+						player.sendMessage(Text.basicOf("[" + player.displayName.clearFormatting() + " <- " + sender.displayName.clearFormatting() + "] " + message).toString())
 
 						gamer.chatSpies.forEach {
-							it.sendMessage(Text.basicOf("[").negative("Spy").basic("]: ").basic(Text.clearFormatting(player.displayName) + " -> " + Text.clearFormatting(sender.displayName) + ": " + message).toString())
+							it.sendMessage(Text.basicOf("[").negative("Spy").basic("]: ").basic(sender.displayName.clearFormatting() + " -> " + player.displayName.clearFormatting() + ": " + message).toString())
 						}
 					}
 				}

@@ -1,6 +1,5 @@
 package br.com.dusty.dkits.util.text
 
-import org.bukkit.ChatColor
 import java.util.*
 
 /**
@@ -256,13 +255,5 @@ class Text {
 		fun neutralPrefix(): Text = of("≡ ").color(TextColor.YELLOW)
 
 		fun negativePrefix(): Text = negativeOf("» ")
-
-		/**
-		 * Remove qualquer formatação de uma [String], se houver.
-		 *
-		 * @param string
-		 * @return [String] sem formatação.
-		 */
-		fun clearFormatting(string: String): String = ChatColor.stripColor(string)
 	}
 }

@@ -47,7 +47,7 @@ open class Kit {
 		gamer.updateScoreboard()
 
 
-		if(announce) gamer.player.sendMessage(Text.positivePrefix().basic("Agora você está ").positive("usando").basic(" o kit ").positive(name).basic("!").toString())
+		if (announce) gamer.player.sendMessage(Text.positivePrefix().basic("Agora você está ").positive("usando").basic(" o kit ").positive(name).basic("!").toString())
 		//TODO: Titles/subtitles for 1.8+ players
 	}
 
