@@ -9,6 +9,7 @@ object Warps {
 
 	val NONE = NoneWarp
 	val ARENA = ArenaWarp
+	val FPS = FpsWarp
 	val LOBBY = LobbyWarp
 
 	val WARPS = ArrayList<Warp>()
@@ -19,6 +20,7 @@ object Warps {
 		//Usage: WARPS.add(FOO);
 
 		WARPS.add(ARENA)
+		WARPS.add(FPS)
 		WARPS.add(LOBBY)
 
 		enabledWarpsNames = Warps.WARPS.filter { it.data.isEnabled }.map { it.name.toLowerCase() }.toTypedArray()

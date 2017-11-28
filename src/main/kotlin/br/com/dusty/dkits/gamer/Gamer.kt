@@ -322,6 +322,15 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 			updateScoreboard()
 		}
 
+	fun setKitAndApply(kit: Kit, announce: Boolean) {
+		this.kit = kit
+
+		warp.applyKit(this, kit)
+
+		//TODO: Titles/subtitles for 1.8+ players
+		if (announce) player.sendMessage(Text.positivePrefix().basic("Agora você está ").positive("usando").basic(" o kit ").positive(kit.name).basic("!").toString())
+	}
+
 	fun hasKit(kit: Kit): Boolean = player.hasPermission("dkits.kit." + kit.name.toLowerCase())
 
 	var warp: Warp = Warps.LOBBY

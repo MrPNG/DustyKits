@@ -44,7 +44,7 @@ object InventoryClickListener: Listener {
 
 							val kit = Kits[itemStack]
 
-							if (kit.isAllowed(gamer, true)) kit.setAndApply(gamer, true)
+							if (kit.isAllowed(gamer, true)) gamer.setKitAndApply(kit, true)
 						}
 					}
 				}

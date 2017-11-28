@@ -25,7 +25,7 @@ object ForceCommand: PlayerCustomCommand(EnumRank.MODPLUS, "force") {
 						kit == Kits.NONE -> sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um kit com o nome ").negative("\"" + args[1] + "\"").basic("!").toString())
 						player == null   -> sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um jogador online chamado ").negative("\"" + args[2] + "\"").basic("!").toString())
 						else             -> {
-							kit.setAndApply(player.gamer(), false)
+							player.gamer().setKitAndApply(kit, false)
 
 							sender.sendMessage(Text.positivePrefix().basic("Você ").positive("aplicou").basic(" o kit ").positive(kit.name).basic(" no jogador ").positive(player.name).basic("!").toString())
 						}

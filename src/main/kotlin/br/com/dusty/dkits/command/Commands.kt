@@ -33,7 +33,7 @@ object Commands {
 		CUSTOM_COMMANDS.add(SyncCommand)
 		CUSTOM_COMMANDS.add(StaffChatCommand)
 		CUSTOM_COMMANDS.add(VisInvisCommand)
-		CUSTOM_COMMANDS.add(WorldCommand)
+//		CUSTOM_COMMANDS.add(WorldCommand)
 
 		//Gameplay
 		CUSTOM_COMMANDS.add(KitCommand)

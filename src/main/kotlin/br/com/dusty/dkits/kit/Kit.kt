@@ -29,28 +29,6 @@ open class Kit {
 
 	var data = Data()
 
-	fun apply(gamer: Gamer) {
-		gamer.clear()
-
-		val player = gamer.player
-
-		player.inventory.setItem(0, weapon)
-
-		player.setArmor(armor)
-		player.inventory.addItemStacks(items)
-	}
-
-	fun setAndApply(gamer: Gamer, announce: Boolean) {
-		gamer.kit = this
-		apply(gamer)
-
-		gamer.updateScoreboard()
-
-
-		if (announce) gamer.player.sendMessage(Text.positivePrefix().basic("Agora você está ").positive("usando").basic(" o kit ").positive(name).basic("!").toString())
-		//TODO: Titles/subtitles for 1.8+ players
-	}
-
 	//TODO: If not on MiniHG
 	fun isAllowed(gamer: Gamer, announce: Boolean): Boolean = when {
 		gamer.mode != EnumMode.ADMIN && !gamer.kit.isDummy                     -> {

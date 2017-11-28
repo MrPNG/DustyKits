@@ -5,6 +5,8 @@ import br.com.dusty.dkits.gamer.Gamer
 import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.util.Tasks
+import br.com.dusty.dkits.util.inventory.addItemStacks
+import br.com.dusty.dkits.util.inventory.setArmor
 import br.com.dusty.dkits.util.rename
 import br.com.dusty.dkits.util.spread
 import br.com.dusty.dkits.util.text.Text
@@ -93,6 +95,23 @@ open class Warp: Listener {
 		printWriter.close()
 	}
 
+	fun applyKit(gamer: Gamer, kit: Kit) {
+		gamer.clear()
+
+		val player = gamer.player
+
+		when {
+			this is FpsWarp -> {
+				//TODO: Apply kit on FpsWarp
+			}
+			else              -> {
+				player.inventory.setItem(0, kit.weapon)
+				player.inventory.addItemStacks(kit.items)
+				player.setArmor(kit.armor)
+			}
+		}
+	}
+
 	fun receiveGamer(gamer: Gamer, announce: Boolean) {
 		val player = gamer.player
 
@@ -100,8 +119,7 @@ open class Warp: Listener {
 		if (announce) player.sendMessage(Text.positivePrefix().basic("Você foi ").positive("teleportado").basic(" para a warp ").positive(name).basic("!").toString())
 		//TODO: Titles/subtitles for 1.8+ players
 
-		gamer.kit = entryKit
-		entryKit.apply(gamer)
+		gamer.setKitAndApply(entryKit, false)
 	}
 
 	object GameWarpKit: Kit() {
