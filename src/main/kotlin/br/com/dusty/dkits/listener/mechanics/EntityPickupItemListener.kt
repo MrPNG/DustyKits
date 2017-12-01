@@ -14,7 +14,6 @@ object EntityPickupItemListener: Listener {
 
 	@EventHandler
 	fun onPlayerDropItem(event: EntityPickupItemEvent) {
-		//TODO: Allowed on event HG
 		val player = event.entity as? Player
 
 		if (player != null) {

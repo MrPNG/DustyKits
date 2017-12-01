@@ -1,6 +1,7 @@
 package br.com.dusty.dkits.util
 
 import br.com.dusty.dkits.Main
+import org.bukkit.Bukkit
 import org.bukkit.Location
 
 fun Location.spread(radius: Float): Location {
@@ -8,4 +9,9 @@ fun Location.spread(radius: Float): Location {
 	val theta = Main.RANDOM.nextDouble() * 2 * Math.PI
 
 	return this.clone().add(distance * Math.cos(theta), 0.0, distance * Math.sin(theta))
+}
+
+object Locations {
+
+	val GENERIC = Location(Bukkit.getWorlds()[0], 0.0, 0.0, 0.0)
 }

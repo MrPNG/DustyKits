@@ -2,7 +2,7 @@ import org.ajoberstar.grgit.Grgit
 import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "1.1.60"
+    id "org.jetbrains.kotlin.jvm" version "1.2.0"
     id "com.github.johnrengelman.shadow" version "1.2.4"
     id "org.ajoberstar.grgit" version "1.7.2"
 }
@@ -68,9 +68,9 @@ repositories {
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:1.2.0"
 
-    compileOnly "org.spigotmc:spigot:$spigotVersion"
+    compileOnly "org.spigotmc:spigot:1.12.1-R0.1-SNAPSHOT"
 
     compile "joda-time:joda-time:2.9.9"
     compile "org.apache.httpcomponents:httpclient:4.5.3"

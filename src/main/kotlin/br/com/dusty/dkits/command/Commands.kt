@@ -26,6 +26,7 @@ object Commands {
 		CUSTOM_COMMANDS.add(ForceCommand)
 		CUSTOM_COMMANDS.add(InvSeeCommand)
 		CUSTOM_COMMANDS.add(IpCheckCommand)
+		CUSTOM_COMMANDS.add(LocationCommand)
 		CUSTOM_COMMANDS.add(ProtocolCommand)
 		CUSTOM_COMMANDS.add(RamCommand)
 		CUSTOM_COMMANDS.add(SpyCommand)

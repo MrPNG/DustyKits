@@ -1,6 +1,7 @@
 package br.com.dusty.dkits.listener.mechanics
 
 import br.com.dusty.dkits.gamer.Gamer
+import br.com.dusty.dkits.gamer.gamer
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
@@ -11,11 +12,11 @@ import org.bukkit.util.Vector
 
 object PlayerMoveListener: Listener {
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGH)
 	fun onPlayerMove(event: PlayerMoveEvent) {
 		val player = event.player
 
-		val gamer = Gamer.get(player)
+		val gamer = player.gamer()
 
 		val from = event.from
 		val to = event.to

@@ -1,10 +1,12 @@
 package br.com.dusty.dkits.util.inventory
 
+import br.com.dusty.dkits.util.enchant
 import br.com.dusty.dkits.util.rename
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
 import org.bukkit.Bukkit
 import org.bukkit.Material
+import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
@@ -45,6 +47,20 @@ fun Player.openInventory(player: Player) {
 	sendMessage(Text.positivePrefix().basic("Você está ").positive("vendo").basic(" o inventário de ").positive(player.name).toString())
 }
 
+fun Player.fillSoups(): Inventory {
+	(0 .. 35).filter { inventory.getItem(it) == null }.forEach { inventory.setItem(it, Inventories.SOUP) }
+
+	return inventory
+}
+
+fun Player.fillRecraft(): Inventory {
+	inventory.setItem(14, Inventories.RED_MUSHROOMS)
+	inventory.setItem(15, Inventories.BROWN_MUSHROOMS)
+	inventory.setItem(16, Inventories.BOWLS)
+
+	return inventory
+}
+
 object Inventories {
 
 	val SOUP = ItemStack(Material.MUSHROOM_SOUP)
@@ -56,7 +72,10 @@ object Inventories {
 	val SOUPS_TITLE = Text.of("Sopas").color(TextColor.GOLD).toString()
 	val RECRAFT_TITLE = Text.of("Recraft").color(TextColor.GOLD).toString()
 
-	val ARMOR_FULL_IRON = arrayOf(ItemStack(Material.IRON_HELMET), ItemStack(Material.IRON_CHESTPLATE), ItemStack(Material.IRON_LEGGINGS), ItemStack(Material.IRON_BOOTS))
+	val ARMOR_FULL_IRON: Array<ItemStack?> = arrayOf(ItemStack(Material.IRON_HELMET), ItemStack(Material.IRON_CHESTPLATE), ItemStack(Material.IRON_LEGGINGS), ItemStack(Material.IRON_BOOTS))
+
+	val DIAMOND_SWORD = ItemStack(Material.DIAMOND_SWORD)
+	val DIAMOND_SWORD_SHARPNESS = ItemStack(Material.DIAMOND_SWORD).enchant(1, Enchantment.DAMAGE_ALL)
 
 	val BACKGROUND = ItemStack(Material.STAINED_GLASS_PANE, 1, 1.toShort(), 7.toByte()).rename(" ")
 

@@ -17,14 +17,18 @@ object KitCommand: PlayerCustomCommand(EnumRank.DEFAULT, "kit", *Kits.enabledKit
 
 		when (alias) {
 			"kit" -> {
-				if (args.isEmpty()) {
-					sender.openInventory(KitMenu.menuKitOwned(sender))
-				} else {
-					val kit = Kits[args[0]]
+				if(gamer.warp.enabledKits.isEmpty()) {
+					sender.sendMessage(Text.negativePrefix().basic("Você ").negative("não").basic(" pode escolher ").negative("kits").basic(" nessa warp!").toString())
+				}else{
+					if (args.isEmpty()) {
+						sender.openInventory(KitMenu.menuKitOwned(sender))
+					} else {
+						val kit = Kits[args[0]]
 
-					if (kit == Kits.NONE || (!kit.data.isEnabled && gamer.mode != EnumMode.ADMIN)) sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um kit com o nome \"").negative(
-							args[0]).basic("\"!").toString())
-					else if (kit.isAllowed(gamer, true)) gamer.setKitAndApply(kit, true)
+						if (kit == Kits.NONE || (!kit.data.isEnabled && gamer.mode != EnumMode.ADMIN)) sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um kit com o nome \"").negative(
+								args[0]).basic("\"!").toString())
+						else if (kit.isAllowed(gamer, true)) gamer.setKitAndApply(kit, true)
+					}
 				}
 			}
 			else  -> {

@@ -9,7 +9,9 @@ object Warps {
 
 	val NONE = NoneWarp
 	val ARENA = ArenaWarp
+	val FEAST = FeastWarp
 	val FPS = FpsWarp
+	val LAVA_CHALLENGE = LavaChallengeWarp
 	val LOBBY = LobbyWarp
 
 	val WARPS = ArrayList<Warp>()
@@ -20,7 +22,9 @@ object Warps {
 		//Usage: WARPS.add(FOO);
 
 		WARPS.add(ARENA)
+		WARPS.add(FEAST)
 		WARPS.add(FPS)
+		WARPS.add(LAVA_CHALLENGE)
 		WARPS.add(LOBBY)
 
 		enabledWarpsNames = Warps.WARPS.filter { it.data.isEnabled }.map { it.name.toLowerCase() }.toTypedArray()

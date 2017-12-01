@@ -7,18 +7,14 @@ import br.com.dusty.dkits.util.text.TextColor
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
-object FpsWarp: Warp() {
+object LavaChallengeWarp: Warp() {
 
 	init {
-		name = "FPS"
-		icon = ItemStack(Material.GLASS)
+		name = "Lava Challenge"
+		icon = ItemStack(Material.LAVA_BUCKET)
 
 		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
 		icon.setDescription(description)
-
-		entryKit = GameWarpKit
-
-		hasShop = true
 
 		loadData()
 	}

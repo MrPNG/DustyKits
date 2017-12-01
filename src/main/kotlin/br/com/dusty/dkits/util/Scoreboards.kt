@@ -65,7 +65,7 @@ object Scoreboards {
 			                     Text.of(GamerRegistry.onlineGamers().size).color(TextColor.YELLOW).toString())
 
 			for (i in LABELS.indices) {
-				if (gamer.kit.isDummy && values[i].endsWith("None")) continue
+				if (!gamer.kit.isBroadcast) continue
 
 				val score = objective.getScore(LABELS[i] + values[i])
 
@@ -84,7 +84,7 @@ object Scoreboards {
 			                     ChatColor.YELLOW.toString() + "" + GamerRegistry.onlineGamers().size)
 
 			for (i in LABELS_OLD.indices) {
-				if (gamer.kit.isDummy && values[i].endsWith("None")) continue
+				if (!gamer.kit.isBroadcast) continue
 
 				val score = objective.getScore(LABELS_OLD[i] + values[i])
 

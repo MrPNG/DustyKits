@@ -13,11 +13,9 @@ object PlayerDropItemListener: Listener {
 
 	val ALLOWED_DROPS = arrayOf(Material.RED_MUSHROOM, Material.BROWN_MUSHROOM, Material.BOWL, Material.MUSHROOM_SOUP)
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGH)
 	fun onPlayerDropItem(event: PlayerDropItemEvent) {
-		//TODO: Allowed on event HG
 		val player = event.player
-		val gamer = player.gamer()
 
 		val item = event.itemDrop
 

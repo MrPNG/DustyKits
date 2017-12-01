@@ -98,6 +98,12 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 		updateScoreboard()
 	}
 
+	var warpKills = 0
+
+	fun addWarpKill() {
+		warpKills++
+	}
+
 	fun addKillMoney() { //TODO: Different money for VIPs
 		addMoney(when {
 			         rank.isHigherThanOrEquals(EnumRank.PRO) -> 100.0
@@ -109,8 +115,8 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 
 	fun addKillXp() {
 		addXp(when {
-			      rank.isHigherThanOrEquals(EnumRank.PRO) -> 20.0
-			      else                                    -> 10.0
+			      rank.isHigherThanOrEquals(EnumRank.PRO) -> 200.0
+			      else                                    -> 100.0
 		      })
 
 		updateScoreboard()
@@ -132,7 +138,7 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 	}
 
 	fun removeDeathXp() {
-		removeXp(5.0)
+		removeXp(30.0)
 
 		updateScoreboard()
 	}
@@ -196,6 +202,7 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 		player.sendMessage(Text.positivePrefix().basic("Você ").positive("matou").basic(" o jogador ").positive(gamer.player.displayName).basic("!").toString())
 
 		addKill()
+		addWarpKill()
 		addKillStreak()
 		addKillMoney()
 		addKillXp()
@@ -374,6 +381,8 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 
 		removeKitCooldown()
 		removeSignCooldown()
+
+		warpKills = 0
 	}
 
 	fun fly(fly: Boolean) {

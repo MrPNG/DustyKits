@@ -33,16 +33,6 @@ object WarpCommand: PlayerCustomCommand(EnumRank.DEFAULT, "warp", "spawn", "lobb
 			"lobby" -> {
 				gamer.sendToWarp(Warps.LOBBY, true)
 			}
-			"goto"  -> {
-				if (gamer.mode == EnumMode.ADMIN) {
-					val warp = Warps[args[0]]
-
-					if (warp == Warps.NONE) sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há uma warp com o nome \"").negative(args[0]).basic("\"!").toString())
-					else sender.teleport(warp.spawn)
-				} else if (gamer.rank.isLowerThan(EnumRank.MOD)) {
-					sender.sendMessage(UNKNOWN)
-				}
-			}
 			else    -> {
 				val warp = Warps[alias]
 

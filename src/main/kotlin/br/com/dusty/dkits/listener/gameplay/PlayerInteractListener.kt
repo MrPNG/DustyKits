@@ -8,8 +8,9 @@ import br.com.dusty.dkits.util.inventory.KitMenu
 import br.com.dusty.dkits.util.inventory.ShopMenu
 import br.com.dusty.dkits.util.inventory.WarpMenu
 import br.com.dusty.dkits.warp.Warp
-import org.bukkit.Bukkit
+import org.bukkit.GameMode
 import org.bukkit.Material
+import org.bukkit.block.Chest
 import org.bukkit.block.Sign
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
@@ -19,17 +20,19 @@ import org.bukkit.event.player.PlayerInteractEvent
 
 object PlayerInteractListener: Listener {
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGH)
 	fun onPlayerInteract(event: PlayerInteractEvent) {
 		val player = event.player
-		val gamer = player.gamer()
 
-		if (gamer.mode != EnumMode.ADMIN) event.isCancelled = true
+		if (player.gameMode != GameMode.CREATIVE) event.isCancelled = true
 
 		if (event.action == Action.RIGHT_CLICK_BLOCK) {
 			val block = event.clickedBlock
 
 			when (block.type) {
+				Material.CHEST                         -> {
+					player.openInventory((block as Chest).blockInventory)
+				}
 				Material.WALL_SIGN, Material.SIGN_POST -> {
 					val sign = block.state as Sign
 

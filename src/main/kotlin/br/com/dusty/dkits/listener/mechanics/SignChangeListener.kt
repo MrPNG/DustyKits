@@ -37,9 +37,7 @@ object SignChangeListener: Listener {
 
 		val gamer = player.gamer()
 
-		if (gamer.mode != EnumMode.ADMIN) return
-
-		when (event.getLine(0)) {
+		if (gamer.mode == EnumMode.ADMIN) when (event.getLine(0)) {
 			"soup"    -> for (i in 0 .. 3) event.setLine(i, SOUP_SIGN[i])
 			"recraft" -> for (i in 0 .. 3) event.setLine(i, RECRAFT_SIGN[i])
 			"money"   -> {

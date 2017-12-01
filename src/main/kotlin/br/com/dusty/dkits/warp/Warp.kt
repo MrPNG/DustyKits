@@ -4,8 +4,11 @@ import br.com.dusty.dkits.Main
 import br.com.dusty.dkits.gamer.Gamer
 import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.kit.Kits
+import br.com.dusty.dkits.util.Locations
 import br.com.dusty.dkits.util.Tasks
 import br.com.dusty.dkits.util.inventory.addItemStacks
+import br.com.dusty.dkits.util.inventory.fillRecraft
+import br.com.dusty.dkits.util.inventory.fillSoups
 import br.com.dusty.dkits.util.inventory.setArmor
 import br.com.dusty.dkits.util.rename
 import br.com.dusty.dkits.util.spread
@@ -28,20 +31,20 @@ open class Warp: Listener {
 	var icon = ItemStack(Material.STONE_SWORD)
 	var type = EnumWarpType.GAME
 
-	var spawn: Location? = null
+	var spawn = Locations.GENERIC
 		get() {
-			if (field == null) field = Location(Bukkit.getWorlds()[0], data.spawn[0].toDouble(), data.spawn[1].toDouble(), data.spawn[2].toDouble())
+			if (field == Locations.GENERIC) field = Location(Bukkit.getWorlds()[0], data.spawn[0].toDouble(), data.spawn[1].toDouble(), data.spawn[2].toDouble())
 
 			return field
 		}
 		set(location) {
-			if (location != null) {
-				field = location
+			field = location
 
-				data.spawn[0] = location.x.toFloat()
-				data.spawn[1] = location.y.toFloat()
-				data.spawn[2] = location.z.toFloat()
-			}
+			data.spawn[0] = location.x.toFloat()
+			data.spawn[1] = location.y.toFloat()
+			data.spawn[2] = location.z.toFloat()
+
+			saveData()
 		}
 
 	var entryKit: Kit = Kits.NONE
@@ -76,11 +79,12 @@ open class Warp: Listener {
 		val dir = File(Main.CONFIG_DIR, "warp")
 		val file = File(dir, name.toLowerCase() + ".json")
 
-		if (file.exists()) data = Main.GSON.fromJson(FileReader(file), Warp.Data::class.java)
-		else saveData()
+		if (file.exists()) data = Main.GSON.fromJson(FileReader(file), data.javaClass)
 
 		if (data.isListEnabledKits) data.kits.mapNotNull { Kits[it] }.filter { it.data.isEnabled }.forEach { enabledKits.add(it) }
 		else Kits.KITS.filter { it.data.isEnabled && !data.kits.contains(it.name) }.forEach { enabledKits.add(it) }
+
+		saveData()
 	}
 
 	fun saveData() {
@@ -95,27 +99,25 @@ open class Warp: Listener {
 		printWriter.close()
 	}
 
-	fun applyKit(gamer: Gamer, kit: Kit) {
+	open fun applyKit(gamer: Gamer, kit: Kit) {
 		gamer.clear()
 
 		val player = gamer.player
 
-		when {
-			this is FpsWarp -> {
-				//TODO: Apply kit on FpsWarp
-			}
-			else              -> {
-				player.inventory.setItem(0, kit.weapon)
-				player.inventory.addItemStacks(kit.items)
-				player.setArmor(kit.armor)
-			}
+		player.inventory.setItem(0, kit.weapon)
+		player.inventory.addItemStacks(kit.items)
+		player.setArmor(kit.armor)
+
+		if(!kit.isDummy){
+			player.fillRecraft()
+			player.fillSoups()
 		}
 	}
 
 	fun receiveGamer(gamer: Gamer, announce: Boolean) {
 		val player = gamer.player
 
-		player.teleport(spawn!!.spread(data.spreadRange))
+		player.teleport(spawn.spread(data.spreadRange))
 		if (announce) player.sendMessage(Text.positivePrefix().basic("Você foi ").positive("teleportado").basic(" para a warp ").positive(name).basic("!").toString())
 		//TODO: Titles/subtitles for 1.8+ players
 
@@ -137,6 +139,13 @@ open class Warp: Listener {
 		}
 	}
 
+	object SimpleGameWarpKit: Kit() {
+
+		init {
+			items = arrayOf(GameWarpKit.items[0], null, null, null, null, null, null, null, GameWarpKit.items[8])
+		}
+	}
+
 	object EventWarpKit: Kit() {
 
 		init {
@@ -149,7 +158,7 @@ open class Warp: Listener {
 		EVENT
 	}
 
-	data class Data(var isEnabled: Boolean = false,
+	open class Data(var isEnabled: Boolean = false,
 	                var isListEnabledKits: Boolean = true,
 	                var kits: Array<String> = arrayOf(),
 	                var spawn: Array<Float> = arrayOf(0F, 0F, 0F),

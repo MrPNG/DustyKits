@@ -9,7 +9,7 @@ import org.bukkit.event.entity.EntityDamageEvent
 
 object EntityDamageListener: Listener {
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGH)
 	fun onEntityDamage(event: EntityDamageEvent) {
 		if (event.entity is Player) {
 			val player = event.entity as Player
