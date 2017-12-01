@@ -10,7 +10,7 @@ import br.com.dusty.dkits.warp.Warps
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-object WarpCommand: PlayerCustomCommand(EnumRank.DEFAULT, "warp", "spawn", "lobby", "goto", *Warps.enabledWarpsNames) {
+object WarpCommand: PlayerCustomCommand(EnumRank.DEFAULT, "warp", "spawn", *Warps.enabledWarpsNames) {
 
 	override fun execute(sender: Player, alias: String, args: Array<String>): Boolean {
 		val gamer = sender.gamer()
@@ -29,9 +29,6 @@ object WarpCommand: PlayerCustomCommand(EnumRank.DEFAULT, "warp", "spawn", "lobb
 			}
 			"spawn" -> {
 				gamer.sendToWarp(gamer.warp, false)
-			}
-			"lobby" -> {
-				gamer.sendToWarp(Warps.LOBBY, true)
 			}
 			else    -> {
 				val warp = Warps[alias]
