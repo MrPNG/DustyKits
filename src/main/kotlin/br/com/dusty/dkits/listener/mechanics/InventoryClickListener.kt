@@ -21,7 +21,7 @@ object InventoryClickListener: Listener {
 
 	val TITLE_CONTAINER_INVENTORY = "container.inventory"
 
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler
 	fun onInventoryClick(event: InventoryClickEvent) {
 		val player = event.whoClicked as Player
 		val gamer = player.gamer()

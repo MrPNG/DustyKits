@@ -9,11 +9,10 @@ import org.bukkit.event.entity.EntityDamageEvent
 
 object EntityDamageListener: Listener {
 
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler
 	fun onEntityDamage(event: EntityDamageEvent) {
 		if (event.entity is Player) {
 			val player = event.entity as Player
-
 			val gamer = player.gamer()
 
 			if (gamer.isInvincible) event.isCancelled = true
@@ -23,6 +22,8 @@ object EntityDamageListener: Listener {
 
 				event.isCancelled = true
 			}
+
+			player.inventory.armorContents.forEach { it?.durability = 0 }
 		}
 	}
 }

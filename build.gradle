@@ -65,12 +65,17 @@ task runServer(type: Exec) {
 repositories {
     jcenter()
     mavenLocal()
+
+    maven {
+        url "http://repo.dmulloy2.net/content/groups/public/"
+    }
 }
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:1.2.0"
 
     compileOnly "org.spigotmc:spigot:1.12.1-R0.1-SNAPSHOT"
+    compileOnly "com.comphenix.protocol:ProtocolLib:4.4.0-SNAPSHOT"
 
     compile "joda-time:joda-time:2.9.9"
     compile "org.apache.httpcomponents:httpclient:4.5.3"

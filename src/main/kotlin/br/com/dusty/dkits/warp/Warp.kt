@@ -52,6 +52,8 @@ open class Warp: Listener {
 
 	var hasShop = false
 
+	var durabilityBehavior = EnumDurabilityBehavior.REGEN
+
 	var data = Data()
 
 	fun enable(enabled: Boolean): Boolean {
@@ -77,7 +79,7 @@ open class Warp: Listener {
 
 	fun loadData() {
 		val dir = File(Main.CONFIG_DIR, "warp")
-		val file = File(dir, name.toLowerCase() + ".json")
+		val file = File(dir, name.toLowerCase().replace(" ", "_") + ".json")
 
 		if (file.exists()) data = Main.GSON.fromJson(FileReader(file), data.javaClass)
 
@@ -89,7 +91,7 @@ open class Warp: Listener {
 
 	fun saveData() {
 		val dir = File(Main.CONFIG_DIR, "warp")
-		val file = File(dir, name.toLowerCase() + ".json")
+		val file = File(dir, name.toLowerCase().replace(" ", "_") + ".json")
 
 		dir.mkdirs()
 		file.createNewFile()
@@ -156,6 +158,12 @@ open class Warp: Listener {
 	enum class EnumWarpType {
 		GAME,
 		EVENT
+	}
+
+	enum class EnumDurabilityBehavior {
+		REGEN,
+		REGEN_ON_KILL,
+		BREAK
 	}
 
 	open class Data(var isEnabled: Boolean = false,

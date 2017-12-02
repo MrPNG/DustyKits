@@ -23,7 +23,7 @@ object Kits {
 		enabledKitsNames = KITS.filter { it.data.isEnabled }.map { it.name.toLowerCase() }.toTypedArray()
 	}
 
-	operator fun get(name: String): Kit = KITS.firstOrNull { it.name.toLowerCase() == name.toLowerCase() } ?: NONE
+	operator fun get(name: String): Kit = KITS.firstOrNull { it.name.toLowerCase() == name.toLowerCase().replace("_", " ") } ?: NONE
 
 	operator fun get(icon: ItemStack): Kit = KITS.firstOrNull { it.icon == icon } ?: NONE
 }

@@ -14,7 +14,7 @@ object AsyncPlayerPreLoginListener: Listener {
 	fun onAsyncPlayerPreLogin(event: AsyncPlayerPreLoginEvent) {
 		val uuid = event.uniqueId
 
-		//TODO: Activate Web API
+		//TODO: Reactivate Web API
 //		val primitiveGamer = GamerRegistry.primitiveGamerFromJson(WebAPI.getProfile(uuid), uuid)
 		val primitiveGamer = GamerRegistry.tempPrimitiveGamer(uuid)
 

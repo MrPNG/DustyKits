@@ -67,7 +67,8 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 
 					visibleTo = EnumRank.DEFAULT
 				}
-				EnumMode.SPECTATE -> { //TODO: Spectator mode
+			//TODO: Spectator mode
+				EnumMode.SPECTATE -> {
 					player.gameMode = GameMode.ADVENTURE
 
 					clear()
@@ -82,9 +83,11 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 
 					visibleTo = rank
 
-					if (isCombatTagged()) combatPartner?.kill(this) else removeCombatTag()
+					if (isCombatTagged()) combatPartner?.kill(this) else removeCombatTag(false)
 				}
 			}
+
+			Scoreboards.update()
 		}
 
 	var chat = EnumChat.NORMAL
@@ -106,8 +109,8 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 
 	fun addKillMoney() { //TODO: Different money for VIPs
 		addMoney(when {
-			         rank.isHigherThanOrEquals(EnumRank.PRO) -> 100.0
-			         else                                    -> 50.0
+			         rank.isHigherThanOrEquals(EnumRank.PRO) && rank.isLowerThan(EnumRank.MOD) -> 100.0
+			         else                                                                      -> 50.0
 		         })
 
 		updateScoreboard()
@@ -115,8 +118,8 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 
 	fun addKillXp() {
 		addXp(when {
-			      rank.isHigherThanOrEquals(EnumRank.PRO) -> 200.0
-			      else                                    -> 100.0
+			      rank.isHigherThanOrEquals(EnumRank.PRO) && rank.isLowerThan(EnumRank.MOD) -> 200.0
+			      else                                                                      -> 100.0
 		      })
 
 		updateScoreboard()
@@ -177,6 +180,8 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 	fun removeXp(amount: Double) {
 		primitiveGamer.xp -= Math.abs(amount)
 
+		if(primitiveGamer.xp < 0) primitiveGamer.xp = 0.0
+
 		player.sendMessage(Text.negativeOf("-").negative(Math.round(amount).toInt()).basic(" XP!").toString())
 		updateScoreboard()
 	}
@@ -186,6 +191,8 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 
 	fun addMoney(amount: Double) {
 		primitiveGamer.money += Math.abs(amount)
+
+		if(primitiveGamer.money < 0) primitiveGamer.money = 0.0
 
 		player.sendMessage(Text.positiveOf("+").positive(Math.round(amount).toInt()).basic(" créditos!").toString())
 		updateScoreboard()
@@ -265,7 +272,7 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 			field = System.currentTimeMillis() + period
 		}
 
-	fun readableKitCooldown() = Math.round(((kitCooldown - System.currentTimeMillis()) / 1000).toFloat()).toLong()
+	fun readableKitCooldown() = Math.round(((kitCooldown - System.currentTimeMillis()) / 1000).toFloat())
 
 	fun isOnKitCooldown() = kitCooldown > System.currentTimeMillis()
 
@@ -278,7 +285,7 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 			field = System.currentTimeMillis() + period
 		}
 
-	fun readableSignCooldown() = Math.round(((signCooldown - System.currentTimeMillis()) / 1000).toFloat()).toLong()
+	fun readableSignCooldown() = Math.round(((signCooldown - System.currentTimeMillis()) / 1000).toFloat())
 
 	fun isOnSignCooldown() = signCooldown > System.currentTimeMillis()
 
@@ -290,9 +297,8 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 	var combatTask: BukkitTask? = null
 
 	var combatTag: Long = -1
-		get() = Math.round(((field - System.currentTimeMillis()) / 1000).toFloat()).toLong()
 		set(period) {
-			if (combatTask != null) combatTask!!.cancel()
+			combatTask?.cancel()
 
 			if (period == -1L) {
 				field = period
@@ -301,20 +307,20 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 
 				field = System.currentTimeMillis() + period
 
-				combatTask = Tasks.sync(Runnable { this.removeCombatTag() }, 200)
+				combatTask = Tasks.sync(Runnable { if (player.isOnline) removeCombatTag(true) }, 200)
 			}
 
 			updateScoreboard()
 		}
 
+	fun readableCombatTag() = Math.round(((combatTag - System.currentTimeMillis()) / 1000).toFloat())
+
 	fun isCombatTagged() = combatTag > System.currentTimeMillis()
 
-	fun removeCombatTag() {
-		if (isCombatTagged()) {
-			player.sendMessage(Text.positivePrefix().basic("Você ").positive("saiu").basic(" de ").positive("combate").basic("!").toString())
+	fun removeCombatTag(announce: Boolean) {
+		if (announce && isCombatTagged()) player.sendMessage(Text.positivePrefix().basic("Você ").positive("saiu").basic(" de ").positive("combate").basic("!").toString())
 
-			combatTag = -1L
-		}
+		combatTag = -1L
 	}
 
 	var chatPartner: Gamer? = null

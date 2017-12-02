@@ -6,6 +6,7 @@ import br.com.dusty.dkits.gamer.EnumRank
 import br.com.dusty.dkits.gamer.gamer
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.warp.Warps
+import org.bukkit.Location
 import org.bukkit.entity.Player
 
 object LocationCommand: PlayerCustomCommand(EnumRank.ADMIN, "location") {
@@ -24,7 +25,7 @@ object LocationCommand: PlayerCustomCommand(EnumRank.ADMIN, "location") {
 					when (warp) {
 						Warps.NONE -> sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há uma warp chamada ").negative("\"" + args[1] + "\"").basic("!").toString())
 						else       -> {
-							warp.spawn = sender.location
+							warp.spawn = Location(sender.location.world, Math.floor(sender.location.x) + 0.5, Math.floor(sender.location.y) + 0.5, Math.floor(sender.location.z) + 0.5)
 
 							sender.sendMessage(Text.positivePrefix().basic("Você ").positive("definiu").basic(" o spawn da warp ").positive(warp.name).basic("!").toString())
 						}

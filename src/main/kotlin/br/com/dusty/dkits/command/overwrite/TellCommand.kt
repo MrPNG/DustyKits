@@ -1,4 +1,4 @@
-package br.com.dusty.dkits.command.gameplay
+package br.com.dusty.dkits.command.overwrite
 
 import br.com.dusty.dkits.command.PlayerCustomCommand
 import br.com.dusty.dkits.gamer.EnumRank

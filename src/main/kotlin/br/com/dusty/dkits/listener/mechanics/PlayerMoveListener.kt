@@ -12,7 +12,7 @@ import org.bukkit.util.Vector
 
 object PlayerMoveListener: Listener {
 
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler
 	fun onPlayerMove(event: PlayerMoveEvent) {
 		val player = event.player
 

@@ -11,8 +11,10 @@ import br.com.dusty.dkits.util.text.TextColor
 import org.bukkit.FireworkEffect
 import org.bukkit.Material
 import org.bukkit.Particle
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
+import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.inventory.ItemStack
 
@@ -34,6 +36,8 @@ object VolcanoWarp: Warp() {
 		icon.setDescription(description)
 
 		entryKit = VolcanoKit
+
+		durabilityBehavior = EnumDurabilityBehavior.REGEN_ON_KILL
 
 		loadData()
 	}
@@ -84,6 +88,11 @@ object VolcanoWarp: Warp() {
 				player.spawnParticle(Particle.CRIT_MAGIC, player.location, 1)
 			}
 		}
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	fun onEntityDamage(event: EntityDamageEvent) {
+		if (event.cause == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION && event.entity is Player && (event.entity as Player).gamer().warp == this) event.isCancelled = true
 	}
 
 	object VolcanoKit: Kit() {

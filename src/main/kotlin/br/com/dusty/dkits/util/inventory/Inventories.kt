@@ -64,6 +64,7 @@ fun Player.fillRecraft(): Inventory {
 object Inventories {
 
 	val SOUP = ItemStack(Material.MUSHROOM_SOUP)
+	val BOWL = ItemStack(Material.BOWL)
 
 	val RED_MUSHROOMS = ItemStack(Material.RED_MUSHROOM, 64)
 	val BROWN_MUSHROOMS = ItemStack(Material.BROWN_MUSHROOM, 64)

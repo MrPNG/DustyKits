@@ -1,5 +1,6 @@
 package br.com.dusty.dkits.util
 
+import br.com.dusty.dkits.gamer.EnumMode
 import br.com.dusty.dkits.gamer.Gamer
 import br.com.dusty.dkits.gamer.GamerRegistry
 import br.com.dusty.dkits.util.protocol.EnumProtocolVersion
@@ -62,10 +63,10 @@ object Scoreboards {
 			                     "",
 			                     Text.of(gamer.kit.name).color(TextColor.YELLOW).toString(),
 			                     Text.of(if (gamer.isCombatTagged()) "Sim" else "Não").color(TextColor.YELLOW).toString(),
-			                     Text.of(GamerRegistry.onlineGamers().size).color(TextColor.YELLOW).toString())
+			                     Text.of(GamerRegistry.onlineGamers().filter { it.mode != EnumMode.ADMIN }.size).color(TextColor.YELLOW).toString())
 
 			for (i in LABELS.indices) {
-				if (!gamer.kit.isBroadcast) continue
+				if (i == 7 && !gamer.kit.isBroadcast) continue
 
 				val score = objective.getScore(LABELS[i] + values[i])
 
@@ -81,10 +82,10 @@ object Scoreboards {
 			                     "",
 			                     ChatColor.YELLOW.toString() + "" + gamer.kit.name,
 			                     ChatColor.YELLOW.toString() + "" + if (gamer.isCombatTagged()) "Sim" else "Não",
-			                     ChatColor.YELLOW.toString() + "" + GamerRegistry.onlineGamers().size)
+			                     ChatColor.YELLOW.toString() + "" + GamerRegistry.onlineGamers().filter { it.mode != EnumMode.ADMIN }.size)
 
 			for (i in LABELS_OLD.indices) {
-				if (!gamer.kit.isBroadcast) continue
+				if (i == 7 && !gamer.kit.isBroadcast) continue
 
 				val score = objective.getScore(LABELS_OLD[i] + values[i])
 

@@ -7,7 +7,7 @@ import org.bukkit.event.weather.WeatherChangeEvent
 
 object WeatherChangeListener: Listener {
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler
 	fun onWeatherChange(event: WeatherChangeEvent) {
 		event.isCancelled = true
 	}

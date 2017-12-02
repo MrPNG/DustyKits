@@ -27,11 +27,11 @@ object ShopMenu {
 	val ARMOR = HashMap<ItemStack, Int>()
 
 	init {
-		ARMOR.put(ItemStack(Material.CHAINMAIL_CHESTPLATE), 3000)
-		ARMOR.put(ItemStack(Material.CHAINMAIL_LEGGINGS), 4500)
-		ARMOR.put(ItemStack(Material.IRON_CHESTPLATE), 6000)
-		ARMOR.put(ItemStack(Material.IRON_BOOTS), 3000)
-		ARMOR.put(ItemStack(Material.DIAMOND_HELMET), 6000)
+		ARMOR.put(ItemStack(Material.CHAINMAIL_CHESTPLATE).setDescription("Preço: " + 3000 + " créditos"), 3000)
+		ARMOR.put(ItemStack(Material.CHAINMAIL_LEGGINGS).setDescription("Preço: " + 4500 + " créditos"), 4500)
+		ARMOR.put(ItemStack(Material.IRON_CHESTPLATE).setDescription("Preço: " + 6000 + " créditos"), 6000)
+		ARMOR.put(ItemStack(Material.IRON_BOOTS).setDescription("Preço: " + 3000 + " créditos"), 3000)
+		ARMOR.put(ItemStack(Material.DIAMOND_HELMET).setDescription("Preço: " + 6000 + " créditos"), 6000)
 	}
 
 	fun menuShopMain(player: Player): Inventory {

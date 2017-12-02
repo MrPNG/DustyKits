@@ -43,7 +43,7 @@ object Worlds {
 		world.livingEntities.filter { it is Player }.forEach {
 			val gamer = (it as Player).gamer()
 
-			if (gamer.isCombatTagged()) gamer.removeCombatTag()
+			if (gamer.isCombatTagged()) gamer.removeCombatTag(false)
 
 			gamer.sendToWarp(Warps.LOBBY, false)
 		}

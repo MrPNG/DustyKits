@@ -4,6 +4,7 @@ import br.com.dusty.dkits.gamer.EnumRank
 import br.com.dusty.dkits.gamer.GamerRegistry
 import br.com.dusty.dkits.util.Scoreboards
 import br.com.dusty.dkits.util.Tasks
+import br.com.dusty.dkits.util.clearFormatting
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.web.WebAPI
 import org.bukkit.Bukkit
@@ -25,12 +26,13 @@ object PlayerQuitListener: Listener {
 			if (gamer.isCombatTagged()) {
 				gamer.combatPartner?.kill(gamer)
 
-				Bukkit.broadcastMessage(Text.negativeOf(player.name).basic(" deslogou em ").negative("combate").basic("!").toString())
+				Bukkit.broadcastMessage(Text.negativeOf(player.displayName.clearFormatting()).basic(" deslogou em ").negative("combate").basic("!").toString())
 			}
 
-			Tasks.async(Runnable { WebAPI.saveProfiles(gamer) })
+			//TODO: Reactivate Web API
+//			Tasks.async(Runnable { WebAPI.saveProfiles(gamer) })
 
-			if (gamer.rank.isLowerThan(EnumRank.MOD)) event.quitMessage = QUIT_MESSAGE_PREFIX + player.name
+			if (gamer.rank.isLowerThan(EnumRank.MOD)) event.quitMessage = QUIT_MESSAGE_PREFIX + player.displayName
 			else event.quitMessage = null
 		}
 

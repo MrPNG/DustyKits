@@ -7,7 +7,7 @@ import org.bukkit.event.block.LeavesDecayEvent
 
 object LeavesDecayListener: Listener {
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler
 	fun onLeavesDecay(event: LeavesDecayEvent) {
 		event.isCancelled = true
 	}

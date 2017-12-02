@@ -37,7 +37,7 @@ object PlayerJoinListener: Listener {
 			if (protocolVersion.isLowerThan(EnumProtocolVersion.RELEASE_1_8)) BossBars.MAIN.send(player)
 			//TODO: Titles/subtitles for 1.8+ players
 
-			if (gamer.rank.isLowerThan(EnumRank.MOD)) event.joinMessage = JOIN_MESSAGE_PREFIX + player.name
+			if (gamer.rank.isLowerThan(EnumRank.MOD)) event.joinMessage = JOIN_MESSAGE_PREFIX + player.displayName
 			else event.joinMessage = null
 
 			Tags.applyTag(gamer)

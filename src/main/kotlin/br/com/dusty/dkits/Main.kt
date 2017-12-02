@@ -5,6 +5,8 @@ import br.com.dusty.dkits.command.Commands
 import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.listener.Listeners
 import br.com.dusty.dkits.warp.Warps
+import com.comphenix.protocol.ProtocolLibrary
+import com.comphenix.protocol.ProtocolManager
 import com.google.gson.Gson
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
@@ -41,6 +43,8 @@ class Main: JavaPlugin() {
 		lateinit var INSTANCE: Main
 
 		//TODO: public static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+
+		val PROTOCOL_MANAGER = ProtocolLibrary.getProtocolManager()
 
 		val RANDOM = Random()
 		val GSON = Gson()

@@ -7,7 +7,7 @@ import org.bukkit.event.entity.FoodLevelChangeEvent
 
 object FoodLevelChangeListener: Listener {
 
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler
 	fun onFoodLevelChange(event: FoodLevelChangeEvent) {
 		event.isCancelled = true
 	}

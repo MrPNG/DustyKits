@@ -31,7 +31,7 @@ object SignChangeListener: Listener {
 	                              Text.positiveOf("+").toString(),
 	                              Text.of("=-=-=-=-=-=-=-=-=-=-=-=-=-=").color(TextColor.RED).toString())
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler
 	fun onSignChange(event: SignChangeEvent) {
 		val player = event.player
 

@@ -1,6 +1,5 @@
 package br.com.dusty.dkits.listener.mechanics
 
-import br.com.dusty.dkits.gamer.gamer
 import br.com.dusty.dkits.util.Tasks
 import org.bukkit.GameMode
 import org.bukkit.Material
@@ -13,7 +12,7 @@ object PlayerDropItemListener: Listener {
 
 	val ALLOWED_DROPS = arrayOf(Material.RED_MUSHROOM, Material.BROWN_MUSHROOM, Material.BOWL, Material.MUSHROOM_SOUP)
 
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler
 	fun onPlayerDropItem(event: PlayerDropItemEvent) {
 		val player = event.player
 

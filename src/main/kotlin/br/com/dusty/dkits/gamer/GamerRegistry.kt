@@ -36,11 +36,5 @@ object GamerRegistry {
 		return primitiveGamer
 	}
 
-	fun tempPrimitiveGamer(uuid: UUID): PrimitiveGamer {
-		val primitiveGamer = PrimitiveGamer(uuid.toString())
-
-		PRIMITIVE_GAMER_BY_UUID.put(uuid, primitiveGamer)
-
-		return primitiveGamer
-	}
+	fun tempPrimitiveGamer(uuid: UUID): PrimitiveGamer = primitiveGamerFromJson("null", uuid)!!
 }

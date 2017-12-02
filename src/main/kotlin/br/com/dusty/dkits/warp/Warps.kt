@@ -13,6 +13,7 @@ object Warps {
 	val FPS = FpsWarp
 	val LAVA_CHALLENGE = LavaChallengeWarp
 	val LOBBY = LobbyWarp
+	val VOLCANO = VolcanoWarp
 
 	val WARPS = ArrayList<Warp>()
 
@@ -26,14 +27,15 @@ object Warps {
 		WARPS.add(FPS)
 		WARPS.add(LAVA_CHALLENGE)
 		WARPS.add(LOBBY)
+		WARPS.add(VOLCANO)
 
-		enabledWarpsNames = Warps.WARPS.filter { it.data.isEnabled }.map { it.name.toLowerCase() }.toTypedArray()
+		enabledWarpsNames = Warps.WARPS.filter { it.data.isEnabled }.map { it.name.toLowerCase().replace(" ", "") }.toTypedArray()
 
 		val pluginManager = Bukkit.getPluginManager()
 		WARPS.forEach { warp -> pluginManager.registerEvents(warp, Main.INSTANCE) }
 	}
 
-	operator fun get(name: String): Warp = WARPS.firstOrNull { it.name.toLowerCase() == name.toLowerCase() } ?: NONE
+	operator fun get(name: String): Warp = WARPS.firstOrNull { it.name.toLowerCase().replace(" ", "") == name.toLowerCase() } ?: NONE
 
 	operator fun get(icon: ItemStack): Warp = WARPS.firstOrNull { it.icon == icon } ?: NONE
 }

@@ -17,20 +17,25 @@ import kotlin.Comparator
 fun String.fancySplit(max: Int): ArrayList<String> {
 	val arrayList = ArrayList<String>()
 
-	val fragments = this.clearFormatting().split(" ")
-	var i = 0
-	while (i < fragments.size) {
-		val fragment = StringBuilder()
-		fragment.append(fragments[i])
+	if(length > max){
+		val fragments = this.clearFormatting().split(" ")
 
-		while (i + 1 < fragments.size && fragment.length + 1 + fragments[i + 1].length <= max) {
-			fragment.append(" ")
-			fragment.append(fragments[i + 1])
+		var i = 0
+		while (i < fragments.size) {
+			val fragment = StringBuilder()
+			fragment.append(fragments[i])
+
+			while (i + 1 < fragments.size && fragment.length + 1 + fragments[i + 1].length <= max) {
+				fragment.append(" ")
+				fragment.append(fragments[i + 1])
+				i++
+			}
+
+			arrayList.add(fragment.toString())
 			i++
 		}
-
-		arrayList.add(fragment.toString())
-		i++
+	}else{
+		arrayList.add(this)
 	}
 
 	return arrayList

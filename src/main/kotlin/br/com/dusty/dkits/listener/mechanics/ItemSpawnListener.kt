@@ -8,7 +8,7 @@ import org.bukkit.event.entity.ItemSpawnEvent
 
 object ItemSpawnListener: Listener {
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler
 	fun onItemSpawn(event: ItemSpawnEvent) {
 		val item = event.entity
 
