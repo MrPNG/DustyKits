@@ -13,7 +13,7 @@ object StopCommand: CustomCommand(EnumRank.ADMIN, "stop") {
 
 	override fun execute(sender: CommandSender, alias: String, args: Array<String>): Boolean {
 		if (testPermission(sender)) {
-			val gamers = GamerRegistry.onlineGamers()
+			val gamers = GamerRegistry.onlineGamers().toTypedArray()
 
 			gamers.forEach { gamer -> gamer.player.kickPlayer(KICK_SHUTDOWN) }
 

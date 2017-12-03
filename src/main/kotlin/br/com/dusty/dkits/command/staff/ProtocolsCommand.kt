@@ -8,7 +8,7 @@ import br.com.dusty.dkits.util.text.Text
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
-object ProtocolCommand: PlayerCustomCommand(EnumRank.ADMIN, "protocol") {
+object ProtocolsCommand: PlayerCustomCommand(EnumRank.ADMIN, "protocols") {
 
 	override fun execute(sender: Player, alias: String, args: Array<String>): Boolean {
 		if (args.isEmpty()) {
@@ -20,7 +20,7 @@ object ProtocolCommand: PlayerCustomCommand(EnumRank.ADMIN, "protocol") {
 
 				text = text.basic((if (first) {
 					first = false
-					"Protocol: "
+					"Protocols: "
 				} else {
 					", "
 				}) + it.player.name + " (" + (if (protocolVersion.min == protocolVersion.max) protocolVersion.min else "" + protocolVersion.min + "-" + protocolVersion.max) + ": ").append(

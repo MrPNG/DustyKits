@@ -18,7 +18,8 @@ import org.bukkit.event.player.PlayerInteractEvent
 
 object PlayerInteractListener: Listener {
 
-	val ALLOWED_ITEMS = arrayOf(WOOD_SWORD, STONE_SWORD, IRON_SWORD, DIAMOND_SWORD, SHIELD)
+	val ALLOWED_ITEMS = arrayOf(WOOD_SWORD, STONE_SWORD, IRON_SWORD, DIAMOND_SWORD)
+	val ALLOWED_BLOCKS = arrayOf(ACACIA_DOOR, BIRCH_DOOR, DARK_OAK_DOOR, JUNGLE_DOOR, SPRUCE_DOOR, WOOD_DOOR, WOOD_BUTTON, STONE_BUTTON, TRAP_DOOR)
 
 	@EventHandler
 	fun onPlayerInteract(event: PlayerInteractEvent) {
@@ -28,6 +29,8 @@ object PlayerInteractListener: Listener {
 
 		if (event.action == Action.RIGHT_CLICK_BLOCK) {
 			val block = event.clickedBlock
+
+			if (block.type in ALLOWED_BLOCKS) event.isCancelled = false
 
 			when (block.type) {
 				WALL_SIGN, SIGN_POST -> {

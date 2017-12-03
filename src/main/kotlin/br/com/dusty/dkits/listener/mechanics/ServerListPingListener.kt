@@ -13,7 +13,7 @@ object ServerListPingListener: Listener {
 
 	@EventHandler
 	fun onServerListPing(event: ServerListPingEvent) {
-		while (event.iterator().hasNext()) if (event.iterator().next().gamer().mode == EnumMode.ADMIN) event.iterator().remove()
+		event.removeAll { event.iterator().next().gamer().mode == EnumMode.ADMIN }
 		event.maxPlayers = Main.MAX_PLAYERS
 
 		when (Main.serverStatus) {
