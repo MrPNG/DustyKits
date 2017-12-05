@@ -7,6 +7,8 @@ import br.com.dusty.dkits.gamer.gamer
 import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.util.*
+import br.com.dusty.dkits.util.cosmetic.Colors
+import br.com.dusty.dkits.util.entity.spawnFirework
 import br.com.dusty.dkits.util.inventory.*
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
@@ -110,11 +112,11 @@ object FeastWarp: Warp() {
 			field = location
 
 			if (data is FeastData) {
-				val data = (data as FeastData)
-
-				data.enchantmentTable[0] = location.x.toFloat()
-				data.enchantmentTable[1] = location.y.toFloat()
-				data.enchantmentTable[2] = location.z.toFloat()
+				(data as FeastData).run {
+					enchantmentTable[0] = location.x.toFloat()
+					enchantmentTable[1] = location.y.toFloat()
+					enchantmentTable[2] = location.z.toFloat()
+				}
 			}
 
 			saveData()
@@ -137,14 +139,14 @@ object FeastWarp: Warp() {
 
 		loadData()
 
-		CHEST_LOCATIONS = CHEST_POSITIONS.map { enchantmentTable.clone().add(it[0], it[1], it[2]) }
-
 		Tasks.sync(Runnable {
 			fillChests()
 			GamerRegistry.onlineGamers().filter { it.warp == this }.forEach {
 				it.player.sendMessage(CHEST_REFIL_MESSAGE)
 			}
 		}, 0L, 1200L)
+
+		CHEST_LOCATIONS = CHEST_POSITIONS.map { enchantmentTable.clone().add(it[0], it[1], it[2]) }
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -189,7 +191,7 @@ object FeastWarp: Warp() {
 			val items = ArrayList<ItemStack?>(27)
 
 			CHEST_ITEMS.forEach {
-				for (i in 1 .. (it[1] as Int)) if (Maths.probability(it[2] as Double)) {
+				for (i in 1 .. (it[1] as Int)) if ((it[2] as Double).chances()) {
 					val itemStack = (it[0] as ItemStack)
 					itemStack.amount = Main.RANDOM.nextInt(it[3] as Int) + 1
 
@@ -201,9 +203,10 @@ object FeastWarp: Warp() {
 
 			Collections.shuffle(items, Main.RANDOM)
 
-			val inventory = (it.block.state as Chest).blockInventory
-			inventory.clear()
-			inventory.addItemStacks(items.toTypedArray())
+			(it.block.state as Chest).blockInventory.run {
+				clear()
+				addItemStacks(items.toTypedArray())
+			}
 
 			it.spawnFirework(1, FireworkEffect.builder().withColor(Colors.random()).with(FireworkEffect.Type.BALL).build())
 		}
@@ -211,16 +214,15 @@ object FeastWarp: Warp() {
 
 	override fun applyKit(gamer: Gamer, kit: Kit) {
 		gamer.clear()
+		gamer.player.run {
+			inventory.addItemStacks(kit.items)
 
-		val player = gamer.player
-
-		player.inventory.addItemStacks(kit.items)
-
-		if (!kit.isDummy) {
-			player.inventory.setItem(0, if (kit == Kits.PVP) Inventories.DIAMOND_SWORD_SHARPNESS else Inventories.DIAMOND_SWORD)
-			player.fillRecraft()
-			player.fillSoups()
-			player.setArmor(Inventories.ARMOR_FULL_IRON)
+			if (!kit.isDummy) {
+				inventory.setItem(0, if (kit == Kits.PVP) Inventories.DIAMOND_SWORD_SHARPNESS else Inventories.DIAMOND_SWORD)
+				fillRecraft()
+				fillSoups()
+				setArmor(Inventories.ARMOR_FULL_IRON)
+			}
 		}
 	}
 

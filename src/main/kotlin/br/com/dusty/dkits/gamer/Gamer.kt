@@ -1,19 +1,19 @@
 package br.com.dusty.dkits.gamer
 
+import br.com.dusty.dkits.clan.Clan
 import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.util.Scoreboards
 import br.com.dusty.dkits.util.Tasks
 import br.com.dusty.dkits.util.protocol.EnumProtocolVersion
-import br.com.dusty.dkits.util.tab.HeaderFooters
+import br.com.dusty.dkits.util.protocol.HeaderFooters
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.warp.Warp
 import br.com.dusty.dkits.warp.Warps
 import org.bukkit.GameMode
+import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.scheduler.BukkitTask
-
-fun Player.gamer() = Gamer[this]
 
 class Gamer internal constructor(val player: Player, val primitiveGamer: PrimitiveGamer) {
 
@@ -38,8 +38,12 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 
 			field = visibleTo
 
-			for (gamer in GamerRegistry.onlineGamers()) if (gamer.rank.isLowerThan(rank)) gamer.player.hidePlayer(player)
-			else gamer.player.showPlayer(player)
+			for (gamer in GamerRegistry.onlineGamers()) {
+				val player = gamer.player
+
+				if (gamer.rank.isLowerThan(rank)) player.hidePlayer(player)
+				else player.showPlayer(player)
+			}
 
 			if (rank.isHigherThanOrEquals(EnumRank.MOD)) {
 				var text = Text.neutralPrefix().basic("Agora você está ").neutral("visível").basic(" apenas para ").append(visibleTo.toString())
@@ -89,6 +93,8 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 
 			Scoreboards.update()
 		}
+
+	var clan: Clan? = null
 
 	var chat = EnumChat.NORMAL
 
@@ -152,6 +158,8 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 	fun addKillStreak() {
 		primitiveGamer.killStreak++
 
+		if (killStreak > maxKillStreak) maxKillStreak = killStreak
+
 		updateScoreboard()
 	}
 
@@ -180,7 +188,7 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 	fun removeXp(amount: Double) {
 		primitiveGamer.xp -= Math.abs(amount)
 
-		if(primitiveGamer.xp < 0) primitiveGamer.xp = 0.0
+		if (primitiveGamer.xp < 0) primitiveGamer.xp = 0.0
 
 		player.sendMessage(Text.negativeOf("-").negative(Math.round(amount).toInt()).basic(" XP!").toString())
 		updateScoreboard()
@@ -192,7 +200,7 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 	fun addMoney(amount: Double) {
 		primitiveGamer.money += Math.abs(amount)
 
-		if(primitiveGamer.money < 0) primitiveGamer.money = 0.0
+		if (primitiveGamer.money < 0) primitiveGamer.money = 0.0
 
 		player.sendMessage(Text.positiveOf("+").positive(Math.round(amount).toInt()).basic(" créditos!").toString())
 		updateScoreboard()
@@ -206,7 +214,10 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 	}
 
 	fun kill(gamer: Gamer) {
-		player.sendMessage(Text.positivePrefix().basic("Você ").positive("matou").basic(" o jogador ").positive(gamer.player.displayName).basic("!").toString())
+		val killer = gamer.player
+
+		player.playSound(player.location, Sound.ENTITY_BAT_HURT, 10F, 1F)
+		player.sendMessage(Text.positivePrefix().basic("Você ").positive("matou").basic(" o jogador ").positive(killer.displayName).basic("!").toString())
 
 		addKill()
 		addWarpKill()
@@ -214,7 +225,8 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 		addKillMoney()
 		addKillXp()
 
-		gamer.player.sendMessage(Text.negativePrefix().basic("Você ").negative("foi morto").basic(" pelo jogador ").negative(player.displayName).basic("!").toString())
+		killer.playSound(killer.location, Sound.ENTITY_BAT_HURT, 10F, 1F)
+		killer.sendMessage(Text.negativePrefix().basic("Você ").negative("foi morto").basic(" pelo jogador ").negative(player.displayName).basic("!").toString())
 
 		gamer.addDeath()
 		gamer.resetKillStreak()
@@ -272,8 +284,6 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 			field = System.currentTimeMillis() + period
 		}
 
-	fun readableKitCooldown() = Math.round(((kitCooldown - System.currentTimeMillis()) / 1000).toFloat())
-
 	fun isOnKitCooldown() = kitCooldown > System.currentTimeMillis()
 
 	fun removeKitCooldown() {
@@ -284,8 +294,6 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 		set(period) {
 			field = System.currentTimeMillis() + period
 		}
-
-	fun readableSignCooldown() = Math.round(((signCooldown - System.currentTimeMillis()) / 1000).toFloat())
 
 	fun isOnSignCooldown() = signCooldown > System.currentTimeMillis()
 
@@ -313,8 +321,6 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 			updateScoreboard()
 		}
 
-	fun readableCombatTag() = Math.round(((combatTag - System.currentTimeMillis()) / 1000).toFloat())
-
 	fun isCombatTagged() = combatTag > System.currentTimeMillis()
 
 	fun removeCombatTag(announce: Boolean) {
@@ -324,7 +330,7 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 	}
 
 	var chatPartner: Gamer? = null
-	var chatSpies: ArrayList<Player> = arrayListOf()
+	var chatSpies = arrayListOf<Player>()
 
 	var isNoFall: Boolean = false
 
@@ -349,29 +355,27 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 	var warp: Warp = Warps.LOBBY
 	var warpTask: BukkitTask? = null
 
-	fun sendToWarp(warp: Warp, announce: Boolean) {
+	fun sendToWarp(warp: Warp, force: Boolean, announce: Boolean) {
 		if (warpTask != null) {
 			warpTask!!.cancel()
 			warpTask = null
 		}
 
-		if (isCombatTagged()) {
-			val ticks = Math.ceil((combatTag - System.currentTimeMillis()) / 50.0).toLong()
-			val seconds = Math.round((ticks / 20).toFloat())
-
-			warpTask = Tasks.sync(Runnable { sendToWarp(warp, announce) }, ticks)
-
-			player.sendMessage(Text.neutralPrefix().basic("Você será teleportado em ").neutral(seconds).basic(" segundo(s), ").neutral("não").basic(" se ").neutral("mova").basic("!").toString())
-			//TODO: Titles/subtitles for 1.8+ players
-		} else {
-			clear()
-
+		if (force || !isCombatTagged()) {
 			this.warp = warp
 			warp.receiveGamer(this, announce)
 
 			updateScoreboard()
 
 			if (protocolVersion.isGreaterThanOrEquals(EnumProtocolVersion.RELEASE_1_8)) updateHeaderFooter()
+		} else {
+			val ticks = Math.ceil((combatTag - System.currentTimeMillis()) / 50.0).toLong()
+			val seconds = Math.round((ticks / 20).toFloat())
+
+			warpTask = Tasks.sync(Runnable { sendToWarp(warp, true, announce) }, ticks)
+
+			player.sendMessage(Text.neutralPrefix().basic("Você será teleportado em ").neutral(seconds).basic(" segundo(s), ").neutral("não").basic(" se ").neutral("mova").basic("!").toString())
+			//TODO: Titles/subtitles for 1.8+ players
 		}
 	}
 
@@ -385,6 +389,7 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 
 		player.activePotionEffects.forEach { player.removePotionEffect(it.type) }
 
+		removeCombatTag(false)
 		removeKitCooldown()
 		removeSignCooldown()
 
@@ -396,8 +401,7 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 		player.isFlying = fly
 	}
 
-	companion object {
-
-		operator fun get(player: Player): Gamer = GamerRegistry.gamer(player)
+	override fun toString(): String {
+		return "Gamer(player=$player, rank=$rank, mode=$mode, combatTag=$combatTag, kit=$kit, warp=$warp)"
 	}
 }

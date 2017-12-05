@@ -2,7 +2,6 @@ package br.com.dusty.dkits.util
 
 import br.com.dusty.dkits.Main
 
-object Maths {
+fun Long.millisToSeconds() = Math.round((this - System.currentTimeMillis()) / 1000.0)
 
-	fun probability(chances: Double) = Main.RANDOM.nextFloat() < chances
-}
+fun Double.chances() = Main.RANDOM.nextFloat() < this

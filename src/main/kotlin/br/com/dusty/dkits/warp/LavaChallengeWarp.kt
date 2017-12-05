@@ -2,7 +2,6 @@ package br.com.dusty.dkits.warp
 
 import br.com.dusty.dkits.gamer.Gamer
 import br.com.dusty.dkits.kit.Kit
-import br.com.dusty.dkits.util.inventory.Inventories
 import br.com.dusty.dkits.util.inventory.fillRecraft
 import br.com.dusty.dkits.util.inventory.fillSoups
 import br.com.dusty.dkits.util.rename
@@ -28,11 +27,10 @@ object LavaChallengeWarp: Warp() {
 
 	override fun applyKit(gamer: Gamer, kit: Kit) {
 		gamer.clear()
-
-		val player = gamer.player
-
-		player.fillRecraft()
-		player.fillSoups()
+		gamer.player.run {
+			fillRecraft()
+			fillSoups()
+		}
 	}
 
 	object LavaChallengeKit: Kit() {

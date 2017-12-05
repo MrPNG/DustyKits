@@ -11,7 +11,7 @@ object Commands {
 	/**
 	 * [ArrayList] que contém todos os [CustomCommand] a serem/já registrados pelo plugin.
 	 */
-	private val CUSTOM_COMMANDS = ArrayList<CustomCommand>()
+	private val CUSTOM_COMMANDS = arrayListOf<CustomCommand>()
 
 	/**
 	 * Registra todos os [CustomCommand] da [ArrayList] CUSTOM_COMMANDS.
@@ -26,10 +26,11 @@ object Commands {
 		CUSTOM_COMMANDS.add(EnableCommand)
 		CUSTOM_COMMANDS.add(FlyCommand)
 		CUSTOM_COMMANDS.add(ForceCommand)
+		CUSTOM_COMMANDS.add(GamerCommand)
 		CUSTOM_COMMANDS.add(InvSeeCommand)
 		CUSTOM_COMMANDS.add(IpCheckCommand)
 		CUSTOM_COMMANDS.add(LocationCommand)
-		CUSTOM_COMMANDS.add(ProtocolsCommand)
+		CUSTOM_COMMANDS.add(ProtocolCommand)
 		CUSTOM_COMMANDS.add(RamCommand)
 		CUSTOM_COMMANDS.add(SpyCommand)
 		CUSTOM_COMMANDS.add(SyncCommand)

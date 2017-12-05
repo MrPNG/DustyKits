@@ -5,12 +5,12 @@ import br.com.dusty.dkits.ability.Ability
 import br.com.dusty.dkits.gamer.EnumMode
 import br.com.dusty.dkits.gamer.Gamer
 import br.com.dusty.dkits.util.Tasks
-import br.com.dusty.dkits.util.inventory.addItemStacks
-import br.com.dusty.dkits.util.inventory.setArmor
 import br.com.dusty.dkits.util.text.Text
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
-import java.io.*
+import java.io.File
+import java.io.FileReader
+import java.io.PrintWriter
 
 open class Kit {
 
@@ -73,11 +73,7 @@ open class Kit {
 		val dir = File(Main.CONFIG_DIR, "kit")
 		val file = File(dir, name.toLowerCase() + ".json")
 
-		if (file.exists()) try {
-			data = Main.GSON.fromJson(FileReader(file), Kit.Data::class.java)
-		} catch (e: FileNotFoundException) {
-			e.printStackTrace()
-		}
+		if (file.exists()) data = Main.GSON.fromJson(FileReader(file), Kit.Data::class.java)
 		else saveData()
 	}
 
@@ -85,19 +81,14 @@ open class Kit {
 		val dir = File(Main.CONFIG_DIR, "kit")
 		val file = File(dir, name.toLowerCase() + ".json")
 
-		var printWriter: PrintWriter? = null
+		dir.mkdirs()
+		file.createNewFile()
 
-		try {
-			dir.mkdirs()
-			file.createNewFile()
+		PrintWriter(file).use { println(Main.GSON.toJson(data)) }
+	}
 
-			printWriter = PrintWriter(file)
-			printWriter.println(Main.GSON.toJson(data))
-		} catch (e: IOException) {
-			e.printStackTrace()
-		} finally {
-			if (printWriter != null) printWriter.close()
-		}
+	override fun toString(): String {
+		return "Kit(name='$name')"
 	}
 
 	data class Data(var price: Int = -1, var isEnabled: Boolean = false)

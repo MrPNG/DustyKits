@@ -4,6 +4,8 @@ import br.com.dusty.dkits.Main
 import org.bukkit.entity.Player
 import java.util.*
 
+fun Player.gamer() = GamerRegistry.gamer(this)
+
 object GamerRegistry {
 
 	val PRIMITIVE_GAMER_BY_UUID = HashMap<UUID, PrimitiveGamer>()

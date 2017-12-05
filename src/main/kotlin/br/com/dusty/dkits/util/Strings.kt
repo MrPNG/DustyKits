@@ -4,8 +4,7 @@ import br.com.dusty.dkits.Main
 import org.bukkit.ChatColor
 import org.joda.time.Period
 import org.joda.time.format.PeriodFormatterBuilder
-import java.util.ArrayList
-import kotlin.Comparator
+import java.util.*
 
 /**
  * Divide uma [String] em outras (não-formatadas) de tamanho máximo 'max', inserindo-as, em ordem, em uma [ArrayList].
@@ -15,9 +14,9 @@ import kotlin.Comparator
  * @return
  */
 fun String.fancySplit(max: Int): ArrayList<String> {
-	val arrayList = ArrayList<String>()
+	val arrayList = arrayListOf<String>()
 
-	if(length > max){
+	if (length > max) {
 		val fragments = this.clearFormatting().split(" ")
 
 		var i = 0
@@ -34,7 +33,7 @@ fun String.fancySplit(max: Int): ArrayList<String> {
 			arrayList.add(fragment.toString())
 			i++
 		}
-	}else{
+	} else {
 		arrayList.add(this)
 	}
 
@@ -42,21 +41,19 @@ fun String.fancySplit(max: Int): ArrayList<String> {
 }
 
 /**
- * Formata uma [Collection] de [String] por extenso, separadas por vírgulas.
+ * Formata uma [Collection] de [String] por extenso, separando-a por vírgulas.
  *
  * @param collection
  * @return
  */
 fun Collection<String>.format(): String {
-	val stringBuilder = StringBuilder()
-
 	val iterator = this.iterator()
 
-	if (iterator.hasNext()) stringBuilder.append(iterator.next())
+	return buildString {
+		if (iterator.hasNext()) append(iterator.next())
 
-	while (iterator.hasNext()) stringBuilder.append(", ").append(iterator.next())
-
-	return stringBuilder.toString()
+		while (iterator.hasNext()) append(", ").append(iterator.next())
+	}
 }
 
 /**
@@ -81,13 +78,7 @@ fun Long.periodString(): String {
  * @param arrayList
  * @return
  */
-fun ArrayList<String>.sortOut(start: String): ArrayList<String> {
-	this.filterNot { it.startsWith(start, true) }.forEach { this.remove(it) }
-
-	this.sortWith(Comparator { obj, str -> obj.compareTo(str, ignoreCase = true) })
-
-	return this
-}
+fun ArrayList<String>.sortOut(start: String): ArrayList<String> = filter { it.startsWith(start, true) }.sorted() as ArrayList<String>
 
 /**
  * Remove qualquer formatação de uma [String], se houver.
@@ -99,7 +90,7 @@ fun String.clearFormatting(): String = ChatColor.stripColor(this)
 
 object Strings {
 
-	private val ALPHANUMERIC = "ABCDEFGHIKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".toCharArray()
+	val ALPHANUMERIC = "ABCDEFGHIKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".toCharArray()
 
 	/**
 	 * Gera uma [String] alfanumérica aleatória com diferenciação entre maiúsculas e minúsculas.
@@ -107,14 +98,5 @@ object Strings {
 	 * @param length
 	 * @return
 	 */
-	fun randomString(length: Int): String {
-		val stringBuilder = StringBuilder(length)
-
-		for (i in 0 until length) {
-			val index = Main.RANDOM.nextInt(ALPHANUMERIC.size)
-			stringBuilder.append(ALPHANUMERIC[index])
-		}
-
-		return stringBuilder.toString()
-	}
+	fun randomString(length: Int): String = buildString { for (i in 0 until length) append(ALPHANUMERIC[Main.RANDOM.nextInt(ALPHANUMERIC.size)]) }
 }

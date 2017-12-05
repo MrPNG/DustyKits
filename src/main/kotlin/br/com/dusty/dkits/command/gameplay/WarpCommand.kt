@@ -24,18 +24,18 @@ object WarpCommand: PlayerCustomCommand(EnumRank.DEFAULT, "warp", "spawn", *Warp
 
 					if (warp == Warps.NONE || (!warp.data.isEnabled && gamer.mode != EnumMode.ADMIN)) sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há uma warp com o nome \"").negative(
 							args[0]).basic("\"!").toString())
-					else gamer.sendToWarp(warp, true)
+					else gamer.sendToWarp(warp, false, true)
 				}
 			}
 			"spawn" -> {
-				gamer.sendToWarp(gamer.warp, false)
+				gamer.sendToWarp(gamer.warp, false, false)
 			}
 			else    -> {
 				val warp = Warps[alias]
 
 				if (warp == Warps.NONE || (!warp.data.isEnabled && gamer.mode != EnumMode.ADMIN)) sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há uma warp com o nome \"").negative(
 						args[0]).basic("\"!").toString())
-				else gamer.sendToWarp(warp, true)
+				else gamer.sendToWarp(warp, false, true)
 			}
 		}
 

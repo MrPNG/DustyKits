@@ -21,11 +21,12 @@ enum class EnumRank {
 	YOUTUBER(6, TextColor.AQUA, TextStyle.ITALIC),
 	MOD(8, TextColor.DARK_PURPLE),
 	MODPLUS(9, TextColor.DARK_PURPLE, TextStyle.ITALIC),
-	ADMIN(Integer.MAX_VALUE, TextColor.RED, TextStyle.ITALIC);
+	ADMIN(Integer.MAX_VALUE, TextColor.RED, TextStyle.ITALIC),
+	OWNER(Integer.MAX_VALUE, TextColor.DARK_RED, TextStyle.ITALIC);
 
 	var level: Int = 0
 	var color = TextColor.WHITE
-	var styles: Array<TextStyle> = arrayOf()
+	var styles = arrayOf<TextStyle>()
 	var string = ""
 
 	constructor(level: Int) {
@@ -47,47 +48,35 @@ enum class EnumRank {
 	}
 
 	/**
-	 * Retorna **true** se este [EnumRank] está hierarquicamente **acima** do parâmetro 'rank'.
-	 *
 	 * @param rank
 	 * @return **true** se este [EnumRank] está hierarquicamente **acima** do parâmetro 'rank'.
 	 */
 	fun isHigherThan(rank: EnumRank): Boolean = level > rank.level
 
 	/**
-	 * Retorna **true** se este [EnumRank] não está hierarquicamente **abaixo** do parâmetro 'rank'.
-	 *
 	 * @param rank
 	 * @return **true** se este [EnumRank] não está hierarquicamente **abaixo** do parâmetro 'rank'.
 	 */
 	fun isHigherThanOrEquals(rank: EnumRank): Boolean = level >= rank.level
 
 	/**
-	 * Retorna **true** se este [EnumRank] está hierarquicamente **abaixo** do parâmetro 'rank'.
-	 *
 	 * @param rank
 	 * @return **true** se este [EnumRank] está hierarquicamente **abaixo** do parâmetro 'rank'.
 	 */
 	fun isLowerThan(rank: EnumRank): Boolean = level < rank.level
 
 	/**
-	 * Retorna **true** se este [EnumRank] não está hierarquicamente **acima** do parâmetro 'rank'.
-	 *
 	 * @param rank
 	 * @return **true** se este [EnumRank] não está hierarquicamente **acima** do parâmetro 'rank'.
 	 */
 	fun isLowerThanOrEquals(rank: EnumRank): Boolean = level <= rank.level
 
 	/**
-	 * Retorna **true** se este [EnumRank] não é o **maior**.
-	 *
 	 * @return **true** se este [EnumRank] não é o **maior**.
 	 */
-	fun hasNext(): Boolean = level < ADMIN.level
+	fun hasNext(): Boolean = level < Integer.MAX_VALUE
 
 	/**
-	 * Retorna o [EnumRank] imediatamente **acima** deste na hirarquia.
-	 *
 	 * @return [EnumRank] imediatamente **acima** deste na hirarquia, 'null' se este for o mais alto.
 	 */
 	fun next(): EnumRank {
@@ -103,15 +92,11 @@ enum class EnumRank {
 	}
 
 	/**
-	 * Retorna **true** se este [EnumRank] não é o **menor**.
-	 *
 	 * @return **true** se este [EnumRank] não é o **menor**.
 	 */
-	fun hasPrev(): Boolean = level > DEFAULT.level
+	fun hasPrev(): Boolean = level > 0
 
 	/**
-	 * Retorna o [EnumRank] imediatamente **abaixo** deste na hirarquia.
-	 *
 	 * @return [EnumRank] imediatamente **abaixo** deste na hirarquia, 'null' se este for o mais baixo.
 	 */
 	fun prev(): EnumRank {
@@ -139,8 +124,6 @@ enum class EnumRank {
 		}
 
 		/**
-		 * Retorna o [EnumRank] definido por um valor númerico 'int'.
-		 *
 		 * @param level
 		 * @return [EnumRank] definido por um valor númerico 'int', [NONE] se não houver um valor númerico 'int'
 		 * associado a nenhum [EnumRank].
@@ -148,8 +131,6 @@ enum class EnumRank {
 		operator fun get(level: Int) = BY_LEVEL.getOrDefault(level, NONE)
 
 		/**
-		 * Retorna o [EnumRank] definido pelo seu nome.
-		 *
 		 * @param name
 		 * @return [EnumRank] definido pelo seu nome, [NONE] se não houver nenhum com tal nome
 		 * associado a nenhum [EnumRank].

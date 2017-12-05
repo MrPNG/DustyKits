@@ -41,8 +41,7 @@ object ForceCommand: PlayerCustomCommand(EnumRank.MODPLUS, "force") {
 						else               -> {
 							val gamer = player.gamer()
 
-							gamer.removeCombatTag(false)
-							gamer.sendToWarp(warp, false)
+							gamer.sendToWarp(warp, true, false)
 
 							sender.sendMessage(Text.positivePrefix().basic("Você ").positive("enviou").basic(" o jogador ").positive(player.name).basic(" para a warp ").positive(warp.name).basic(
 									"!").toString())

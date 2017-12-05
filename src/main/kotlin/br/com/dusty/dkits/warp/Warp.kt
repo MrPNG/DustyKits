@@ -103,25 +103,26 @@ open class Warp: Listener {
 
 	open fun applyKit(gamer: Gamer, kit: Kit) {
 		gamer.clear()
+		gamer.player.run {
+			inventory.setItem(0, kit.weapon)
+			inventory.addItemStacks(kit.items)
+			setArmor(kit.armor)
 
-		val player = gamer.player
-
-		player.inventory.setItem(0, kit.weapon)
-		player.inventory.addItemStacks(kit.items)
-		player.setArmor(kit.armor)
-
-		if(!kit.isDummy){
-			player.fillRecraft()
-			player.fillSoups()
+			if (!kit.isDummy) {
+				fillRecraft()
+				fillSoups()
+			}
 		}
 	}
 
 	fun receiveGamer(gamer: Gamer, announce: Boolean) {
-		val player = gamer.player
+		gamer.player.run {
+			teleport(spawn.spread(data.spreadRange))
 
-		player.teleport(spawn.spread(data.spreadRange))
-		if (announce) player.sendMessage(Text.positivePrefix().basic("Você foi ").positive("teleportado").basic(" para a warp ").positive(name).basic("!").toString())
-		//TODO: Titles/subtitles for 1.8+ players
+			if (announce) { //TODO: Titles/subtitles for 1.8+ players
+				sendMessage(Text.positivePrefix().basic("Você foi ").positive("teleportado").basic(" para a warp ").positive(name).basic("!").toString())
+			}
+		}
 
 		gamer.setKitAndApply(entryKit, false)
 	}
@@ -164,6 +165,10 @@ open class Warp: Listener {
 		REGEN,
 		REGEN_ON_KILL,
 		BREAK
+	}
+
+	override fun toString(): String {
+		return "Warp(name='$name')"
 	}
 
 	open class Data(var isEnabled: Boolean = false,

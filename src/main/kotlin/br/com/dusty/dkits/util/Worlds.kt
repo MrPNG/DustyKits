@@ -19,21 +19,11 @@ object Worlds {
 
 	fun load(name: String, edit: Boolean): World? = when {
 		!exists(name) -> null
-		edit          -> {
-			val world = Bukkit.createWorld(WorldCreator("worlds/" + name))
-			Bukkit.broadcastMessage("World: " + world?.name)
-
-			world
-		}
+		edit          -> Bukkit.createWorld(WorldCreator("worlds/" + name))
 		else          -> {
-			val worldDir = File(worldsDir, name)
+			FileUtils.copyDirectory(File(worldsDir, name), File(Bukkit.getWorldContainer(), name))
 
-			FileUtils.copyDirectory(worldDir, File(Bukkit.getWorldContainer(), name))
-
-			val world = Bukkit.createWorld(WorldCreator(name))
-			Bukkit.broadcastMessage("World: " + world?.name)
-
-			world
+			Bukkit.createWorld(WorldCreator(name))
 		}
 	}
 
@@ -41,20 +31,15 @@ object Worlds {
 		val world = Bukkit.getWorld(name) ?: return false
 
 		world.livingEntities.filter { it is Player }.forEach {
-			val gamer = (it as Player).gamer()
+			(it as Player).gamer().run {
+				if (isCombatTagged()) removeCombatTag(false)
 
-			if (gamer.isCombatTagged()) gamer.removeCombatTag(false)
-
-			gamer.sendToWarp(Warps.LOBBY, false)
+				sendToWarp(Warps.LOBBY, true, false)
+			}
 		}
 
-		return Bukkit.unloadWorld(world, rollback)
+		return Bukkit.unloadWorld(world, !rollback)
 	}
 
-	fun rollback(name: String) {
-		if (!isLoaded(name)) return
-
-		unload(name, false)
-		FileUtils.deleteDirectory(File(Bukkit.getWorldContainer(), name))
-	}
+	fun rollback(name: String) = unload(name, true).apply { if (this) FileUtils.deleteDirectory(File(Bukkit.getWorldContainer(), name)) }
 }

@@ -12,7 +12,6 @@ import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.warp.Warps
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
-import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryType
@@ -134,7 +133,7 @@ object InventoryClickListener: Listener {
 						else        -> {
 							player.closeInventory()
 
-							gamer.sendToWarp(Warps[itemStack], true)
+							gamer.sendToWarp(Warps[itemStack], false, true)
 						}
 					}
 				}

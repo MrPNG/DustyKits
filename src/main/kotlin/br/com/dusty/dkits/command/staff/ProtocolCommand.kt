@@ -8,7 +8,7 @@ import br.com.dusty.dkits.util.text.Text
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
-object ProtocolsCommand: PlayerCustomCommand(EnumRank.ADMIN, "protocols") {
+object ProtocolCommand: PlayerCustomCommand(EnumRank.ADMIN, "protocols") {
 
 	override fun execute(sender: Player, alias: String, args: Array<String>): Boolean {
 		if (args.isEmpty()) {
@@ -23,7 +23,7 @@ object ProtocolsCommand: PlayerCustomCommand(EnumRank.ADMIN, "protocols") {
 					"Protocols: "
 				} else {
 					", "
-				}) + it.player.name + " (" + (if (protocolVersion.min == protocolVersion.max) protocolVersion.min else "" + protocolVersion.min + "-" + protocolVersion.max) + ": ").append(
+				}) + it.player.name + " (" + (if (protocolVersion.min == protocolVersion.max) protocolVersion.min else (protocolVersion.min.toString() + "-" + protocolVersion.max)) + ": ").append(
 						protocolVersion.string).basic(")")
 			}
 
@@ -36,7 +36,7 @@ object ProtocolsCommand: PlayerCustomCommand(EnumRank.ADMIN, "protocols") {
 			} else {
 				val protocolVersion = player.gamer().protocolVersion
 
-				sender.sendMessage(Text.neutralPrefix().basic("Protocol: " + player.name + " (" + (if (protocolVersion.min == protocolVersion.max) protocolVersion.min else protocolVersion.min.toString() + "-" + protocolVersion.max) + ": ").append(
+				sender.sendMessage(Text.neutralPrefix().basic("Protocol: " + player.name + " (" + (if (protocolVersion.min == protocolVersion.max) protocolVersion.min else (protocolVersion.min.toString() + "-" + protocolVersion.max)) + ": ").append(
 						protocolVersion.string).basic(")").toString())
 			}
 		}

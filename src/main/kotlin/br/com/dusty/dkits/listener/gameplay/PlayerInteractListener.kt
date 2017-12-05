@@ -41,12 +41,10 @@ object PlayerInteractListener: Listener {
 			}
 		}
 
-		if (event.item != null) {
-			val itemStack = event.item
+		event.item?.run {
+			if (event.action == Action.RIGHT_CLICK_AIR && type in ALLOWED_ITEMS) event.isCancelled = false
 
-			if (itemStack.type in ALLOWED_ITEMS) event.isCancelled = false
-
-			when (itemStack.type) {
+			when (type) {
 				MUSHROOM_SOUP -> {
 					if (event.action == Action.RIGHT_CLICK_AIR || event.action == Action.RIGHT_CLICK_BLOCK) {
 						val maxHealth = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).value
@@ -59,9 +57,9 @@ object PlayerInteractListener: Listener {
 						}
 					}
 				}
-				CHEST         -> if (itemStack == Warp.GameWarpKit.items[0]) player.openInventory(KitMenu.menuKitOwned(player))
-				EMERALD       -> if (itemStack == Warp.GameWarpKit.items[4]) player.openInventory(ShopMenu.menuShopMain(player))
-				EMPTY_MAP     -> if (itemStack == Warp.GameWarpKit.items[8]) player.openInventory(WarpMenu.menuWarpMain(player))
+				CHEST         -> if (this == Warp.GameWarpKit.items[0]) player.openInventory(KitMenu.menuKitOwned(player))
+				EMERALD       -> if (this == Warp.GameWarpKit.items[4]) player.openInventory(ShopMenu.menuShopMain(player))
+				EMPTY_MAP     -> if (this == Warp.GameWarpKit.items[8]) player.openInventory(WarpMenu.menuWarpMain(player))
 			}
 		}
 	}

@@ -3,7 +3,6 @@ package br.com.dusty.dkits.warp
 import br.com.dusty.dkits.Main
 import org.bukkit.Bukkit
 import org.bukkit.inventory.ItemStack
-import java.util.*
 
 object Warps {
 
@@ -13,9 +12,10 @@ object Warps {
 	val FPS = FpsWarp
 	val LAVA_CHALLENGE = LavaChallengeWarp
 	val LOBBY = LobbyWarp
+	val ONE_VS_ONE = OneVsOneWarp
 	val VOLCANO = VolcanoWarp
 
-	val WARPS = ArrayList<Warp>()
+	val WARPS = arrayListOf<Warp>()
 
 	lateinit var enabledWarpsNames: Array<String>
 
@@ -27,6 +27,7 @@ object Warps {
 		WARPS.add(FPS)
 		WARPS.add(LAVA_CHALLENGE)
 		WARPS.add(LOBBY)
+		WARPS.add(ONE_VS_ONE)
 		WARPS.add(VOLCANO)
 
 		enabledWarpsNames = Warps.WARPS.filter { it.data.isEnabled }.map { it.name.toLowerCase().replace(" ", "") }.toTypedArray()

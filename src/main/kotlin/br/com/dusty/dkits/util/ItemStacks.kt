@@ -1,12 +1,12 @@
 package br.com.dusty.dkits.util
 
-import org.bukkit.Color
-import org.bukkit.DyeColor
-import org.bukkit.Material
+import org.bukkit.*
 import org.bukkit.enchantments.Enchantment
+import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.LeatherArmorMeta
 import org.bukkit.inventory.meta.PotionMeta
+import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.material.Dye
 import org.bukkit.potion.PotionData
 import org.bukkit.potion.PotionType
@@ -18,7 +18,7 @@ fun ItemStack.hasName(name: String): Boolean {
 	return false
 }
 
-fun ItemStack.rename(name: String): ItemStack? {
+fun ItemStack.rename(name: String): ItemStack {
 	val itemMeta = this.itemMeta
 	if (itemMeta != null) itemMeta.displayName = name
 
@@ -44,14 +44,16 @@ fun ItemStack.color(color: Color): ItemStack? {
 	return this
 }
 
-fun ItemStack.setDescription(description: String): ItemStack {
+fun ItemStack.setDescription(description: List<String>): ItemStack {
 	val itemMeta = this.itemMeta
-	itemMeta.lore = description.fancySplit(32)
+	itemMeta.lore = description
 
 	this.itemMeta = itemMeta
 
 	return this
 }
+
+fun ItemStack.setDescription(description: String): ItemStack = setDescription(description.fancySplit(32))
 
 /**
  * Retorna o **'displayName'** não-formatado de uma [ItemStack], se houver, ou o **name()** de seu [org.bukkit.Material], caso contrário.
@@ -84,13 +86,25 @@ object ItemStacks {
 	fun potions(amount: Int, extended: Boolean, upgraded: Boolean, potionType: PotionType, splash: Boolean): ItemStack {
 		val itemStack = ItemStack(Material.POTION, amount)
 
-		val potionData = PotionData(potionType, extended, upgraded)
-
 		val potionMeta = itemStack.itemMeta as PotionMeta
-		potionMeta.basePotionData = potionData
+		potionMeta.basePotionData = PotionData(potionType, extended, upgraded)
 
 		itemStack.itemMeta = potionMeta
 
 		return itemStack
+	}
+
+	fun skull(player: Player): ItemStack = ItemStack(Material.SKULL_ITEM, 1, SkullType.PLAYER.ordinal.toShort()).apply {
+		val skullMeta = itemMeta as SkullMeta
+		skullMeta.owningPlayer = player
+
+		itemMeta = skullMeta
+	}
+
+	fun skull(name: String): ItemStack = ItemStack(Material.SKULL_ITEM, 1, SkullType.PLAYER.ordinal.toShort()).apply {
+		val skullMeta = itemMeta as SkullMeta
+		skullMeta.owningPlayer = Bukkit.getOfflinePlayer(name)
+
+		itemMeta = skullMeta
 	}
 }

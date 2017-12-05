@@ -2,6 +2,7 @@ package br.com.dusty.dkits.listener.login
 
 import br.com.dusty.dkits.EnumServerStatus
 import br.com.dusty.dkits.Main
+import br.com.dusty.dkits.clan.ClanRegistry
 import br.com.dusty.dkits.gamer.EnumRank
 import br.com.dusty.dkits.gamer.GamerRegistry
 import br.com.dusty.dkits.gamer.gamer
@@ -42,5 +43,7 @@ object PlayerLoginListener: Listener {
 			if (gamer.canLogin()) event.allow()
 			else event.disallow(PlayerLoginEvent.Result.KICK_FULL, KICK_FULL_MESSAGE)
 		}
+
+		gamer.clan = ClanRegistry.clan(gamer.primitiveGamer.clan)
 	}
 }

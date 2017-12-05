@@ -1,7 +1,6 @@
-package br.com.dusty.dkits.util.tab
+package br.com.dusty.dkits.util.protocol
 
 import br.com.dusty.dkits.gamer.Gamer
-import br.com.dusty.dkits.util.protocol.Protocols
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
 import java.lang.reflect.Field

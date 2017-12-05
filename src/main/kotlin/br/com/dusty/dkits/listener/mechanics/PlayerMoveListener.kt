@@ -5,7 +5,6 @@ import br.com.dusty.dkits.gamer.gamer
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
-import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.util.Vector

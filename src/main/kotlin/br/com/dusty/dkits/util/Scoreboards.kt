@@ -65,32 +65,20 @@ object Scoreboards {
 			                     Text.of(if (gamer.isCombatTagged()) "Sim" else "Não").color(TextColor.YELLOW).toString(),
 			                     Text.of(GamerRegistry.onlineGamers().filter { it.mode != EnumMode.ADMIN }.size).color(TextColor.YELLOW).toString())
 
-			for (i in LABELS.indices) {
-				if (i == 7 && !gamer.kit.isBroadcast) continue
-
-				val score = objective.getScore(LABELS[i] + values[i])
-
-				if (score != null) score.score = LABELS.size - i
-			}
+			LABELS.indices.filterNot { it == 7 && !gamer.kit.isBroadcast }.forEach { objective.getScore(LABELS[it] + values[it])?.run { score = LABELS.size - it } }
 		} else {
-			val values = arrayOf(ChatColor.YELLOW.toString() + "" + Math.round(gamer.xp),
-			                     ChatColor.YELLOW.toString() + "" + Math.round(gamer.money),
+			val values = arrayOf(ChatColor.YELLOW.toString() + Math.round(gamer.xp),
+			                     ChatColor.YELLOW.toString() + Math.round(gamer.money),
 			                     "",
-			                     ChatColor.YELLOW.toString() + "" + gamer.kills,
-			                     ChatColor.YELLOW.toString() + "" + gamer.deaths,
-			                     ChatColor.YELLOW.toString() + "" + gamer.killStreak,
+			                     ChatColor.YELLOW.toString() + gamer.kills,
+			                     ChatColor.YELLOW.toString() + gamer.deaths,
+			                     ChatColor.YELLOW.toString() + gamer.killStreak,
 			                     "",
-			                     ChatColor.YELLOW.toString() + "" + gamer.kit.name,
-			                     ChatColor.YELLOW.toString() + "" + if (gamer.isCombatTagged()) "Sim" else "Não",
-			                     ChatColor.YELLOW.toString() + "" + GamerRegistry.onlineGamers().filter { it.mode != EnumMode.ADMIN }.size)
+			                     ChatColor.YELLOW.toString() + gamer.kit.name,
+			                     ChatColor.YELLOW.toString() + if (gamer.isCombatTagged()) "Sim" else "Não",
+			                     ChatColor.YELLOW.toString() + GamerRegistry.onlineGamers().filter { it.mode != EnumMode.ADMIN }.size)
 
-			for (i in LABELS_OLD.indices) {
-				if (i == 7 && !gamer.kit.isBroadcast) continue
-
-				val score = objective.getScore(LABELS_OLD[i] + values[i])
-
-				if (score != null) score.score = LABELS_OLD.size - i
-			}
+			LABELS_OLD.indices.filterNot { it == 7 && !gamer.kit.isBroadcast }.forEach { objective.getScore(LABELS_OLD[it] + values[it])?.run { score = LABELS_OLD.size - it } }
 		}
 	}
 

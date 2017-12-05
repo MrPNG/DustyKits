@@ -24,27 +24,23 @@ object KitMenu {
 	fun menuKitOwned(player: Player): Inventory {
 		val gamer = player.gamer()
 
-		val inventory = Bukkit.createInventory(player, 54, TITLE_OWNED)
+		return Bukkit.createInventory(player, 54, TITLE_OWNED).apply {
+			fill(false)
+			fillKits(Kits.KITS.filter { (gamer.hasKit(it) && it.data.isEnabled && it in gamer.warp.enabledKits) || gamer.mode == EnumMode.ADMIN })
 
-		inventory.fill(false)
-		inventory.fillKits(Kits.KITS.filter { (gamer.hasKit(it) && it.data.isEnabled && it in gamer.warp.enabledKits) || gamer.mode == EnumMode.ADMIN })
-
-		inventory.setItem(8, BUTTON_OTHER)
-
-		return inventory
+			setItem(8, BUTTON_OTHER)
+		}
 	}
 
 	fun menuKitOther(player: Player): Inventory {
 		val gamer = player.gamer()
 
-		val inventory = Bukkit.createInventory(player, 54, TITLE_OTHER)
+		return Bukkit.createInventory(player, 54, TITLE_OTHER).apply {
+			fill(false)
+			fillKits(Kits.KITS.filter { !gamer.hasKit(it) && it.data.isEnabled && it in gamer.warp.enabledKits })
 
-		inventory.fill(false)
-		inventory.fillKits(Kits.KITS.filter { !gamer.hasKit(it) && it.data.isEnabled && it in gamer.warp.enabledKits })
-
-		inventory.setItem(0, BUTTON_OWNED)
-
-		return inventory
+			setItem(0, BUTTON_OWNED)
+		}
 	}
 
 	fun Inventory.fillKits(kits: List<Kit>) {

@@ -24,47 +24,33 @@ object ShopMenu {
 
 	val ALL_KITS = ItemStack(Material.YELLOW_FLOWER).rename(Text.of("Você já possui todos os kits!").color(TextColor.GOLD).toString())
 
-	val ARMOR = HashMap<ItemStack, Int>()
-
-	init {
-		ARMOR.put(ItemStack(Material.CHAINMAIL_CHESTPLATE).setDescription("Preço: " + 3000 + " créditos"), 3000)
-		ARMOR.put(ItemStack(Material.CHAINMAIL_LEGGINGS).setDescription("Preço: " + 4500 + " créditos"), 4500)
-		ARMOR.put(ItemStack(Material.IRON_CHESTPLATE).setDescription("Preço: " + 6000 + " créditos"), 6000)
-		ARMOR.put(ItemStack(Material.IRON_BOOTS).setDescription("Preço: " + 3000 + " créditos"), 3000)
-		ARMOR.put(ItemStack(Material.DIAMOND_HELMET).setDescription("Preço: " + 6000 + " créditos"), 6000)
+	val ARMOR = HashMap<ItemStack, Int>().apply {
+		put(ItemStack(Material.CHAINMAIL_CHESTPLATE).setDescription("Preço: " + 3000 + " créditos"), 3000)
+		put(ItemStack(Material.CHAINMAIL_LEGGINGS).setDescription("Preço: " + 4500 + " créditos"), 4500)
+		put(ItemStack(Material.IRON_CHESTPLATE).setDescription("Preço: " + 6000 + " créditos"), 6000)
+		put(ItemStack(Material.IRON_BOOTS).setDescription("Preço: " + 3000 + " créditos"), 3000)
+		put(ItemStack(Material.DIAMOND_HELMET).setDescription("Preço: " + 6000 + " créditos"), 6000)
 	}
 
-	fun menuShopMain(player: Player): Inventory {
-		val inventory = Bukkit.createInventory(player, 27, TITLE_MAIN)
+	fun menuShopMain(player: Player): Inventory = Bukkit.createInventory(player, 27, TITLE_MAIN).apply {
+		fill(false)
 
-		inventory.fill(false)
-
-		inventory.setItem(11, BUTTON_KITS)
-		inventory.setItem(15, BUTTON_ARMOR)
-
-		return inventory
+		setItem(11, BUTTON_KITS)
+		setItem(15, BUTTON_ARMOR)
 	}
 
-	fun menuShopKit(player: Player): Inventory {
-		val inventory = Bukkit.createInventory(player, 27, TITLE_KITS)
+	fun menuShopKit(player: Player): Inventory = Bukkit.createInventory(player, 27, TITLE_KITS).apply {
+		fill(true)
+		fillKits(Kits.KITS.filter { it.data.isEnabled && it.data.price != -1 && player.gamer().hasKit(it) })
 
-		inventory.fill(true)
-		inventory.fillKits(Kits.KITS.filter { it.data.isEnabled && it.data.price != -1 && player.gamer().hasKit(it) })
-
-		inventory.setItem(0, Inventories.BUTTON_BACK)
-
-		return inventory
+		setItem(0, Inventories.BUTTON_BACK)
 	}
 
-	fun menuShopArmor(player: Player): Inventory {
-		val inventory = Bukkit.createInventory(player, 27, TITLE_ARMOR)
+	fun menuShopArmor(player: Player): Inventory = Bukkit.createInventory(player, 27, TITLE_ARMOR).apply {
+		fill(true)
+		fillArmor(ARMOR.keys.toTypedArray())
 
-		inventory.fill(true)
-		inventory.fillArmor(ARMOR.keys.toTypedArray())
-
-		inventory.setItem(0, Inventories.BUTTON_BACK)
-
-		return inventory
+		setItem(0, Inventories.BUTTON_BACK)
 	}
 
 	fun Inventory.fillKits(kits: List<Kit>) {

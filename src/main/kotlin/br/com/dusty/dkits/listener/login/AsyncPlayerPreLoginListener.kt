@@ -1,7 +1,9 @@
 package br.com.dusty.dkits.listener.login
 
+import br.com.dusty.dkits.clan.ClanRegistry
 import br.com.dusty.dkits.gamer.GamerRegistry
 import br.com.dusty.dkits.util.text.Text
+import br.com.dusty.dkits.util.web.WebAPI
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent
@@ -18,6 +20,12 @@ object AsyncPlayerPreLoginListener: Listener {
 //		val primitiveGamer = GamerRegistry.primitiveGamerFromJson(WebAPI.getProfile(uuid), uuid)
 		val primitiveGamer = GamerRegistry.tempPrimitiveGamer(uuid)
 
-		if (primitiveGamer == null) event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, KICK_NO_PROFILE)
+		if (primitiveGamer == null) {
+			event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, KICK_NO_PROFILE)
+		} else if (primitiveGamer.clan != "" && !ClanRegistry.PRIMITIVE_CLAN_BY_STRING.containsKey(primitiveGamer.clan)) {
+			val uuid = primitiveGamer.clan
+
+			ClanRegistry.primitiveClanFromJson(WebAPI.getClan(uuid))?.run { ClanRegistry.PRIMITIVE_CLAN_BY_STRING.put(uuid, this) }
+		}
 	}
 }

@@ -45,7 +45,7 @@ object PlayerJoinListener: Listener {
 			gamer.createScoreboard()
 			Scoreboards.update()
 
-			gamer.sendToWarp(Warps.LOBBY, false)
+			gamer.sendToWarp(Warps.LOBBY, true, false)
 
 			Tasks.sync(Runnable {
 				when {

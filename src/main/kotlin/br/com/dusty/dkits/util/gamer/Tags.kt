@@ -10,8 +10,8 @@ object Tags {
 
 		val displayName = gamer.rank.format(player.name) + TextStyle.RESET
 
+		//TODO: Tag above head
 		player.displayName = displayName
 		player.playerListName = displayName
-		//TODO: Tag above head
 	}
 }

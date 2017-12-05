@@ -1,7 +1,6 @@
 package br.com.dusty.dkits.kit
 
 import org.bukkit.inventory.ItemStack
-import java.util.*
 
 object Kits {
 
@@ -9,7 +8,7 @@ object Kits {
 	val PVP = PvpKit
 	val SNAIL = SnailKit
 
-	val KITS = ArrayList<Kit>()
+	val KITS = arrayListOf<Kit>()
 
 	lateinit var enabledKitsNames: Array<String>
 

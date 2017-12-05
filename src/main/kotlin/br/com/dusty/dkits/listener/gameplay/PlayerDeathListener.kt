@@ -39,8 +39,7 @@ object PlayerDeathListener: Listener {
 		Tasks.sync(Runnable {
 			player.spigot().respawn()
 
-			gamer.removeCombatTag(false)
-			gamer.sendToWarp(if (gamer.warp.type == Warp.EnumWarpType.EVENT) Warps.LOBBY else gamer.warp, false)
+			gamer.sendToWarp(if (gamer.warp.type == Warp.EnumWarpType.EVENT) Warps.LOBBY else gamer.warp, true, false)
 		})
 	}
 }

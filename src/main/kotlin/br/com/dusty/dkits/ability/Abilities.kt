@@ -2,11 +2,10 @@ package br.com.dusty.dkits.ability
 
 import br.com.dusty.dkits.Main
 import org.bukkit.Bukkit
-import java.util.*
 
 object Abilities {
 
-	val ABILITIES = ArrayList<Ability>()
+	val ABILITIES = arrayListOf<Ability>()
 
 	fun registerAll() {
 		//Usage: ABILITIES.add(FOO);

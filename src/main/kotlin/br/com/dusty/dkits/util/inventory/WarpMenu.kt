@@ -20,37 +20,25 @@ object WarpMenu {
 	val BUTTON_GAME = ItemStack(Material.DIAMOND_SWORD).rename(TITLE_GAME)
 	val BUTTON_EVENT = ItemStack(Material.CAKE).rename(TITLE_EVENT)
 
-	fun menuWarpMain(player: Player): Inventory {
-		val inventory = Bukkit.createInventory(player, 27, TITLE_MAIN)
+	fun menuWarpMain(player: Player): Inventory = Bukkit.createInventory(player, 27, TITLE_MAIN).apply {
+		fill(false)
 
-		inventory.fill(false)
-
-		inventory.setItem(11, BUTTON_GAME)
-		inventory.setItem(15, BUTTON_EVENT)
-
-		return inventory
+		setItem(11, BUTTON_GAME)
+		setItem(15, BUTTON_EVENT)
 	}
 
-	fun menuWarpGame(player: Player): Inventory {
-		val inventory = Bukkit.createInventory(player, 27, TITLE_GAME)
+	fun menuWarpGame(player: Player): Inventory = Bukkit.createInventory(player, 27, TITLE_GAME).apply {
+		fill(true)
+		fillWarps(Warps.WARPS.filter { it.type == Warp.EnumWarpType.GAME && it.data.isEnabled })
 
-		inventory.fill(true)
-		inventory.fillWarps(Warps.WARPS.filter { it.type == Warp.EnumWarpType.GAME && it.data.isEnabled })
-
-		inventory.setItem(0, Inventories.BUTTON_BACK)
-
-		return inventory
+		setItem(0, Inventories.BUTTON_BACK)
 	}
 
-	fun menuWarpEvent(player: Player): Inventory {
-		val inventory = Bukkit.createInventory(player, 27, TITLE_EVENT)
+	fun menuWarpEvent(player: Player): Inventory = Bukkit.createInventory(player, 27, TITLE_EVENT).apply {
+		fill(true)
+		fillWarps(Warps.WARPS.filter { it.type == Warp.EnumWarpType.EVENT && it.data.isEnabled })
 
-		inventory.fill(true)
-		inventory.fillWarps(Warps.WARPS.filter { it.type == Warp.EnumWarpType.EVENT && it.data.isEnabled })
-
-		inventory.setItem(0, Inventories.BUTTON_BACK)
-
-		return inventory
+		setItem(0, Inventories.BUTTON_BACK)
 	}
 
 	fun Inventory.fillWarps(warps: List<Warp>) {

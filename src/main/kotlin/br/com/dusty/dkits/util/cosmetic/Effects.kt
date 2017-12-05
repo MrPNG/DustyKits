@@ -1,4 +1,4 @@
-package br.com.dusty.dkits.util
+package br.com.dusty.dkits.util.cosmetic
 
 import org.bukkit.Effect
 import org.bukkit.Location

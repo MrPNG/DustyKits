@@ -18,7 +18,7 @@ object Listeners {
 	/**
 	 * [ArrayList] que contém todos os [Listener] a serem/já registrados pelo plugin.
 	 */
-	private val LISTENERS = ArrayList<Listener>()
+	private val LISTENERS = arrayListOf<Listener>()
 
 	/**
 	 * Registra todos os [Listener] da [ArrayList] LISTENERS.

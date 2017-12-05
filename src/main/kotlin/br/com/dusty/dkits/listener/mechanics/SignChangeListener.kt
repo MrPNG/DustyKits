@@ -5,7 +5,6 @@ import br.com.dusty.dkits.gamer.gamer
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
 import org.bukkit.event.EventHandler
-import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.block.SignChangeEvent
 
@@ -41,22 +40,14 @@ object SignChangeListener: Listener {
 			"soup"    -> for (i in 0 .. 3) event.setLine(i, SOUP_SIGN[i])
 			"recraft" -> for (i in 0 .. 3) event.setLine(i, RECRAFT_SIGN[i])
 			"money"   -> {
-				val amount = try {
-					Integer.parseInt(event.getLine(1))
-				} catch (e: Exception) {
-					0
-				}
+				val amount = event.getLine(1).toIntOrNull() ?: 0
 
 				for (i in 0 .. 3) event.setLine(i, MONEY_SIGN[i])
 
 				event.setLine(2, event.getLine(2) + amount)
 			}
 			"xp"      -> {
-				val amount = try {
-					Integer.parseInt(event.getLine(1))
-				} catch (e: Exception) {
-					0
-				}
+				val amount = event.getLine(1).toIntOrNull() ?: 0
 
 				for (i in 0 .. 3) event.setLine(i, XP_SIGN[i])
 

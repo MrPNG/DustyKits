@@ -17,9 +17,9 @@ object KitCommand: PlayerCustomCommand(EnumRank.DEFAULT, "kit", *Kits.enabledKit
 
 		when (alias) {
 			"kit" -> {
-				if(gamer.warp.enabledKits.isEmpty()) {
+				if (gamer.warp.enabledKits.isEmpty()) {
 					sender.sendMessage(Text.negativePrefix().basic("Você ").negative("não").basic(" pode escolher ").negative("kits").basic(" nessa warp!").toString())
-				}else{
+				} else {
 					if (args.isEmpty()) {
 						sender.openInventory(KitMenu.menuKitOwned(sender))
 					} else {

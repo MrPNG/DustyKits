@@ -26,12 +26,12 @@ fun Inventory.addItemStacks(itemStacks: Array<ItemStack?>) {
  * @param itemStacks
  */
 fun Player.setArmor(itemStacks: Array<ItemStack?>) {
-	val playerInventory = this.inventory
-
-	playerInventory.helmet = itemStacks[0]
-	playerInventory.chestplate = itemStacks[1]
-	playerInventory.leggings = itemStacks[2]
-	playerInventory.boots = itemStacks[3]
+	inventory.apply {
+		helmet = itemStacks[0]
+		chestplate = itemStacks[1]
+		leggings = itemStacks[2]
+		boots = itemStacks[3]
+	}
 }
 
 fun Inventory.fill(backButton: Boolean): Inventory {
@@ -53,12 +53,10 @@ fun Player.fillSoups(): Inventory {
 	return inventory
 }
 
-fun Player.fillRecraft(): Inventory {
-	inventory.setItem(14, Inventories.RED_MUSHROOMS)
-	inventory.setItem(15, Inventories.BROWN_MUSHROOMS)
-	inventory.setItem(16, Inventories.BOWLS)
-
-	return inventory
+fun Player.fillRecraft(): Inventory = inventory.apply {
+	setItem(14, Inventories.RED_MUSHROOMS)
+	setItem(15, Inventories.BROWN_MUSHROOMS)
+	setItem(16, Inventories.BOWLS)
 }
 
 object Inventories {
@@ -82,23 +80,13 @@ object Inventories {
 
 	val BUTTON_BACK = ItemStack(Material.CARPET, 1, 1.toShort(), 14.toByte()).rename(Text.negativeOf("Voltar").toString())
 
-	fun soups(player: Player): Inventory {
-		val inventory = Bukkit.createInventory(player, 54, SOUPS_TITLE)
+	fun soups(player: Player): Inventory = Bukkit.createInventory(player, 54, SOUPS_TITLE).apply { for (i in 0 .. 53) setItem(i, SOUP) }
 
-		for (i in 0 .. 53) inventory.setItem(i, SOUP)
-
-		return inventory
-	}
-
-	fun recraft(player: Player): Inventory {
-		val inventory = Bukkit.createInventory(player, 54, RECRAFT_TITLE)
-
+	fun recraft(player: Player): Inventory = Bukkit.createInventory(player, 54, RECRAFT_TITLE).apply {
 		for (i in 0 .. 17) {
-			inventory.setItem(i * 3, RED_MUSHROOMS)
-			inventory.setItem(i * 3 + 1, BROWN_MUSHROOMS)
-			inventory.setItem(i * 3 + 2, BOWLS)
+			setItem(i * 3, RED_MUSHROOMS)
+			setItem(i * 3 + 1, BROWN_MUSHROOMS)
+			setItem(i * 3 + 2, BOWLS)
 		}
-
-		return inventory
 	}
 }

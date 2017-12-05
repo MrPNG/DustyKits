@@ -11,15 +11,7 @@ import org.bukkit.entity.Player
 
 object ChatCommand: PlayerCustomCommand(EnumRank.MODPLUS, "chat") {
 
-	val CHAT_CLEAR_MESSAGE: String
-
-	init {
-		val stringBuilder = StringBuilder()
-
-		for (i in 1 .. 128) stringBuilder.append(" \n")
-
-		CHAT_CLEAR_MESSAGE = stringBuilder.toString()
-	}
+	val CHAT_CLEAR_MESSAGE = buildString { for (i in 1 .. 128) append(" \n") }
 
 	override fun execute(sender: Player, alias: String, args: Array<String>): Boolean {
 		val gamer = sender.gamer()
