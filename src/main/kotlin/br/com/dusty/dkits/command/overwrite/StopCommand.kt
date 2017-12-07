@@ -13,12 +13,14 @@ object StopCommand: CustomCommand(EnumRank.ADMIN, "stop") {
 
 	override fun execute(sender: CommandSender, alias: String, args: Array<String>): Boolean {
 		if (testPermission(sender)) {
-			val gamers = GamerRegistry.onlineGamers().toTypedArray()
+			val gamers = GamerRegistry.onlineGamers()
+//			val clans = ClanRegistry.onlineClans()
 
 			gamers.forEach { gamer -> gamer.player.kickPlayer(KICK_SHUTDOWN) }
 
 			//TODO: Reactivate Web API
 //			WebAPI.saveProfiles(*gamers.toTypedArray())
+// 			WebAPI.saveClans(*clans.toTypedArray())
 
 			Bukkit.shutdown()
 		}

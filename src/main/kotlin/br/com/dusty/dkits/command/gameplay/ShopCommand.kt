@@ -33,7 +33,7 @@ object ShopCommand: PlayerCustomCommand(EnumRank.DEFAULT, "shop") {
 					}
 				}
 			} else {
-				sender.sendMessage(Text.negativePrefix().basic("Uso: /shop ").negative("<set> <kit> <preço>").toString())
+				sender.sendMessage(Text.negativePrefix().basic("Uso: /shop ").negative("set <kit> <preço>").toString())
 			}
 		}
 

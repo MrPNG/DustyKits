@@ -17,15 +17,15 @@ object AsyncPlayerPreLoginListener: Listener {
 		val uuid = event.uniqueId
 
 		//TODO: Reactivate Web API
-//		val primitiveGamer = GamerRegistry.primitiveGamerFromJson(WebAPI.getProfile(uuid), uuid)
+//		val primitiveGamer = GamerRegistry.primitiveGamerFromJson(WebAPI.loadProfile(uuid), uuid)
 		val primitiveGamer = GamerRegistry.tempPrimitiveGamer(uuid)
 
 		if (primitiveGamer == null) {
 			event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, KICK_NO_PROFILE)
 		} else if (primitiveGamer.clan != "" && !ClanRegistry.PRIMITIVE_CLAN_BY_STRING.containsKey(primitiveGamer.clan)) {
-			val uuid = primitiveGamer.clan
+			val clanUuid = primitiveGamer.clan
 
-			ClanRegistry.primitiveClanFromJson(WebAPI.getClan(uuid))?.run { ClanRegistry.PRIMITIVE_CLAN_BY_STRING.put(uuid, this) }
+			ClanRegistry.primitiveClanFromJson(WebAPI.loadClan(clanUuid))?.run { ClanRegistry.PRIMITIVE_CLAN_BY_STRING.put(clanUuid, this) }
 		}
 	}
 }

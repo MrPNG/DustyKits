@@ -54,8 +54,9 @@ object EnableCommand: CustomCommand(EnumRank.MODPLUS, "enable") {
 	}
 
 	override fun tabComplete(sender: CommandSender, alias: String, args: Array<String>): MutableList<String>? = when {
-		args.isEmpty()   -> arrayListOf("kit", "warp")
-		args[0] == "kit" -> Warps.WARPS.filter { !it.data.isEnabled }.map { it.name.toLowerCase() }.toMutableList()
-		else             -> Kits.KITS.filter { !it.data.isEnabled }.map { it.name.toLowerCase() }.toMutableList()
+		args.isEmpty()    -> arrayListOf("kit", "warp")
+		args[0] == "warp" -> Warps.WARPS.filter { !it.data.isEnabled }.map { it.name.toLowerCase() }.toMutableList()
+		args[0] == "kit"  -> Kits.KITS.filter { !it.data.isEnabled }.map { it.name.toLowerCase() }.toMutableList()
+		else              -> arrayListOf()
 	}
 }

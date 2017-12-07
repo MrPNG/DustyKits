@@ -41,6 +41,8 @@ class Main: JavaPlugin() {
 		 */
 		lateinit var INSTANCE: Main
 
+		val THREAD = Thread.currentThread()
+
 		//TODO: public static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
 		val PROTOCOL_MANAGER = ProtocolLibrary.getProtocolManager()

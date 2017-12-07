@@ -72,24 +72,24 @@ object OneVsOneWarp: Warp() {
 	fun invite(host: Player, guest: Player, type: FightType) {
 		val oldFight = FIGHTS[host]
 
-		if (oldFight != null) {
-			val cooldown = System.currentTimeMillis() - oldFight.timestamp
+		if (oldFight != null && oldFight is OneVsOneFight && oldFight.guest.player == guest) {
+			val cooldown = oldFight.expiresOn - System.currentTimeMillis()
 
-			if (cooldown < 10000) {
+			if (cooldown > 0) {
 				host.sendMessage(Text.negativePrefix().basic("Você ainda deve ").negative("esperar").basic(" mais ").negative(cooldown.millisToSeconds().toInt()).basic(" segundos antes de convidar esse jogador para uma luta desse tipo novamente!").toString())
 
 				return
 			}
 		}
 
-		FIGHTS.put(host, OneVsOneFight(host.gamer(), guest.gamer(), System.currentTimeMillis(), type, FightState.INVITATION))
+		FIGHTS.put(host, OneVsOneFight(host.gamer(), guest.gamer(), System.currentTimeMillis() + 10000, type, FightState.INVITATION))
 
 		host.sendMessage(Text.positivePrefix().basic("Você ").positive("convidou").basic(" o jogador ").positive(guest.displayName.clearFormatting()).basic(" para uma luta do tipo ").positive(
 				type.string).basic("!").toString())
 
 		guest.sendMessage(Text.positivePrefix().basic("Você foi ").positive("convidado").basic(" pelo jogador ").positive(host.displayName.clearFormatting()).basic(" para uma luta do tipo ").positive(
 				type.string).basic("!").toString())
-		guest.sendMessage(Text.positivePrefix().basic("Clique ").positive("aqui").styles(TextStyle.ITALIC).basic(" ou ").positive("nele").basic(" com o item correto para ").positive("aceitar").basic(
+		guest.sendMessage(Text.positivePrefix().basic("Clique ").positive("aqui").styles(TextStyle.ITALIC).basic(" ou no ").positive("jogador").basic(" com o item correto para ").positive("aceitar").basic(
 				"!").toString())
 	}
 
@@ -127,7 +127,7 @@ object OneVsOneWarp: Warp() {
 		}
 	}
 
-	open class Fight(val host: Gamer, val timestamp: Long, val type: FightType, var state: FightState)
+	open class Fight(val host: Gamer, val expiresOn: Long, val type: FightType, var state: FightState)
 
 	class OneVsOneFight(host: Gamer, val guest: Gamer, timestamp: Long, type: FightType, state: FightState): Fight(host, timestamp, type, state)
 	class ClanVsClanFight(host: Gamer, val guest: Clan, timestamp: Long, type: FightType, state: FightState): Fight(host, timestamp, type, state)

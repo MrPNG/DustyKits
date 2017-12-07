@@ -15,9 +15,9 @@ object LocationCommand: PlayerCustomCommand(EnumRank.ADMIN, "location") {
 		val gamer = sender.gamer()
 
 		if (args.size < 2) {
-			sender.sendMessage(Text.negativePrefix().basic("Uso: /location ").negative("<set/goto> <nomeDaWarp>").basic(" [custom]").toString())
+			sender.sendMessage(Text.negativePrefix().basic("Uso: /location ").negative("<set>/<goto> <nomeDaWarp>").basic(" [custom]").toString())
 		} else {
-			when (args[0]) {
+			when (args[0].toLowerCase()) {
 				"set"  -> {
 					val warp = Warps[args[1]]
 

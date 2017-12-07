@@ -14,61 +14,26 @@ import java.util.*
 
 object WebAPI {
 
-	private val HTTP_CLIENT = HttpClientBuilder.create().build()
+	val HTTP_CLIENT = HttpClientBuilder.create().build()
 
-	private val URL = "http://ec2-52-67-190-141.sa-east-1.compute.amazonaws.com/api/handler.php"
+	val URL = "http://ec2-52-67-190-141.sa-east-1.compute.amazonaws.com/api/handler.php"
 
-	fun getProfile(uuid: UUID): String {
-		val httpGet = HttpGet(URL + "?type=perfil&uuid=" + uuid)
+	fun loadProfile(uuid: UUID) = EntityUtils.toString(HTTP_CLIENT.execute(HttpGet(URL + "?type=perfil&uuid=" + uuid)).entity) ?: "null"
 
-		val httpResponse = HTTP_CLIENT.execute(httpGet)
-		val httpEntity = httpResponse.entity
+	fun saveProfiles(vararg gamers: Gamer) = HttpPost(URL).setEntities(BasicNameValuePair("type", "salvarperfil"),
+	                                                                   BasicNameValuePair("dataperfil", Main.GSON.toJson(gamers.map { it.primitiveGamer }))).response() ?: "null"
 
-		return EntityUtils.toString(httpEntity) ?: "null"
+	fun loadClan(uuid: String) = EntityUtils.toString(HTTP_CLIENT.execute(HttpGet(URL + "?type=clan&uuid=" + uuid)).entity) ?: "null"
+
+	fun saveClans(vararg clans: Clan) = HttpPost(URL).setEntities(BasicNameValuePair("type", "salvarclan"),
+	                                                              BasicNameValuePair("dataclan", Main.GSON.toJson(clans.map { it.primitiveClan }))).response() ?: "null"
+
+	fun HttpPost.setEntities(vararg pairs: NameValuePair) = this.apply {
+		val list = arrayListOf<NameValuePair>()
+		list.addAll(pairs)
+
+		entity = UrlEncodedFormEntity(list)
 	}
 
-	fun saveProfiles(vararg gamers: Gamer): String {
-		val primitiveGamers = gamers.map { it.primitiveGamer }
-
-		val json = Main.GSON.toJson(primitiveGamers)
-
-		val httpPost = HttpPost(URL)
-
-		httpPost.entity = UrlEncodedFormEntity(arrayListOf<NameValuePair>().apply {
-			add(BasicNameValuePair("type", "salvarperfil"))
-			add(BasicNameValuePair("dataperfil", json))
-		}, "UTF-8")
-
-		val httpResponse = HTTP_CLIENT.execute(httpPost)
-		val httpEntity = httpResponse.entity
-
-		return EntityUtils.toString(httpEntity) ?: "null"
-	}
-
-	fun getClan(uuid: String): String {
-		val httpGet = HttpGet(URL + "?type=clan&uuid=" + uuid)
-
-		val httpResponse = HTTP_CLIENT.execute(httpGet)
-		val httpEntity = httpResponse.entity
-
-		return EntityUtils.toString(httpEntity) ?: "null"
-	}
-
-	fun saveClans(vararg clans: Clan): String {
-		val primitiveClans = clans.map { it.primitiveClan }
-
-		val json = Main.GSON.toJson(primitiveClans)
-
-		val httpPost = HttpPost(URL)
-
-		httpPost.entity = UrlEncodedFormEntity(arrayListOf<NameValuePair>().apply {
-			add(BasicNameValuePair("type", "salvarperfil"))
-			add(BasicNameValuePair("dataperfil", json))
-		}, "UTF-8")
-
-		val httpResponse = HTTP_CLIENT.execute(httpPost)
-		val httpEntity = httpResponse.entity
-
-		return EntityUtils.toString(httpEntity) ?: "null"
-	}
+	fun HttpPost.response(): String? = EntityUtils.toString(HTTP_CLIENT.execute(this).entity)
 }

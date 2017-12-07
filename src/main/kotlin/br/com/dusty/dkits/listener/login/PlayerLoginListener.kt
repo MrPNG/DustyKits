@@ -44,6 +44,14 @@ object PlayerLoginListener: Listener {
 			else event.disallow(PlayerLoginEvent.Result.KICK_FULL, KICK_FULL_MESSAGE)
 		}
 
-		gamer.clan = ClanRegistry.clan(gamer.primitiveGamer.clan)
+		ClanRegistry.clan(gamer.primitiveGamer.clan)?.run {
+			if (gamer.primitiveGamer.clan in rawMembers) {
+				gamer.clan = this
+
+				onlineMembers.add(gamer)
+			} else {
+				gamer.primitiveGamer.clan = ""
+			}
+		}
 	}
 }

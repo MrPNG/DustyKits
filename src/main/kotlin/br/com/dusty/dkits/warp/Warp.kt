@@ -127,6 +127,16 @@ open class Warp: Listener {
 		gamer.setKitAndApply(entryKit, false)
 	}
 
+	override fun equals(other: Any?) = when {
+		this === other                -> true
+		javaClass != other?.javaClass -> false
+		else                          -> true
+	}
+
+	override fun toString(): String {
+		return "Warp(name='$name')"
+	}
+
 	object GameWarpKit: Kit() {
 
 		init {
@@ -165,10 +175,6 @@ open class Warp: Listener {
 		REGEN,
 		REGEN_ON_KILL,
 		BREAK
-	}
-
-	override fun toString(): String {
-		return "Warp(name='$name')"
 	}
 
 	open class Data(var isEnabled: Boolean = false,

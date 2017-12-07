@@ -6,7 +6,7 @@ import java.util.*
 object ClanRegistry {
 
 	val PRIMITIVE_CLAN_BY_STRING = HashMap<String, PrimitiveClan>()
-	val CLAN_BY_STRING = HashMap<String, Clan>()
+	val CLAN_BY_STRING = LinkedHashMap<String, Clan>()
 
 	fun onlineClans() = CLAN_BY_STRING.values
 

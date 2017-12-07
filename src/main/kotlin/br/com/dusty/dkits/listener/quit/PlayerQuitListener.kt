@@ -1,5 +1,6 @@
 package br.com.dusty.dkits.listener.quit
 
+import br.com.dusty.dkits.clan.ClanRegistry
 import br.com.dusty.dkits.gamer.EnumRank
 import br.com.dusty.dkits.gamer.GamerRegistry
 import br.com.dusty.dkits.util.Scoreboards
@@ -26,7 +27,9 @@ object PlayerQuitListener: Listener {
 			}
 
 			//TODO: Reactivate Web API
-//			Tasks.async(Runnable { WebAPI.saveProfiles(gamer) })
+//			if(Main.serverStatus == EnumServerStatus.ONLINE) Tasks.async(Runnable { WebAPI.saveProfiles(gamer) })
+
+			if (clan?.onlineMembers?.size == 1) ClanRegistry.CLAN_BY_STRING.remove(clan!!.uuid)
 
 			if (rank.isLowerThan(EnumRank.MOD)) event.quitMessage = QUIT_MESSAGE_PREFIX + player.displayName
 			else event.quitMessage = null

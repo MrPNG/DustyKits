@@ -240,11 +240,31 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 			primitiveGamer.hgWins = hgWins
 		}
 
+	fun addHgWin() = hgWins++
+
 	var hgLosses: Int
 		get() = primitiveGamer.hgLosses
 		set(hgLosses) {
 			primitiveGamer.hgLosses = hgLosses
 		}
+
+	fun addHgLoss() = hgLosses++
+
+	var oneVsOneWins: Int
+		get() = primitiveGamer.oneVsOneWins
+		set(oneVsOneWins) {
+			primitiveGamer.oneVsOneWins = oneVsOneWins
+		}
+
+	fun addOneVsOneWin() = oneVsOneWins++
+
+	var oneVsOneLosses: Int
+		get() = primitiveGamer.oneVsOneLosses
+		set(oneVsOneLosses) {
+			primitiveGamer.oneVsOneLosses = oneVsOneLosses
+		}
+
+	fun addOneVsOneLoss() = oneVsOneLosses++
 
 	fun canLogin(): Boolean = player.isOp //TODO: Login on full
 

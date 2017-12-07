@@ -10,8 +10,8 @@ import org.bukkit.entity.Player
 object WorldCommand: PlayerCustomCommand(EnumRank.ADMIN, "world") {
 
 	override fun execute(sender: Player, alias: String, args: Array<String>): Boolean {
-		if (args.size < 2) sender.sendMessage(Text.negativePrefix().basic("Uso: /world ").negative("<load/unload> <nomeDoMundo>").basic(" [edit]").toString())
-		else when (args[0]) {
+		if (args.size < 2) sender.sendMessage(Text.negativePrefix().basic("Uso: /world ").negative("<load>/<unload> <nomeDoMundo>").basic(" [edit]").toString())
+		else when (args[0].toLowerCase()) {
 			"load"   -> {
 				when {
 					!Worlds.exists(args[1])  -> sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um ").negative("mundo").basic(" com o nome ").negative("\"${args[1]}\"").basic(

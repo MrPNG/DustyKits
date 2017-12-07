@@ -17,7 +17,7 @@ object ChatCommand: PlayerCustomCommand(EnumRank.MODPLUS, "chat") {
 		val gamer = sender.gamer()
 
 		if (args.isEmpty()) sender.sendMessage(Text.negativePrefix().basic("Uso: /chat ").negative("<clear>/<restrict>").basic(" [rank]").toString())
-		else when (args[0]) {
+		else when (args[0].toLowerCase()) {
 			"clear"    -> {
 				val rank: EnumRank = if (args.size > 1) EnumRank[args[1]] else gamer.rank
 

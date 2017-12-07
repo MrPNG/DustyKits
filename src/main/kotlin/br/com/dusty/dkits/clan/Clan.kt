@@ -23,24 +23,92 @@ class Clan(val primitiveClan: PrimitiveClan) {
 			primitiveClan.nickname = value
 		}
 
-	var leader = Bukkit.getPlayer(primitiveClan.leader).gamer()
+	var leader = Bukkit.getPlayer(UUID.fromString(primitiveClan.leader))?.gamer()
 		set(value) {
-			field = leader
+			if (value != null) {
+				field = leader
 
-			primitiveClan.leader = leader.player.uniqueId.toString() //TODO: Sync Clan
+				primitiveClan.leader = value.player.uniqueId.toString() //TODO: Sync Clan
+			}
 		}
 
-	val members = primitiveClan.members.mapTo(arrayListOf()) { Bukkit.getPlayer(UUID.fromString(it)).gamer() }
+	val rawMembers
+		get() = primitiveClan.members
+
+	val onlineMembers = primitiveClan.members.mapNotNull { Bukkit.getPlayer(UUID.fromString(it))?.gamer() }.toMutableList()
+
+	var kills
+		get() = primitiveClan.kills
+		set(value) {
+			primitiveClan.kills = value
+		}
+
+	fun addKill() = kills++
+
+	var deaths
+		get() = primitiveClan.deaths
+		set(value) {
+			primitiveClan.deaths = value
+		}
+
+	fun addDeath() = kills++
+
+	var xp
+		get() = primitiveClan.xp
+		set(value) {
+			primitiveClan.xp = value
+		}
+
+	fun addXp(amount: Double) {
+		primitiveClan.xp += Math.abs(amount)
+	}
+
+	fun removeXp(amount: Double) {
+		primitiveClan.xp -= Math.abs(amount)
+	}
+
+	var clanVsClanWins
+		get() = primitiveClan.clanVsClanWins
+		set(value) {
+			primitiveClan.clanVsClanWins = value
+		}
+
+	fun addClanVsClanWin() = clanVsClanWins++
+
+	var clanVsClanLosses
+		get() = primitiveClan.clanVsClanLosses
+		set(value) {
+			primitiveClan.clanVsClanLosses = value
+		}
+
+	fun addClanVsClanLoss() = clanVsClanLosses++
 
 	fun add(gamer: Gamer) = {
-		members.add(gamer)
+		onlineMembers.add(gamer)
 
 		primitiveClan.members = primitiveClan.members.add(gamer.player.uniqueId.toString()).first
 	}
 
+	fun add(uuid: String) = {
+		primitiveClan.members = primitiveClan.members.add(uuid).first
+	}
+
 	fun remove(gamer: Gamer) = {
-		members.remove(gamer)
+		onlineMembers.remove(gamer)
 
 		primitiveClan.members = primitiveClan.members.remove(gamer.player.uniqueId.toString()).first
 	}
+
+	fun remove(uuid: String) = {
+		primitiveClan.members = primitiveClan.members.remove(uuid).first
+	}
+
+	override fun equals(other: Any?) = when {
+		this === other                        -> true
+		javaClass != other?.javaClass         -> false
+		uuid != (other as PrimitiveClan).uuid -> false
+		else                                  -> true
+	}
+
+	override fun hashCode() = uuid.hashCode()
 }
