@@ -18,12 +18,12 @@ fun Sign.interact(player: Player) {
 			"Sopa"    -> {
 				player.openInventory(Inventories.soups(player))
 
-				gamer.signCooldown = 10000
+				gamer.signCooldown = 10000L
 			}
 			"Recraft" -> {
 				player.openInventory(Inventories.recraft(player))
 
-				gamer.signCooldown = 10000
+				gamer.signCooldown = 10000L
 			}
 		}
 		"Créditos" -> {

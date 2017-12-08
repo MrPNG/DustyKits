@@ -31,10 +31,10 @@ object EntityDamageByEntityListener: Listener {
 					return
 				}
 
-				gamer.combatTag = 10000
+				gamer.combatTag = 10000L
 				gamer.combatPartner = damager
 
-				damager.combatTag = 10000
+				damager.combatTag = 10000L
 				damager.combatPartner = gamer
 			}
 		}

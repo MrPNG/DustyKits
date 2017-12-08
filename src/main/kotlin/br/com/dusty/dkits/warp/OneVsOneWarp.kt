@@ -82,7 +82,7 @@ object OneVsOneWarp: Warp() {
 			}
 		}
 
-		FIGHTS.put(host, OneVsOneFight(host.gamer(), guest.gamer(), System.currentTimeMillis() + 10000, type, FightState.INVITATION))
+		FIGHTS.put(host, OneVsOneFight(host.gamer(), guest.gamer(), System.currentTimeMillis() + 10000L, type, FightState.INVITATION))
 
 		host.sendMessage(Text.positivePrefix().basic("Você ").positive("convidou").basic(" o jogador ").positive(guest.displayName.clearFormatting()).basic(" para uma luta do tipo ").positive(
 				type.string).basic("!").toString())
