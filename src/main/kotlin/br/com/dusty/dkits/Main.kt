@@ -7,6 +7,7 @@ import br.com.dusty.dkits.listener.Listeners
 import br.com.dusty.dkits.warp.Warps
 import com.comphenix.protocol.ProtocolLibrary
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
@@ -48,7 +49,7 @@ class Main: JavaPlugin() {
 		val PROTOCOL_MANAGER = ProtocolLibrary.getProtocolManager()
 
 		val RANDOM = Random()
-		val GSON = Gson()
+		val GSON = GsonBuilder().setPrettyPrinting().create()
 
 		val CONFIG_DIR = File(Bukkit.getWorldContainer(), "config")
 

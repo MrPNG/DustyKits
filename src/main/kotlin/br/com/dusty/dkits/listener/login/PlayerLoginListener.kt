@@ -49,6 +49,8 @@ object PlayerLoginListener: Listener {
 				gamer.clan = this
 
 				onlineMembers.add(gamer)
+
+				if (primitiveClan.leader == player.uniqueId.toString()) leader = gamer
 			} else {
 				gamer.primitiveGamer.clan = ""
 			}

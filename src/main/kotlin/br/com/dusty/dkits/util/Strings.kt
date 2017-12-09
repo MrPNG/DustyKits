@@ -88,6 +88,10 @@ fun ArrayList<String>.sortOut(start: String): ArrayList<String> = filter { it.st
  */
 fun String.clearFormatting(): String = ChatColor.stripColor(this)
 
+fun String.addUuidDashes() = if (length == 32) replace("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})".toRegex(), "$1-$2-$3-$4-$5") else this
+
+fun String.removeUuidDashes() = if (length == 36) replace("-", "") else this
+
 object Strings {
 
 	val ALPHANUMERIC = "ABCDEFGHIKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".toCharArray()

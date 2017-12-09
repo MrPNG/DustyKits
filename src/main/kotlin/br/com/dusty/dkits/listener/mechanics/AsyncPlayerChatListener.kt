@@ -29,12 +29,16 @@ object AsyncPlayerChatListener: Listener {
 
 					player.sendMessage(Text.negativePrefix().basic("O chat está ").negative("restrito").basic(" apenas a ").negative(rank.string).basic(" e acima!").toString())
 				}
+
+				event.format = "<" + Text.basicOf(if (gamer.clan != null) gamer.clan!!.tag + " " else "").append("%s" + TextStyle.RESET).toString() + "> %s"
 			}
 			EnumChat.STAFF  -> {
 				event.recipients.clear()
 
-				val messageNeutral = STAFF_CHAT_PREFIX_NEUTRAL.append("<").append(gamer.rank.format(player.name) + TextStyle.RESET).append("> ").neutral(event.message).toString()
-				val messageNegative = STAFF_CHAT_PREFIX_NEGATIVE.append("<").append(gamer.rank.format(player.name) + TextStyle.RESET).append("> ").negative(event.message).toString()
+				val messageNeutral = STAFF_CHAT_PREFIX_NEUTRAL.append("<").basic(if (gamer.clan != null) gamer.clan!!.tag + " " else "").append(gamer.rank.format(player.name) + TextStyle.RESET).append(
+						"> ").neutral(event.message).toString()
+				val messageNegative = STAFF_CHAT_PREFIX_NEGATIVE.append("<").basic(if (gamer.clan != null) gamer.clan!!.tag + " " else "").append(gamer.rank.format(player.name) + TextStyle.RESET).append(
+						"> ").negative(event.message).toString()
 
 				GamerRegistry.onlineGamers().filter { it.rank.isHigherThanOrEquals(EnumRank.MOD) }.forEach {
 					it.player.sendMessage(if (it.chat == EnumChat.STAFF) messageNeutral else messageNegative)

@@ -24,11 +24,12 @@ object Warps {
 
 		WARPS.add(ARENA)
 		WARPS.add(FEAST)
+		WARPS.add(VOLCANO)
+		WARPS.add(ONE_VS_ONE)
 		WARPS.add(FPS)
 		WARPS.add(LAVA_CHALLENGE)
 		WARPS.add(LOBBY)
-		WARPS.add(ONE_VS_ONE)
-		WARPS.add(VOLCANO)
+
 
 		enabledWarpsNames = Warps.WARPS.filter { it.data.isEnabled }.map { it.name.toLowerCase().replace(" ", "") }.toTypedArray()
 

@@ -13,7 +13,7 @@ import java.util.*
 enum class EnumRank {
 
 	NONE(-1),
-	DEFAULT(0),
+	DEFAULT(0, TextColor.WHITE),
 	//VIP(2, TextColor.GREEN),
 	//MVP(3, TextColor.BLUE),
 	PRO(4, TextColor.GOLD),

@@ -17,10 +17,10 @@ class Clan(val primitiveClan: PrimitiveClan) {
 			primitiveClan.name = value
 		}
 
-	var nickname
-		get() = primitiveClan.nickname
+	var tag
+		get() = primitiveClan.tag
 		set(value) {
-			primitiveClan.nickname = value
+			primitiveClan.tag = value
 		}
 
 	var leader = Bukkit.getPlayer(UUID.fromString(primitiveClan.leader))?.gamer()
@@ -28,7 +28,7 @@ class Clan(val primitiveClan: PrimitiveClan) {
 			if (value != null) {
 				field = leader
 
-				primitiveClan.leader = value.player.uniqueId.toString() //TODO: Sync Clan
+				primitiveClan.leader = value.player.uniqueId.toString()
 			}
 		}
 
@@ -83,23 +83,23 @@ class Clan(val primitiveClan: PrimitiveClan) {
 
 	fun addClanVsClanLoss() = clanVsClanLosses++
 
-	fun add(gamer: Gamer) = {
+	fun add(gamer: Gamer) {
 		onlineMembers.add(gamer)
 
 		primitiveClan.members = primitiveClan.members.add(gamer.player.uniqueId.toString()).first
 	}
 
-	fun add(uuid: String) = {
+	fun add(uuid: String) {
 		primitiveClan.members = primitiveClan.members.add(uuid).first
 	}
 
-	fun remove(gamer: Gamer) = {
+	fun remove(gamer: Gamer) {
 		onlineMembers.remove(gamer)
 
 		primitiveClan.members = primitiveClan.members.remove(gamer.player.uniqueId.toString()).first
 	}
 
-	fun remove(uuid: String) = {
+	fun remove(uuid: String) {
 		primitiveClan.members = primitiveClan.members.remove(uuid).first
 	}
 

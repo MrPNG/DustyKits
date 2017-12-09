@@ -2,7 +2,7 @@ package br.com.dusty.dkits.clan
 
 data class PrimitiveClan(val uuid: String,
                          var name: String = "",
-                         var nickname: String = "",
+                         var tag: String = "",
                          var leader: String = "",
                          var members: Array<String> = arrayOf(),
                          var kills: Int = 0,

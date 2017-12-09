@@ -95,6 +95,11 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 		}
 
 	var clan: Clan? = null
+		set(value) {
+			field = value
+
+			primitiveGamer.clan = value?.uuid ?: ""
+		}
 
 	var chat = EnumChat.NORMAL
 
@@ -366,8 +371,11 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 
 		warp.applyKit(this, kit)
 
-		//TODO: Titles/subtitles for 1.8+ players
-		if (announce) player.sendMessage(Text.positivePrefix().basic("Agora você está ").positive("usando").basic(" o kit ").positive(kit.name).basic("!").toString())
+		if (announce) {
+			player.sendMessage(Text.positivePrefix().basic("Você ").positive("escolheu").basic(" o kit ").positive(kit.name).basic("!").toString())
+			if (protocolVersion.isGreaterThanOrEquals(EnumProtocolVersion.RELEASE_1_8)) player.sendTitle(Text.basicOf("Você ").positive("escolheu").basic(" o kit ").positive(kit.name).basic(
+					"!").toString(), null, 10, 80, 10)
+		}
 	}
 
 	fun hasKit(kit: Kit): Boolean = player.hasPermission("dkits.kit." + kit.name.toLowerCase())
@@ -395,7 +403,6 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 			warpTask = Tasks.sync(Runnable { sendToWarp(warp, true, announce) }, ticks)
 
 			player.sendMessage(Text.neutralPrefix().basic("Você será teleportado em ").neutral(seconds).basic(" segundo(s), ").neutral("não").basic(" se ").neutral("mova").basic("!").toString())
-			//TODO: Titles/subtitles for 1.8+ players
 		}
 	}
 

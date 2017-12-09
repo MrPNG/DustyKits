@@ -51,6 +51,7 @@ object Listeners {
 		LISTENERS.add(ServerListPingListener)
 		LISTENERS.add(SignChangeListener)
 		LISTENERS.add(WeatherChangeListener)
+		LISTENERS.add(WorldLoadListener)
 
 		//Quit
 		LISTENERS.add(PlayerQuitListener)

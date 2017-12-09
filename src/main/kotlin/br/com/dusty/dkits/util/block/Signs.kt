@@ -27,7 +27,6 @@ fun Sign.interact(player: Player) {
 			}
 		}
 		"Créditos" -> {
-			//TODO: Send player back to where they came from
 			val amount = getLine(2).substring(3).toIntOrNull() ?: 0
 
 			gamer.addMoney(amount.toDouble())
@@ -36,7 +35,6 @@ fun Sign.interact(player: Player) {
 			player.sendMessage(Text.positivePrefix().basic("Você ").positive("ganhou " + amount).basic(" créditos!").toString())
 		}
 		"XP"       -> {
-			//TODO: Send player back to where they came from
 			val amount = getLine(2).substring(3).toIntOrNull() ?: 0
 
 			gamer.addXp(amount.toDouble())
