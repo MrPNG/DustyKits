@@ -4,12 +4,15 @@ import br.com.dusty.dkits.command.PlayerCustomCommand
 import br.com.dusty.dkits.gamer.EnumMode
 import br.com.dusty.dkits.gamer.EnumRank
 import br.com.dusty.dkits.gamer.gamer
+import br.com.dusty.dkits.util.normalize
 import br.com.dusty.dkits.util.text.Text
+import br.com.dusty.dkits.warp.Warp
 import br.com.dusty.dkits.warp.Warps
-import org.bukkit.Location
 import org.bukkit.entity.Player
 
 object LocationCommand: PlayerCustomCommand(EnumRank.ADMIN, "location") {
+
+	val CUSTOM_EXECUTORS = arrayListOf<Warp>()
 
 	override fun execute(sender: Player, alias: String, args: Array<String>): Boolean {
 		val gamer = sender.gamer()
@@ -21,11 +24,12 @@ object LocationCommand: PlayerCustomCommand(EnumRank.ADMIN, "location") {
 				"set"  -> {
 					val warp = Warps[args[1]]
 
-					//TODO: HG lobby and spawn per map; 1v1 individual player spawn in arena
-					when (warp) {
-						Warps.NONE -> sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há uma warp chamada ").negative("\"" + args[1] + "\"").basic("!").toString())
-						else       -> {
-							warp.spawn = Location(sender.location.world, Math.floor(sender.location.x) + 0.5, Math.floor(sender.location.y) + 0.5, Math.floor(sender.location.z) + 0.5)
+					when {
+						warp == Warps.NONE                        -> sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há uma warp chamada ").negative("\"" + args[1] + "\"").basic(
+								"!").toString())
+						warp in CUSTOM_EXECUTORS && args.size > 2 -> warp.setLocation(sender, args.copyOfRange(2, args.size))
+						else                                      -> {
+							warp.spawn = sender.location.normalize()
 
 							sender.sendMessage(Text.positivePrefix().basic("Você ").positive("definiu").basic(" o spawn da warp ").positive(warp.name).basic("!").toString())
 						}
@@ -37,7 +41,6 @@ object LocationCommand: PlayerCustomCommand(EnumRank.ADMIN, "location") {
 					} else {
 						val warp = Warps[args[1]]
 
-						//TODO: HG lobby and spawn per map; 1v1 individual player spawn in arena
 						when (warp) {
 							Warps.NONE -> sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há uma warp chamada ").negative("\"" + args[1] + "\"").basic("!").toString())
 							else       -> {

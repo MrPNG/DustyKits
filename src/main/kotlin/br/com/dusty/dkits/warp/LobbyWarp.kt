@@ -17,18 +17,18 @@ object LobbyWarp: Warp() {
 		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
 		icon.setDescription(description)
 
-		entryKit = LobbyKit()
+		entryKit = Kit(items = arrayOf(GAME_WARP_KIT.items[8],
+		                               null,
+		                               null,
+		                               null,
+		                               null,
+		                               null,
+		                               null,
+		                               null,
+		                               ItemStack(Material.WRITTEN_BOOK).rename(Text.of("Regras").color(TextColor.GOLD).toString())))
 
-		data.spreadRange = 4F
+		data.spreadRange = 4.0
 
 		loadData()
-	}
-
-	private class LobbyKit: Kit() {
-
-		init {
-			//TODO: Rules book
-			items = arrayOf(GameWarpKit.items[8], null, null, null, null, null, null, null, ItemStack(Material.WRITTEN_BOOK).rename(Text.of("Regras").color(TextColor.GOLD).toString()))
-		}
 	}
 }

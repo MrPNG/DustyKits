@@ -33,21 +33,21 @@ object ShopMenu {
 	}
 
 	fun menuShopMain(player: Player): Inventory = Bukkit.createInventory(player, 27, TITLE_MAIN).apply {
-		fill(false)
+		fillBackground(false)
 
 		setItem(11, BUTTON_KITS)
 		setItem(15, BUTTON_ARMOR)
 	}
 
 	fun menuShopKit(player: Player): Inventory = Bukkit.createInventory(player, 27, TITLE_KITS).apply {
-		fill(true)
+		fillBackground(true)
 		fillKits(Kits.KITS.filter { it.data.isEnabled && it.data.price != -1 && player.gamer().hasKit(it) })
 
 		setItem(0, Inventories.BUTTON_BACK)
 	}
 
 	fun menuShopArmor(player: Player): Inventory = Bukkit.createInventory(player, 27, TITLE_ARMOR).apply {
-		fill(true)
+		fillBackground(true)
 		fillArmor(ARMOR.keys.toTypedArray())
 
 		setItem(0, Inventories.BUTTON_BACK)

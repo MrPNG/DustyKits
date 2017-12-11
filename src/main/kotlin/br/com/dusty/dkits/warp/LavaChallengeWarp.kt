@@ -20,7 +20,7 @@ object LavaChallengeWarp: Warp() {
 		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
 		icon.setDescription(description)
 
-		entryKit = LavaChallengeKit
+		entryKit = Kit(isDummy = false)
 
 		loadData()
 	}
@@ -29,14 +29,7 @@ object LavaChallengeWarp: Warp() {
 		gamer.clear()
 		gamer.player.run {
 			fillRecraft()
-			fillSoups()
-		}
-	}
-
-	object LavaChallengeKit: Kit() {
-
-		init {
-			isDummy = false
+			fillSoups(true)
 		}
 	}
 }

@@ -4,20 +4,19 @@ import br.com.dusty.dkits.Main
 import br.com.dusty.dkits.gamer.Gamer
 import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.kit.Kits
-import br.com.dusty.dkits.util.Locations
-import br.com.dusty.dkits.util.Tasks
+import br.com.dusty.dkits.util.*
 import br.com.dusty.dkits.util.inventory.addItemStacks
 import br.com.dusty.dkits.util.inventory.fillRecraft
 import br.com.dusty.dkits.util.inventory.fillSoups
 import br.com.dusty.dkits.util.inventory.setArmor
 import br.com.dusty.dkits.util.protocol.EnumProtocolVersion
-import br.com.dusty.dkits.util.rename
-import br.com.dusty.dkits.util.spread
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
+import org.bukkit.World
+import org.bukkit.entity.Player
 import org.bukkit.event.Listener
 import org.bukkit.inventory.ItemStack
 import java.io.File
@@ -34,21 +33,19 @@ open class Warp: Listener {
 
 	var spawn = Locations.GENERIC
 		get() {
-			if (field == Locations.GENERIC) field = Location(Bukkit.getWorlds()[0], data.spawn[0].toDouble(), data.spawn[1].toDouble(), data.spawn[2].toDouble())
+			if (field == Locations.GENERIC) field = data.spawn.toLocation(Bukkit.getWorlds()[0])
 
 			return field
 		}
 		set(location) {
 			field = location
 
-			data.spawn[0] = location.x.toFloat()
-			data.spawn[1] = location.y.toFloat()
-			data.spawn[2] = location.z.toFloat()
+			data.spawn = location.toSimpleLocation()
 
 			saveData()
 		}
 
-	var entryKit: Kit = Kits.NONE
+	var entryKit: Kit = GAME_WARP_KIT
 	var enabledKits = HashSet<Kit>()
 
 	var hasShop = false
@@ -102,6 +99,16 @@ open class Warp: Listener {
 		printWriter.close()
 	}
 
+	fun loadLocation(world: World, coordinates: Array<Double>) = Location(world, coordinates[0], coordinates[1], coordinates[2])
+
+	fun saveLocation(location: Location, coordinates: Array<Double>) = location.normalize().apply {
+		coordinates[0] = x
+		coordinates[1] = y
+		coordinates[2] = z
+
+		saveData()
+	}
+
 	open fun applyKit(gamer: Gamer, kit: Kit) {
 		gamer.clear()
 		gamer.player.run {
@@ -111,12 +118,14 @@ open class Warp: Listener {
 
 			if (!kit.isDummy) {
 				fillRecraft()
-				fillSoups()
+				fillSoups(true)
 			}
 		}
 	}
 
-	fun receiveGamer(gamer: Gamer, announce: Boolean) {
+	open fun setLocation(player: Player, args: Array<String>) {}
+
+	open fun receiveGamer(gamer: Gamer, announce: Boolean) {
 		val player = gamer.player
 
 		player.teleport(spawn.spread(data.spreadRange))
@@ -135,6 +144,8 @@ open class Warp: Listener {
 		gamer.setKitAndApply(entryKit, false)
 	}
 
+	open fun dispatchGamer(gamer: Gamer) {}
+
 	override fun equals(other: Any?) = when {
 		this === other                -> true
 		javaClass != other?.javaClass -> false
@@ -143,35 +154,6 @@ open class Warp: Listener {
 
 	override fun toString(): String {
 		return "Warp(name='$name')"
-	}
-
-	object GameWarpKit: Kit() {
-
-		init {
-			items = arrayOf(ItemStack(Material.CHEST).rename(Text.of("Kits").color(TextColor.GOLD).toString()),
-			                null,
-			                null,
-			                null,
-			                ItemStack(Material.EMERALD).rename(Text.of("Shop").color(TextColor.GOLD).toString()),
-			                null,
-			                null,
-			                null,
-			                ItemStack(Material.EMPTY_MAP).rename(Text.of("Warps").color(TextColor.GOLD).toString()))
-		}
-	}
-
-	object SimpleGameWarpKit: Kit() {
-
-		init {
-			items = arrayOf(GameWarpKit.items[0], null, null, null, null, null, null, null, GameWarpKit.items[8])
-		}
-	}
-
-	object EventWarpKit: Kit() {
-
-		init {
-			items = arrayOf(null, null, null, null, null, null, null, null, ItemStack(Material.EMPTY_MAP).rename(Text.of("Warps").color(TextColor.GOLD).toString()))
-		}
 	}
 
 	enum class EnumWarpType {
@@ -185,10 +167,32 @@ open class Warp: Listener {
 		BREAK
 	}
 
+	data class SimpleLocation(var x: Double = 0.0, var y: Double = 0.0, var z: Double = 0.0, var yaw: Float = 0F, var pitch: Float = 0F) {
+
+		fun toLocation(world: World) = Location(world, x, y, z, yaw, pitch)
+	}
+
 	open class Data(var isEnabled: Boolean = false,
 	                var isListEnabledKits: Boolean = true,
 	                var kits: Array<String> = arrayOf(),
-	                var spawn: Array<Float> = arrayOf(0F, 0F, 0F),
-	                var spawnRadius: Float = 0F,
-	                var spreadRange: Float = 0F)
+	                var spawn: SimpleLocation = SimpleLocation(),
+	                var spawnRadius: Double = 0.0,
+	                var spreadRange: Double = 0.0)
+
+	companion object {
+
+		val GAME_WARP_KIT = Kit(items = arrayOf(ItemStack(Material.CHEST).rename(Text.of("Kits").color(TextColor.GOLD).toString()),
+		                                        null,
+		                                        null,
+		                                        null,
+		                                        ItemStack(Material.EMERALD).rename(Text.of("Shop").color(TextColor.GOLD).toString()),
+		                                        null,
+		                                        null,
+		                                        null,
+		                                        ItemStack(Material.EMPTY_MAP).rename(Text.of("Warps").color(TextColor.GOLD).toString())))
+
+		val SIMPLE_GAME_WARP_KIT = Kit(items = arrayOf(GAME_WARP_KIT.items[0], null, null, null, null, null, null, null, GAME_WARP_KIT.items[8]))
+
+		val EVENT_WARP_KIT = Kit(items = arrayOf(null, null, null, null, null, null, null, null, GAME_WARP_KIT.items[8]))
+	}
 }

@@ -31,10 +31,10 @@ object EntityDamageByEntityListener: Listener {
 					return
 				}
 
-				gamer.combatTag = 10000L
-				gamer.combatPartner = damager
+				if (gamer.combatTag < 10000L) gamer.combatTag = 10000L
+				if (damager.combatTag < 10000L) damager.combatTag = 10000L
 
-				damager.combatTag = 10000L
+				gamer.combatPartner = damager
 				damager.combatPartner = gamer
 			}
 		}

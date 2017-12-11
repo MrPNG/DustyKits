@@ -1,6 +1,7 @@
 package br.com.dusty.dkits.warp
 
 import br.com.dusty.dkits.Main
+import br.com.dusty.dkits.command.staff.LocationCommand
 import br.com.dusty.dkits.gamer.Gamer
 import br.com.dusty.dkits.gamer.GamerRegistry
 import br.com.dusty.dkits.gamer.gamer
@@ -15,7 +16,7 @@ import br.com.dusty.dkits.util.text.TextColor
 import org.bukkit.Bukkit
 import org.bukkit.FireworkEffect
 import org.bukkit.Location
-import org.bukkit.Material
+import org.bukkit.Material.*
 import org.bukkit.block.Chest
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -26,25 +27,30 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.PlayerDropItemEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemStack
-import org.bukkit.potion.PotionType
+import org.bukkit.potion.PotionType.REGEN
+import org.bukkit.potion.PotionType.SPEED
 import java.util.*
 
 object FeastWarp: Warp() {
 
-	val ALLOWED_ITEMS = arrayOf(Material.EXP_BOTTLE,
-	                            Material.GLASS_BOTTLE,
-	                            Material.POTION,
-	                            Material.BOW,
-	                            Material.ARROW,
-	                            Material.IRON_HELMET,
-	                            Material.IRON_CHESTPLATE,
-	                            Material.IRON_LEGGINGS,
-	                            Material.IRON_BOOTS,
-	                            Material.DIAMOND_HELMET,
-	                            Material.DIAMOND_CHESTPLATE,
-	                            Material.DIAMOND_LEGGINGS,
-	                            Material.DIAMOND_BOOTS,
-	                            Material.DIAMOND_SWORD)
+	val ALLOWED_ITEMS = arrayOf(RED_MUSHROOM,
+	                            BROWN_MUSHROOM,
+	                            MUSHROOM_SOUP,
+	                            BOWL,
+	                            EXP_BOTTLE,
+	                            GLASS_BOTTLE,
+	                            POTION,
+	                            BOW,
+	                            ARROW,
+	                            IRON_HELMET,
+	                            IRON_CHESTPLATE,
+	                            IRON_LEGGINGS,
+	                            IRON_BOOTS,
+	                            DIAMOND_HELMET,
+	                            DIAMOND_CHESTPLATE,
+	                            DIAMOND_LEGGINGS,
+	                            DIAMOND_BOOTS,
+	                            DIAMOND_SWORD)
 
 	val CHEST_REFIL_MESSAGE = Text.positivePrefix().basic("Os ").positive("baús").basic(" foram ").positive("reabastecidos").basic("!").toString()
 
@@ -83,53 +89,45 @@ object FeastWarp: Warp() {
 
 	val CHEST_LOCATIONS: List<Location>
 
-	val CHEST_ITEMS = arrayOf(arrayOf(ItemStack(Material.DIAMOND_HELMET), 1, 0.1, 1),
-	                          arrayOf(ItemStack(Material.DIAMOND_CHESTPLATE), 1, 0.1, 1),
-	                          arrayOf(ItemStack(Material.DIAMOND_LEGGINGS), 1, 0.1, 1),
-	                          arrayOf(ItemStack(Material.DIAMOND_BOOTS), 1, 0.1, 1),
-	                          arrayOf(ItemStack(Material.DIAMOND_SWORD), 1, 0.1, 1),
-	                          arrayOf(ItemStack(Material.BOW), 2, 0.25, 1),
-	                          arrayOf(ItemStack(Material.ARROW), 2, 0.25, 16),
-	                          arrayOf(ItemStack(Material.EXP_BOTTLE), 2, 0.5, 8),
-	                          arrayOf(ItemStacks.potions(1, false, false, PotionType.SPEED, false), 1, 0.15, 1),
-	                          arrayOf(ItemStacks.potions(1, true, false, PotionType.SPEED, false), 1, 0.1, 1),
-	                          arrayOf(ItemStacks.potions(1, false, true, PotionType.SPEED, false), 1, 0.1, 1),
-	                          arrayOf(ItemStacks.potions(1, false, false, PotionType.REGEN, false), 1, 0.15, 1),
-	                          arrayOf(ItemStacks.potions(1, true, false, PotionType.REGEN, false), 1, 0.1, 1),
-	                          arrayOf(ItemStacks.potions(1, false, true, PotionType.REGEN, false), 1, 0.1, 1))
+	val CHEST_ITEMS = arrayOf(arrayOf(ItemStack(DIAMOND_HELMET), 1, 0.1, 1),
+	                          arrayOf(ItemStack(DIAMOND_CHESTPLATE), 1, 0.1, 1),
+	                          arrayOf(ItemStack(DIAMOND_LEGGINGS), 1, 0.1, 1),
+	                          arrayOf(ItemStack(DIAMOND_BOOTS), 1, 0.1, 1),
+	                          arrayOf(ItemStack(DIAMOND_SWORD), 1, 0.1, 1),
+	                          arrayOf(ItemStack(BOW), 2, 0.25, 1),
+	                          arrayOf(ItemStack(ARROW), 2, 0.25, 16),
+	                          arrayOf(ItemStack(EXP_BOTTLE), 2, 0.5, 8),
+	                          arrayOf(ItemStacks.potions(1, false, false, SPEED, false), 1, 0.15, 1),
+	                          arrayOf(ItemStacks.potions(1, true, false, SPEED, false), 1, 0.1, 1),
+	                          arrayOf(ItemStacks.potions(1, false, true, SPEED, false), 1, 0.1, 1),
+	                          arrayOf(ItemStacks.potions(1, false, false, REGEN, false), 1, 0.15, 1),
+	                          arrayOf(ItemStacks.potions(1, true, false, REGEN, false), 1, 0.1, 1),
+	                          arrayOf(ItemStacks.potions(1, false, true, REGEN, false), 1, 0.1, 1))
 
 	var enchantmentTable = Locations.GENERIC
 		get() {
-			if (field == Locations.GENERIC && data is FeastData) {
-				val data = (data as FeastData)
-
-				field = Location(Bukkit.getWorlds()[0], data.enchantmentTable[0].toDouble(), data.enchantmentTable[1].toDouble(), data.enchantmentTable[2].toDouble())
-			}
+			if (field == Locations.GENERIC && data is FeastData) field = (data as FeastData).enchantmentTable.toLocation(Bukkit.getWorlds()[0])
 
 			return field
 		}
 		set(location) {
-			field = location
-
 			if (data is FeastData) {
-				(data as FeastData).run {
-					enchantmentTable[0] = location.x.toFloat()
-					enchantmentTable[1] = location.y.toFloat()
-					enchantmentTable[2] = location.z.toFloat()
-				}
-			}
+				field = location
 
-			saveData()
+				(data as FeastData).enchantmentTable = location.toSimpleLocation()
+
+				saveData()
+			}
 		}
 
 	init {
 		name = "Feast"
-		icon = ItemStack(Material.CHEST)
+		icon = ItemStack(CHEST)
 
 		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
 		icon.setDescription(description)
 
-		entryKit = SimpleGameWarpKit
+		entryKit = SIMPLE_GAME_WARP_KIT
 
 		hasShop = true
 
@@ -139,12 +137,14 @@ object FeastWarp: Warp() {
 
 		loadData()
 
+		LocationCommand.CUSTOM_EXECUTORS.add(this)
+
 		Tasks.sync(Runnable {
 			fillChests()
 			GamerRegistry.onlineGamers().filter { it.warp == this }.forEach {
 				it.player.sendMessage(CHEST_REFIL_MESSAGE)
 			}
-		}, 0L, 1200L)
+		}, 0L, 6000L)
 
 		CHEST_LOCATIONS = CHEST_POSITIONS.map { enchantmentTable.clone().add(it[0], it[1], it[2]) }
 	}
@@ -173,8 +173,8 @@ object FeastWarp: Warp() {
 		val gamer = player.gamer()
 
 		if (gamer.warp == this) when {
-			event.action == Action.RIGHT_CLICK_BLOCK && event.clickedBlock.type == Material.CHEST -> player.openInventory((event.clickedBlock.state as Chest).blockInventory)
-			event.item != null && event.item.type in ALLOWED_ITEMS                                -> event.isCancelled = false
+			event.action == Action.RIGHT_CLICK_BLOCK && event.clickedBlock.type == CHEST -> player.openInventory((event.clickedBlock.state as Chest).blockInventory)
+			event.item == null || event.item.type in ALLOWED_ITEMS                       -> event.isCancelled = false
 		}
 	}
 
@@ -187,7 +187,7 @@ object FeastWarp: Warp() {
 	}
 
 	fun fillChests() {
-		CHEST_LOCATIONS.filter { it.block.type == Material.CHEST }.forEach {
+		CHEST_LOCATIONS.filter { it.block.type == CHEST }.forEach {
 			val items = ArrayList<ItemStack?>(27)
 
 			CHEST_ITEMS.forEach {
@@ -220,11 +220,21 @@ object FeastWarp: Warp() {
 			if (!kit.isDummy) {
 				inventory.setItem(0, if (kit == Kits.PVP) Inventories.DIAMOND_SWORD_SHARPNESS else Inventories.DIAMOND_SWORD)
 				fillRecraft()
-				fillSoups()
+				fillSoups(true)
 				setArmor(Inventories.ARMOR_FULL_IRON)
 			}
 		}
 	}
 
-	data class FeastData(var enchantmentTable: Array<Float> = arrayOf(0F, 0F, 0F)): Data()
+	override fun setLocation(player: Player, args: Array<String>) {
+		when (args[0]) {
+			"enchantmentTable" -> {
+				enchantmentTable = player.location.normalize()
+
+				player.sendMessage(Text.positivePrefix().basic("Você ").positive("definiu").basic(" o local da ").positive("mesa de encantamentos").basic(" da warp ").positive(name).basic("!").toString())
+			}
+		}
+	}
+
+	data class FeastData(var enchantmentTable: SimpleLocation = SimpleLocation()): Data()
 }

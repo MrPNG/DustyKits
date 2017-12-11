@@ -111,4 +111,8 @@ class Clan(val primitiveClan: PrimitiveClan) {
 	}
 
 	override fun hashCode() = uuid.hashCode()
+
+	override fun toString(): String {
+		return "Clan(uuid='$uuid', leader=$leader, onlineMembers=$onlineMembers)"
+	}
 }

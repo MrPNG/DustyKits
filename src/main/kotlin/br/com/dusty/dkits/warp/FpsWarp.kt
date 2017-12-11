@@ -16,8 +16,6 @@ object FpsWarp: Warp() {
 		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
 		icon.setDescription(description)
 
-		entryKit = GameWarpKit
-
 		hasShop = true
 
 		loadData()

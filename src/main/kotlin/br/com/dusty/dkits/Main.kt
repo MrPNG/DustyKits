@@ -6,7 +6,6 @@ import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.listener.Listeners
 import br.com.dusty.dkits.warp.Warps
 import com.comphenix.protocol.ProtocolLibrary
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin

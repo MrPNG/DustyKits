@@ -5,3 +5,5 @@ import br.com.dusty.dkits.Main
 fun Long.millisToSeconds() = Math.round((this - System.currentTimeMillis()) / 1000.0)
 
 fun Double.chances() = Main.RANDOM.nextFloat() < this
+
+fun Int.round(divider: Double) = Math.round(this / divider) * divider

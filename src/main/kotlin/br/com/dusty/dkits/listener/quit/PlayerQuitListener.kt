@@ -21,10 +21,12 @@ object PlayerQuitListener: Listener {
 
 		GamerRegistry.GAMER_BY_PLAYER.remove(player)?.run {
 			if (isCombatTagged()) {
-				combatPartner?.kill(this)
+				Bukkit.broadcastMessage(Text.negativePrefix().negative(player.displayName.clearFormatting()).basic(" deslogou em ").negative("combate").basic("!").toString())
 
-				Bukkit.broadcastMessage(Text.negativeOf(player.displayName.clearFormatting()).basic(" deslogou em ").negative("combate").basic("!").toString())
+				combatPartner?.kill(this)
 			}
+
+			warp.dispatchGamer(this)
 
 			//TODO: Reactivate Web API
 //			if(Main.serverStatus == EnumServerStatus.ONLINE) Tasks.async(Runnable { WebAPI.saveProfiles(gamer) })

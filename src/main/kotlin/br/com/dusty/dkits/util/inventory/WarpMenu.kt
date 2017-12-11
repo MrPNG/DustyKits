@@ -21,21 +21,21 @@ object WarpMenu {
 	val BUTTON_EVENT = ItemStack(Material.CAKE).rename(TITLE_EVENT)
 
 	fun menuWarpMain(player: Player): Inventory = Bukkit.createInventory(player, 27, TITLE_MAIN).apply {
-		fill(false)
+		fillBackground(false)
 
 		setItem(11, BUTTON_GAME)
 		setItem(15, BUTTON_EVENT)
 	}
 
 	fun menuWarpGame(player: Player): Inventory = Bukkit.createInventory(player, 27, TITLE_GAME).apply {
-		fill(true)
+		fillBackground(true)
 		fillWarps(Warps.WARPS.filter { it.type == Warp.EnumWarpType.GAME && it.data.isEnabled })
 
 		setItem(0, Inventories.BUTTON_BACK)
 	}
 
 	fun menuWarpEvent(player: Player): Inventory = Bukkit.createInventory(player, 27, TITLE_EVENT).apply {
-		fill(true)
+		fillBackground(true)
 		fillWarps(Warps.WARPS.filter { it.type == Warp.EnumWarpType.EVENT && it.data.isEnabled })
 
 		setItem(0, Inventories.BUTTON_BACK)

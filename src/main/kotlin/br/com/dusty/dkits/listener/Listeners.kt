@@ -35,7 +35,6 @@ object Listeners {
 		LISTENERS.add(EntityDamageByEntityListener)
 		LISTENERS.add(PlayerDeathListener)
 		LISTENERS.add(PlayerInteractListener)
-		LISTENERS.add(br.com.dusty.dkits.listener.gameplay.PlayerMoveListener)
 
 		//Mechanincs
 		LISTENERS.add(AsyncPlayerChatListener)
@@ -47,7 +46,7 @@ object Listeners {
 		LISTENERS.add(LeavesDecayListener)
 		LISTENERS.add(PlayerDropItemListener)
 		LISTENERS.add(PlayerInteractEntityListener)
-		LISTENERS.add(br.com.dusty.dkits.listener.mechanics.PlayerMoveListener)
+		LISTENERS.add(PlayerMoveListener)
 		LISTENERS.add(ServerListPingListener)
 		LISTENERS.add(SignChangeListener)
 		LISTENERS.add(WeatherChangeListener)

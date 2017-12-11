@@ -24,7 +24,7 @@ object ReportCommand: PlayerCustomCommand(EnumRank.DEFAULT, "report") {
 					player.playSound(player.location, Sound.ENTITY_CHICKEN_HURT, 10F, 1F)
 					player.sendMessage(Text.negativePrefix().basic("[").negative("Report").basic("]: \n").negative("Jogador").basic(": " + player.name + "\n").negative("Motivo").basic(": " + args.copyOfRange(
 							0,
-							args.lastIndex).joinToString(separator = " ")).toString())
+							args.size).joinToString(separator = " ")).toString())
 				}
 			}
 		}

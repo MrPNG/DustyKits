@@ -12,22 +12,16 @@ import java.io.File
 import java.io.FileReader
 import java.io.PrintWriter
 
-open class Kit {
-
-	var name = "None"
-	var description = ""
-	var icon = ItemStack(Material.STONE_SWORD)
-
-	var weapon: ItemStack? = null
-	var armor = arrayOf<ItemStack?>(null, null, null, null)
-	var items = arrayOf<ItemStack?>()
-
-	var ability = Ability()
-
-	var isDummy = true
-	var isBroadcast = false
-
-	var data = Data()
+open class Kit(var name: String = "None",
+               var description: String = "",
+               var icon: ItemStack = ItemStack(Material.STONE_SWORD),
+               var weapon: ItemStack? = null,
+               var armor: Array<ItemStack?> = arrayOf(null, null, null, null),
+               var items: Array<ItemStack?> = arrayOf(),
+               var ability: Ability = Ability(),
+               var isDummy: Boolean = true,
+               var isBroadcast: Boolean = false,
+               var data: Data = Data()) {
 
 	//TODO: If not on MiniHG
 	fun isAllowed(gamer: Gamer, announce: Boolean): Boolean = when {

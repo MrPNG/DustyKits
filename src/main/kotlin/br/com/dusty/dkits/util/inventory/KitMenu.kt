@@ -25,7 +25,7 @@ object KitMenu {
 		val gamer = player.gamer()
 
 		return Bukkit.createInventory(player, 54, TITLE_OWNED).apply {
-			fill(false)
+			fillBackground(false)
 			fillKits(Kits.KITS.filter { (gamer.hasKit(it) && it.data.isEnabled && it in gamer.warp.enabledKits) || gamer.mode == EnumMode.ADMIN })
 
 			setItem(8, BUTTON_OTHER)
@@ -36,7 +36,7 @@ object KitMenu {
 		val gamer = player.gamer()
 
 		return Bukkit.createInventory(player, 54, TITLE_OTHER).apply {
-			fill(false)
+			fillBackground(false)
 			fillKits(Kits.KITS.filter { !gamer.hasKit(it) && it.data.isEnabled && it in gamer.warp.enabledKits })
 
 			setItem(0, BUTTON_OWNED)

@@ -3,13 +3,13 @@ package br.com.dusty.dkits.command.gameplay
 import br.com.dusty.dkits.clan.Clan
 import br.com.dusty.dkits.clan.PrimitiveClan
 import br.com.dusty.dkits.command.PlayerCustomCommand
+import br.com.dusty.dkits.gamer.EnumChat
 import br.com.dusty.dkits.gamer.EnumRank
 import br.com.dusty.dkits.gamer.gamer
 import br.com.dusty.dkits.util.addUuidDashes
 import br.com.dusty.dkits.util.clearFormatting
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.web.MojangAPI
-import br.com.dusty.dkits.util.web.WebAPI
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import io.reactivex.Observable
@@ -27,7 +27,8 @@ object ClanCommand: PlayerCustomCommand(EnumRank.DEFAULT, "clan") {
 	                   Text.positivePrefix().basic("/clan ").positive("convidar <nomeDoJogador>").basic(": Convidar um jogador para o seu clan").toString(),
 	                   Text.positivePrefix().basic("/clan ").positive("aceitar <nomeDoLider>").basic(": Aceitar um convite feito por um líder de um clan").toString(),
 	                   Text.positivePrefix().basic("/clan ").positive("remover <nomeDoJogador>").basic(": Remover um jogador do seu clan").toString(),
-	                   Text.positivePrefix().basic("/clan ").positive("sair").basic(": Sair do seu clan atual").toString()).joinToString(separator = "\n")
+	                   Text.positivePrefix().basic("/clan ").positive("sair").basic(": Sair do seu clan atual").toString(),
+	                   Text.positivePrefix().basic("/clan ").positive("chat").basic(": Entrar no/Sair do chat do seu clan").toString()).joinToString(separator = "\n")
 
 	val USAGE = Text.negativePrefix().basic("Para informações sobre esse comando, use /clan ").negative("help").toString()
 	val WAIT_MORE = Text.negativePrefix().basic("Você deve ").negative("aguardar").basic(" para ").negative("usar").basic(" esse comando ").negative("novamente").basic("!").toString()
@@ -85,7 +86,7 @@ object ClanCommand: PlayerCustomCommand(EnumRank.DEFAULT, "clan") {
 						args.size < 3          -> sender.sendMessage(USAGE_CREATE)
 						sender in AWAITING_API -> sender.sendMessage(WAIT_MORE)
 						else                   -> {
-							val name = args.copyOfRange(1, args.lastIndex).joinToString(separator = " ")
+							val name = args.copyOfRange(1, args.size - 1).joinToString(separator = " ")
 							val tag = args.last().toUpperCase()
 
 							when {
@@ -98,7 +99,7 @@ object ClanCommand: PlayerCustomCommand(EnumRank.DEFAULT, "clan") {
 									AWAITING_API.add(sender)
 
 									val onNext = Consumer<Clan> {
-										WebAPI.saveClans(clan)
+										//										WebAPI.saveClans(clan)
 
 										gamer.clan = clan
 
@@ -144,7 +145,7 @@ object ClanCommand: PlayerCustomCommand(EnumRank.DEFAULT, "clan") {
 											val onNext = Consumer<Clan> {
 												clan.leader = invitedGamer
 
-												WebAPI.saveClans(clan)
+//												WebAPI.saveClans(clan)
 
 												sender.sendMessage(Text.positivePrefix().basic("Você ").basic("promoveu").basic(" o jogador ").positive(player.displayName.clearFormatting()).basic(
 														" como líder do seu ").positive("clan").basic("!").toString())
@@ -198,9 +199,10 @@ object ClanCommand: PlayerCustomCommand(EnumRank.DEFAULT, "clan") {
 
 											player.sendMessage(Text.positivePrefix().basic("Você foi ").basic("convidado").basic(" pelo jogador ").positive(sender.displayName.clearFormatting()).basic(
 													" para se juntar ao clan ").positive(clan.name).basic(" (").positive(clan.tag).basic(")!").toString())
-											player.sendMessage(Text.positivePrefix().basic("Use o comando ").basic("/clan aceitar").basic(" para ").positive("aceitar").basic(" o convite!").toString())
+											player.sendMessage(Text.positivePrefix().basic("Use o comando ").positive("/clan aceitar " + sender.name).basic(" para ").positive("aceitar").basic(
+													" o convite!").toString())
 
-											INVITATIONS.put(player, ClanInvitation(player, clan, System.currentTimeMillis() + 60000L))
+											INVITATIONS.put(sender, ClanInvitation(player, clan, System.currentTimeMillis() + 60000L))
 										}
 									}
 								}
@@ -233,7 +235,7 @@ object ClanCommand: PlayerCustomCommand(EnumRank.DEFAULT, "clan") {
 												sender.sendMessage(NOT_IN_CLAN)
 											} else {
 												clan.remove(uuid)
-												WebAPI.saveClans(clan)
+//												WebAPI.saveClans(clan)
 
 												sender.sendMessage(Text.negativePrefix().basic("Você ").negative("removeu").basic(" o jogador ").negative(profile.name).basic(" do seu ").negative(
 														"clan").basic("!").toString())
@@ -262,10 +264,10 @@ object ClanCommand: PlayerCustomCommand(EnumRank.DEFAULT, "clan") {
 
 										val onNext = Consumer<Clan> {
 											removedGamer.clan = null
-											WebAPI.saveProfiles(gamer)
+//											WebAPI.saveProfiles(gamer)
 
 											clan.remove(gamer)
-											WebAPI.saveClans(clan)
+//											WebAPI.saveClans(clan)
 
 											player.sendMessage(Text.negativePrefix().basic("Você foi ").negative("removido").basic(" do clan ").negative(clan.name).basic(" (").negative(clan.tag).basic(
 													")!").toString())
@@ -306,6 +308,8 @@ object ClanCommand: PlayerCustomCommand(EnumRank.DEFAULT, "clan") {
 
 									if (clanInvitation == null) {
 										sender.sendMessage(NO_INVITATIONS)
+
+										INVITATIONS.forEach { key, value -> Bukkit.broadcastMessage("Key: ${key.name}; Value: $value") } //TODO: Debug only
 									} else {
 										val clan = clanInvitation.clan
 
@@ -317,16 +321,18 @@ object ClanCommand: PlayerCustomCommand(EnumRank.DEFAULT, "clan") {
 
 												val onNext = Consumer<Clan> {
 													gamer.clan = clan
-													WebAPI.saveProfiles(gamer)
+//													WebAPI.saveProfiles(gamer)
 
 													clan.add(gamer)
-													WebAPI.saveClans(clan)
+//													WebAPI.saveClans(clan)
 
 													sender.sendMessage(Text.positivePrefix().basic("Você ").positive("entrou").basic(" para o clan ").positive(clan.name).basic(" (").positive(
 															clan.tag).basic(")!").toString())
 
 													clan.leader?.player?.sendMessage(Text.positivePrefix().basic("O jogador ").positive(sender.name).basic(" entrou para o seu ").positive("clan").basic(
 															"!").toString())
+
+													INVITATIONS.forEach { key, value -> if (key == player && value.player == sender) INVITATIONS.remove(key, value) }
 
 													AWAITING_API.remove(sender)
 												}
@@ -358,10 +364,10 @@ object ClanCommand: PlayerCustomCommand(EnumRank.DEFAULT, "clan") {
 
 							val onNext = Consumer<Clan> {
 								gamer.clan = null
-								WebAPI.saveProfiles(gamer)
+//								WebAPI.saveProfiles(gamer)
 
 								clan.remove(gamer)
-								WebAPI.saveClans(clan)
+//								WebAPI.saveClans(clan)
 
 								sender.sendMessage(Text.negativePrefix().basic("Você ").negative("saiu").basic(" do clan ").negative(clan.name).basic(" (").negative(clan.tag).basic(")!").toString())
 
@@ -379,6 +385,23 @@ object ClanCommand: PlayerCustomCommand(EnumRank.DEFAULT, "clan") {
 							Observable.just(clan).subscribeOn(Schedulers.io()).subscribe(onNext, onError)
 						}
 					}
+
+				}
+				"chat"     -> {
+					when {
+						gamer.clan == null          -> sender.sendMessage(HAS_NO_CLAN)
+						gamer.chat != EnumChat.CLAN -> {
+							gamer.chat = EnumChat.CLAN
+
+							sender.sendMessage(Text.positivePrefix().basic("Agora você ").positive("está").basic(" no chat do seu ").positive("clan").basic("!").toString())
+						}
+						else                        -> {
+							gamer.chat = EnumChat.NORMAL
+
+							sender.sendMessage(Text.negativePrefix().basic("Agora você ").negative("não").basic(" está mais no chat do seu ").negative("clan").basic("!").toString())
+						}
+					}
+
 				}
 				else       -> sender.sendMessage(USAGE)
 			}
@@ -409,6 +432,10 @@ object ClanCommand: PlayerCustomCommand(EnumRank.DEFAULT, "clan") {
 			result = 31 * result + clan.hashCode()
 
 			return result
+		}
+
+		override fun toString(): String {
+			return "ClanInvitation(player=$player, clan=$clan, expiresOn=$expiresOn)"
 		}
 	}
 }

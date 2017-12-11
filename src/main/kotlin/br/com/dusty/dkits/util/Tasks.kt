@@ -2,6 +2,7 @@ package br.com.dusty.dkits.util
 
 import br.com.dusty.dkits.Main
 import org.bukkit.Bukkit
+import org.bukkit.scheduler.BukkitRunnable
 import org.bukkit.scheduler.BukkitTask
 
 object Tasks {
@@ -17,4 +18,16 @@ object Tasks {
 	fun async(runnable: Runnable, delay: Long): BukkitTask = Bukkit.getScheduler().runTaskLaterAsynchronously(Main.INSTANCE, runnable, delay)
 
 	fun async(runnable: Runnable, delay: Long, period: Long): BukkitTask = Bukkit.getScheduler().runTaskTimerAsynchronously(Main.INSTANCE, runnable, delay, period)
+
+	fun sync(runnable: BukkitRunnable): BukkitTask = runnable.runTask(Main.INSTANCE)
+
+	fun sync(runnable: BukkitRunnable, delay: Long): BukkitTask = runnable.runTaskLater(Main.INSTANCE, delay)
+
+	fun sync(runnable: BukkitRunnable, delay: Long, period: Long): BukkitTask = runnable.runTaskTimer(Main.INSTANCE, delay, period)
+
+	fun async(runnable: BukkitRunnable): BukkitTask = runnable.runTaskAsynchronously(Main.INSTANCE)
+
+	fun async(runnable: BukkitRunnable, delay: Long): BukkitTask = runnable.runTaskLaterAsynchronously(Main.INSTANCE, delay)
+
+	fun async(runnable: BukkitRunnable, delay: Long, period: Long): BukkitTask = runnable.runTaskTimerAsynchronously(Main.INSTANCE, delay, period)
 }

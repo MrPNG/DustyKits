@@ -57,9 +57,9 @@ object PlayerInteractListener: Listener {
 						}
 					}
 				}
-				CHEST         -> if (this == Warp.GameWarpKit.items[0]) player.openInventory(KitMenu.menuKitOwned(player))
-				EMERALD       -> if (this == Warp.GameWarpKit.items[4]) player.openInventory(ShopMenu.menuShopMain(player))
-				EMPTY_MAP     -> if (this == Warp.GameWarpKit.items[8]) player.openInventory(WarpMenu.menuWarpMain(player))
+				CHEST         -> if (this == Warp.GAME_WARP_KIT.items[0]) player.openInventory(KitMenu.menuKitOwned(player))
+				EMERALD       -> if (this == Warp.GAME_WARP_KIT.items[4]) player.openInventory(ShopMenu.menuShopMain(player))
+				EMPTY_MAP     -> if (this == Warp.GAME_WARP_KIT.items[8]) player.openInventory(WarpMenu.menuWarpMain(player))
 			}
 		}
 	}

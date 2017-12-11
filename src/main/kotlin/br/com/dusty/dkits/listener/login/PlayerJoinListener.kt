@@ -44,7 +44,7 @@ object PlayerJoinListener: Listener {
 			} else {
 				BossBars.MAIN.send(player)
 
-				player.sendMessage("\n" + Text.of("Bem vindo ao ").color(TextColor.RED).append("Dusty").color(TextColor.GOLD).append("!").color(TextColor.RED).toString() + "\n" + Text.basicOf(
+				player.sendMessage("\n" + Text.of("Bem vindo ao ").color(TextColor.RED).append("Dusty").color(TextColor.GOLD).append("!").color(TextColor.RED).toString() + "\n\n" + Text.basicOf(
 						"Escolha uma warp e divirta-se, ").append(player.name).color(TextColor.GOLD).basic("!").toString() + "\n")
 			}
 
@@ -64,7 +64,7 @@ object PlayerJoinListener: Listener {
 					else                                 -> gamer.mode = EnumMode.ADMIN
 				}
 
-				GamerRegistry.onlineGamers().filter { gamer.rank.isLowerThan(it.visibleTo) }.forEach { player.hidePlayer(it.player) }
+				gamer.hidePlayers()
 			})
 		}
 	}

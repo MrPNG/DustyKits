@@ -9,7 +9,7 @@ fun Player.gamer() = GamerRegistry.gamer(this)
 object GamerRegistry {
 
 	val PRIMITIVE_GAMER_BY_UUID = HashMap<UUID, PrimitiveGamer>()
-	val GAMER_BY_PLAYER = LinkedHashMap<Player, Gamer>()
+	val GAMER_BY_PLAYER = linkedMapOf<Player, Gamer>()
 
 	fun onlineGamers() = GAMER_BY_PLAYER.values
 

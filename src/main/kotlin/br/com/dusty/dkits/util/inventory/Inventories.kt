@@ -34,7 +34,7 @@ fun Player.setArmor(itemStacks: Array<ItemStack?>) {
 	}
 }
 
-fun Inventory.fill(backButton: Boolean): Inventory {
+fun Inventory.fillBackground(backButton: Boolean): Inventory {
 	for (i in 0 until this.size) this.setItem(i, Inventories.BACKGROUND)
 
 	if (backButton) this.setItem(0, Inventories.BUTTON_BACK)
@@ -47,8 +47,8 @@ fun Player.openInventory(player: Player) {
 	sendMessage(Text.positivePrefix().basic("Você está ").positive("vendo").basic(" o inventário de ").positive(player.name).toString())
 }
 
-fun Player.fillSoups(): Inventory {
-	(0 .. 35).filter { inventory.getItem(it) == null }.forEach { inventory.setItem(it, Inventories.SOUP) }
+fun Player.fillSoups(fullInventory: Boolean): Inventory {
+	(0 .. (if (fullInventory) 35 else 8)).filter { inventory.getItem(it) == null }.forEach { inventory.setItem(it, Inventories.SOUP) }
 
 	return inventory
 }

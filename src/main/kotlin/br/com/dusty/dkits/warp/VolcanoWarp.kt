@@ -35,7 +35,7 @@ object VolcanoWarp: Warp() {
 		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
 		icon.setDescription(description)
 
-		entryKit = VolcanoKit
+		entryKit = Kit(weapon = ItemStack(Material.WOOD_SWORD), armor = arrayOf(null, ItemStack(Material.LEATHER_CHESTPLATE), null, null), isDummy = false)
 
 		durabilityBehavior = EnumDurabilityBehavior.REGEN_ON_KILL
 
@@ -93,15 +93,5 @@ object VolcanoWarp: Warp() {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	fun onEntityDamage(event: EntityDamageEvent) {
 		if (event.cause == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION && event.entity is Player && (event.entity as Player).gamer().warp == this) event.isCancelled = true
-	}
-
-	object VolcanoKit: Kit() {
-
-		init {
-			weapon = ItemStack(Material.WOOD_SWORD)
-			armor = arrayOf(null, ItemStack(Material.LEATHER_CHESTPLATE), null, null)
-
-			isDummy = false
-		}
 	}
 }

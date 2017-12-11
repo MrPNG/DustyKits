@@ -1,7 +1,8 @@
 package br.com.dusty.dkits.command
 
 import br.com.dusty.dkits.command.gameplay.*
-import br.com.dusty.dkits.command.overwrite.*
+import br.com.dusty.dkits.command.overwrite.StopCommand
+import br.com.dusty.dkits.command.overwrite.TellCommand
 import br.com.dusty.dkits.command.staff.*
 import java.util.*
 

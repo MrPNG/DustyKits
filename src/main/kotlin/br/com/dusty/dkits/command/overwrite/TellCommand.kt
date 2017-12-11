@@ -29,7 +29,7 @@ object TellCommand: PlayerCustomCommand(EnumRank.DEFAULT, "tell", "msg", "w", "r
 						gamer.chatPartner = partner
 						partner.chatPartner = gamer
 
-						val message = args.copyOfRange(1, args.lastIndex + 1).joinToString(separator = " ")
+						val message = args.copyOfRange(1, args.size).joinToString(separator = " ")
 
 						sender.sendMessage(Text.basicOf("[" + sender.displayName.clearFormatting() + " -> " + player.displayName.clearFormatting() + "] " + message).toString())
 						player.sendMessage(Text.basicOf("[" + player.displayName.clearFormatting() + " <- " + sender.displayName.clearFormatting() + "] " + message).toString())
@@ -51,7 +51,7 @@ object TellCommand: PlayerCustomCommand(EnumRank.DEFAULT, "tell", "msg", "w", "r
 					else                                                              -> {
 						val player = gamer.chatPartner!!.player
 
-						val message = args.copyOfRange(0, args.lastIndex + 1).joinToString(separator = " ")
+						val message = args.copyOfRange(0, args.size).joinToString(separator = " ")
 
 						//TODO: Ignore implementation
 						sender.sendMessage(Text.basicOf("[" + sender.displayName.clearFormatting() + " -> " + player.displayName.clearFormatting() + "] " + message).toString())
