@@ -2,6 +2,7 @@ package br.com.dusty.dkits.listener.login
 
 import br.com.dusty.dkits.EnumServerStatus
 import br.com.dusty.dkits.Main
+import br.com.dusty.dkits.clan.ClanRegistry
 import br.com.dusty.dkits.gamer.EnumRank
 import br.com.dusty.dkits.gamer.GamerRegistry
 import br.com.dusty.dkits.gamer.gamer
@@ -41,6 +42,18 @@ object PlayerLoginListener: Listener {
 		if (event.result == PlayerLoginEvent.Result.KICK_FULL) {
 			if (gamer.canLogin()) event.allow()
 			else event.disallow(PlayerLoginEvent.Result.KICK_FULL, KICK_FULL_MESSAGE)
+		}
+
+		ClanRegistry.clan(gamer.primitiveGamer.clan)?.run {
+			if (gamer.primitiveGamer.clan in rawMembers) {
+				gamer.clan = this
+
+				onlineMembers.add(gamer)
+
+				if (primitiveClan.leader == player.uniqueId.toString()) leader = gamer
+			} else {
+				gamer.primitiveGamer.clan = ""
+			}
 		}
 	}
 }

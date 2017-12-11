@@ -1,5 +1,6 @@
 package br.com.dusty.dkits.util
 
+import br.com.dusty.dkits.gamer.EnumMode
 import br.com.dusty.dkits.gamer.Gamer
 import br.com.dusty.dkits.gamer.GamerRegistry
 import br.com.dusty.dkits.util.protocol.EnumProtocolVersion
@@ -50,39 +51,34 @@ object Scoreboards {
 		val scoreboard = player.scoreboard
 		clear(scoreboard)
 
-		val objective = scoreboard.getObjective(player.name)
+		val objective = scoreboard.getObjective(player.name) ?: return
 
-		val values: Array<String> = if (gamer.protocolVersion.isGreaterThanOrEquals(EnumProtocolVersion.RELEASE_1_8)) {
-			arrayOf(Text.of(Math.round(gamer.xp)).color(TextColor.YELLOW).toString(),
-			        Text.of(Math.round(gamer.money)).color(TextColor.YELLOW).toString(),
-			        "",
-			        Text.of(gamer.kills).color(TextColor.YELLOW).toString(),
-			        Text.of(gamer.deaths).color(TextColor.YELLOW).toString(),
-			        Text.of(gamer.killStreak).color(TextColor.YELLOW).toString(),
-			        "",
-			        Text.of(gamer.kit.name).color(TextColor.YELLOW).toString(),
-			        Text.of(if (gamer.isCombatTagged()) "Sim" else "Não").color(TextColor.YELLOW).toString(),
-			        Text.of(GamerRegistry.onlineGamers().size).color(TextColor.YELLOW).toString())
+		if (gamer.protocolVersion.isGreaterThanOrEquals(EnumProtocolVersion.RELEASE_1_8)) {
+			val values = arrayOf(Text.of(Math.round(gamer.xp).toInt()).color(TextColor.YELLOW).toString(),
+			                     Text.of(Math.round(gamer.money).toInt()).color(TextColor.YELLOW).toString(),
+			                     "",
+			                     Text.of(gamer.kills).color(TextColor.YELLOW).toString(),
+			                     Text.of(gamer.deaths).color(TextColor.YELLOW).toString(),
+			                     Text.of(gamer.killStreak).color(TextColor.YELLOW).toString(),
+			                     "",
+			                     Text.of(gamer.kit.name).color(TextColor.YELLOW).toString(),
+			                     Text.of(if (gamer.isCombatTagged()) "Sim" else "Não").color(TextColor.YELLOW).toString(),
+			                     Text.of(GamerRegistry.onlineGamers().filter { it.mode != EnumMode.ADMIN }.size).color(TextColor.YELLOW).toString())
 
+			LABELS.indices.filterNot { it == 7 && !gamer.kit.isBroadcast }.forEach { objective.getScore(LABELS[it] + values[it])?.run { score = LABELS.size - it } }
 		} else {
-			arrayOf(ChatColor.YELLOW.toString() + "" + Math.round(gamer.xp),
-			        ChatColor.YELLOW.toString() + "" + Math.round(gamer.money),
-			        "",
-			        ChatColor.YELLOW.toString() + "" + gamer.kills,
-			        ChatColor.YELLOW.toString() + "" + gamer.deaths,
-			        ChatColor.YELLOW.toString() + "" + gamer.killStreak,
-			        "",
-			        ChatColor.YELLOW.toString() + "" + gamer.kit.name,
-			        ChatColor.YELLOW.toString() + "" + if (gamer.isCombatTagged()) "Sim" else "Não",
-			        ChatColor.YELLOW.toString() + "" + GamerRegistry.onlineGamers().size)
-		}
+			val values = arrayOf(ChatColor.YELLOW.toString() + Math.round(gamer.xp),
+			                     ChatColor.YELLOW.toString() + Math.round(gamer.money),
+			                     "",
+			                     ChatColor.YELLOW.toString() + gamer.kills,
+			                     ChatColor.YELLOW.toString() + gamer.deaths,
+			                     ChatColor.YELLOW.toString() + gamer.killStreak,
+			                     "",
+			                     ChatColor.YELLOW.toString() + gamer.kit.name,
+			                     ChatColor.YELLOW.toString() + if (gamer.isCombatTagged()) "Sim" else "Não",
+			                     ChatColor.YELLOW.toString() + GamerRegistry.onlineGamers().filter { it.mode != EnumMode.ADMIN }.size)
 
-		for (i in LABELS.indices) {
-			if (gamer.kit.isDummy && values[i].endsWith("None")) continue
-
-			val score = objective.getScore(LABELS[i] + values[i])
-
-			if (score != null) score.score = LABELS.size - i
+			LABELS_OLD.indices.filterNot { it == 7 && !gamer.kit.isBroadcast }.forEach { objective.getScore(LABELS_OLD[it] + values[it])?.run { score = LABELS_OLD.size - it } }
 		}
 	}
 

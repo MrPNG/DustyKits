@@ -4,15 +4,19 @@ import br.com.dusty.dkits.command.PlayerCustomCommand
 import br.com.dusty.dkits.gamer.EnumRank
 import br.com.dusty.dkits.gamer.gamer
 import br.com.dusty.dkits.kit.Kits
+import br.com.dusty.dkits.util.inventory.ShopMenu
 import br.com.dusty.dkits.util.text.Text
 import org.bukkit.entity.Player
 
 object ShopCommand: PlayerCustomCommand(EnumRank.DEFAULT, "shop") {
 
 	override fun execute(sender: Player, alias: String, args: Array<String>): Boolean {
-		if (args.isEmpty()) {
-			//TODO: Shop
-		} else if (sender.gamer().rank.isHigherThanOrEquals(EnumRank.ADMIN)) {
+		val gamer = sender.gamer()
+
+		if (args.isEmpty() || sender.gamer().rank.isLowerThan(EnumRank.ADMIN)) {
+			if (gamer.warp.hasShop) sender.openInventory(ShopMenu.menuShopMain(sender))
+			else sender.sendMessage(Text.negativePrefix().basic("Esta warp ").negative("não").basic(" permite o uso do ").negative("shop").basic("!").toString())
+		} else {
 			if (args[0] == "set" && args.size > 2) {
 				val kit = Kits[args[0]]
 
@@ -29,7 +33,7 @@ object ShopCommand: PlayerCustomCommand(EnumRank.DEFAULT, "shop") {
 					}
 				}
 			} else {
-				sender.sendMessage(Text.negativePrefix().basic("Uso: /shop ").negative("set").basic(" <kit> <preço>").toString())
+				sender.sendMessage(Text.negativePrefix().basic("Uso: /shop ").negative("set <kit> <preço>").toString())
 			}
 		}
 

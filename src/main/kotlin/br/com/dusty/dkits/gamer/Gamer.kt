@@ -1,20 +1,20 @@
 package br.com.dusty.dkits.gamer
 
+import br.com.dusty.dkits.clan.Clan
 import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.util.Scoreboards
 import br.com.dusty.dkits.util.Tasks
-import br.com.dusty.dkits.util.gamer.Tags
+import br.com.dusty.dkits.util.clearFormatting
 import br.com.dusty.dkits.util.protocol.EnumProtocolVersion
-import br.com.dusty.dkits.util.tab.HeaderFooters
+import br.com.dusty.dkits.util.protocol.HeaderFooters
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.warp.Warp
 import br.com.dusty.dkits.warp.Warps
 import org.bukkit.GameMode
+import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.scheduler.BukkitTask
-
-fun Player.gamer() = Gamer[this]
 
 class Gamer internal constructor(val player: Player, val primitiveGamer: PrimitiveGamer) {
 
@@ -25,17 +25,24 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 	/**
 	 * Menor [EnumRank] que pode ver este jogador.
 	 */
-	var visibleTo = EnumRank.ADMIN
+	var visibleTo = EnumRank.DEFAULT
 		set(visibleTo) {
-			if (field == visibleTo) return
+			if (field == visibleTo) {
+				var text = Text.neutralPrefix().basic("Você já está ").neutral("visível").basic(" apenas para ").append(visibleTo.toString())
+
+				if (visibleTo.hasNext()) text = text.basic(" e acima")
+
+				player.sendMessage(text.basic("!").toString())
+
+				return
+			}
 
 			field = visibleTo
 
-			for (gamer in GamerRegistry.onlineGamers()) if (gamer.rank.isLowerThan(rank)) gamer.player.hidePlayer(player)
-			else gamer.player.showPlayer(player)
+			hideFromPlayers()
 
 			if (rank.isHigherThanOrEquals(EnumRank.MOD)) {
-				var text = Text.basicOf("Agora você está ").positive("visível").basic(" apenas para ").append(visibleTo.toString())
+				var text = Text.neutralPrefix().basic("Agora você está ").neutral("visível").basic(" apenas para ").append(visibleTo.toString())
 
 				if (visibleTo.hasNext()) text = text.basic(" e acima")
 
@@ -43,13 +50,33 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 			}
 		}
 
+	fun shouldSee(gamer: Gamer) = gamer.rank.isHigherThanOrEquals(visibleTo)
+
+	fun hidePlayers() {
+		for (otherGamer in GamerRegistry.onlineGamers()) {
+			val otherPlayer = otherGamer.player
+
+			if (!shouldSee(otherGamer)) player.hidePlayer(otherPlayer)
+			else player.showPlayer(otherPlayer)
+		}
+	}
+
+	fun hideFromPlayers() {
+		for (otherGamer in GamerRegistry.onlineGamers()) {
+			val otherPlayer = otherGamer.player
+
+			if (!otherGamer.shouldSee(this)) otherPlayer.hidePlayer(player)
+			else otherPlayer.showPlayer(player)
+		}
+	}
+
 	var mode = EnumMode.PLAY
 		set(mode) {
 			if (field == mode) return
 
 			field = mode
 
-			player.sendMessage(Text.basicOf("Agora você está no modo ").positive(mode.name).basic("!").toString())
+			player.sendMessage(Text.neutralPrefix().basic("Agora você está no modo ").neutral(mode.name).basic("!").toString())
 
 			when (mode) {
 				EnumMode.PLAY     -> {
@@ -60,7 +87,8 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 
 					visibleTo = EnumRank.DEFAULT
 				}
-				EnumMode.SPECTATE -> { //TODO: Spectator mode
+			//TODO: Spectator mode
+				EnumMode.SPECTATE -> {
 					player.gameMode = GameMode.ADVENTURE
 
 					clear()
@@ -75,9 +103,21 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 
 					visibleTo = rank
 
-					if (isCombatTagged()) combatPartner?.kill(this) else removeCombatTag()
+					if (isCombatTagged()) combatPartner?.kill(this) else removeCombatTag(false)
+
+					warp.dispatchGamer(this)
+					warp = Warps.LOBBY
 				}
 			}
+
+			Scoreboards.update()
+		}
+
+	var clan: Clan? = null
+		set(value) {
+			field = value
+
+			primitiveGamer.clan = value?.uuid ?: ""
 		}
 
 	var chat = EnumChat.NORMAL
@@ -91,10 +131,16 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 		updateScoreboard()
 	}
 
+	var warpKills = 0
+
+	fun addWarpKill() {
+		warpKills++
+	}
+
 	fun addKillMoney() { //TODO: Different money for VIPs
 		addMoney(when {
-			         rank.isHigherThanOrEquals(EnumRank.PRO) -> 100F
-			         else                                    -> 50F
+			         rank.isHigherThanOrEquals(EnumRank.PRO) && rank.isLowerThan(EnumRank.MOD) -> 100.0
+			         else                                                                      -> 50.0
 		         })
 
 		updateScoreboard()
@@ -102,8 +148,8 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 
 	fun addKillXp() {
 		addXp(when {
-			      rank.isHigherThanOrEquals(EnumRank.PRO) -> 20F
-			      else                                    -> 10F
+			      rank.isHigherThanOrEquals(EnumRank.PRO) && rank.isLowerThan(EnumRank.MOD) -> 200.0
+			      else                                                                      -> 100.0
 		      })
 
 		updateScoreboard()
@@ -119,13 +165,13 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 	}
 
 	fun removeDeathMoney() {
-		removeMoney(25F)
+		removeMoney(25.0)
 
 		updateScoreboard()
 	}
 
 	fun removeDeathXp() {
-		removeXp(5F)
+		removeXp(30.0)
 
 		updateScoreboard()
 	}
@@ -135,6 +181,8 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 
 	fun addKillStreak() {
 		primitiveGamer.killStreak++
+
+		if (killStreak > maxKillStreak) maxKillStreak = killStreak
 
 		updateScoreboard()
 	}
@@ -151,49 +199,58 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 			primitiveGamer.maxKillStreak = maxKillStreak
 		}
 
-	val xp: Float
+	val xp: Double
 		get() = primitiveGamer.xp
 
-	fun addXp(amount: Float) {
-		primitiveGamer.xp += amount
+	fun addXp(amount: Double) {
+		primitiveGamer.xp += Math.abs(amount)
 
-		player.sendMessage(Text.positiveOf("+").positive(Math.round(amount)).basic(" XP!").toString())
+		player.sendMessage(Text.positiveOf("+").positive(Math.round(amount).toInt()).basic(" XP!").toString())
 		updateScoreboard()
 	}
 
-	fun removeXp(amount: Float) {
-		primitiveGamer.xp += amount
+	fun removeXp(amount: Double) {
+		primitiveGamer.xp -= Math.abs(amount)
 
-		player.sendMessage(Text.negativeOf("-").negative(Math.round(amount)).basic(" XP!").toString())
+		if (primitiveGamer.xp < 0) primitiveGamer.xp = 0.0
+
+		player.sendMessage(Text.negativeOf("-").negative(Math.round(amount).toInt()).basic(" XP!").toString())
 		updateScoreboard()
 	}
 
-	val money: Float
+	val money: Double
 		get() = primitiveGamer.money
 
-	fun addMoney(amount: Float) {
-		primitiveGamer.money += amount
+	fun addMoney(amount: Double) {
+		primitiveGamer.money += Math.abs(amount)
 
-		player.sendMessage(Text.positiveOf("+").positive(Math.round(amount)).basic(" créditos!").toString())
+		player.sendMessage(Text.positiveOf("+").positive(Math.round(amount).toInt()).basic(" créditos!").toString())
 		updateScoreboard()
 	}
 
-	fun removeMoney(amount: Float) {
-		primitiveGamer.money += amount
+	fun removeMoney(amount: Double) {
+		primitiveGamer.money -= Math.abs(amount)
 
-		player.sendMessage(Text.negativeOf("-").negative(Math.round(amount)).basic(" créditos!").toString())
+		if (primitiveGamer.money < 0) primitiveGamer.money = 0.0
+
+		player.sendMessage(Text.negativeOf("-").negative(Math.round(amount).toInt()).basic(" créditos!").toString())
 		updateScoreboard()
 	}
 
 	fun kill(gamer: Gamer) {
-		player.sendMessage(Text.positivePrefix().basic("Você ").positive("matou").basic(" o jogador ").positive(gamer.player.displayName).basic("!").toString())
+		val killer = gamer.player
+
+		player.playSound(player.location, Sound.BLOCK_ANVIL_LAND, 10F, 1F)
+		player.sendMessage(Text.positivePrefix().basic("Você ").positive("matou").basic(" o jogador ").positive(killer.displayName.clearFormatting()).basic("!").toString())
 
 		addKill()
+		addWarpKill()
 		addKillStreak()
 		addKillMoney()
 		addKillXp()
 
-		gamer.player.sendMessage(Text.negativePrefix().basic("Você ").negative("foi morto").basic(" pelo jogador ").negative(player.displayName).basic("!").toString())
+		killer.playSound(killer.location, Sound.BLOCK_ANVIL_LAND, 10F, 1F)
+		killer.sendMessage(Text.negativePrefix().basic("Você ").negative("foi morto").basic(" pelo jogador ").negative(player.displayName.clearFormatting()).basic("!").toString())
 
 		gamer.addDeath()
 		gamer.resetKillStreak()
@@ -207,11 +264,31 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 			primitiveGamer.hgWins = hgWins
 		}
 
+	fun addHgWin() = hgWins++
+
 	var hgLosses: Int
 		get() = primitiveGamer.hgLosses
 		set(hgLosses) {
 			primitiveGamer.hgLosses = hgLosses
 		}
+
+	fun addHgLoss() = hgLosses++
+
+	var oneVsOneWins: Int
+		get() = primitiveGamer.oneVsOneWins
+		set(oneVsOneWins) {
+			primitiveGamer.oneVsOneWins = oneVsOneWins
+		}
+
+	fun addOneVsOneWin() = oneVsOneWins++
+
+	var oneVsOneLosses: Int
+		get() = primitiveGamer.oneVsOneLosses
+		set(oneVsOneLosses) {
+			primitiveGamer.oneVsOneLosses = oneVsOneLosses
+		}
+
+	fun addOneVsOneLoss() = oneVsOneLosses++
 
 	fun canLogin(): Boolean = player.isOp //TODO: Login on full
 
@@ -233,32 +310,29 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 		invincibility = -1
 	}
 
-	private var freeze: Long = -1
+	var freeze: Long = -1
+		set(period) {
+			field = System.currentTimeMillis() + period
+		}
 
-	val isFrozen: Boolean
-		get() = freeze > System.currentTimeMillis()
-
-	fun freeze(period: Long) {
-		freeze = System.currentTimeMillis() + period
-	}
+	fun isFrozen() = freeze > System.currentTimeMillis()
 
 	fun removeFreeze() {
 		freeze = -1
 	}
 
-	var cooldown: Long = -1
+	var kitCooldown: Long = -1
 		set(period) {
 			field = System.currentTimeMillis() + period
 		}
 
-	fun isOnCooldown() = cooldown > System.currentTimeMillis()
+	fun isOnKitCooldown() = kitCooldown > System.currentTimeMillis()
 
-	fun removeCooldown() {
-		cooldown = -1
+	fun removeKitCooldown() {
+		kitCooldown = -1
 	}
 
 	var signCooldown: Long = -1
-		get() = Math.round(((field - System.currentTimeMillis()) / 1000).toFloat()).toLong()
 		set(period) {
 			field = System.currentTimeMillis() + period
 		}
@@ -273,30 +347,32 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 	var combatTask: BukkitTask? = null
 
 	var combatTag: Long = -1
-		get() = Math.round(((field - System.currentTimeMillis()) / 1000).toFloat()).toLong()
 		set(period) {
-			if (!isCombatTagged()) player.sendMessage(Text.negativePrefix().basic("Você ").negative("entrou").basic(" em ").negative("combate").basic("!").toString())
+			combatTask?.cancel()
 
-			field = System.currentTimeMillis() + period
+			if (period == -1L) {
+				field = period
+			} else {
+				if (!isCombatTagged()) player.sendMessage(Text.negativePrefix().basic("Você ").negative("entrou").basic(" em ").negative("combate").basic("!").toString())
 
-			if (combatTask != null) combatTask!!.cancel()
+				field = System.currentTimeMillis() + period
 
-			combatTask = Tasks.sync(Runnable { this.removeCombatTag() }, 200)
+				combatTask = Tasks.sync(Runnable { if (player.isOnline) removeCombatTag(true) }, period / 50L)
+			}
 
 			updateScoreboard()
 		}
 
 	fun isCombatTagged() = combatTag > System.currentTimeMillis()
 
-	fun removeCombatTag() {
-		player.sendMessage(Text.positivePrefix().basic("Você ").positive("saiu").basic(" de ").positive("combate").basic("!").toString())
+	fun removeCombatTag(announce: Boolean) {
+		if (announce && isCombatTagged()) player.sendMessage(Text.positivePrefix().basic("Você ").positive("saiu").basic(" de ").positive("combate").basic("!").toString())
 
-		combatTag = -1
-
-		if (combatTask != null) combatTask!!.cancel()
-
-		updateScoreboard()
+		combatTag = -1L
 	}
+
+	var chatPartner: Gamer? = null
+	var chatSpies = arrayListOf<Player>()
 
 	var isNoFall: Boolean = false
 
@@ -307,37 +383,49 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 			updateScoreboard()
 		}
 
-	//TODO: Gamer.hasKit()
-	fun hasKit(kit: Kit): Boolean {
-		return true
+	fun setKitAndApply(kit: Kit, announce: Boolean) {
+		this.kit = kit
+
+		warp.applyKit(this, kit)
+
+		if (announce) {
+			player.sendMessage(Text.positivePrefix().basic("Você ").positive("escolheu").basic(" o kit ").positive(kit.name).basic("!").toString())
+			if (protocolVersion.isGreaterThanOrEquals(EnumProtocolVersion.RELEASE_1_8)) player.sendTitle(Text.basicOf("Você ").positive("escolheu").basic(" o kit ").positive(kit.name).basic("!").toString(),
+			                                                                                             null,
+			                                                                                             10,
+			                                                                                             80,
+			                                                                                             10)
+		}
 	}
+
+	fun hasKit(kit: Kit): Boolean = player.hasPermission("dkits.kit." + kit.name.toLowerCase())
 
 	var warp: Warp = Warps.LOBBY
 	var warpTask: BukkitTask? = null
 
-	fun sendToWarp(warp: Warp, announce: Boolean) {
+	fun sendToWarp(warp: Warp, force: Boolean, announce: Boolean) {
 		if (warpTask != null) {
 			warpTask!!.cancel()
 			warpTask = null
 		}
 
-		if (isCombatTagged()) {
-			val ticks = Math.ceil((combatTag - System.currentTimeMillis()) / 50.0).toLong()
-			val seconds = Math.round((ticks / 20).toFloat())
+		if (force || !isCombatTagged()) {
+			warp.dispatchGamer(this)
 
-			warpTask = Tasks.sync(Runnable { sendToWarp(warp, announce) }, ticks)
-
-			player.sendMessage(Text.neutralPrefix().basic("Você será teleportado em ").neutral(seconds).basic(" segundo(s), ").neutral("não").basic(" se ").neutral("mova").basic("!").toString())
-			//TODO: Titles/subtitles for 1.8+ players
-		} else {
-			clear()
+			warp.receiveGamer(this, if (this.warp == warp) false else announce)
 
 			this.warp = warp
-			warp.receiveGamer(this, announce)
 
 			updateScoreboard()
 
 			if (protocolVersion.isGreaterThanOrEquals(EnumProtocolVersion.RELEASE_1_8)) updateHeaderFooter()
+		} else {
+			val ticks = Math.ceil((combatTag - System.currentTimeMillis()) / 50.0).toLong()
+			val seconds = Math.round((ticks / 20).toFloat())
+
+			warpTask = Tasks.sync(Runnable { sendToWarp(warp, true, announce) }, ticks)
+
+			player.sendMessage(Text.neutralPrefix().basic("Você será teleportado em ").neutral(seconds).basic(" segundo(s), ").neutral("não").basic(" se ").neutral("mova").basic("!").toString())
 		}
 	}
 
@@ -350,6 +438,12 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 		player.inventory.clear()
 
 		player.activePotionEffects.forEach { player.removePotionEffect(it.type) }
+
+		removeCombatTag(false)
+		removeKitCooldown()
+		removeSignCooldown()
+
+		warpKills = 0
 	}
 
 	fun fly(fly: Boolean) {
@@ -357,25 +451,7 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 		player.isFlying = fly
 	}
 
-	init {
-		when {
-			rank.isLowerThan(EnumRank.MOD) -> {
-				mode = EnumMode.PLAY
-				visibleTo = EnumRank.DEFAULT
-			}
-			else                           -> {
-				mode = EnumMode.ADMIN
-				visibleTo = rank
-			}
-		}
-
-		GamerRegistry.onlineGamers().filter { rank.isLowerThan(it.visibleTo) }.forEach { player.hidePlayer(it.player) }
-
-		Tags.applyTag(this)
-	}
-
-	companion object {
-
-		operator fun get(player: Player): Gamer = GamerRegistry.gamer(player)
+	override fun toString(): String {
+		return "Gamer(player=$player, rank=$rank, mode=$mode, combatTag=$combatTag, kit=$kit, warp=$warp)"
 	}
 }

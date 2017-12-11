@@ -18,13 +18,13 @@ object Listeners {
 	/**
 	 * [ArrayList] que contém todos os [Listener] a serem/já registrados pelo plugin.
 	 */
-	private val LISTENERS = ArrayList<Listener>()
+	private val LISTENERS = arrayListOf<Listener>()
 
 	/**
 	 * Registra todos os [Listener] da [ArrayList] LISTENERS.
 	 */
 	fun registerAll() {
-		//Usage: LISTENERS.add(FooListener);
+		//Usage: LISTENERS.add(FooListener)
 
 		//Login
 		LISTENERS.add(AsyncPlayerPreLoginListener)
@@ -35,7 +35,6 @@ object Listeners {
 		LISTENERS.add(EntityDamageByEntityListener)
 		LISTENERS.add(PlayerDeathListener)
 		LISTENERS.add(PlayerInteractListener)
-		LISTENERS.add(br.com.dusty.dkits.listener.gameplay.PlayerMoveListener)
 
 		//Mechanincs
 		LISTENERS.add(AsyncPlayerChatListener)
@@ -45,13 +44,13 @@ object Listeners {
 		LISTENERS.add(InventoryClickListener)
 		LISTENERS.add(ItemSpawnListener)
 		LISTENERS.add(LeavesDecayListener)
-		LISTENERS.add(PlayerCommandPreprocessListener)
 		LISTENERS.add(PlayerDropItemListener)
 		LISTENERS.add(PlayerInteractEntityListener)
-		LISTENERS.add(br.com.dusty.dkits.listener.mechanics.PlayerMoveListener)
+		LISTENERS.add(PlayerMoveListener)
 		LISTENERS.add(ServerListPingListener)
 		LISTENERS.add(SignChangeListener)
 		LISTENERS.add(WeatherChangeListener)
+		LISTENERS.add(WorldLoadListener)
 
 		//Quit
 		LISTENERS.add(PlayerQuitListener)

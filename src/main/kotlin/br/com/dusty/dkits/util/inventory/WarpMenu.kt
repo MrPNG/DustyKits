@@ -10,7 +10,6 @@ import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
-import java.util.*
 
 object WarpMenu {
 
@@ -21,54 +20,35 @@ object WarpMenu {
 	val BUTTON_GAME = ItemStack(Material.DIAMOND_SWORD).rename(TITLE_GAME)
 	val BUTTON_EVENT = ItemStack(Material.CAKE).rename(TITLE_EVENT)
 
-	fun menuWarpMain(player: Player): Inventory {
-		val inventory = Bukkit.createInventory(player, 27, TITLE_MAIN)
+	fun menuWarpMain(player: Player): Inventory = Bukkit.createInventory(player, 27, TITLE_MAIN).apply {
+		fillBackground(false)
 
-		inventory.fill(false)
-
-		inventory.setItem(11, BUTTON_GAME)
-		inventory.setItem(15, BUTTON_EVENT)
-
-		return inventory
+		setItem(11, BUTTON_GAME)
+		setItem(15, BUTTON_EVENT)
 	}
 
-	fun menuWarpGame(player: Player): Inventory {
-		val inventory = Bukkit.createInventory(player, 27, TITLE_GAME)
+	fun menuWarpGame(player: Player): Inventory = Bukkit.createInventory(player, 27, TITLE_GAME).apply {
+		fillBackground(true)
+		fillWarps(Warps.WARPS.filter { it.type == Warp.EnumWarpType.GAME && it.data.isEnabled })
 
-		inventory.fill(true)
-
-		val warps = ArrayList<Warp>()
-
-		for (warp in Warps.WARPS) if (warp.type == Warp.EnumWarpType.GAME && warp.data.isEnabled) warps.add(warp)
-
-		if (warps.size > 0) when (warps.size) {
-			1    -> inventory.setItem(13, warps[0].icon)
-			2    -> for (i in 0 .. 1) inventory.setItem(12 + i * 2, warps[i].icon)
-			3    -> for (i in 0 .. 2) inventory.setItem(11 + i * 2, warps[i].icon)
-			4    -> for (i in 0 .. 3) inventory.setItem(10 + i * 2, warps[i].icon)
-			5    -> for (i in 0 .. 4) inventory.setItem(13 + i, warps[i].icon)
-			else -> for (i in 0 .. 4) inventory.setItem(10 + i, warps[i].icon)
-		}
-
-		return inventory
+		setItem(0, Inventories.BUTTON_BACK)
 	}
 
-	fun menuWarpEvent(player: Player): Inventory {
-		val inventory = Bukkit.createInventory(player, 27, TITLE_EVENT)
+	fun menuWarpEvent(player: Player): Inventory = Bukkit.createInventory(player, 27, TITLE_EVENT).apply {
+		fillBackground(true)
+		fillWarps(Warps.WARPS.filter { it.type == Warp.EnumWarpType.EVENT && it.data.isEnabled })
 
-		inventory.fill(true)
+		setItem(0, Inventories.BUTTON_BACK)
+	}
 
-		val warps = Warps.WARPS.filterTo(arrayListOf()) { it.type == Warp.EnumWarpType.EVENT && it.data.isEnabled }
-
-		if (warps.size > 0) when (warps.size) {
-			1    -> inventory.setItem(13, warps[0].icon)
-			2    -> for (i in 0 .. 1) inventory.setItem(12 + i * 2, warps[i].icon)
-			3    -> for (i in 0 .. 2) inventory.setItem(11 + i * 2, warps[i].icon)
-			4    -> for (i in 0 .. 3) inventory.setItem(10 + i * 2, warps[i].icon)
-			5    -> for (i in 0 .. 4) inventory.setItem(13 + i, warps[i].icon)
-			else -> for (i in 0 .. 4) inventory.setItem(10 + i, warps[i].icon)
+	fun Inventory.fillWarps(warps: List<Warp>) {
+		if (warps.isNotEmpty()) when (warps.size) {
+			1    -> setItem(13, warps[0].icon)
+			2    -> for (i in 0 .. 1) setItem(12 + i * 2, warps[i].icon)
+			3    -> for (i in 0 .. 2) setItem(11 + i * 2, warps[i].icon)
+			4    -> for (i in 0 .. 3) setItem(10 + i * 2, warps[i].icon)
+			5    -> for (i in 0 .. 4) setItem(11 + i, warps[i].icon)
+			else -> for (i in 0 until warps.size) setItem(10 + i, warps[i].icon)
 		}
-
-		return inventory
 	}
 }

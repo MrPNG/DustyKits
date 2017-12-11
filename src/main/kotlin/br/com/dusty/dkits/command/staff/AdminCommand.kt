@@ -10,6 +10,7 @@ object AdminCommand: PlayerCustomCommand(EnumRank.MOD, "admin") {
 
 	override fun execute(sender: Player, alias: String, args: Array<String>): Boolean {
 		val gamer = sender.gamer()
+
 		gamer.mode = if (gamer.mode == EnumMode.ADMIN) EnumMode.PLAY else EnumMode.ADMIN
 
 		return false

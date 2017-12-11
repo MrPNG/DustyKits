@@ -16,9 +16,7 @@ object ArenaWarp: Warp() {
 		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
 		icon.setDescription(description)
 
-		entryKit = GameWarpKit
-
-		data.spreadRange = 4f
+		hasShop = true
 
 		loadData()
 	}

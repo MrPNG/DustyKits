@@ -2,3 +2,4 @@ name: @pl.name@
 main: @pl.group@.Main
 version: @pl.version@
 authors: [@pl.authors@]
+depend: [ProtocolLib]

@@ -1,14 +1,14 @@
 package br.com.dusty.dkits.ability
 
-import br.com.dusty.dkits.Main
 import br.com.dusty.dkits.gamer.gamer
+import br.com.dusty.dkits.util.chances
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 
-open class PotionEffectAbility(val type: PotionEffectType, val duration: Int, val amplifier: Int, val chance: Float): Ability() {
+open class PotionEffectAbility(val type: PotionEffectType, val duration: Int, val amplifier: Int, val chances: Double): Ability() {
 
 	@EventHandler
 	fun onEntityDamageByEntity(event: EntityDamageByEntityEvent) {
@@ -19,6 +19,6 @@ open class PotionEffectAbility(val type: PotionEffectType, val duration: Int, va
 
 		if (!canUse(damager.gamer(), victim.gamer())) return
 
-		if (Main.RANDOM.nextFloat() < chance) victim.addPotionEffect(PotionEffect(type, duration, amplifier))
+		if (chances.chances()) victim.addPotionEffect(PotionEffect(type, duration, amplifier))
 	}
 }

@@ -5,7 +5,8 @@ import br.com.dusty.dkits.command.Commands
 import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.listener.Listeners
 import br.com.dusty.dkits.warp.Warps
-import com.google.gson.Gson
+import com.comphenix.protocol.ProtocolLibrary
+import com.google.gson.GsonBuilder
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
@@ -22,11 +23,11 @@ class Main: JavaPlugin() {
 	override fun onLoad() {}
 
 	override fun onEnable() {
+		Kits.registerAll()
+		Warps.registerAll()
 		Commands.registerAll()
 		Listeners.registerAll()
 		Abilities.registerAll()
-		Kits.registerAll()
-		Warps.registerAll()
 
 		serverStatus = EnumServerStatus.ONLINE
 	}
@@ -40,10 +41,14 @@ class Main: JavaPlugin() {
 		 */
 		lateinit var INSTANCE: Main
 
+		val THREAD = Thread.currentThread()
+
 		//TODO: public static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
+		val PROTOCOL_MANAGER = ProtocolLibrary.getProtocolManager()
+
 		val RANDOM = Random()
-		val GSON = Gson()
+		val GSON = GsonBuilder().setPrettyPrinting().create()
 
 		val CONFIG_DIR = File(Bukkit.getWorldContainer(), "config")
 

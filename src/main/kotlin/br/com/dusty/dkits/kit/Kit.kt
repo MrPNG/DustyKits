@@ -5,50 +5,23 @@ import br.com.dusty.dkits.ability.Ability
 import br.com.dusty.dkits.gamer.EnumMode
 import br.com.dusty.dkits.gamer.Gamer
 import br.com.dusty.dkits.util.Tasks
-import br.com.dusty.dkits.util.inventory.addItemStacks
-import br.com.dusty.dkits.util.inventory.setArmor
 import br.com.dusty.dkits.util.text.Text
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
-import java.io.*
+import java.io.File
+import java.io.FileReader
+import java.io.PrintWriter
 
-open class Kit {
-
-	var name = "None"
-	var description = ""
-	var icon = ItemStack(Material.STONE_SWORD)
-
-	var weapon: ItemStack? = null
-	var armor = arrayOf<ItemStack?>(null, null, null, null)
-	var items = arrayOf<ItemStack?>()
-
-	var ability = Ability()
-
-	var isDummy = true
-	var isBroadcast = false
-
-	var data = Data()
-
-	fun apply(gamer: Gamer) {
-		gamer.clear()
-
-		val player = gamer.player
-
-		player.inventory.setItem(0, weapon)
-
-		player.setArmor(armor)
-		player.inventory.addItemStacks(items)
-	}
-
-	fun setAndApply(gamer: Gamer) {
-		gamer.kit = this
-		apply(gamer)
-
-		gamer.updateScoreboard()
-
-		gamer.player.sendMessage(Text.positivePrefix().basic("Agora você está ").positive("usando").basic(" o kit ").positive(name).basic("!").toString())
-		//TODO: Titles/subtitles for 1.8+ players
-	}
+open class Kit(var name: String = "None",
+               var description: String = "",
+               var icon: ItemStack = ItemStack(Material.STONE_SWORD),
+               var weapon: ItemStack? = null,
+               var armor: Array<ItemStack?> = arrayOf(null, null, null, null),
+               var items: Array<ItemStack?> = arrayOf(),
+               var ability: Ability = Ability(),
+               var isDummy: Boolean = true,
+               var isBroadcast: Boolean = false,
+               var data: Data = Data()) {
 
 	//TODO: If not on MiniHG
 	fun isAllowed(gamer: Gamer, announce: Boolean): Boolean = when {
@@ -94,11 +67,7 @@ open class Kit {
 		val dir = File(Main.CONFIG_DIR, "kit")
 		val file = File(dir, name.toLowerCase() + ".json")
 
-		if (file.exists()) try {
-			data = Main.GSON.fromJson(FileReader(file), Kit.Data::class.java)
-		} catch (e: FileNotFoundException) {
-			e.printStackTrace()
-		}
+		if (file.exists()) data = Main.GSON.fromJson(FileReader(file), Kit.Data::class.java)
 		else saveData()
 	}
 
@@ -106,19 +75,20 @@ open class Kit {
 		val dir = File(Main.CONFIG_DIR, "kit")
 		val file = File(dir, name.toLowerCase() + ".json")
 
-		var printWriter: PrintWriter? = null
+		dir.mkdirs()
+		file.createNewFile()
 
-		try {
-			dir.mkdirs()
-			file.createNewFile()
+		PrintWriter(file).use { println(Main.GSON.toJson(data)) }
+	}
 
-			printWriter = PrintWriter(file)
-			printWriter.println(Main.GSON.toJson(data))
-		} catch (e: IOException) {
-			e.printStackTrace()
-		} finally {
-			if (printWriter != null) printWriter.close()
-		}
+	override fun equals(other: Any?) = when {
+		this === other                -> true
+		javaClass != other?.javaClass -> false
+		else                          -> true
+	}
+
+	override fun toString(): String {
+		return "Kit(name='$name')"
 	}
 
 	data class Data(var price: Int = -1, var isEnabled: Boolean = false)

@@ -1,5 +1,6 @@
 package br.com.dusty.dkits.listener.login
 
+import br.com.dusty.dkits.clan.ClanRegistry
 import br.com.dusty.dkits.gamer.GamerRegistry
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.web.WebAPI
@@ -15,8 +16,16 @@ object AsyncPlayerPreLoginListener: Listener {
 	fun onAsyncPlayerPreLogin(event: AsyncPlayerPreLoginEvent) {
 		val uuid = event.uniqueId
 
-		val primitiveGamer = GamerRegistry.primitiveGamerFromJson(WebAPI.getProfile(uuid), uuid)
+		//TODO: Reactivate Web API
+//		val primitiveGamer = GamerRegistry.primitiveGamerFromJson(WebAPI.loadProfile(uuid), uuid)
+		val primitiveGamer = GamerRegistry.tempPrimitiveGamer(uuid)
 
-		if (primitiveGamer == null) event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, KICK_NO_PROFILE)
+		if (primitiveGamer == null) {
+			event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, KICK_NO_PROFILE)
+		} else if (primitiveGamer.clan != "" && !ClanRegistry.PRIMITIVE_CLAN_BY_STRING.containsKey(primitiveGamer.clan)) {
+			val clanUuid = primitiveGamer.clan
+
+			ClanRegistry.primitiveClanFromJson(WebAPI.loadClan(clanUuid))?.run { ClanRegistry.PRIMITIVE_CLAN_BY_STRING.put(clanUuid, this) }
+		}
 	}
 }

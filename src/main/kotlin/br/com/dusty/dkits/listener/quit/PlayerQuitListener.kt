@@ -1,11 +1,11 @@
 package br.com.dusty.dkits.listener.quit
 
+import br.com.dusty.dkits.clan.ClanRegistry
 import br.com.dusty.dkits.gamer.EnumRank
 import br.com.dusty.dkits.gamer.GamerRegistry
 import br.com.dusty.dkits.util.Scoreboards
-import br.com.dusty.dkits.util.Tasks
+import br.com.dusty.dkits.util.clearFormatting
 import br.com.dusty.dkits.util.text.Text
-import br.com.dusty.dkits.util.web.WebAPI
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -19,18 +19,21 @@ object PlayerQuitListener: Listener {
 	fun onPlayerQuit(event: PlayerQuitEvent) {
 		val player = event.player
 
-		val gamer = GamerRegistry.GAMER_BY_PLAYER.remove(player)
+		GamerRegistry.GAMER_BY_PLAYER.remove(player)?.run {
+			if (isCombatTagged()) {
+				Bukkit.broadcastMessage(Text.negativePrefix().negative(player.displayName.clearFormatting()).basic(" deslogou em ").negative("combate").basic("!").toString())
 
-		if (gamer != null) {
-			if (gamer.isCombatTagged()) {
-				gamer.combatPartner?.kill(gamer)
-
-				Bukkit.broadcastMessage(Text.negativeOf(player.name).basic(" deslogou em ").negative("combate").basic("!").toString())
+				combatPartner?.kill(this)
 			}
 
-			Tasks.async(Runnable { WebAPI.saveProfiles(gamer) })
+			warp.dispatchGamer(this)
 
-			if (gamer.rank.isLowerThan(EnumRank.MOD)) event.quitMessage = QUIT_MESSAGE_PREFIX + player.name
+			//TODO: Reactivate Web API
+//			if(Main.serverStatus == EnumServerStatus.ONLINE) Tasks.async(Runnable { WebAPI.saveProfiles(gamer) })
+
+			if (clan?.onlineMembers?.size == 1) ClanRegistry.CLAN_BY_STRING.remove(clan!!.uuid)
+
+			if (rank.isLowerThan(EnumRank.MOD)) event.quitMessage = QUIT_MESSAGE_PREFIX + player.displayName
 			else event.quitMessage = null
 		}
 

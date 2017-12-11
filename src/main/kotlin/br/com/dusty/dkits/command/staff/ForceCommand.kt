@@ -15,36 +15,35 @@ object ForceCommand: PlayerCustomCommand(EnumRank.MODPLUS, "force") {
 	override fun execute(sender: Player, alias: String, args: Array<String>): Boolean {
 		when {
 			sender.gamer().mode != EnumMode.ADMIN -> sender.sendMessage(Text.negativePrefix().basic("Você ").negative("não").basic(" está no modo ").negative("ADMIN").basic("!").toString())
-			args.size < 3                         -> sender.sendMessage(Text.negativePrefix().negative("Uso:").basic(" /force ").negative("<kit>/<warp> <jogador> <nomeDoKit>/<nomeDaWarp>").toString())
-			else                                  -> when (args[0]) {
+			args.size < 3                         -> sender.sendMessage(Text.negativePrefix().negative("Uso:").basic(" /force ").negative("<kit>/<warp> <nomeDoKit>/<nomeDaWarp> <jogador>").toString())
+			else                                  -> when (args[0].toLowerCase()) {
 				"kit"  -> {
-					val player = Bukkit.getPlayerExact(args[1])
-					val kit = Kits[args[2]]
+					val kit = Kits[args[1]]
+					val player = Bukkit.getPlayerExact(args[2])
 
 					when {
-						player == null   -> sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um jogador online chamado ").negative("\"" + args[1] + "\"").basic("!").toString())
-						kit == Kits.NONE -> sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um kit com o nome ").negative("\"" + args[2] + "\"").basic("!").toString())
+						kit == Kits.NONE -> sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um kit com o nome ").negative("\"" + args[1] + "\"").basic("!").toString())
+						player == null   -> sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um jogador online chamado ").negative("\"" + args[2] + "\"").basic("!").toString())
 						else             -> {
-							kit.setAndApply(player.gamer())
+							player.gamer().setKitAndApply(kit, false)
 
-							sender.sendMessage(Text.negativePrefix().basic("Você ").positive("aplicou").basic(" o kit ").positive(kit.name).basic(" no jogador ").positive(player.name).basic("!").toString())
+							sender.sendMessage(Text.positivePrefix().basic("Você ").positive("aplicou").basic(" o kit ").positive(kit.name).basic(" no jogador ").positive(player.name).basic("!").toString())
 						}
 					}
 				}
 				"warp" -> {
-					val player = Bukkit.getPlayerExact(args[1])
-					val warp = Warps[args[2]]
+					val warp = Warps[args[1]]
+					val player = Bukkit.getPlayerExact(args[2])
 
 					when {
-						player == null     -> sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um jogador online chamado ").negative("\"" + args[1] + "\"").basic("!").toString())
-						warp == Warps.NONE -> sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há uma warp chamada ").negative("\"" + args[2] + "\"").basic("!").toString())
+						warp == Warps.NONE -> sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há uma warp chamada ").negative("\"" + args[1] + "\"").basic("!").toString())
+						player == null     -> sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um jogador online chamado ").negative("\"" + args[2] + "\"").basic("!").toString())
 						else               -> {
 							val gamer = player.gamer()
 
-							gamer.removeCombatTag()
-							gamer.sendToWarp(warp, false)
+							gamer.sendToWarp(warp, true, false)
 
-							sender.sendMessage(Text.negativePrefix().basic("Você ").positive("enviou").basic(" o jogador ").positive(player.name).basic(" para a warp ").positive(warp.name).basic(
+							sender.sendMessage(Text.positivePrefix().basic("Você ").positive("enviou").basic(" o jogador ").positive(player.name).basic(" para a warp ").positive(warp.name).basic(
 									"!").toString())
 						}
 					}

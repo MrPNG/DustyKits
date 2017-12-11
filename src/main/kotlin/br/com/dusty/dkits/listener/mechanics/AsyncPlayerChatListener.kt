@@ -1,6 +1,6 @@
 package br.com.dusty.dkits.listener.mechanics
 
-import br.com.dusty.dkits.gamer.EnumChat
+import br.com.dusty.dkits.gamer.EnumChat.*
 import br.com.dusty.dkits.gamer.EnumRank
 import br.com.dusty.dkits.gamer.GamerRegistry
 import br.com.dusty.dkits.gamer.gamer
@@ -12,8 +12,13 @@ import org.bukkit.event.player.AsyncPlayerChatEvent
 
 object AsyncPlayerChatListener: Listener {
 
-	private val STAFF_CHAT_PREFIX_NEUTRAL = Text.basicOf("[").neutral("Staff Chat").basic("] ")
-	private val STAFF_CHAT_PREFIX_NEGATIVE = Text.basicOf("[").negative("Staff Chat").basic("] ")
+	val STAFF_CHAT_PREFIX_POSITIVE = Text.basicOf("[").positive("Staff Chat").basic("] ")
+	val STAFF_CHAT_PREFIX_NEGATIVE = Text.basicOf("[").negative("Staff Chat").basic("] ")
+
+	val CLAN_CHAT_PREFIX_POSITIVE = Text.basicOf("[").positive("Clan Chat").basic("] ")
+	val CLAN_CHAT_PREFIX_NEGATIVE = Text.basicOf("[").negative("Clan Chat").basic("] ")
+
+	var rank = EnumRank.DEFAULT
 
 	@EventHandler
 	fun onAsyncPlayerChat(event: AsyncPlayerChatEvent) {
@@ -21,16 +26,37 @@ object AsyncPlayerChatListener: Listener {
 		val gamer = player.gamer()
 
 		when (gamer.chat) {
-			EnumChat.NORMAL -> event.format = "<%s" + TextStyle.RESET + "> %s"
-			EnumChat.STAFF  -> {
+			NORMAL -> {
+				if (gamer.rank.isLowerThan(rank)) {
+					event.isCancelled = true
+
+					player.sendMessage(Text.negativePrefix().basic("O chat está ").negative("restrito").basic(" apenas a ").negative(rank.string).basic(" e acima!").toString())
+				}
+
+				event.format = "<" + Text.basicOf(if (gamer.clan != null) gamer.clan!!.tag + " " else "").append("%s" + TextStyle.RESET).toString() + "> %s"
+			}
+			CLAN   -> {
 				event.recipients.clear()
 
-				val messageNeutral = STAFF_CHAT_PREFIX_NEUTRAL.append("<").append(gamer.rank.format(player.name)).append("> ").neutral(event.message).toString()
+				val messagePositive = CLAN_CHAT_PREFIX_POSITIVE.append("<").basic(if (gamer.clan != null) gamer.clan!!.tag + " " else "").append(gamer.rank.format(player.name) + TextStyle.RESET).append(
+						"> ").neutral(event.message).toString()
+				val messageNegative = CLAN_CHAT_PREFIX_NEGATIVE.append("<").basic(if (gamer.clan != null) gamer.clan!!.tag + " " else "").append(gamer.rank.format(player.name) + TextStyle.RESET).append(
+						"> ").negative(event.message).toString()
 
-				val messageNegative = STAFF_CHAT_PREFIX_NEGATIVE.append("<").append(gamer.rank.format(player.name)).append("> ").negative(event.message).toString()
+				GamerRegistry.onlineGamers().filter { it.clan == gamer.clan }.forEach {
+					it.player.sendMessage(if (it.chat == CLAN) messagePositive else messageNegative)
+				}
+			}
+			STAFF  -> {
+				event.recipients.clear()
+
+				val messagePositive = STAFF_CHAT_PREFIX_POSITIVE.append("<").basic(if (gamer.clan != null) gamer.clan!!.tag + " " else "").append(gamer.rank.format(player.name) + TextStyle.RESET).append(
+						"> ").neutral(event.message).toString()
+				val messageNegative = STAFF_CHAT_PREFIX_NEGATIVE.append("<").basic(if (gamer.clan != null) gamer.clan!!.tag + " " else "").append(gamer.rank.format(player.name) + TextStyle.RESET).append(
+						"> ").negative(event.message).toString()
 
 				GamerRegistry.onlineGamers().filter { it.rank.isHigherThanOrEquals(EnumRank.MOD) }.forEach {
-					it.player.sendMessage(if (it.chat == EnumChat.STAFF) messageNeutral else messageNegative)
+					it.player.sendMessage(if (it.chat == STAFF) messagePositive else messageNegative)
 				}
 			}
 		}

@@ -1,6 +1,5 @@
 package br.com.dusty.dkits.listener.mechanics
 
-import br.com.dusty.dkits.gamer.gamer
 import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -14,13 +13,6 @@ object EntityPickupItemListener: Listener {
 
 	@EventHandler
 	fun onPlayerDropItem(event: EntityPickupItemEvent) {
-		//TODO: Allowed on event HG
-		val player = event.entity as? Player
-
-		if (player != null) {
-			val gamer = player.gamer()
-
-			if (player.gameMode != GameMode.CREATIVE && event.item.itemStack.type !in ALLOWED_DROPS) event.isCancelled = true
-		}
+		(event.entity as? Player)?.run { if (gameMode != GameMode.CREATIVE && event.item.itemStack.type !in ALLOWED_DROPS) event.isCancelled = true }
 	}
 }
