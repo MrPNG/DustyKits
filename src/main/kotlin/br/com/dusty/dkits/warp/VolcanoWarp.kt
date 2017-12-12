@@ -30,10 +30,10 @@ object VolcanoWarp: Warp() {
 
 	init {
 		name = "Volcano"
-		icon = ItemStack(Material.OBSIDIAN)
 
+		icon = ItemStack(Material.OBSIDIAN)
 		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
-		icon.setDescription(description)
+		icon.setDescription(description, true)
 
 		entryKit = Kit(weapon = ItemStack(Material.WOOD_SWORD), armor = arrayOf(null, ItemStack(Material.LEATHER_CHESTPLATE), null, null), isDummy = false)
 

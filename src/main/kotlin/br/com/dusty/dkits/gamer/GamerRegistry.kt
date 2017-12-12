@@ -28,15 +28,11 @@ object GamerRegistry {
 		return gamer
 	}
 
-	fun primitiveGamerFromJson(json: String?, uuid: UUID): PrimitiveGamer? {
-		if (json == null) return null
-
-		val primitiveGamer: PrimitiveGamer = if (json == "null") PrimitiveGamer(uuid.toString()) else Main.GSON.fromJson(json, PrimitiveGamer::class.java)
-
-		PRIMITIVE_GAMER_BY_UUID.put(uuid, primitiveGamer)
-
-		return primitiveGamer
+	fun primitiveGamerFromJson(json: String?, uuid: UUID) = when (json) {
+		null         -> null
+		"{status:2}" -> PrimitiveGamer(uuid.toString())
+		else         -> Main.GSON.fromJson(json, PrimitiveGamer::class.java)
 	}
 
-	fun tempPrimitiveGamer(uuid: UUID): PrimitiveGamer = primitiveGamerFromJson("null", uuid)!!
+	fun tempPrimitiveGamer(uuid: UUID): PrimitiveGamer = primitiveGamerFromJson("{status:2}", uuid)!!
 }

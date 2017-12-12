@@ -11,10 +11,10 @@ object ArenaWarp: Warp() {
 
 	init {
 		name = "Arena"
-		icon = ItemStack(Material.STONE_SWORD)
 
+		icon = ItemStack(Material.STONE_SWORD)
 		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
-		icon.setDescription(description)
+		icon.setDescription(description, true)
 
 		hasShop = true
 

@@ -10,7 +10,7 @@ import br.com.dusty.dkits.util.text.Text
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-object KitCommand: PlayerCustomCommand(EnumRank.DEFAULT, "kit", *Kits.enabledKitsNames) {
+object KitCommand: PlayerCustomCommand(EnumRank.DEFAULT, "kit") {
 
 	override fun execute(sender: Player, alias: String, args: Array<String>): Boolean {
 		val gamer = sender.gamer()

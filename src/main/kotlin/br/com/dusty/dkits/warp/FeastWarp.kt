@@ -125,7 +125,7 @@ object FeastWarp: Warp() {
 		icon = ItemStack(CHEST)
 
 		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
-		icon.setDescription(description)
+		icon.setDescription(description, true)
 
 		entryKit = SIMPLE_GAME_WARP_KIT
 
@@ -226,12 +226,17 @@ object FeastWarp: Warp() {
 		}
 	}
 
-	override fun setLocation(player: Player, args: Array<String>) {
-		when (args[0]) {
-			"enchantmentTable" -> {
-				enchantmentTable = player.location.normalize()
+	override fun execute(gamer: Gamer, alias: String, args: Array<String>) {
+		val player = gamer.player
 
-				player.sendMessage(Text.positivePrefix().basic("Você ").positive("definiu").basic(" o local da ").positive("mesa de encantamentos").basic(" da warp ").positive(name).basic("!").toString())
+		when (alias) {
+			"location" -> when (args[0]) {
+				"enchantmentTable" -> {
+					enchantmentTable = player.location.normalize()
+
+					player.sendMessage(Text.positivePrefix().basic("Você ").positive("definiu").basic(" o local da ").positive("mesa de encantamentos").basic(" da warp ").positive(name).basic(
+							"!").toString())
+				}
 			}
 		}
 	}

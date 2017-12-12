@@ -16,7 +16,7 @@ import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.scheduler.BukkitTask
 
-class Gamer internal constructor(val player: Player, val primitiveGamer: PrimitiveGamer) {
+class Gamer(val player: Player, val primitiveGamer: PrimitiveGamer) {
 
 	var protocolVersion: EnumProtocolVersion = EnumProtocolVersion.UNKNOWN
 
@@ -106,7 +106,7 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 					if (isCombatTagged()) combatPartner?.kill(this) else removeCombatTag(false)
 
 					warp.dispatchGamer(this)
-					warp = Warps.LOBBY
+					warp = Warps.NONE
 				}
 			}
 

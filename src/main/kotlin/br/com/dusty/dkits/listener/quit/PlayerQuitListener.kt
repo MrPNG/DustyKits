@@ -31,7 +31,15 @@ object PlayerQuitListener: Listener {
 			//TODO: Reactivate Web API
 //			if(Main.serverStatus == EnumServerStatus.ONLINE) Tasks.async(Runnable { WebAPI.saveProfiles(gamer) })
 
-			if (clan?.onlineMembers?.size == 1) ClanRegistry.CLAN_BY_STRING.remove(clan!!.uuid)
+			if (clan != null) {
+				val clan = clan!!
+
+				clan.onlineMembers.remove(this)
+
+				if (clan.leader == this) clan.leader = null
+
+				if (clan.onlineMembers.isEmpty()) ClanRegistry.CLAN_BY_STRING.remove(clan.uuid)
+			}
 
 			if (rank.isLowerThan(EnumRank.MOD)) event.quitMessage = QUIT_MESSAGE_PREFIX + player.displayName
 			else event.quitMessage = null

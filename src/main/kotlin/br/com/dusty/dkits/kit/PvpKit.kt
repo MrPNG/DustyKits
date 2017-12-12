@@ -14,7 +14,7 @@ object PvpKit: Kit() {
 		description = "O kit mais básico de todos :)"
 
 		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
-		icon.setDescription(description)
+		icon.setDescription(description, true)
 
 		weapon = ItemStack(Material.STONE_SWORD)
 		armor = arrayOf(null, ItemStack(Material.LEATHER_CHESTPLATE), null, null)

@@ -6,13 +6,10 @@ import br.com.dusty.dkits.gamer.EnumRank
 import br.com.dusty.dkits.gamer.gamer
 import br.com.dusty.dkits.util.normalize
 import br.com.dusty.dkits.util.text.Text
-import br.com.dusty.dkits.warp.Warp
 import br.com.dusty.dkits.warp.Warps
 import org.bukkit.entity.Player
 
 object LocationCommand: PlayerCustomCommand(EnumRank.ADMIN, "location") {
-
-	val CUSTOM_EXECUTORS = arrayListOf<Warp>()
 
 	override fun execute(sender: Player, alias: String, args: Array<String>): Boolean {
 		val gamer = sender.gamer()
@@ -27,7 +24,7 @@ object LocationCommand: PlayerCustomCommand(EnumRank.ADMIN, "location") {
 					when {
 						warp == Warps.NONE                        -> sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há uma warp chamada ").negative("\"" + args[1] + "\"").basic(
 								"!").toString())
-						warp in CUSTOM_EXECUTORS && args.size > 2 -> warp.setLocation(sender, args.copyOfRange(2, args.size))
+						warp in CUSTOM_EXECUTORS && args.size > 2 -> warp.execute(gamer, alias, args.copyOfRange(2, args.size))
 						else                                      -> {
 							warp.spawn = sender.location.normalize()
 

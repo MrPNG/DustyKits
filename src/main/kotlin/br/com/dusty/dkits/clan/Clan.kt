@@ -25,11 +25,9 @@ class Clan(val primitiveClan: PrimitiveClan) {
 
 	var leader = Bukkit.getPlayer(UUID.fromString(primitiveClan.leader))?.gamer()
 		set(value) {
-			if (value != null) {
-				field = leader
+			field = leader
 
-				primitiveClan.leader = value.player.uniqueId.toString()
-			}
+			if (value != null) primitiveClan.leader = value.player.uniqueId.toString()
 		}
 
 	val rawMembers

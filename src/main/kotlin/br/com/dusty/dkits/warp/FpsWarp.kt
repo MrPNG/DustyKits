@@ -11,10 +11,10 @@ object FpsWarp: Warp() {
 
 	init {
 		name = "FPS"
-		icon = ItemStack(Material.GLASS)
 
+		icon = ItemStack(Material.GLASS)
 		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
-		icon.setDescription(description)
+		icon.setDescription(description, true)
 
 		hasShop = true
 

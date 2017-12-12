@@ -2,7 +2,6 @@ package br.com.dusty.dkits.listener.login
 
 import br.com.dusty.dkits.gamer.EnumMode
 import br.com.dusty.dkits.gamer.EnumRank
-import br.com.dusty.dkits.gamer.GamerRegistry
 import br.com.dusty.dkits.gamer.gamer
 import br.com.dusty.dkits.util.Scoreboards
 import br.com.dusty.dkits.util.Tasks

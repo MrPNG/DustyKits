@@ -27,5 +27,9 @@ object ClanRegistry {
 		return clan
 	}
 
-	fun primitiveClanFromJson(json: String): PrimitiveClan? = if (json == "null") null else Main.GSON.fromJson(json, PrimitiveClan::class.java)
+	fun primitiveClanFromJson(json: String?): PrimitiveClan? = when (json) {
+		null         -> null
+		"{status:2}" -> null
+		else         -> Main.GSON.fromJson(json, PrimitiveClan::class.java)
+	}
 }

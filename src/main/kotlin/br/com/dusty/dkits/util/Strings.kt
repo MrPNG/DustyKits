@@ -62,14 +62,8 @@ fun Collection<String>.format(): String {
  * @param millis
  * @return
  */
-fun Long.periodString(): String {
-	val periodFormatter = PeriodFormatterBuilder().appendDays().appendSuffix("d").appendSeparator(" ").appendHours().appendSuffix("h").appendSeparator(" ").appendMinutes().appendSuffix("min").appendSeparator(
-			" ").appendSeconds().appendSuffix("s").toFormatter()
-
-	val period = Period(this)
-
-	return periodFormatter.print(period.toPeriod())
-}
+fun Long.periodString(): String = PeriodFormatterBuilder().appendDays().appendSuffix("d").appendSeparator(" ").appendHours().appendSuffix("h").appendSeparator(" ").appendMinutes().appendSuffix("min").appendSeparator(
+		" ").appendSeconds().appendSuffix("s").toFormatter().print(Period(this))
 
 /**
  * Cria uma [ArrayList] contendo todas as [String]'s do parâmetro 'arrayList' que iniciarem com o parâmetro 'start'.

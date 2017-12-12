@@ -3,7 +3,6 @@ package br.com.dusty.dkits.listener.mechanics
 import br.com.dusty.dkits.gamer.Gamer
 import br.com.dusty.dkits.gamer.gamer
 import br.com.dusty.dkits.util.text.Text
-import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material.SPONGE
 import org.bukkit.block.BlockFace

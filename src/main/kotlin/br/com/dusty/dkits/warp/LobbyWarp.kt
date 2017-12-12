@@ -12,10 +12,10 @@ object LobbyWarp: Warp() {
 
 	init {
 		name = "Lobby"
-		icon = ItemStack(Material.MAP)
 
+		icon = ItemStack(Material.MAP)
 		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
-		icon.setDescription(description)
+		icon.setDescription(description, true)
 
 		entryKit = Kit(items = arrayOf(GAME_WARP_KIT.items[8],
 		                               null,

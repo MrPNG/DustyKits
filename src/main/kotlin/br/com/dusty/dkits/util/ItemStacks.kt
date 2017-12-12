@@ -1,8 +1,9 @@
 package br.com.dusty.dkits.util
 
+import br.com.dusty.dkits.util.text.Text
+import br.com.dusty.dkits.util.text.TextColor
 import org.bukkit.*
 import org.bukkit.enchantments.Enchantment
-import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.LeatherArmorMeta
 import org.bukkit.inventory.meta.PotionMeta
@@ -44,16 +45,16 @@ fun ItemStack.color(color: Color): ItemStack? {
 	return this
 }
 
-fun ItemStack.setDescription(description: List<String>): ItemStack {
+fun ItemStack.setDescription(description: List<String>, forceColor: Boolean): ItemStack {
 	val itemMeta = this.itemMeta
-	itemMeta.lore = description
+	itemMeta.lore = if (forceColor) description.map { Text.of(it.clearFormatting()).color(TextColor.YELLOW).toString() } else description
 
 	this.itemMeta = itemMeta
 
 	return this
 }
 
-fun ItemStack.setDescription(description: String): ItemStack = setDescription(description.fancySplit(32))
+fun ItemStack.setDescription(description: String, forceColor: Boolean): ItemStack = setDescription(description.fancySplit(32), forceColor)
 
 /**
  * Retorna o **'displayName'** não-formatado de uma [ItemStack], se houver, ou o **name()** de seu [org.bukkit.Material], caso contrário.
@@ -69,6 +70,13 @@ fun ItemStack.getUnformattedDisplayName(): String? {
 	else this.type.name
 
 	return displayName.clearFormatting()
+}
+
+fun OfflinePlayer.skull() = ItemStack(Material.SKULL_ITEM, 1, SkullType.PLAYER.ordinal.toShort()).also {
+	val skullMeta = it.itemMeta as SkullMeta
+	skullMeta.owningPlayer = this
+
+	it.itemMeta = skullMeta
 }
 
 /**
@@ -92,19 +100,5 @@ object ItemStacks {
 		itemStack.itemMeta = potionMeta
 
 		return itemStack
-	}
-
-	fun skull(player: Player): ItemStack = ItemStack(Material.SKULL_ITEM, 1, SkullType.PLAYER.ordinal.toShort()).apply {
-		val skullMeta = itemMeta as SkullMeta
-		skullMeta.owningPlayer = player
-
-		itemMeta = skullMeta
-	}
-
-	fun skull(name: String): ItemStack = ItemStack(Material.SKULL_ITEM, 1, SkullType.PLAYER.ordinal.toShort()).apply {
-		val skullMeta = itemMeta as SkullMeta
-		skullMeta.owningPlayer = Bukkit.getOfflinePlayer(name)
-
-		itemMeta = skullMeta
 	}
 }

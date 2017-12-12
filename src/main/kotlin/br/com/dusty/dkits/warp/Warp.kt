@@ -31,6 +31,8 @@ open class Warp: Listener {
 	var icon = ItemStack(Material.STONE_SWORD)
 	var type = EnumWarpType.GAME
 
+	var aliases = arrayOf<String>()
+
 	var spawn = Locations.GENERIC
 		get() {
 			if (field == Locations.GENERIC) field = data.spawn.toLocation(Bukkit.getWorlds()[0])
@@ -123,7 +125,7 @@ open class Warp: Listener {
 		}
 	}
 
-	open fun setLocation(player: Player, args: Array<String>) {}
+	open fun execute(gamer: Gamer, alias: String, args: Array<String>) {}
 
 	open fun receiveGamer(gamer: Gamer, announce: Boolean) {
 		val player = gamer.player

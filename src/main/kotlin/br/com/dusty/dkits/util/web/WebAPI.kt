@@ -15,13 +15,13 @@ object WebAPI {
 
 	val URL = "http://ec2-52-67-190-141.sa-east-1.compute.amazonaws.com/api/handler.php"
 
-	fun loadProfile(uuid: UUID) = HttpGet(URL + "?type=perfil&uuid=" + uuid).response() ?: "null"
+	fun loadProfile(uuid: UUID) = HttpGet(URL + "?type=perfil&uuid=" + uuid).response()
 
 	fun saveProfiles(vararg gamers: Gamer) = HttpPost(URL).setEntities(BasicNameValuePair("type", "salvarperfil"),
-	                                                                   BasicNameValuePair("dataperfil", HttpClients.GSON.toJson(gamers.map { it.primitiveGamer }))).response() ?: "null"
+	                                                                   BasicNameValuePair("dataperfil", HttpClients.GSON.toJson(gamers.map { it.primitiveGamer }))).response()
 
-	fun loadClan(uuid: String) = HttpGet(URL + "?type=clan&uuid=" + uuid).response() ?: "null"
+	fun loadClan(uuid: String) = HttpGet(URL + "?type=perfilclan&uuid=" + uuid).response()
 
 	fun saveClans(vararg clans: Clan) = HttpPost(URL).setEntities(BasicNameValuePair("type", "salvarclan"),
-	                                                              BasicNameValuePair("dataclan", HttpClients.GSON.toJson(clans.map { it.primitiveClan }))).response() ?: "null"
+	                                                              BasicNameValuePair("dataclan", HttpClients.GSON.toJson(clans.map { it.primitiveClan }))).response()
 }

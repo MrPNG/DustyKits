@@ -15,10 +15,10 @@ object LavaChallengeWarp: Warp() {
 
 	init {
 		name = "Lava Challenge"
-		icon = ItemStack(Material.LAVA_BUCKET)
 
+		icon = ItemStack(Material.LAVA_BUCKET)
 		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
-		icon.setDescription(description)
+		icon.setDescription(description, true)
 
 		entryKit = Kit(isDummy = false)
 
