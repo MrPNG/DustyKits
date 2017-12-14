@@ -184,8 +184,8 @@ open class Warp: Listener {
 
 	enum class EnumWarpType {
 		GAME,
-		MINIGAME,
-		EVENT
+		EVENT,
+		BOTH
 	}
 
 	enum class EnumDurabilityBehavior {

@@ -13,7 +13,7 @@ object EntityPickupItemListener: Listener {
 	val ALLOWED_DROPS = arrayOf(MUSHROOM_SOUP)
 
 	@EventHandler
-	fun onPlayerDropItem(event: EntityPickupItemEvent) {
+	fun onEntityPickupItem(event: EntityPickupItemEvent) {
 		if (event.entity is Player) {
 			val player = event.entity as Player
 			val gamer = player.gamer()

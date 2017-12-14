@@ -2,7 +2,11 @@ package br.com.dusty.dkits.util
 
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
-import org.bukkit.*
+import org.bukkit.Color
+import org.bukkit.DyeColor
+import org.bukkit.Material.*
+import org.bukkit.OfflinePlayer
+import org.bukkit.SkullType
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.LeatherArmorMeta
@@ -65,7 +69,7 @@ fun ItemStack.getUnformattedDisplayName(): String? {
 	return displayName.clearFormatting()
 }
 
-fun OfflinePlayer.skull() = ItemStack(Material.SKULL_ITEM, 1, SkullType.PLAYER.ordinal.toShort()).also {
+fun OfflinePlayer.skull() = ItemStack(SKULL_ITEM, 1, SkullType.PLAYER.ordinal.toShort()).also {
 	val skullMeta = it.itemMeta as SkullMeta
 	skullMeta.owningPlayer = this
 
@@ -77,15 +81,15 @@ fun OfflinePlayer.skull() = ItemStack(Material.SKULL_ITEM, 1, SkullType.PLAYER.o
  */
 object ItemStacks {
 
-	fun dye(c: DyeColor): ItemStack {
+	fun dye(color: DyeColor): ItemStack {
 		val dye = Dye()
-		dye.color = c
+		dye.color = color
 
 		return dye.toItemStack(1)
 	}
 
 	fun potions(amount: Int, extended: Boolean, upgraded: Boolean, potionType: PotionType, splash: Boolean): ItemStack {
-		val itemStack = ItemStack(Material.POTION, amount)
+		val itemStack = ItemStack(if (splash) SPLASH_POTION else POTION, amount)
 
 		val potionMeta = itemStack.itemMeta as PotionMeta
 		potionMeta.basePotionData = PotionData(potionType, extended, upgraded)

@@ -18,8 +18,6 @@ import org.bukkit.event.inventory.InventoryType
 
 object InventoryClickListener: Listener {
 
-	val TITLE_CONTAINER_INVENTORY = "container.inventory"
-
 	@EventHandler
 	fun onInventoryClick(event: InventoryClickEvent) {
 		val player = event.whoClicked as Player
