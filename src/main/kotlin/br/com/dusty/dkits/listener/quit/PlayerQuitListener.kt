@@ -6,6 +6,7 @@ import br.com.dusty.dkits.gamer.GamerRegistry
 import br.com.dusty.dkits.util.Scoreboards
 import br.com.dusty.dkits.util.clearFormatting
 import br.com.dusty.dkits.util.text.Text
+import br.com.dusty.dkits.warp.Warps
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -26,7 +27,7 @@ object PlayerQuitListener: Listener {
 				combatPartner?.kill(this)
 			}
 
-			warp.dispatchGamer(this)
+			warp.dispatchGamer(this, Warps.NONE)
 
 			//TODO: Reactivate Web API
 //			if(Main.serverStatus == EnumServerStatus.ONLINE) Tasks.async(Runnable { WebAPI.saveProfiles(gamer) })

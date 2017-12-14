@@ -62,7 +62,7 @@ fun Collection<String>.format(): String {
  * @param millis
  * @return
  */
-fun Long.periodString(): String = PeriodFormatterBuilder().appendDays().appendSuffix("d").appendSeparator(" ").appendHours().appendSuffix("h").appendSeparator(" ").appendMinutes().appendSuffix("min").appendSeparator(
+fun Long.formatPeriod(): String = PeriodFormatterBuilder().appendDays().appendSuffix("d").appendSeparator(" ").appendHours().appendSuffix("h").appendSeparator(" ").appendMinutes().appendSuffix("min").appendSeparator(
 		" ").appendSeconds().appendSuffix("s").toFormatter().print(Period(this))
 
 /**

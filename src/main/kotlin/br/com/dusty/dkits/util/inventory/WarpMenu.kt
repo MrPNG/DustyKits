@@ -39,7 +39,7 @@ object WarpMenu {
 	}
 
 	fun menuWarpEvent(player: Player): Inventory {
-		val warps = Warps.WARPS.filter { it.type == Warp.EnumWarpType.EVENT && it.data.isEnabled }
+		val warps = Warps.WARPS.filter { (it.type == Warp.EnumWarpType.EVENT || it.type == Warp.EnumWarpType.MINIGAME) && it.data.isEnabled }
 
 		return Bukkit.createInventory(player, 27 + Math.floor(warps.size / 7.0).toInt() * 9, TITLE_EVENT).apply {
 			fillBackground(true)

@@ -32,7 +32,9 @@ class Main: JavaPlugin() {
 		serverStatus = EnumServerStatus.ONLINE
 	}
 
-	override fun onDisable() {}
+	override fun onDisable() {
+		Warps.WARPS.forEach { it.finalize() }
+	}
 
 	companion object {
 
@@ -40,8 +42,6 @@ class Main: JavaPlugin() {
 		 * **Singleton** deste [JavaPlugin].
 		 */
 		lateinit var INSTANCE: Main
-
-		val THREAD = Thread.currentThread()
 
 		//TODO: public static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 

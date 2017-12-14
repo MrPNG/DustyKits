@@ -6,6 +6,7 @@ import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
 import org.bukkit.Bukkit
 import org.bukkit.Material
+import org.bukkit.Material.*
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
@@ -61,24 +62,27 @@ fun Player.fillRecraft(): Inventory = inventory.apply {
 
 object Inventories {
 
-	val SOUP = ItemStack(Material.MUSHROOM_SOUP)
+	val SOUP = ItemStack(MUSHROOM_SOUP)
 	val BOWL = ItemStack(Material.BOWL)
 
-	val RED_MUSHROOMS = ItemStack(Material.RED_MUSHROOM, 64)
-	val BROWN_MUSHROOMS = ItemStack(Material.BROWN_MUSHROOM, 64)
+	val RED_MUSHROOMS = ItemStack(RED_MUSHROOM, 64)
+	val BROWN_MUSHROOMS = ItemStack(BROWN_MUSHROOM, 64)
 	val BOWLS = ItemStack(Material.BOWL, 64)
+
+	val COMPASS = ItemStack(Material.COMPASS)
 
 	val SOUPS_TITLE = Text.of("Sopas").color(TextColor.GOLD).toString()
 	val RECRAFT_TITLE = Text.of("Recraft").color(TextColor.GOLD).toString()
 
-	val ARMOR_FULL_IRON: Array<ItemStack?> = arrayOf(ItemStack(Material.IRON_HELMET), ItemStack(Material.IRON_CHESTPLATE), ItemStack(Material.IRON_LEGGINGS), ItemStack(Material.IRON_BOOTS))
+	val ARMOR_FULL_IRON: Array<ItemStack?> = arrayOf(ItemStack(IRON_HELMET), ItemStack(IRON_CHESTPLATE), ItemStack(IRON_LEGGINGS), ItemStack(IRON_BOOTS))
 
+	val WOOD_SWORD = ItemStack(Material.WOOD_SWORD)
 	val DIAMOND_SWORD = ItemStack(Material.DIAMOND_SWORD)
 	val DIAMOND_SWORD_SHARPNESS = ItemStack(Material.DIAMOND_SWORD).enchant(1, Enchantment.DAMAGE_ALL)
 
-	val BACKGROUND = ItemStack(Material.STAINED_GLASS_PANE, 1, 1.toShort(), 7.toByte()).rename(" ")
+	val BACKGROUND = ItemStack(STAINED_GLASS_PANE, 1, 1.toShort(), 7.toByte()).rename(" ")
 
-	val BUTTON_BACK = ItemStack(Material.CARPET, 1, 1.toShort(), 14.toByte()).rename(Text.negativeOf("Voltar").toString())
+	val BUTTON_BACK = ItemStack(CARPET, 1, 1.toShort(), 14.toByte()).rename(Text.negativeOf("Voltar").toString())
 
 	fun soups(player: Player): Inventory = Bukkit.createInventory(player, 54, SOUPS_TITLE).apply { for (i in 0 .. 53) setItem(i, SOUP) }
 

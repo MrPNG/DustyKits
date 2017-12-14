@@ -27,7 +27,7 @@ object KitCommand: PlayerCustomCommand(EnumRank.DEFAULT, "kit") {
 
 						if (kit == Kits.NONE || (!kit.data.isEnabled && gamer.mode != EnumMode.ADMIN)) sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um kit com o nome \"").negative(
 								args[0]).basic("\"!").toString())
-						else if (kit.isAllowed(gamer, true)) gamer.setKitAndApply(kit, true)
+						else if (gamer.warp.isAllowed(kit, gamer, true)) gamer.setKitAndApply(kit, true)
 					}
 				}
 			}
@@ -36,7 +36,7 @@ object KitCommand: PlayerCustomCommand(EnumRank.DEFAULT, "kit") {
 
 				if (kit == Kits.NONE || (!kit.data.isEnabled && gamer.mode != EnumMode.ADMIN)) sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um kit com o nome \"").negative(
 						args[0]).basic("\"!").toString())
-				else if (kit.isAllowed(gamer, true)) gamer.setKitAndApply(kit, true)
+				else if (gamer.warp.isAllowed(kit, gamer, true)) gamer.setKitAndApply(kit, true)
 			}
 		}
 

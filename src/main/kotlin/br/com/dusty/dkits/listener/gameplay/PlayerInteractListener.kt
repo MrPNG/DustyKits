@@ -1,5 +1,6 @@
 package br.com.dusty.dkits.listener.gameplay
 
+import br.com.dusty.dkits.gamer.gamer
 import br.com.dusty.dkits.util.block.interact
 import br.com.dusty.dkits.util.block.isSpecial
 import br.com.dusty.dkits.util.inventory.Inventories
@@ -13,7 +14,7 @@ import org.bukkit.attribute.Attribute
 import org.bukkit.block.Sign
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.event.block.Action
+import org.bukkit.event.block.Action.*
 import org.bukkit.event.player.PlayerInteractEvent
 
 object PlayerInteractListener: Listener {
@@ -24,10 +25,13 @@ object PlayerInteractListener: Listener {
 	@EventHandler
 	fun onPlayerInteract(event: PlayerInteractEvent) {
 		val player = event.player
+		val gamer = player.gamer()
+
+		if (gamer.warp.overrides(event)) return
 
 		if (player.gameMode != GameMode.CREATIVE) event.isCancelled = true
 
-		if (event.action == Action.RIGHT_CLICK_BLOCK) {
+		if (event.action == RIGHT_CLICK_BLOCK) {
 			val block = event.clickedBlock
 
 			if (block.type in ALLOWED_BLOCKS) event.isCancelled = false
@@ -42,11 +46,11 @@ object PlayerInteractListener: Listener {
 		}
 
 		event.item?.run {
-			if (event.action == Action.RIGHT_CLICK_AIR && type in ALLOWED_ITEMS) event.isCancelled = false
+			if (event.action == RIGHT_CLICK_AIR && type in ALLOWED_ITEMS) event.isCancelled = false
 
 			when (type) {
 				MUSHROOM_SOUP -> {
-					if (event.action == Action.RIGHT_CLICK_AIR || event.action == Action.RIGHT_CLICK_BLOCK) {
+					if (event.action == RIGHT_CLICK_AIR || event.action == RIGHT_CLICK_BLOCK) {
 						val maxHealth = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).value
 
 						if (player.health < maxHealth) {

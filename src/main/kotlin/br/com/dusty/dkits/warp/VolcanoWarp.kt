@@ -9,7 +9,7 @@ import br.com.dusty.dkits.util.setDescription
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
 import org.bukkit.FireworkEffect
-import org.bukkit.Material
+import org.bukkit.Material.*
 import org.bukkit.Particle
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -20,22 +20,22 @@ import org.bukkit.inventory.ItemStack
 
 object VolcanoWarp: Warp() {
 
-	val ITEMSTACKS = arrayOf(ItemStack(Material.STONE_SWORD),
-	                         ItemStack(Material.CHAINMAIL_CHESTPLATE),
-	                         ItemStack(Material.CHAINMAIL_LEGGINGS),
-	                         ItemStack(Material.IRON_SWORD),
-	                         ItemStack(Material.IRON_LEGGINGS),
-	                         ItemStack(Material.IRON_BOOTS),
-	                         ItemStack(Material.IRON_CHESTPLATE))
+	val ITEMSTACKS = arrayOf(ItemStack(STONE_SWORD),
+	                         ItemStack(CHAINMAIL_CHESTPLATE),
+	                         ItemStack(CHAINMAIL_LEGGINGS),
+	                         ItemStack(IRON_SWORD),
+	                         ItemStack(IRON_LEGGINGS),
+	                         ItemStack(IRON_BOOTS),
+	                         ItemStack(IRON_CHESTPLATE))
 
 	init {
 		name = "Volcano"
 
-		icon = ItemStack(Material.OBSIDIAN)
+		icon = ItemStack(OBSIDIAN)
 		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
 		icon.setDescription(description, true)
 
-		entryKit = Kit(weapon = ItemStack(Material.WOOD_SWORD), armor = arrayOf(null, ItemStack(Material.LEATHER_CHESTPLATE), null, null), isDummy = false)
+		entryKit = Kit(weapon = ItemStack(WOOD_SWORD), armor = arrayOf(null, ItemStack(LEATHER_CHESTPLATE), null, null), isDummy = false)
 
 		durabilityBehavior = EnumDurabilityBehavior.REGEN_ON_KILL
 
@@ -53,7 +53,7 @@ object VolcanoWarp: Warp() {
 
 			if (when (killer.warpKills) {
 				2    -> {
-					inventory.setItem(inventory.indexOfFirst { it.type == Material.WOOD_SWORD }, ITEMSTACKS[0])
+					inventory.setItem(inventory.indexOfFirst { it.type == WOOD_SWORD }, ITEMSTACKS[0])
 					true
 				}
 				6    -> {
@@ -65,7 +65,7 @@ object VolcanoWarp: Warp() {
 					true
 				}
 				15   -> {
-					inventory.setItem(inventory.indexOfFirst { it.type == Material.STONE_SWORD }, ITEMSTACKS[3])
+					inventory.setItem(inventory.indexOfFirst { it.type == STONE_SWORD }, ITEMSTACKS[3])
 					true
 				}
 				20   -> {

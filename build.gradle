@@ -2,7 +2,7 @@ import org.ajoberstar.grgit.Grgit
 import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "1.2.0"
+    id "org.jetbrains.kotlin.jvm" version "1.2.10"
     id "com.github.johnrengelman.shadow" version "1.2.4"
     id "org.ajoberstar.grgit" version "1.7.2"
 }
@@ -18,9 +18,7 @@ compileKotlin {
 }
 
 static def timestamp() {
-    Date date = new Date()
-
-    return date.format("yyyy-MM-dd HH:mm:ssZ", TimeZone.getDefault())
+    return new Date().format("yyyy-MM-dd HH:mm:ssZ", TimeZone.getDefault())
 }
 
 //Get git commit id
@@ -72,7 +70,7 @@ repositories {
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:1.2.0"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:1.2.10"
 
     compileOnly "org.spigotmc:spigot:1.12.2-R0.1-SNAPSHOT"
     compileOnly "com.comphenix.protocol:ProtocolLib:4.4.0-SNAPSHOT"

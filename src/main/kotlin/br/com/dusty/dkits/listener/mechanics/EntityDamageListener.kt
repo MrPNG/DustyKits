@@ -14,6 +14,8 @@ object EntityDamageListener: Listener {
 			val player = event.entity as Player
 			val gamer = player.gamer()
 
+			if (gamer.warp.overrides(event)) return
+
 			if (gamer.isInvincible) event.isCancelled = true
 
 			if (event.cause == EntityDamageEvent.DamageCause.FALL && gamer.isNoFall) {

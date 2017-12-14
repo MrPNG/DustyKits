@@ -17,6 +17,8 @@ object EntityDamageByEntityListener: Listener {
 			val damagerPlayer = (event.damager as Player)
 			val damager = damagerPlayer.gamer()
 
+			if (damager.warp.overrides(event)) return
+
 			if (damager.warp.durabilityBehavior == Warp.EnumDurabilityBehavior.REGEN) damagerPlayer.inventory.itemInMainHand?.durability = 0
 
 			if (event.entity is Player && !event.isCancelled) {

@@ -2,10 +2,7 @@ package br.com.dusty.dkits.kit
 
 import br.com.dusty.dkits.Main
 import br.com.dusty.dkits.ability.Ability
-import br.com.dusty.dkits.gamer.EnumMode
-import br.com.dusty.dkits.gamer.Gamer
 import br.com.dusty.dkits.util.Tasks
-import br.com.dusty.dkits.util.text.Text
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import java.io.File
@@ -22,26 +19,6 @@ open class Kit(var name: String = "None",
                var isDummy: Boolean = true,
                var isBroadcast: Boolean = false,
                var data: Data = Data()) {
-
-	//TODO: If not on MiniHG
-	fun isAllowed(gamer: Gamer, announce: Boolean): Boolean = when {
-		gamer.mode != EnumMode.ADMIN && !gamer.kit.isDummy                     -> {
-			if (announce) gamer.player.sendMessage(Text.negativePrefix().basic("Você ").negative("já").basic(" está ").negative("usando").basic(" um kit!").toString())
-
-			false
-		}
-		gamer.mode != EnumMode.ADMIN && !gamer.warp.enabledKits.contains(this) -> {
-			if (announce) gamer.player.sendMessage(Text.negativePrefix().basic("Você ").negative("não pode").basic(" usar o kit ").negative(name).basic(" nesta warp!").toString())
-
-			false
-		}
-		gamer.mode != EnumMode.ADMIN && !gamer.hasKit(this)                    -> {
-			if (announce) gamer.player.sendMessage(Text.negativePrefix().basic("Você ").negative("não").basic(" possui o kit ").negative(name).basic("!").toString())
-
-			false
-		}
-		else                                                                   -> true
-	}
 
 	fun setEnabled(enabled: Boolean): Boolean {
 		if (data.isEnabled == enabled) return false
@@ -83,8 +60,8 @@ open class Kit(var name: String = "None",
 
 	override fun equals(other: Any?) = when {
 		this === other                -> true
-		javaClass != other?.javaClass -> false
-		else                          -> true
+		javaClass == other?.javaClass -> true
+		else                          -> false
 	}
 
 	override fun toString(): String {

@@ -13,6 +13,7 @@ import br.com.dusty.dkits.warp.Warp
 import br.com.dusty.dkits.warp.Warps
 import org.bukkit.GameMode
 import org.bukkit.Sound
+import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
 import org.bukkit.scheduler.BukkitTask
 
@@ -105,7 +106,7 @@ class Gamer(val player: Player, val primitiveGamer: PrimitiveGamer) {
 
 					if (isCombatTagged()) combatPartner?.kill(this) else removeCombatTag(false)
 
-					warp.dispatchGamer(this)
+					warp.dispatchGamer(this, Warps.NONE)
 					warp = Warps.NONE
 				}
 			}
@@ -297,14 +298,13 @@ class Gamer(val player: Player, val primitiveGamer: PrimitiveGamer) {
 
 	fun updateHeaderFooter() = HeaderFooters.update(this)
 
-	private var invincibility: Long = -1
+	var invincibility: Long = -1
+		set(period) {
+			field = System.currentTimeMillis() + period
+		}
 
 	val isInvincible: Boolean
 		get() = invincibility > System.currentTimeMillis()
-
-	fun makeInvincible(period: Long) {
-		invincibility = System.currentTimeMillis() + period
-	}
 
 	fun removeInvincibility() {
 		invincibility = -1
@@ -410,11 +410,13 @@ class Gamer(val player: Player, val primitiveGamer: PrimitiveGamer) {
 		}
 
 		if (force || !isCombatTagged()) {
-			warp.dispatchGamer(this)
-
-			warp.receiveGamer(this, if (this.warp == warp) false else announce)
+			val oldWarp = this.warp
 
 			this.warp = warp
+
+			oldWarp.dispatchGamer(this, warp)
+
+			warp.receiveGamer(this, if (oldWarp == warp) false else announce)
 
 			updateScoreboard()
 
@@ -430,15 +432,19 @@ class Gamer(val player: Player, val primitiveGamer: PrimitiveGamer) {
 	}
 
 	fun clear() {
-		player.health = 20.0
-		player.foodLevel = 20
-		player.exp = 0F
-		player.level = 0
+		player.run {
+			health = getAttribute(Attribute.GENERIC_MAX_HEALTH).value
+			foodLevel = 20
+			exp = 0F
+			level = 0
 
-		player.inventory.clear()
+			inventory.clear()
 
-		player.activePotionEffects.forEach { player.removePotionEffect(it.type) }
+			activePotionEffects.forEach { removePotionEffect(it.type) }
+		}
 
+		removeFreeze()
+		removeInvincibility()
 		removeCombatTag(false)
 		removeKitCooldown()
 		removeSignCooldown()

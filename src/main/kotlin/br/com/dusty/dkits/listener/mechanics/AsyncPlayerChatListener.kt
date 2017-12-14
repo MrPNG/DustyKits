@@ -25,6 +25,8 @@ object AsyncPlayerChatListener: Listener {
 		val player = event.player
 		val gamer = player.gamer()
 
+		if (gamer.warp.overrides(event)) return
+
 		when (gamer.chat) {
 			NORMAL -> {
 				if (gamer.rank.isLowerThan(rank)) {

@@ -38,11 +38,13 @@ object Listeners {
 
 		//Mechanincs
 		LISTENERS.add(AsyncPlayerChatListener)
+		LISTENERS.add(BlockBreakListener)
+		LISTENERS.add(BlockPlaceListener)
 		LISTENERS.add(EntityDamageListener)
 		LISTENERS.add(EntityPickupItemListener)
 		LISTENERS.add(FoodLevelChangeListener)
 		LISTENERS.add(InventoryClickListener)
-		LISTENERS.add(ItemSpawnListener)
+//		LISTENERS.add(ItemSpawnListener)
 		LISTENERS.add(LeavesDecayListener)
 		LISTENERS.add(PlayerDropItemListener)
 		LISTENERS.add(PlayerInteractEntityListener)

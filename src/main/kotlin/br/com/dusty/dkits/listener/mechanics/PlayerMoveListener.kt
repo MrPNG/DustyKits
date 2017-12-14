@@ -16,8 +16,9 @@ object PlayerMoveListener: Listener {
 	@EventHandler
 	fun onPlayerMove(event: PlayerMoveEvent) {
 		val player = event.player
-
 		val gamer = player.gamer()
+
+		if (gamer.warp.overrides(event)) return
 
 		if (gamer.warpTask != null) {
 			gamer.warpTask!!.cancel()

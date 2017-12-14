@@ -25,6 +25,8 @@ object InventoryClickListener: Listener {
 		val player = event.whoClicked as Player
 		val gamer = player.gamer()
 
+		if (gamer.warp.overrides(event)) return
+
 		if ((gamer.kit.isDummy || event.slotType == InventoryType.SlotType.ARMOR) && gamer.mode != EnumMode.ADMIN) event.isCancelled = true
 
 		val inventory = event.clickedInventory
@@ -43,7 +45,7 @@ object InventoryClickListener: Listener {
 
 							val kit = Kits[itemStack]
 
-							if (kit.isAllowed(gamer, true)) gamer.setKitAndApply(kit, true)
+							if (gamer.warp.isAllowed(kit, gamer, true)) gamer.setKitAndApply(kit, true)
 						}
 					}
 				}

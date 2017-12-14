@@ -167,20 +167,23 @@ object OneVsOneWarp: Warp() {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	fun onPlayerInteract(event: PlayerInteractEvent) {
-		if (event.item != null) {
-			val player = event.player
-			val gamer = player.gamer()
+		val player = event.player
+		val gamer = player.gamer()
 
-			if (gamer.warp == this) {
-				val item = event.item
+		if (gamer.warp == this) {
+			when {
+				!gamer.isFrozen() && FIGHTS.values.any { it.state == ONGOING && it is OneVsOneFight && it.type == GLADIATOR && (it.host == gamer || it.guest == gamer) } -> event.isCancelled = false
+				event.item != null                                                                                                                                       -> {
+					val item = event.item
 
-				if (item.type == SKULL_ITEM && item == CLAN_VS_CLAN.item) {
-					val clan = gamer.clan
+					if (item.type == SKULL_ITEM && item == CLAN_VS_CLAN.item) {
+						val clan = gamer.clan
 
-					when {
-						clan == null         -> player.sendMessage(HAS_NO_CLAN)
-						clan.leader != gamer -> player.sendMessage(IS_NOT_LEADER)
-						else                 -> player.openInventory(ClanVsClanMenu.menuClans(player, true))
+						when {
+							clan == null         -> player.sendMessage(HAS_NO_CLAN)
+							clan.leader != gamer -> player.sendMessage(IS_NOT_LEADER)
+							else                 -> player.openInventory(ClanVsClanMenu.menuClans(player, true))
+						}
 					}
 				}
 			}
@@ -543,7 +546,7 @@ object OneVsOneWarp: Warp() {
 		gamer.setKitAndApply(entryKit, false)
 	}
 
-	override fun dispatchGamer(gamer: Gamer) {
+	override fun dispatchGamer(gamer: Gamer, newWarp: Warp) {
 		if (gamer.isCombatTagged() && FIGHTS.values.any { it is OneVsOneFight && (it.host == gamer || it.guest == gamer) }) end(gamer, gamer.combatPartner!!)
 	}
 

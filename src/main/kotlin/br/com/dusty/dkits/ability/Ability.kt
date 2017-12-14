@@ -6,7 +6,7 @@ import org.bukkit.event.Listener
 
 open class Ability: Listener {
 
-	fun canUse(gamer: Gamer): Boolean = this == gamer.kit.ability
+	fun canUse(gamer: Gamer): Boolean = gamer.kit.ability == this && gamer.mode == EnumMode.PLAY
 
-	fun canUse(damager: Gamer, victim: Gamer): Boolean = this == damager.kit.ability && victim.mode == EnumMode.PLAY
+	fun canUse(actor: Gamer, receptor: Gamer): Boolean = actor.kit.ability == this && actor.mode == EnumMode.PLAY && receptor.mode == EnumMode.PLAY && receptor.player.canSee(actor.player)
 }

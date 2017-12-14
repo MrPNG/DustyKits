@@ -24,13 +24,11 @@ object ShopMenu {
 
 	val ALL_KITS = ItemStack(Material.YELLOW_FLOWER).rename(Text.of("Você já possui todos os kits!").color(TextColor.GOLD).toString())
 
-	val ARMOR = HashMap<ItemStack, Int>().apply {
-		put(ItemStack(Material.CHAINMAIL_CHESTPLATE).setDescription("Preço: " + 3000 + " créditos", true), 3000)
-		put(ItemStack(Material.CHAINMAIL_LEGGINGS).setDescription("Preço: " + 4500 + " créditos", true), 4500)
-		put(ItemStack(Material.IRON_CHESTPLATE).setDescription("Preço: " + 6000 + " créditos", true), 6000)
-		put(ItemStack(Material.IRON_BOOTS).setDescription("Preço: " + 3000 + " créditos", true), 3000)
-		put(ItemStack(Material.DIAMOND_HELMET).setDescription("Preço: " + 6000 + " créditos", true), 6000)
-	}
+	val ARMOR = linkedMapOf(ItemStack(Material.CHAINMAIL_CHESTPLATE).setDescription("Preço: " + 3000 + " créditos", true) to 3000,
+	                        ItemStack(Material.CHAINMAIL_LEGGINGS).setDescription("Preço: " + 4500 + " créditos", true) to 4500,
+	                        ItemStack(Material.IRON_CHESTPLATE).setDescription("Preço: " + 6000 + " créditos", true) to 6000,
+	                        ItemStack(Material.IRON_BOOTS).setDescription("Preço: " + 3000 + " créditos", true) to 3000,
+	                        ItemStack(Material.DIAMOND_HELMET).setDescription("Preço: " + 6000 + " créditos", true) to 6000)
 
 	fun menuShopMain(player: Player): Inventory = Bukkit.createInventory(player, 27, TITLE_MAIN).apply {
 		fillBackground(false)

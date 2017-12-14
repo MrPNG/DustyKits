@@ -12,13 +12,6 @@ import org.bukkit.material.Dye
 import org.bukkit.potion.PotionData
 import org.bukkit.potion.PotionType
 
-fun ItemStack.hasName(name: String): Boolean {
-	val itemMeta = this.itemMeta
-	if (itemMeta != null && itemMeta.hasDisplayName()) return itemMeta.displayName.clearFormatting() == name
-
-	return false
-}
-
 fun ItemStack.rename(name: String): ItemStack {
 	val itemMeta = this.itemMeta
 	if (itemMeta != null) itemMeta.displayName = name

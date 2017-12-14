@@ -33,8 +33,9 @@ object SignChangeListener: Listener {
 	@EventHandler
 	fun onSignChange(event: SignChangeEvent) {
 		val player = event.player
-
 		val gamer = player.gamer()
+
+		if (gamer.warp.overrides(event)) return
 
 		if (gamer.mode == EnumMode.ADMIN) when (event.getLine(0)) {
 			"soup"    -> for (i in 0 .. 3) event.setLine(i, SOUP_SIGN[i])
