@@ -1,6 +1,6 @@
 package br.com.dusty.dkits.util.block
 
-import br.com.dusty.dkits.gamer.gamer
+import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.util.clearFormatting
 import br.com.dusty.dkits.util.inventory.Inventories
 import br.com.dusty.dkits.util.millisToPeriod

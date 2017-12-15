@@ -1,6 +1,6 @@
 package br.com.dusty.dkits.listener.mechanics
 
-import br.com.dusty.dkits.gamer.gamer
+import br.com.dusty.dkits.util.gamer.gamer
 import org.bukkit.GameMode
 import org.bukkit.Material.MUSHROOM_SOUP
 import org.bukkit.entity.Player

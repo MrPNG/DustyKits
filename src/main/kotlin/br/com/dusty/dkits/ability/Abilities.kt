@@ -10,7 +10,10 @@ object Abilities {
 	fun registerAll() {
 		//Usage: ABILITIES.add(FOO);
 
+		ABILITIES.add(ElfoAbility)
 		ABILITIES.add(SnailAbility)
+		ABILITIES.add(StomperAbility)
+		ABILITIES.add(ThorAbility)
 
 		val pluginManager = Bukkit.getPluginManager()
 		ABILITIES.forEach { ability -> pluginManager.registerEvents(ability, Main.INSTANCE) }

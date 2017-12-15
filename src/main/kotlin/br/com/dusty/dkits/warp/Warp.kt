@@ -99,9 +99,7 @@ open class Warp: Listener {
 		dir.mkdirs()
 		file.createNewFile()
 
-		val printWriter = PrintWriter(file)
-		printWriter.println(Main.GSON.toJson(data))
-		printWriter.close()
+		PrintWriter(file).use { it.println(Main.GSON.toJson(data)) }
 	}
 
 	fun loadLocation(world: World, coordinates: Array<Double>) = Location(world, coordinates[0], coordinates[1], coordinates[2])
@@ -170,7 +168,7 @@ open class Warp: Listener {
 
 	open fun dispatchGamer(gamer: Gamer, newWarp: Warp) {}
 
-	open fun finalize(){}
+	open fun finalize() {}
 
 	override fun equals(other: Any?) = when {
 		this === other                -> true

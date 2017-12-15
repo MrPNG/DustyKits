@@ -1,7 +1,7 @@
 package br.com.dusty.dkits.clan
 
 import br.com.dusty.dkits.gamer.Gamer
-import br.com.dusty.dkits.gamer.gamer
+import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.util.add
 import br.com.dusty.dkits.util.remove
 import org.bukkit.Bukkit

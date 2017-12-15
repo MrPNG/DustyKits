@@ -1,7 +1,7 @@
 package br.com.dusty.dkits.listener.gameplay
 
-import br.com.dusty.dkits.gamer.gamer
 import br.com.dusty.dkits.util.Tasks
+import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.warp.Warp
 import br.com.dusty.dkits.warp.Warps
 import org.bukkit.Material.*
@@ -41,7 +41,7 @@ object PlayerDeathListener: Listener {
 		Tasks.sync(Runnable {
 			player.spigot().respawn()
 
-			gamer.sendToWarp(if (gamer.warp.type == Warp.EnumWarpType.BOTH || gamer.warp.type == Warp.EnumWarpType.EVENT) Warps.LOBBY else gamer.warp, true, false)
+			gamer.sendToWarp(if (gamer.warp.type == Warp.EnumWarpType.EVENT) Warps.LOBBY else gamer.warp, true, false)
 		})
 	}
 }

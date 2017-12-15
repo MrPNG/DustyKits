@@ -1,7 +1,7 @@
 package br.com.dusty.dkits.listener.gameplay
 
 import br.com.dusty.dkits.gamer.EnumMode
-import br.com.dusty.dkits.gamer.gamer
+import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.warp.Warp
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler

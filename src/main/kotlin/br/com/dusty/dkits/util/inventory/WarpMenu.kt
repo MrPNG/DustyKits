@@ -30,7 +30,7 @@ object WarpMenu {
 	fun menuWarpGame(player: Player): Inventory {
 		val warps = Warps.WARPS.filter { it.type == Warp.EnumWarpType.GAME && it.data.isEnabled }
 
-		return Bukkit.createInventory(player, 27 + Math.floor(warps.size / 7.0).toInt() * 9, TITLE_GAME).apply {
+		return Bukkit.createInventory(player, 27 + Math.floor((warps.size - 1) / 7.0).toInt() * 9, TITLE_GAME).apply {
 			fillBackground(true)
 			fillWarps(warps)
 
@@ -41,7 +41,7 @@ object WarpMenu {
 	fun menuWarpEvent(player: Player): Inventory {
 		val warps = Warps.WARPS.filter { (it.type == Warp.EnumWarpType.EVENT || it.type == Warp.EnumWarpType.BOTH) && it.data.isEnabled }
 
-		return Bukkit.createInventory(player, 27 + Math.floor(warps.size / 7.0).toInt() * 9, TITLE_EVENT).apply {
+		return Bukkit.createInventory(player, 27 + Math.floor((warps.size - 1) / 7.0).toInt() * 9, TITLE_EVENT).apply {
 			fillBackground(true)
 			fillWarps(warps)
 

@@ -1,6 +1,6 @@
 package br.com.dusty.dkits.warp
 
-import br.com.dusty.dkits.gamer.gamer
+import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.util.cosmetic.Colors
 import br.com.dusty.dkits.util.entity.spawnFirework

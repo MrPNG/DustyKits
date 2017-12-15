@@ -1,9 +1,9 @@
 package br.com.dusty.dkits.util.inventory
 
 import br.com.dusty.dkits.gamer.EnumMode
-import br.com.dusty.dkits.gamer.gamer
 import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.kit.Kits
+import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.util.rename
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor

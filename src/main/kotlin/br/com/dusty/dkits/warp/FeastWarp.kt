@@ -4,7 +4,7 @@ import br.com.dusty.dkits.Main
 import br.com.dusty.dkits.command.staff.LocationCommand
 import br.com.dusty.dkits.gamer.Gamer
 import br.com.dusty.dkits.gamer.GamerRegistry
-import br.com.dusty.dkits.gamer.gamer
+import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.util.*

@@ -1,7 +1,7 @@
 package br.com.dusty.dkits.listener.mechanics
 
 import br.com.dusty.dkits.gamer.EnumMode
-import br.com.dusty.dkits.gamer.gamer
+import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.util.inventory.Inventories
 import br.com.dusty.dkits.util.inventory.Inventories.BUTTON_BACK
@@ -26,6 +26,12 @@ object InventoryClickListener: Listener {
 		if (gamer.warp.overrides(event)) return
 
 		if ((gamer.kit.isDummy || event.slotType == InventoryType.SlotType.ARMOR) && gamer.mode != EnumMode.ADMIN) event.isCancelled = true
+	}
+
+	@EventHandler
+	fun onMenuInventoryClick(event: InventoryClickEvent) {
+		val player = event.whoClicked as Player
+		val gamer = player.gamer()
 
 		val inventory = event.clickedInventory
 		val itemStack = event.currentItem

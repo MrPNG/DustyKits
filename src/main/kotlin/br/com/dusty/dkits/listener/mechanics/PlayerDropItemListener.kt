@@ -1,6 +1,6 @@
 package br.com.dusty.dkits.listener.mechanics
 
-import br.com.dusty.dkits.gamer.gamer
+import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.util.Tasks
 import org.bukkit.GameMode
 import org.bukkit.Material.*

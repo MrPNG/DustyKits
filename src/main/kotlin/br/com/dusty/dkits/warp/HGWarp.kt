@@ -10,6 +10,7 @@ import br.com.dusty.dkits.util.*
 import br.com.dusty.dkits.util.ItemStacks.potions
 import br.com.dusty.dkits.util.cosmetic.Colors
 import br.com.dusty.dkits.util.entity.spawnFirework
+import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.util.inventory.Inventories
 import br.com.dusty.dkits.util.inventory.addItemStacks
 import br.com.dusty.dkits.util.text.Text
@@ -22,6 +23,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.entity.EntityPickupItemEvent
+import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.PlayerDropItemEvent
 import org.bukkit.event.player.PlayerInteractEvent
@@ -131,7 +133,7 @@ object HGWarp: Warp() {
 
 		aliases = arrayOf(name.replace(" ", "").toLowerCase(), "hg")
 
-		overriddenEvents = arrayOf(InventoryClickEvent::class.java, PlayerDropItemEvent::class.java)
+		overriddenEvents = arrayOf(InventoryClickEvent::class.java, PlayerDeathEvent::class.java, PlayerDropItemEvent::class.java, EntityPickupItemEvent::class.java)
 
 		entryKit = SIMPLE_GAME_WARP_KIT
 
@@ -476,38 +478,32 @@ object HGWarp: Warp() {
 		if (gamer.warp == this && gamer.kit.isDummy) event.isCancelled = true
 	}
 
+	@EventHandler
+	fun onPlayerDeath(event: PlayerDeathEvent) {
+		val player = event.entity
+		val gamer = player.gamer()
+
+		if (gamer.warp == this) {
+			event.deathMessage = null
+
+			if (gamer.isCombatTagged()) gamer.combatPartner!!.kill(gamer)
+
+			gamer.resetKillStreak()
+
+			Tasks.sync(Runnable {
+				player.spigot().respawn()
+
+				gamer.sendToWarp(Warps.LOBBY, true, true)
+			})
+		}
+	}
+
 	@EventHandler(priority = EventPriority.HIGHEST)
 	fun onPlayerInteract(event: PlayerInteractEvent) {
 		val player = event.player
 		val gamer = player.gamer()
 
-		if (gamer.warp == this) {
-			if (state == ONGOING && event.item !in gamer.kit.items) event.isCancelled = false
-
-			event.item?.run {
-				when (type) {
-					COMPASS -> {
-						var nearestPlayer: Player? = null
-						var smallestDistance = Double.MAX_VALUE
-
-						GamerRegistry.onlineGamers().filter { it.mode == EnumMode.PLAY && it.warp == Warps.HG }.forEach {
-							val distance = it.player.location.distance(player.location)
-
-							if (distance > 0 && distance < smallestDistance) {
-								nearestPlayer = it.player
-								smallestDistance = distance
-							}
-						}
-
-						if (nearestPlayer != null) {
-							player.compassTarget = nearestPlayer!!.location
-							player.sendMessage(Text.neutralPrefix().basic("Sua ").append("bússola").basic(" está apontando para o jogador ").neutral(nearestPlayer!!.name.clearFormatting()).basic(
-									"!").toString())
-						}
-					}
-				}
-			}
-		}
+		if (gamer.warp == this && state == ONGOING && event.item !in gamer.kit.items) event.isCancelled = false
 	}
 
 	@EventHandler
@@ -517,7 +513,7 @@ object HGWarp: Warp() {
 		if (gamer.warp == this && event.itemDrop.itemStack in gamer.kit.items) event.isCancelled = true
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler
 	fun onEntityPickupItem(event: EntityPickupItemEvent) {
 		if (event.entity is Player) {
 			val player = event.entity as Player

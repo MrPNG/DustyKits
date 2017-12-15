@@ -55,7 +55,7 @@ open class Kit(var name: String = "None",
 		dir.mkdirs()
 		file.createNewFile()
 
-		PrintWriter(file).use { println(Main.GSON.toJson(data)) }
+		PrintWriter(file).use { it.println(Main.GSON.toJson(data)) }
 	}
 
 	override fun equals(other: Any?) = when {

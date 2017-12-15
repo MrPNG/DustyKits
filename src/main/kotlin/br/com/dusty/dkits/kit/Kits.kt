@@ -5,8 +5,12 @@ import org.bukkit.inventory.ItemStack
 object Kits {
 
 	val NONE = NoneKit
+	val ELFO = ElfoKit
+	val GRANDPA = GrandpaKit
 	val PVP = PvpKit
 	val SNAIL = SnailKit
+	val STOMPER = StomperKit
+	val THOR = ThorKit
 
 	val KITS = arrayListOf<Kit>()
 
@@ -17,7 +21,11 @@ object Kits {
 
 		KITS.add(NONE)
 		KITS.add(PVP)
+		KITS.add(ELFO)
+		KITS.add(GRANDPA)
 		KITS.add(SNAIL)
+		KITS.add(STOMPER)
+		KITS.add(THOR)
 
 		enabledKitsNames = KITS.filter { it.data.isEnabled }.map { it.name.toLowerCase() }.toTypedArray()
 	}

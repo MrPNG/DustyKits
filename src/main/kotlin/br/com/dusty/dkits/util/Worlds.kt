@@ -1,6 +1,6 @@
 package br.com.dusty.dkits.util
 
-import br.com.dusty.dkits.gamer.gamer
+import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.warp.Warps
 import org.apache.commons.io.FileUtils
 import org.bukkit.Bukkit

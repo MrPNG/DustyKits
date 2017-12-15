@@ -3,7 +3,7 @@ package br.com.dusty.dkits.warp
 import br.com.dusty.dkits.command.gameplay.WarpCommand
 import br.com.dusty.dkits.command.staff.LocationCommand
 import br.com.dusty.dkits.gamer.Gamer
-import br.com.dusty.dkits.gamer.gamer
+import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.util.*
 import br.com.dusty.dkits.util.inventory.*
