@@ -23,7 +23,7 @@ object Commands {
 	/**
 	 * [ArrayList] que contém todos os [CustomCommand] a serem/já registrados pelo plugin.
 	 */
-	val CUSTOM_COMMANDS = arrayListOf<CustomCommand>()
+	val CUSTOM_COMMANDS = hashSetOf<CustomCommand>()
 
 	init {
 		val field_commandMap = Bukkit.getServer().javaClass.getDeclaredField("commandMap")

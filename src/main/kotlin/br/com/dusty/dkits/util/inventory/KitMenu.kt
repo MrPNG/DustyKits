@@ -47,7 +47,7 @@ object KitMenu {
 		var i = -1
 
 		kits.forEach {
-			i += if (i + 2 % 9 == 0) 3 else 1
+			i += if ((i + 3) % 9 == 0) 3 else 1
 
 			setItem(10 + i, it.icon)
 		}

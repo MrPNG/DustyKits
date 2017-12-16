@@ -11,13 +11,13 @@ open class Ability: Listener {
 	fun sendKitCooldownMessage(gamer: Gamer) {
 		val period = gamer.kitCooldown.millisToPeriod().toInt()
 
-		gamer.player.sendMessage(Text.negativePrefix().basic("Você deve ").negative("esperar").basic(" mais ").negative(period).basic((if (period == 1) " segundo" else " segundos") + " antes de usar esse ").negative(
-				"kit").basic(" novamente!").toString())
+		gamer.player.sendMessage(Text.negativePrefix().basic("Você deve ").negative("esperar").basic(" mais ").negative(period).basic((if (period == 1) " segundo" else " segundos") + " antes de usar essa ").negative(
+				"habilidade").basic(" novamente!").toString())
 	}
 
 	fun hasAbility(gamer: Gamer) = gamer.kit.ability == this
 
 	fun canUse(gamer: Gamer): Boolean = gamer.kit.ability == this && gamer.mode == EnumMode.PLAY
 
-	fun canUse(actor: Gamer, receptor: Gamer): Boolean = actor.kit.ability == this && actor.mode == EnumMode.PLAY && receptor.mode == EnumMode.PLAY && receptor.player.canSee(actor.player)
+	fun canUse(actor: Gamer, receptor: Gamer): Boolean = actor != receptor && canUse(actor) && receptor.mode == EnumMode.PLAY && receptor.player.canSee(actor.player)
 }

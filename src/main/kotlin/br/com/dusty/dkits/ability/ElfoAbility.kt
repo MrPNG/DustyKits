@@ -30,9 +30,9 @@ object ElfoAbility: Ability() {
 						player.instaKill(damagerPlayer)
 
 						player.sendMessage(Text.negativePrefix().basic("Você levou um ").negative("headshot").basic(" do jogador ").negative(damagerPlayer.displayName.clearFormatting()).basic(
-								" de ").negative(distance.toInt()).negative(" blocos de distância!").toString())
-						damagerPlayer.sendMessage(Text.positivePrefix().basic("Você deu um ").positive("headshot").basic(" no jogador ").positive(player.displayName.clearFormatting()).basic(" de ").positive(
-								distance.toInt()).negative(" blocos de distância!").toString())
+								" de ").negative(distance.toInt()).basic(" blocos de distância!").toString())
+						damagerPlayer.sendMessage(Text.positivePrefix().basic("Você deu um ").positive("headshot").basic(" no jogador ").positive(player.displayName.clearFormatting()).basic(" a ").positive(
+								distance.toInt()).basic(" blocos de distância!").toString())
 					}
 				}
 			}

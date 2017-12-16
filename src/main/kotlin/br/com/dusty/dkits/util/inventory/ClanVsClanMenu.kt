@@ -4,7 +4,7 @@ import br.com.dusty.dkits.clan.Clan
 import br.com.dusty.dkits.clan.ClanRegistry
 import br.com.dusty.dkits.util.clearFormatting
 import br.com.dusty.dkits.util.rename
-import br.com.dusty.dkits.util.setDescription
+import br.com.dusty.dkits.util.description
 import br.com.dusty.dkits.util.skull
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
@@ -46,7 +46,7 @@ object ClanVsClanMenu {
 			description.addAll(members)
 			description.addAll(uuid)
 
-			setItem(10 + i, it.leader!!.player.skull().rename(Text.of(it.name).color(TextColor.GOLD).toString()).setDescription(description, false))
+			setItem(10 + i, it.leader!!.player.skull().rename(Text.of(it.name).color(TextColor.GOLD).toString()).description(description, false))
 		}
 	}
 }

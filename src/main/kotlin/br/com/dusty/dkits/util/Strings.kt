@@ -62,7 +62,7 @@ fun Collection<String>.format(): String {
  * @param millis
  * @return
  */
-fun Long.formatPeriod(): String = PeriodFormatterBuilder().appendDays().appendSuffix("d").appendSeparator(" ").appendHours().appendSuffix("h").appendSeparator(" ").appendMinutes().appendSuffix("min").appendSeparator(
+fun Long.formatPeriod() = PeriodFormatterBuilder().appendDays().appendSuffix("d").appendSeparator(" ").appendHours().appendSuffix("h").appendSeparator(" ").appendMinutes().appendSuffix("min").appendSeparator(
 		" ").appendSeconds().appendSuffix("s").toFormatter().print(Period(this))
 
 /**
@@ -72,7 +72,7 @@ fun Long.formatPeriod(): String = PeriodFormatterBuilder().appendDays().appendSu
  * @param arrayList
  * @return
  */
-fun ArrayList<String>.sortOut(start: String): ArrayList<String> = filter { it.startsWith(start, true) }.sorted() as ArrayList<String>
+fun ArrayList<String>.sortOut(start: String) = filter { it.startsWith(start, true) }.sorted()
 
 /**
  * Remove qualquer formatação de uma [String], se houver.

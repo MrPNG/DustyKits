@@ -19,12 +19,12 @@ object ReportCommand: PlayerCustomCommand(EnumRank.DEFAULT, "report") {
 			if (player == null) sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um jogador online com o nome \"").negative(args[0]).basic("\"!").toString())
 			else GamerRegistry.onlineGamers().forEach {
 				if (it.rank.isHigherThanOrEquals(EnumRank.MOD)) {
-					val player = it.player
+					val staffPlayer = it.player
 
-					player.playSound(player.location, Sound.ENTITY_CHICKEN_HURT, 10F, 1F)
-					player.sendMessage(Text.negativePrefix().basic("[").negative("Report").basic("]: \n").negative("Jogador").basic(": " + player.name + "\n").negative("Motivo").basic(": " + args.copyOfRange(
-							0,
-							args.size).joinToString(separator = " ")).toString())
+					staffPlayer.playSound(staffPlayer.location, Sound.ENTITY_CHICKEN_HURT, 10F, 1F)
+					staffPlayer.sendMessage(Text.negativePrefix().basic("[").negative("Report").basic("]: \n").negative("Jogador").basic(": " + player.name + "\n").negative("Motivo").basic(": " + args.copyOfRange(
+							1,
+							args.size).joinToString(separator = " ")).negative("Por").basic(": " + sender.name + "\n").toString())
 				}
 			}
 		}

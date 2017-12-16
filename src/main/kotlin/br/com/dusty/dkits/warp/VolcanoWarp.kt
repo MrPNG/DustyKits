@@ -1,11 +1,11 @@
 package br.com.dusty.dkits.warp
 
-import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.util.cosmetic.Colors
+import br.com.dusty.dkits.util.description
 import br.com.dusty.dkits.util.entity.spawnFirework
+import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.util.rename
-import br.com.dusty.dkits.util.setDescription
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
 import org.bukkit.FireworkEffect
@@ -33,7 +33,7 @@ object VolcanoWarp: Warp() {
 
 		icon = ItemStack(OBSIDIAN)
 		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
-		icon.setDescription(description, true)
+		icon.description(description, true)
 
 		entryKit = Kit(weapon = ItemStack(WOOD_SWORD), armor = arrayOf(null, ItemStack(LEATHER_CHESTPLATE), null, null), isDummy = false)
 

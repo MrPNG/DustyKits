@@ -38,14 +38,14 @@ fun ItemStack.color(color: Color) = apply {
 	}
 }
 
-fun ItemStack.setDescription(description: List<String>, forceColor: Boolean) = apply {
+fun ItemStack.description(description: List<String>, forceColor: Boolean) = apply {
 	val itemMeta = itemMeta
 	itemMeta.lore = if (forceColor) description.map { Text.of(it.clearFormatting()).color(TextColor.YELLOW).toString() } else description
 
 	this.itemMeta = itemMeta
 }
 
-fun ItemStack.setDescription(description: String, forceColor: Boolean): ItemStack = setDescription(description.fancySplit(32), forceColor)
+fun ItemStack.description(description: String, forceColor: Boolean): ItemStack = description(description.fancySplit(32), forceColor)
 
 /**
  * Retorna o **'displayName'** não-formatado de uma [ItemStack], se houver, ou o **name()** de seu [org.bukkit.Material], caso contrário.
@@ -69,6 +69,8 @@ fun OfflinePlayer.skull() = ItemStack(SKULL_ITEM, 1, SkullType.PLAYER.ordinal.to
 
 	it.itemMeta = skullMeta
 }
+
+infix fun ItemStack.isSimilarTo(itemStack: ItemStack?) = isSimilar(itemStack)
 
 /**
  * Criação/personalização de [org.bukkit.inventory.ItemStack]

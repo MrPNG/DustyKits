@@ -7,7 +7,7 @@ import java.util.*
 
 class BossBar {
 
-	private val players = HashSet<Player>()
+	private val players = hashSetOf<Player>()
 
 	private var uuid: UUID? = null
 

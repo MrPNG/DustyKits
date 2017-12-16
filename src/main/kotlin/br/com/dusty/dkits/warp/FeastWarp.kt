@@ -4,13 +4,13 @@ import br.com.dusty.dkits.Main
 import br.com.dusty.dkits.command.staff.LocationCommand
 import br.com.dusty.dkits.gamer.Gamer
 import br.com.dusty.dkits.gamer.GamerRegistry
-import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.util.*
 import br.com.dusty.dkits.util.ItemStacks.potions
 import br.com.dusty.dkits.util.cosmetic.Colors
 import br.com.dusty.dkits.util.entity.spawnFirework
+import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.util.inventory.*
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
@@ -134,7 +134,7 @@ object FeastWarp: Warp() {
 		icon = ItemStack(CHEST)
 
 		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
-		icon.setDescription(description, true)
+		icon.description(description, true)
 
 		entryKit = SIMPLE_GAME_WARP_KIT
 

@@ -52,7 +52,7 @@ class Main: JavaPlugin() {
 
 		val CONFIG_DIR = File(Bukkit.getWorldContainer(), "config")
 
-		val MAX_PLAYERS = 150
+		val MAX_PLAYERS = 100
 
 		var serverStatus = EnumServerStatus.OFFLINE
 	}

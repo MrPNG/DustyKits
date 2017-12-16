@@ -1,6 +1,6 @@
 package br.com.dusty.dkits.kit
 
-import br.com.dusty.dkits.ability.SnailAbility
+import br.com.dusty.dkits.ability.ChemistAbility
 import br.com.dusty.dkits.util.ItemStacks
 import br.com.dusty.dkits.util.color
 import br.com.dusty.dkits.util.description
@@ -11,19 +11,22 @@ import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionType
 
-object SnailKit: Kit() {
+object ChemistKit: Kit() {
 
 	init {
-		name = "Snail"
+		name = "Chemist"
 
-		icon = ItemStacks.potions(1, false, false, PotionType.SLOWNESS, false)
+		icon = ItemStacks.potions(1, false, false, PotionType.INSTANT_DAMAGE, false)
 		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
 		icon.description(description, true)
 
 		weapon = ItemStack(Material.STONE_SWORD)
-		armor = arrayOf(null, ItemStack(Material.LEATHER_CHESTPLATE).color(0x91A38D), null, null)
+		armor = arrayOf(null, ItemStack(Material.LEATHER_CHESTPLATE).color(0xB3AA96), null, null)
+		items = arrayOf(ItemStacks.potions(3, false, false, PotionType.INSTANT_DAMAGE, true),
+		                ItemStacks.potions(3, false, false, PotionType.POISON, true),
+		                ItemStacks.potions(3, false, false, PotionType.WEAKNESS, true))
 
-		ability = SnailAbility
+		ability = ChemistAbility
 
 		isDummy = false
 		isBroadcast = true

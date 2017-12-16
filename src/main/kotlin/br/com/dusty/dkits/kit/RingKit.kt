@@ -1,6 +1,6 @@
 package br.com.dusty.dkits.kit
 
-import br.com.dusty.dkits.ability.ElfoAbility
+import br.com.dusty.dkits.ability.RingAbility
 import br.com.dusty.dkits.util.color
 import br.com.dusty.dkits.util.description
 import br.com.dusty.dkits.util.enchant
@@ -11,21 +11,20 @@ import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
 
-object ElfoKit: Kit() {
+object RingKit: Kit() {
 
 	init {
-		name = "Elfo"
+		name = "Ring"
 
-		icon = ItemStack(Material.BOW).enchant(Pair(Enchantment.ARROW_INFINITE, 1))
+		icon = ItemStack(Material.GOLD_BOOTS).enchant(Pair(Enchantment.DURABILITY, 1))
 		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
 		icon.description(description, true)
 
-		weapon = ItemStack(Material.GOLD_SWORD)
-		armor = arrayOf(null, ItemStack(Material.LEATHER_CHESTPLATE).color(0xBA8B00), null, null)
-		items = arrayOf(ItemStack(Material.BOW).enchant(Pair(Enchantment.ARROW_INFINITE, 1)).rename("Arco do Elfo"),
-		                ItemStack(Material.ARROW).enchant(Pair(Enchantment.ARROW_INFINITE, 1)).rename("Flecha do Elfo"))
+		weapon = ItemStack(Material.STONE_SWORD)
+		armor = arrayOf(null, ItemStack(Material.LEATHER_CHESTPLATE).color(0xFFE100), null, null)
+		items = arrayOf(ItemStack(Material.GOLD_BOOTS).enchant(Pair(Enchantment.DURABILITY, 1)).rename("Botas de Invisibilidade"))
 
-		ability = ElfoAbility
+		ability = RingAbility
 
 		isDummy = false
 		isBroadcast = true

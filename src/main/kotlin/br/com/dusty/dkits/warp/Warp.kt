@@ -37,7 +37,7 @@ open class Warp: Listener {
 	var overriddenEvents = arrayOf<Class<out Event>>()
 
 	var entryKit: Kit = GAME_WARP_KIT
-	var enabledKits = HashSet<Kit>()
+	var enabledKits = hashSetOf<Kit>()
 
 	var hasShop = false
 

@@ -25,7 +25,7 @@ import org.bukkit.event.player.PlayerInteractEvent
 
 object PlayerInteractListener: Listener {
 
-	val ALLOWED_ITEMS = arrayOf(WOOD_SWORD, STONE_SWORD, IRON_SWORD, DIAMOND_SWORD, SHIELD, BOW)
+	val ALLOWED_ITEMS = arrayOf(WOOD_SWORD, GOLD_SWORD, STONE_SWORD, IRON_SWORD, DIAMOND_SWORD, SHIELD, BOW, FISHING_ROD)
 	val ALLOWED_BLOCKS = arrayOf(ACACIA_DOOR, BIRCH_DOOR, DARK_OAK_DOOR, JUNGLE_DOOR, SPRUCE_DOOR, WOOD_DOOR, WOOD_BUTTON, STONE_BUTTON, TRAP_DOOR)
 
 	@EventHandler
@@ -74,7 +74,7 @@ object PlayerInteractListener: Listener {
 					var nearestPlayer: Player? = null
 					var smallestDistance = Double.MAX_VALUE
 
-					GamerRegistry.onlineGamers().filter { it.mode == EnumMode.PLAY }.forEach {
+					GamerRegistry.onlineGamers().filter { it.mode == EnumMode.PLAY && it.player.world == player.world }.forEach {
 						val distance = it.player.location.distance(player.location)
 
 						if (distance > 0 && distance < smallestDistance) {
@@ -85,7 +85,8 @@ object PlayerInteractListener: Listener {
 
 					if (nearestPlayer != null) {
 						player.compassTarget = nearestPlayer!!.location
-						player.sendMessage(Text.neutralPrefix().basic("Sua ").append("bússola").basic(" está apontando para o jogador ").neutral(nearestPlayer!!.name.clearFormatting()).basic("!").toString())
+						player.sendMessage(Text.neutralPrefix().basic("Sua ").neutral("bússola").basic(" está apontando para o jogador ").neutral(nearestPlayer!!.name.clearFormatting()).basic(
+								"!").toString())
 					}
 				}
 			}

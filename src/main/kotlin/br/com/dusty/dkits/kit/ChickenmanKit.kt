@@ -1,6 +1,6 @@
 package br.com.dusty.dkits.kit
 
-import br.com.dusty.dkits.ability.ThorAbility
+import br.com.dusty.dkits.ability.ChickenmanAbility
 import br.com.dusty.dkits.util.color
 import br.com.dusty.dkits.util.description
 import br.com.dusty.dkits.util.rename
@@ -9,20 +9,20 @@ import br.com.dusty.dkits.util.text.TextColor
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
-object ThorKit: Kit() {
+object ChickenmanKit: Kit() {
 
 	init {
-		name = "Thor"
+		name = "Chickenman"
 
-		icon = ItemStack(Material.WOOD_AXE)
+		icon = ItemStack(Material.COOKED_CHICKEN)
 		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
 		icon.description(description, true)
 
-		weapon = ItemStack(Material.STONE_SWORD)
-		armor = arrayOf(null, ItemStack(Material.LEATHER_CHESTPLATE).color(0x704E22), null, null)
-		items = arrayOf(ItemStack(Material.WOOD_AXE).rename("Machado do Thor"))
+		weapon = ItemStack(Material.WOOD_SWORD)
+		armor = arrayOf(null, ItemStack(Material.LEATHER_CHESTPLATE).color(0xAA842D), null, null)
+		items = arrayOf(ItemStack(Material.COOKED_CHICKEN).rename("Frango Radioativo"))
 
-		ability = ThorAbility
+		ability = ChickenmanAbility
 
 		isDummy = false
 		isBroadcast = true

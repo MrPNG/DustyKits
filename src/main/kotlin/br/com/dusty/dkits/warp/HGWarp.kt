@@ -3,7 +3,10 @@ package br.com.dusty.dkits.warp
 import br.com.dusty.dkits.Main
 import br.com.dusty.dkits.command.gameplay.WarpCommand
 import br.com.dusty.dkits.command.staff.LocationCommand
-import br.com.dusty.dkits.gamer.*
+import br.com.dusty.dkits.gamer.EnumMode
+import br.com.dusty.dkits.gamer.EnumRank
+import br.com.dusty.dkits.gamer.Gamer
+import br.com.dusty.dkits.gamer.GamerRegistry
 import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.util.*
@@ -127,7 +130,7 @@ object HGWarp: Warp() {
 
 		icon = ItemStack(CHEST)
 		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
-		icon.setDescription(description, true)
+		icon.description(description, true)
 
 		type = EnumWarpType.BOTH
 
@@ -136,6 +139,8 @@ object HGWarp: Warp() {
 		overriddenEvents = arrayOf(InventoryClickEvent::class.java, PlayerDeathEvent::class.java, PlayerDropItemEvent::class.java, EntityPickupItemEvent::class.java)
 
 		entryKit = SIMPLE_GAME_WARP_KIT
+
+		durabilityBehavior = EnumDurabilityBehavior.BREAK
 
 		data = HGData()
 
@@ -159,15 +164,18 @@ object HGWarp: Warp() {
 	}
 
 	fun schedule() {
-		nextGame = System.currentTimeMillis() + (interval * 50)
+		nextGame = interval * 50L
 
+		task?.cancel()
 		task = Tasks.sync(object: BukkitRunnable() {
-			var i = interval
-
 			override fun run() {
 				nextGame -= 50
 
-				if (i-- == 0) prepare()
+				if (nextGame == 0L) {
+					cancel()
+
+					prepare()
+				}
 			}
 		}, 0L, 20L)
 	}
@@ -234,11 +242,11 @@ object HGWarp: Warp() {
 
 		Bukkit.broadcastMessage(GAME_CANCELLED)
 
-		task?.cancel()
-
 		gamers.forEach { it.sendToWarp(Warps.LOBBY, true, true) }
 
 		Worlds.rollback(world.name)
+
+		task?.cancel()
 
 		if (reschedule) schedule()
 
@@ -363,6 +371,8 @@ object HGWarp: Warp() {
 						}
 					}
 					i == maxDuration                                               -> {
+						cancel()
+
 						gamers.forEach {
 							if (it.warp == Warps.HG) it.player.sendMessage(GAME_DURATION_LIMIT)
 						}
@@ -384,8 +394,6 @@ object HGWarp: Warp() {
 
 	fun end(gamers: Collection<Gamer>) {
 		state = FINISHING
-
-		task?.cancel()
 
 		val iterator = gamers.iterator()
 		val size = gamers.size
@@ -409,7 +417,8 @@ object HGWarp: Warp() {
 			}, 0L, 40L)
 		}
 
-		Tasks.sync(Runnable {
+		task?.cancel()
+		task = Tasks.sync(Runnable {
 			gamers.forEach {
 				if (it.player.isOnline) {
 					it.fly(false)
@@ -583,8 +592,7 @@ object HGWarp: Warp() {
 			in aliases -> {
 				if (gamer.rank.isLowerThan(EnumRank.ADMIN) || args.isEmpty()) when (state) {
 					CLOSED    -> {
-						player.sendMessage(Text.neutralPrefix().append(PREFIX).basic("O próximo ").neutral(NAME).basic(" inicia em ").neutral((nextGame - System.currentTimeMillis()).formatPeriod()).basic(
-								"!").toString())
+						player.sendMessage(Text.neutralPrefix().append(PREFIX).basic("O próximo ").neutral(NAME).basic(" inicia em ").neutral(nextGame.formatPeriod()).basic("!").toString())
 					}
 					OPEN      -> {
 						when {
