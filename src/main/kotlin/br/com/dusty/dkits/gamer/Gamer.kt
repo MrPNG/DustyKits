@@ -3,24 +3,34 @@ package br.com.dusty.dkits.gamer
 import br.com.dusty.dkits.clan.Clan
 import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.kit.Kits
+import br.com.dusty.dkits.store.EnumAdvantage
+import br.com.dusty.dkits.store.Store
 import br.com.dusty.dkits.util.Scoreboards
 import br.com.dusty.dkits.util.Tasks
 import br.com.dusty.dkits.util.clearFormatting
 import br.com.dusty.dkits.util.protocol.EnumProtocolVersion
 import br.com.dusty.dkits.util.protocol.HeaderFooters
 import br.com.dusty.dkits.util.text.Text
+import br.com.dusty.dkits.util.text.TextColor
 import br.com.dusty.dkits.warp.Warp
 import br.com.dusty.dkits.warp.Warps
 import org.bukkit.GameMode
 import org.bukkit.Sound
+import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
 import org.bukkit.scheduler.BukkitTask
 
-class Gamer internal constructor(val player: Player, val primitiveGamer: PrimitiveGamer) {
+class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 
 	var protocolVersion: EnumProtocolVersion = EnumProtocolVersion.UNKNOWN
 
-	val rank = EnumRank.ADMIN
+	lateinit var purchases: Store.Purchases
+
+	val advantages = arrayListOf<EnumAdvantage>()
+
+	fun hasAdvantage(advantage: EnumAdvantage) = advantage in advantages
+
+	var rank = EnumRank.NONE
 
 	/**
 	 * Menor [EnumRank] que pode ver este jogador.
@@ -50,7 +60,7 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 			}
 		}
 
-	fun shouldSee(gamer: Gamer) = gamer.rank.isHigherThanOrEquals(visibleTo)
+	fun shouldSee(gamer: Gamer) = rank.isHigherThanOrEquals(gamer.visibleTo)
 
 	fun hidePlayers() {
 		for (otherGamer in GamerRegistry.onlineGamers()) {
@@ -72,45 +82,45 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 
 	var mode = EnumMode.PLAY
 		set(mode) {
-			if (field == mode) return
+			if (field != mode) {
+				field = mode
 
-			field = mode
+				player.sendMessage(Text.neutralPrefix().basic("Agora você está no modo ").neutral(mode.name).basic("!").toString())
 
-			player.sendMessage(Text.neutralPrefix().basic("Agora você está no modo ").neutral(mode.name).basic("!").toString())
+				when (mode) {
+					EnumMode.PLAY     -> {
+						player.gameMode = GameMode.ADVENTURE
 
-			when (mode) {
-				EnumMode.PLAY     -> {
-					player.gameMode = GameMode.ADVENTURE
+						clear()
+						fly(false)
 
-					clear()
-					fly(false)
+						visibleTo = EnumRank.DEFAULT
+					}
+				//TODO: Spectator mode
+					EnumMode.SPECTATE -> {
+						player.gameMode = GameMode.ADVENTURE
 
-					visibleTo = EnumRank.DEFAULT
+						clear()
+						fly(true)
+
+						visibleTo = rank
+					}
+					EnumMode.ADMIN    -> {
+						player.gameMode = GameMode.CREATIVE
+
+						fly(true)
+
+						visibleTo = rank
+
+						if (isCombatTagged()) combatPartner?.kill(this) else removeCombatTag(false)
+
+						warp.dispatchGamer(this, Warps.NONE)
+						warp = Warps.NONE
+					}
 				}
-			//TODO: Spectator mode
-				EnumMode.SPECTATE -> {
-					player.gameMode = GameMode.ADVENTURE
 
-					clear()
-					fly(true)
-
-					visibleTo = rank
-				}
-				EnumMode.ADMIN    -> {
-					player.gameMode = GameMode.CREATIVE
-
-					fly(true)
-
-					visibleTo = rank
-
-					if (isCombatTagged()) combatPartner?.kill(this) else removeCombatTag(false)
-
-					warp.dispatchGamer(this)
-					warp = Warps.LOBBY
-				}
+				Scoreboards.update()
 			}
-
-			Scoreboards.update()
 		}
 
 	var clan: Clan? = null
@@ -137,20 +147,14 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 		warpKills++
 	}
 
-	fun addKillMoney() { //TODO: Different money for VIPs
-		addMoney(when {
-			         rank.isHigherThanOrEquals(EnumRank.PRO) && rank.isLowerThan(EnumRank.MOD) -> 100.0
-			         else                                                                      -> 50.0
-		         })
+	fun addKillMoney() {
+		addMoney(50.0)
 
 		updateScoreboard()
 	}
 
 	fun addKillXp() {
-		addXp(when {
-			      rank.isHigherThanOrEquals(EnumRank.PRO) && rank.isLowerThan(EnumRank.MOD) -> 200.0
-			      else                                                                      -> 100.0
-		      })
+		addXp(100.0)
 
 		updateScoreboard()
 	}
@@ -203,9 +207,21 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 		get() = primitiveGamer.xp
 
 	fun addXp(amount: Double) {
-		primitiveGamer.xp += Math.abs(amount)
+		val advantage = (rank.isHigherThanOrEquals(EnumRank.PRO) && rank.isLowerThan(EnumRank.MOD)) || hasAdvantage(EnumAdvantage.DOUBLE)
 
-		player.sendMessage(Text.positiveOf("+").positive(Math.round(amount).toInt()).basic(" XP!").toString())
+		val absAmount = Math.abs(amount)
+
+		if (advantage) {
+			primitiveGamer.xp += absAmount * 2
+
+			player.sendMessage(Text.positiveOf("+").positive(Math.round(absAmount).toInt()).append("x2").color(TextColor.GOLD).basic(" = ").append(Math.round(absAmount * 2).toInt()).color(
+					TextColor.GOLD).basic(" XP!").toString())
+		} else {
+			primitiveGamer.xp += absAmount
+
+			player.sendMessage(Text.positiveOf("+").positive(Math.round(absAmount).toInt()).basic(" XP!").toString())
+		}
+
 		updateScoreboard()
 	}
 
@@ -222,9 +238,21 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 		get() = primitiveGamer.money
 
 	fun addMoney(amount: Double) {
-		primitiveGamer.money += Math.abs(amount)
+		val advantage = (rank.isHigherThanOrEquals(EnumRank.PRO) && rank.isLowerThan(EnumRank.MOD)) || hasAdvantage(EnumAdvantage.DOUBLE)
 
-		player.sendMessage(Text.positiveOf("+").positive(Math.round(amount).toInt()).basic(" créditos!").toString())
+		val absAmount = Math.abs(amount)
+
+		if (advantage) {
+			primitiveGamer.money += absAmount * 2
+
+			player.sendMessage(Text.positiveOf("+").positive(Math.round(absAmount).toInt()).append("x2").color(TextColor.GOLD).basic(" = ").append(Math.round(absAmount * 2).toInt()).color(
+					TextColor.GOLD).basic(" créditos!").toString())
+		} else {
+			primitiveGamer.money += absAmount
+
+			player.sendMessage(Text.positiveOf("+").positive(Math.round(absAmount).toInt()).basic(" créditos!").toString())
+		}
+
 		updateScoreboard()
 	}
 
@@ -290,21 +318,18 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 
 	fun addOneVsOneLoss() = oneVsOneLosses++
 
-	fun canLogin(): Boolean = player.isOp //TODO: Login on full
-
 	fun createScoreboard() = Scoreboards.create(player)
 	fun updateScoreboard() = Scoreboards.update(this)
 
 	fun updateHeaderFooter() = HeaderFooters.update(this)
 
-	private var invincibility: Long = -1
+	var invincibility: Long = -1
+		set(period) {
+			field = System.currentTimeMillis() + period
+		}
 
 	val isInvincible: Boolean
 		get() = invincibility > System.currentTimeMillis()
-
-	fun makeInvincible(period: Long) {
-		invincibility = System.currentTimeMillis() + period
-	}
 
 	fun removeInvincibility() {
 		invincibility = -1
@@ -376,6 +401,8 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 
 	var isNoFall: Boolean = false
 
+	val kits = arrayListOf<Kit>()
+
 	var kit: Kit = Kits.NONE
 		set(kit) {
 			field = kit
@@ -398,7 +425,7 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 		}
 	}
 
-	fun hasKit(kit: Kit): Boolean = player.hasPermission("dkits.kit." + kit.name.toLowerCase())
+	fun hasKit(kit: Kit) = mode == EnumMode.ADMIN || kit in kits
 
 	var warp: Warp = Warps.LOBBY
 	var warpTask: BukkitTask? = null
@@ -410,11 +437,13 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 		}
 
 		if (force || !isCombatTagged()) {
-			warp.dispatchGamer(this)
-
-			warp.receiveGamer(this, if (this.warp == warp) false else announce)
+			val oldWarp = this.warp
 
 			this.warp = warp
+
+			oldWarp.dispatchGamer(this, warp)
+
+			warp.receiveGamer(this, if (oldWarp == warp) false else announce)
 
 			updateScoreboard()
 
@@ -430,15 +459,19 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 	}
 
 	fun clear() {
-		player.health = 20.0
-		player.foodLevel = 20
-		player.exp = 0F
-		player.level = 0
+		player.run {
+			health = getAttribute(Attribute.GENERIC_MAX_HEALTH).value
+			foodLevel = 20
+			exp = 0F
+			level = 0
 
-		player.inventory.clear()
+			inventory.clear()
 
-		player.activePotionEffects.forEach { player.removePotionEffect(it.type) }
+			activePotionEffects.forEach { removePotionEffect(it.type) }
+		}
 
+		removeFreeze()
+		removeInvincibility()
 		removeCombatTag(false)
 		removeKitCooldown()
 		removeSignCooldown()
@@ -454,4 +487,13 @@ class Gamer internal constructor(val player: Player, val primitiveGamer: Primiti
 	override fun toString(): String {
 		return "Gamer(player=$player, rank=$rank, mode=$mode, combatTag=$combatTag, kit=$kit, warp=$warp)"
 	}
+
+	override fun equals(other: Any?) = when {
+		this === other                                      -> true
+		javaClass != other?.javaClass                       -> false
+		player.uniqueId != (other as Gamer).player.uniqueId -> false
+		else                                                -> true
+	}
+
+	override fun hashCode(): Int = player.uniqueId.hashCode()
 }

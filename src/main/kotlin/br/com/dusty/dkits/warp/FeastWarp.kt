@@ -4,12 +4,13 @@ import br.com.dusty.dkits.Main
 import br.com.dusty.dkits.command.staff.LocationCommand
 import br.com.dusty.dkits.gamer.Gamer
 import br.com.dusty.dkits.gamer.GamerRegistry
-import br.com.dusty.dkits.gamer.gamer
 import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.util.*
+import br.com.dusty.dkits.util.ItemStacks.potions
 import br.com.dusty.dkits.util.cosmetic.Colors
 import br.com.dusty.dkits.util.entity.spawnFirework
+import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.util.inventory.*
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
@@ -27,8 +28,7 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.PlayerDropItemEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemStack
-import org.bukkit.potion.PotionType.REGEN
-import org.bukkit.potion.PotionType.SPEED
+import org.bukkit.potion.PotionType.*
 import java.util.*
 
 object FeastWarp: Warp() {
@@ -54,41 +54,42 @@ object FeastWarp: Warp() {
 
 	val CHEST_REFIL_MESSAGE = Text.positivePrefix().basic("Os ").positive("baús").basic(" foram ").positive("reabastecidos").basic("!").toString()
 
-	val CHEST_POSITIONS = arrayOf(arrayOf(-2.0, 0.0, -2.0),
-	                              arrayOf(-2.0, 0.0, 0.0),
-	                              arrayOf(-2.0, 0.0, 2.0),
-	                              arrayOf(0.0, 0.0, 2.0),
-	                              arrayOf(2.0, 0.0, 2.0),
-	                              arrayOf(2.0, 0.0, 0.0),
-	                              arrayOf(2.0, 0.0, -2.0),
-	                              arrayOf(0.0, 0.0, -2.0),
-	                              arrayOf(-5.0, 1.0, -5.0),
-	                              arrayOf(-5.0, 1.0, 0.0),
-	                              arrayOf(-5.0, 1.0, 5.0),
-	                              arrayOf(0.0, 1.0, 5.0),
-	                              arrayOf(5.0, 1.0, 5.0),
-	                              arrayOf(5.0, 1.0, 0.0),
-	                              arrayOf(5.0, 1.0, -5.0),
-	                              arrayOf(0.0, 1.0, -5.0),
-	                              arrayOf(-8.0, 1.0, -8.0),
-	                              arrayOf(-8.0, 1.0, 0.0),
-	                              arrayOf(-8.0, 1.0, 8.0),
-	                              arrayOf(0.0, 1.0, 8.0),
-	                              arrayOf(8.0, 1.0, 8.0),
-	                              arrayOf(8.0, 1.0, 0.0),
-	                              arrayOf(8.0, 1.0, -8.0),
-	                              arrayOf(0.0, 1.0, -8.0),
-	                              arrayOf(-11.0, 1.0, -11.0),
-	                              arrayOf(-11.0, 1.0, 0.0),
-	                              arrayOf(-11.0, 1.0, 11.0),
-	                              arrayOf(0.0, 1.0, 11.0),
-	                              arrayOf(11.0, 1.0, 11.0),
-	                              arrayOf(11.0, 1.0, 0.0),
-	                              arrayOf(11.0, 1.0, -11.0),
-	                              arrayOf(0.0, 1.0, -11.0))
+	val CHEST_POSITIONS = arrayOf(doubleArrayOf(-2.0, 0.0, -2.0),
+	                              doubleArrayOf(-2.0, 0.0, 0.0),
+	                              doubleArrayOf(-2.0, 0.0, 2.0),
+	                              doubleArrayOf(0.0, 0.0, 2.0),
+	                              doubleArrayOf(2.0, 0.0, 2.0),
+	                              doubleArrayOf(2.0, 0.0, 0.0),
+	                              doubleArrayOf(2.0, 0.0, -2.0),
+	                              doubleArrayOf(0.0, 0.0, -2.0),
+	                              doubleArrayOf(-5.0, 1.0, -5.0),
+	                              doubleArrayOf(-5.0, 1.0, 0.0),
+	                              doubleArrayOf(-5.0, 1.0, 5.0),
+	                              doubleArrayOf(0.0, 1.0, 5.0),
+	                              doubleArrayOf(5.0, 1.0, 5.0),
+	                              doubleArrayOf(5.0, 1.0, 0.0),
+	                              doubleArrayOf(5.0, 1.0, -5.0),
+	                              doubleArrayOf(0.0, 1.0, -5.0),
+	                              doubleArrayOf(-8.0, 1.0, -8.0),
+	                              doubleArrayOf(-8.0, 1.0, 0.0),
+	                              doubleArrayOf(-8.0, 1.0, 8.0),
+	                              doubleArrayOf(0.0, 1.0, 8.0),
+	                              doubleArrayOf(8.0, 1.0, 8.0),
+	                              doubleArrayOf(8.0, 1.0, 0.0),
+	                              doubleArrayOf(8.0, 1.0, -8.0),
+	                              doubleArrayOf(0.0, 1.0, -8.0),
+	                              doubleArrayOf(-11.0, 1.0, -11.0),
+	                              doubleArrayOf(-11.0, 1.0, 0.0),
+	                              doubleArrayOf(-11.0, 1.0, 11.0),
+	                              doubleArrayOf(0.0, 1.0, 11.0),
+	                              doubleArrayOf(11.0, 1.0, 11.0),
+	                              doubleArrayOf(11.0, 1.0, 0.0),
+	                              doubleArrayOf(11.0, 1.0, -11.0),
+	                              doubleArrayOf(0.0, 1.0, -11.0))
 
 	val CHEST_LOCATIONS: List<Location>
 
+	//Usage: arrayOf(itemStack, attempts, chances, maxAmount)
 	val CHEST_ITEMS = arrayOf(arrayOf(ItemStack(DIAMOND_HELMET), 1, 0.1, 1),
 	                          arrayOf(ItemStack(DIAMOND_CHESTPLATE), 1, 0.1, 1),
 	                          arrayOf(ItemStack(DIAMOND_LEGGINGS), 1, 0.1, 1),
@@ -97,12 +98,20 @@ object FeastWarp: Warp() {
 	                          arrayOf(ItemStack(BOW), 2, 0.25, 1),
 	                          arrayOf(ItemStack(ARROW), 2, 0.25, 16),
 	                          arrayOf(ItemStack(EXP_BOTTLE), 2, 0.5, 8),
-	                          arrayOf(ItemStacks.potions(1, false, false, SPEED, false), 1, 0.15, 1),
-	                          arrayOf(ItemStacks.potions(1, true, false, SPEED, false), 1, 0.1, 1),
-	                          arrayOf(ItemStacks.potions(1, false, true, SPEED, false), 1, 0.1, 1),
-	                          arrayOf(ItemStacks.potions(1, false, false, REGEN, false), 1, 0.15, 1),
-	                          arrayOf(ItemStacks.potions(1, true, false, REGEN, false), 1, 0.1, 1),
-	                          arrayOf(ItemStacks.potions(1, false, true, REGEN, false), 1, 0.1, 1))
+	                          arrayOf(potions(1, false, false, SPEED, false), 1, 0.075, 1),
+	                          arrayOf(potions(1, true, false, SPEED, false), 1, 0.05, 1),
+	                          arrayOf(potions(1, false, true, SPEED, false), 1, 0.05, 1),
+	                          arrayOf(potions(1, false, false, REGEN, false), 1, 0.075, 1),
+	                          arrayOf(potions(1, true, false, REGEN, false), 1, 0.05, 1),
+	                          arrayOf(potions(1, false, true, REGEN, false), 1, 0.05, 1),
+	                          arrayOf(potions(1, false, false, STRENGTH, false), 1, 0.075, 1),
+	                          arrayOf(potions(1, true, false, STRENGTH, false), 1, 0.05, 1),
+	                          arrayOf(potions(1, false, true, STRENGTH, false), 1, 0.05, 1),
+	                          arrayOf(potions(1, false, false, WEAKNESS, true), 1, 0.075, 1),
+	                          arrayOf(potions(1, true, false, WEAKNESS, true), 1, 0.05, 1),
+	                          arrayOf(potions(1, false, false, POISON, true), 1, 0.075, 1),
+	                          arrayOf(potions(1, true, false, POISON, true), 1, 0.05, 1),
+	                          arrayOf(potions(1, false, true, POISON, true), 1, 0.05, 1))
 
 	var enchantmentTable = Locations.GENERIC
 		get() {
@@ -125,7 +134,7 @@ object FeastWarp: Warp() {
 		icon = ItemStack(CHEST)
 
 		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
-		icon.setDescription(description)
+		icon.description(description, true)
 
 		entryKit = SIMPLE_GAME_WARP_KIT
 
@@ -215,10 +224,11 @@ object FeastWarp: Warp() {
 	override fun applyKit(gamer: Gamer, kit: Kit) {
 		gamer.clear()
 		gamer.player.run {
-			inventory.addItemStacks(kit.items)
-
-			if (!kit.isDummy) {
+			if (kit.isDummy) {
+				inventory.addItemStacks(kit.items)
+			} else {
 				inventory.setItem(0, if (kit == Kits.PVP) Inventories.DIAMOND_SWORD_SHARPNESS else Inventories.DIAMOND_SWORD)
+				inventory.addItemStacks(kit.items)
 				fillRecraft()
 				fillSoups(true)
 				setArmor(Inventories.ARMOR_FULL_IRON)
@@ -226,12 +236,17 @@ object FeastWarp: Warp() {
 		}
 	}
 
-	override fun setLocation(player: Player, args: Array<String>) {
-		when (args[0]) {
-			"enchantmentTable" -> {
-				enchantmentTable = player.location.normalize()
+	override fun execute(gamer: Gamer, alias: String, args: Array<String>) {
+		val player = gamer.player
 
-				player.sendMessage(Text.positivePrefix().basic("Você ").positive("definiu").basic(" o local da ").positive("mesa de encantamentos").basic(" da warp ").positive(name).basic("!").toString())
+		when (alias) {
+			"location" -> when (args[0]) {
+				"enchantmentTable" -> {
+					enchantmentTable = player.location.normalize()
+
+					player.sendMessage(Text.positivePrefix().basic("Você ").positive("definiu").basic(" o local da ").positive("mesa de encantamentos").basic(" da warp ").positive(name).basic(
+							"!").toString())
+				}
 			}
 		}
 	}

@@ -8,8 +8,11 @@ object Warps {
 
 	val NONE = NoneWarp
 	val ARENA = ArenaWarp
+	val CLANVSCLAN = ClanVsClanWarp
 	val FEAST = FeastWarp
+	val GLADIATOR = GladiatorWarp
 	val FPS = FpsWarp
+	val HG = HGWarp
 	val LAVA_CHALLENGE = LavaChallengeWarp
 	val LOBBY = LobbyWarp
 	val ONE_VS_ONE = OneVsOneWarp
@@ -22,7 +25,9 @@ object Warps {
 	fun registerAll() {
 		//Usage: WARPS.add(FOO);
 
+		//Game
 		WARPS.add(ARENA)
+		WARPS.add(GLADIATOR)
 		WARPS.add(FEAST)
 		WARPS.add(VOLCANO)
 		WARPS.add(ONE_VS_ONE)
@@ -30,6 +35,9 @@ object Warps {
 		WARPS.add(LAVA_CHALLENGE)
 		WARPS.add(LOBBY)
 
+		//Event
+		WARPS.add(HG)
+		WARPS.add(CLANVSCLAN)
 
 		enabledWarpsNames = Warps.WARPS.filter { it.data.isEnabled }.map { it.name.toLowerCase().replace(" ", "") }.toTypedArray()
 

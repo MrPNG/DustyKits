@@ -18,7 +18,7 @@ object Listeners {
 	/**
 	 * [ArrayList] que contém todos os [Listener] a serem/já registrados pelo plugin.
 	 */
-	private val LISTENERS = arrayListOf<Listener>()
+	private val LISTENERS = hashSetOf<Listener>()
 
 	/**
 	 * Registra todos os [Listener] da [ArrayList] LISTENERS.
@@ -38,14 +38,18 @@ object Listeners {
 
 		//Mechanincs
 		LISTENERS.add(AsyncPlayerChatListener)
+		LISTENERS.add(BlockBreakListener)
+		LISTENERS.add(BlockPlaceListener)
 		LISTENERS.add(EntityDamageListener)
 		LISTENERS.add(EntityPickupItemListener)
 		LISTENERS.add(FoodLevelChangeListener)
 		LISTENERS.add(InventoryClickListener)
-		LISTENERS.add(ItemSpawnListener)
+//		LISTENERS.add(ItemSpawnListener)
+		LISTENERS.add(PlayerCommandPreProcessListener)
 		LISTENERS.add(LeavesDecayListener)
 		LISTENERS.add(PlayerDropItemListener)
 		LISTENERS.add(PlayerInteractEntityListener)
+		LISTENERS.add(PlayerItemDamageListener)
 		LISTENERS.add(PlayerMoveListener)
 		LISTENERS.add(ServerListPingListener)
 		LISTENERS.add(SignChangeListener)

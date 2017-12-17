@@ -14,7 +14,7 @@ enum class TextStyle constructor(val code: Int, chatColor: ChatColor) {
 	ITALIC(0x14, ChatColor.ITALIC),
 	RESET(0x15, ChatColor.RESET);
 
-	val string: String = chatColor.toString()
+	val string = chatColor.toString()
 
-	override fun toString(): String = string
+	override fun toString() = string
 }

@@ -6,7 +6,22 @@ object Kits {
 
 	val NONE = NoneKit
 	val PVP = PvpKit
+	val CHEMIST = ChemistKit
+	val CHICKENMAN = ChickenmanKit
+	val ELFO = ElfoKit
+	val ENDERMAGE = EndermageKit
+	val GRANDPA = GrandpaKit
+	val FISHERMAN = FishermanKit
+	val KANGAROO = KangarooKit
+	val NINJA = NinjaKit
+	val POSEIDON = PoseidonKit
+	val RING = RingKit
 	val SNAIL = SnailKit
+	val STOMPER = StomperKit
+	val THOR = ThorKit
+	val TURTLE = TurtleKit
+	val VIPER = ViperKit
+	val VIKING = VikingKit
 
 	val KITS = arrayListOf<Kit>()
 
@@ -17,7 +32,22 @@ object Kits {
 
 		KITS.add(NONE)
 		KITS.add(PVP)
+		KITS.add(CHEMIST)
+		KITS.add(CHICKENMAN)
+		KITS.add(ELFO)
+		KITS.add(ENDERMAGE)
+		KITS.add(FISHERMAN)
+		KITS.add(GRANDPA)
+		KITS.add(KANGAROO)
+		KITS.add(NINJA)
+		KITS.add(POSEIDON)
+		KITS.add(RING)
 		KITS.add(SNAIL)
+		KITS.add(STOMPER)
+		KITS.add(THOR)
+		KITS.add(TURTLE)
+		KITS.add(VIPER)
+		KITS.add(VIKING)
 
 		enabledKitsNames = KITS.filter { it.data.isEnabled }.map { it.name.toLowerCase() }.toTypedArray()
 	}

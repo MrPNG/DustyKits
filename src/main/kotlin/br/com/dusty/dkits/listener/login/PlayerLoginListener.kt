@@ -5,9 +5,12 @@ import br.com.dusty.dkits.Main
 import br.com.dusty.dkits.clan.ClanRegistry
 import br.com.dusty.dkits.gamer.EnumRank
 import br.com.dusty.dkits.gamer.GamerRegistry
-import br.com.dusty.dkits.gamer.gamer
+import br.com.dusty.dkits.store.EnumAdvantage
+import br.com.dusty.dkits.store.Store
+import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
+import br.com.dusty.dkits.util.web.WebAPI
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerLoginEvent
@@ -31,21 +34,38 @@ object PlayerLoginListener: Listener {
 
 		val gamer = player.gamer()
 
-		if (Main.serverStatus != EnumServerStatus.ONLINE && gamer.rank.isLowerThan(EnumRank.MOD)) {
-			GamerRegistry.PRIMITIVE_GAMER_BY_UUID.remove(player.uniqueId)
+		val purchases = Store.parsePurchases(WebAPI.loadPurchases(player.uniqueId.toString()))
 
+		purchases.run {
+			loadRank(gamer)
+			loadKits(gamer)
+			loadAvantages(gamer)
+		}
+
+		gamer.purchases = purchases
+
+		if (Main.serverStatus != EnumServerStatus.ONLINE && gamer.rank.isLowerThan(EnumRank.MOD)) {
 			event.disallow(PlayerLoginEvent.Result.KICK_OTHER, KICK_NOT_READY)
+
+			GamerRegistry.unregister(player.uniqueId)
 
 			return
 		}
 
 		if (event.result == PlayerLoginEvent.Result.KICK_FULL) {
-			if (gamer.canLogin()) event.allow()
-			else event.disallow(PlayerLoginEvent.Result.KICK_FULL, KICK_FULL_MESSAGE)
+			if (gamer.hasAdvantage(EnumAdvantage.SLOT)) {
+				event.allow()
+			} else {
+				event.disallow(PlayerLoginEvent.Result.KICK_FULL, KICK_FULL_MESSAGE)
+
+				GamerRegistry.unregister(player.uniqueId)
+
+				return
+			}
 		}
 
 		ClanRegistry.clan(gamer.primitiveGamer.clan)?.run {
-			if (gamer.primitiveGamer.clan in rawMembers) {
+			if (player.uniqueId.toString() in rawMembers) {
 				gamer.clan = this
 
 				onlineMembers.add(gamer)

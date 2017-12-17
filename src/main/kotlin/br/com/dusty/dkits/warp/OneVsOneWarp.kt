@@ -1,21 +1,22 @@
 package br.com.dusty.dkits.warp
 
-import br.com.dusty.dkits.clan.Clan
+import br.com.dusty.dkits.command.gameplay.WarpCommand
 import br.com.dusty.dkits.command.staff.LocationCommand
 import br.com.dusty.dkits.gamer.Gamer
-import br.com.dusty.dkits.gamer.gamer
 import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.util.*
+import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.util.inventory.*
 import br.com.dusty.dkits.util.protocol.EnumProtocolVersion
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
-import br.com.dusty.dkits.warp.OneVsOneWarp.Fight.ClanVsClanFight
 import br.com.dusty.dkits.warp.OneVsOneWarp.Fight.OneVsOneFight
 import br.com.dusty.dkits.warp.OneVsOneWarp.FightState.INVITATION
 import br.com.dusty.dkits.warp.OneVsOneWarp.FightState.ONGOING
 import br.com.dusty.dkits.warp.OneVsOneWarp.FightType.*
 import org.bukkit.Bukkit
+import org.bukkit.GameMode
+import org.bukkit.Location
 import org.bukkit.Material.*
 import org.bukkit.SkullType
 import org.bukkit.entity.Player
@@ -23,12 +24,18 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerInteractEntityEvent
+import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.scheduler.BukkitRunnable
 
 object OneVsOneWarp: Warp() {
 
+	val HAS_NO_CLAN = Text.negativePrefix().basic("Você ").negative("não").basic(" faz parte de um ").negative("clan").basic("!").toString()
+	val IS_NOT_LEADER = Text.negativePrefix().basic("Você ").negative("não").basic(" é o ").negative("líder").basic(" do seu ").negative("clan").basic("!").toString()
+
 	val FIGHTS = hashMapOf<Player, Fight>()
+
+	val ARENAS = hashMapOf<Player, Location>()
 
 	var oneVsOneFirst = Locations.GENERIC
 		get() {
@@ -57,38 +64,6 @@ object OneVsOneWarp: Warp() {
 				field = location
 
 				(data as OneVsOneData).oneVsOneSecond = location.toSimpleLocation()
-
-				saveData()
-			}
-		}
-
-	var gladiatorFirst = Locations.GENERIC
-		get() {
-			if (field == Locations.GENERIC && data is OneVsOneData) field = (data as OneVsOneData).gladiatorFirst.toLocation(Bukkit.getWorlds()[0])
-
-			return field
-		}
-		set(location) {
-			if (data is OneVsOneData) {
-				field = location
-
-				(data as OneVsOneData).gladiatorFirst = location.toSimpleLocation()
-
-				saveData()
-			}
-		}
-
-	var gladiatorSecond = Locations.GENERIC
-		get() {
-			if (field == Locations.GENERIC && data is OneVsOneData) field = (data as OneVsOneData).gladiatorSecond.toLocation(Bukkit.getWorlds()[0])
-
-			return field
-		}
-		set(location) {
-			if (data is OneVsOneData) {
-				field = location
-
-				(data as OneVsOneData).gladiatorSecond = location.toSimpleLocation()
 
 				saveData()
 			}
@@ -128,12 +103,14 @@ object OneVsOneWarp: Warp() {
 
 	init {
 		name = "1v1"
+
 		icon = ItemStack(BLAZE_ROD)
-
 		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
-		icon.setDescription(description)
+		icon.description(description, true)
 
-		entryKit = Kit(items = arrayOf(STANDARD.item, FULL.item, NUDE.item, GLADIATOR.item, CLAN_VS_CLAN.item, null, null, null, GAME_WARP_KIT.items[8]))
+		aliases = arrayOf(name.replace(" ", "").toLowerCase())
+
+		entryKit = Kit(items = arrayOf(STANDARD.item, FULL.item, NUDE.item, GLADIATOR.item, null, null, null, null, GAME_WARP_KIT.items[8]))
 
 		data = OneVsOneData()
 		data.spreadRange = 4.0
@@ -141,9 +118,10 @@ object OneVsOneWarp: Warp() {
 		loadData()
 
 		LocationCommand.CUSTOM_EXECUTORS.add(this)
+		WarpCommand.CUSTOM_EXECUTORS.add(this)
 	}
 
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	fun onPlayerDeath(event: PlayerDeathEvent) {
 		val loser = event.entity.gamer()
 
@@ -152,8 +130,68 @@ object OneVsOneWarp: Warp() {
 		}
 	}
 
-	@EventHandler
-	fun onPlayerInteract(event: PlayerInteractEntityEvent) {
+	/*@EventHandler(priority = EventPriority.HIGHEST)
+	fun onInventoryClick(event: InventoryClickEvent) {
+		val itemStack = event.currentItem
+
+		if (event.slotType == InventoryType.SlotType.CONTAINER && itemStack != Inventories.BACKGROUND) {
+			if (event.clickedInventory.title == ClanVsClanMenu.TITLE_CLANS) {
+				val player = event.whoClicked as Player
+				val gamer = player.gamer()
+
+				if (gamer.warp == this) {
+					event.isCancelled = true
+
+					itemStack.itemMeta?.lore?.run {
+						val clan = ClanRegistry.clan(last().clearFormatting())
+
+						when {
+							clan == null                        -> player.sendMessage(CLAN_IS_OFFLINE)
+							gamer.clan!!.onlineMembers.size < 5 -> player.sendMessage(SOMEONE_IS_OFFLINE)
+							clan.onlineMembers.size < 5         -> player.sendMessage(SOMEONE_IS_OFFLINE_OTHER)
+							else                                -> {
+								val fight = FIGHTS[player]
+
+								if (fight is ClanVsClanFight && fight.guest == clan && fight.expiresOn > System.currentTimeMillis()) player.sendMessage(Text.negativePrefix().basic("Você ainda deve ").negative(
+										"esperar").basic(" mais ").negative(fight.expiresOn.millisToPeriod().toInt()).basic(" segundos antes de convidar esse ").negative("clan").basic(" para uma luta novamente!").toString())
+								else invite(gamer, clan, CLAN_VS_CLAN)
+							}
+						}
+
+						player.closeInventory()
+					}
+				}
+			}
+		}
+	}*/
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	fun onPlayerInteract(event: PlayerInteractEvent) {
+		val player = event.player
+		val gamer = player.gamer()
+
+		if (gamer.warp == this) {
+			when {
+				!gamer.isFrozen() && FIGHTS.values.any { it.state == ONGOING && it is OneVsOneFight && it.type == GLADIATOR && (it.host == gamer || it.guest == gamer) } -> event.isCancelled = false
+				event.item != null                                                                                                                                       -> {
+					val item = event.item
+
+					if (item.type == SKULL_ITEM && item == CLAN_VS_CLAN.item) {
+						val clan = gamer.clan
+
+						when {
+							clan == null         -> player.sendMessage(HAS_NO_CLAN)
+							clan.leader != gamer -> player.sendMessage(IS_NOT_LEADER)
+							else                 -> player.openInventory(ClanVsClanMenu.menuClans(player, true))
+						}
+					}
+				}
+			}
+		}
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	fun onPlayerInteractEntity(event: PlayerInteractEntityEvent) {
 		if (event.rightClicked is Player) {
 			val player = event.player
 			val gamer = player.gamer()
@@ -166,19 +204,19 @@ object OneVsOneWarp: Warp() {
 
 					when (type) {
 						BLAZE_ROD     -> if (this == STANDARD.item) {
-							if (fight != null && fight.type == STANDARD && fight.host.player == rightClicked) start(fight)
+							if (fight is OneVsOneFight && fight.type == STANDARD && fight.host.player == rightClicked) start(fight)
 							else invite(player, rightClicked.player, STANDARD)
 						}
 						MUSHROOM_SOUP -> if (this == FULL.item) {
-							if (fight != null && fight.type == FULL && fight.host.player == rightClicked) start(fight)
+							if (fight is OneVsOneFight && fight.type == FULL && fight.host.player == rightClicked) start(fight)
 							else invite(player, rightClicked.player, FULL)
 						}
 						STICK         -> if (this == NUDE.item) {
-							if (fight != null && fight.type == NUDE && fight.host.player == rightClicked) start(fight)
+							if (fight is OneVsOneFight && fight.type == NUDE && fight.host.player == rightClicked) start(fight)
 							else invite(player, rightClicked.player, NUDE)
 						}
-						IRON_BARDING  -> if (this == GLADIATOR.item) {
-							if (fight != null && fight.type == GLADIATOR && fight.host.player == rightClicked) start(fight)
+						IRON_FENCE    -> if (this == GLADIATOR.item) {
+							if (fight is OneVsOneFight && fight.type == GLADIATOR && fight.host.player == rightClicked) start(fight)
 							else invite(player, rightClicked.player, GLADIATOR)
 						}
 					}
@@ -191,7 +229,8 @@ object OneVsOneWarp: Warp() {
 		val oldFight = FIGHTS[host]
 
 		if (oldFight != null && oldFight is OneVsOneFight && oldFight.guest.player == guest && oldFight.expiresOn > System.currentTimeMillis()) {
-			host.sendMessage(Text.negativePrefix().basic("Você ainda deve ").negative("esperar").basic(" mais ").negative(oldFight.expiresOn.millisToSeconds().toInt()).basic(" segundos antes de convidar esse jogador para uma luta novamente!").toString())
+			host.sendMessage(Text.negativePrefix().basic("Você ainda deve ").negative("esperar").basic(" mais ").negative(oldFight.expiresOn.millisToPeriod().toInt()).basic(" segundos antes de convidar esse ").negative(
+					"jogador").basic(" para uma luta novamente!").toString())
 		} else {
 			FIGHTS.put(host, OneVsOneFight(host.gamer(), guest.gamer(), System.currentTimeMillis() + 10000L, type, INVITATION))
 
@@ -204,107 +243,257 @@ object OneVsOneWarp: Warp() {
 		}
 	}
 
-	fun start(fight: Fight) {
-		when (fight) {
-			is OneVsOneFight   -> {
-				val host = fight.host
-				val guest = fight.guest
+	/*fun invite(host: Gamer, guest: Clan, type: FightType) {
+		val hostPlayer = host.player
+		val guestPlayer = guest.leader!!.player
 
-				val hostPlayer = host.player
-				val guestPlayer = guest.player
+		FIGHTS.put(hostPlayer, ClanVsClanFight(host, guest, hashMapOf(), System.currentTimeMillis() + 10000L, type, INVITATION))
 
-				FIGHTS.values.forEach {
-					if (it is OneVsOneFight && it.state == ONGOING) {
-						val anotherHost = it.host.player
+		hostPlayer.sendMessage(Text.positivePrefix().basic("Você ").positive("convidou").basic(" o clan ").positive(guest.name).basic(" para uma luta do tipo ").positive(type.string).basic("!").toString())
 
-						anotherHost.hidePlayer(hostPlayer)
-						anotherHost.hidePlayer(guestPlayer)
+		guestPlayer.sendMessage(Text.positivePrefix().basic("Seu clan foi ").positive("convidado").basic(" pelo jogador ").positive(hostPlayer.displayName.clearFormatting()).basic(" para uma luta do tipo ").positive(
+				type.string).basic("!").toString())
 
-						hostPlayer.hidePlayer(anotherHost)
-						guestPlayer.hidePlayer(anotherHost)
+		val command = "/1v1 aceitar " + hostPlayer.name
 
-						val anotherGuest = it.guest.player
+		val hoverEvent = HoverEvent(HoverEvent.Action.SHOW_TEXT, ComponentBuilder("Aceitar!").color(ChatColor.GREEN).create())
+		val clickEvent = ClickEvent(ClickEvent.Action.RUN_COMMAND, command)
 
-						anotherGuest.hidePlayer(hostPlayer)
-						anotherGuest.hidePlayer(guestPlayer)
+		guestPlayer.spigot().sendMessage(*ComponentBuilder("Clique ").color(ChatColor.GRAY).append("aqui").color(ChatColor.GREEN).italic(true).event(hoverEvent).event(clickEvent).append(" ou use o comando ").color(
+				ChatColor.GRAY).append(command).color(ChatColor.GREEN).append(" para ").color(ChatColor.GRAY).append("aceitar").color(ChatColor.GREEN).append("!").color(ChatColor.GRAY).create())
+	}*/
 
-						hostPlayer.hidePlayer(anotherGuest)
-						guestPlayer.hidePlayer(anotherGuest)
-					}
-				}
+	fun start(fight: OneVsOneFight) {
+		val host = fight.host
+		val guest = fight.guest
 
-				hostPlayer.teleport(if (fight.type == GLADIATOR) gladiatorFirst else oneVsOneFirst)
-				guestPlayer.teleport(if (fight.type == GLADIATOR) gladiatorSecond else oneVsOneSecond)
+		val hostPlayer = host.player
+		val guestPlayer = guest.player
 
-				host.freeze = 3000L
-				guest.freeze = 3000L
+		FIGHTS.values.forEach {
+			if (it is OneVsOneFight && it.state == ONGOING) {
+				val anotherHost = it.host.player
 
-				host.setKitAndApply(fight.type.kit, false)
-				guest.setKitAndApply(fight.type.kit, false)
+				anotherHost.hidePlayer(hostPlayer)
+				anotherHost.hidePlayer(guestPlayer)
 
-				when (fight.type) {
-					STANDARD -> {
-						hostPlayer.fillSoups(false)
-						guestPlayer.fillSoups(false)
-					}
-					else     -> {
-						hostPlayer.fillSoups(true)
-						guestPlayer.fillSoups(true)
+				hostPlayer.hidePlayer(anotherHost)
+				guestPlayer.hidePlayer(anotherHost)
 
-						hostPlayer.fillRecraft()
-						guestPlayer.fillRecraft()
-					}
-				}
+				val anotherGuest = it.guest.player
 
-				host.combatPartner = guest
-				guest.combatPartner = host
+				anotherGuest.hidePlayer(hostPlayer)
+				anotherGuest.hidePlayer(guestPlayer)
 
-				host.combatTag = Integer.MAX_VALUE.toLong()
-				guest.combatTag = Integer.MAX_VALUE.toLong()
-
-				fight.state = ONGOING
-
-				Tasks.sync(object: BukkitRunnable() {
-					var i = 5
-
-					override fun run() {
-						if (i == 5) {
-							val message = Text.positivePrefix().basic("A ").positive("luta").basic(" irá ").positive("começar").basic(" em...").toString()
-
-							hostPlayer.sendMessage(message)
-							guestPlayer.sendMessage(message)
-						}
-
-						val countdownMessage = Text.positivePrefix().basic(i.toString() + "...").toString()
-
-						hostPlayer.sendMessage(countdownMessage)
-						guestPlayer.sendMessage(countdownMessage)
-
-						i--
-
-						if (i == 0) {
-							val goMessage = Text.positivePrefix().positive("Já").basic("!").toString()
-
-							hostPlayer.sendMessage(goMessage)
-							guestPlayer.sendMessage(goMessage)
-
-							cancel()
-						}
-					}
-				}, 0L, 20L)
-			}
-			is ClanVsClanFight -> {
-
+				hostPlayer.hidePlayer(anotherGuest)
+				guestPlayer.hidePlayer(anotherGuest)
 			}
 		}
+
+		if (fight.type == GLADIATOR) {
+			hostPlayer.gameMode = GameMode.SURVIVAL
+			guestPlayer.gameMode = GameMode.SURVIVAL
+
+			val startLocation = spawn.clone()
+			startLocation.y = 240.0
+
+			var x = 0.0
+			var z = 0.0
+
+			while (startLocation.add(x, 0.0, z).block.type != AIR) {
+				x += 16
+				z += 16
+			}
+
+			val triple = startLocation.generateGlassArena(15, 10, 15, false, false)
+
+			ARENAS.put(hostPlayer, triple.first)
+
+			hostPlayer.teleport(triple.second)
+			guestPlayer.teleport(triple.third)
+		} else {
+			hostPlayer.teleport(oneVsOneFirst)
+			guestPlayer.teleport(oneVsOneSecond)
+		}
+
+		host.freeze = 5000L
+		guest.freeze = 5000L
+
+		host.setKitAndApply(fight.type.kit, false)
+		guest.setKitAndApply(fight.type.kit, false)
+
+		when (fight.type) {
+			STANDARD -> {
+				hostPlayer.fillSoups(false)
+				guestPlayer.fillSoups(false)
+			}
+			else     -> {
+				hostPlayer.fillSoups(true)
+				guestPlayer.fillSoups(true)
+
+				hostPlayer.fillRecraft()
+				guestPlayer.fillRecraft()
+			}
+		}
+
+		host.combatPartner = guest
+		guest.combatPartner = host
+
+		host.combatTag = Integer.MAX_VALUE.toLong()
+		guest.combatTag = Integer.MAX_VALUE.toLong()
+
+		fight.state = ONGOING
+
+		Tasks.sync(object: BukkitRunnable() {
+			var i = 5
+
+			override fun run() {
+				if (i == 5) {
+					val message = Text.positivePrefix().basic("A ").positive("luta").basic(" irá ").positive("começar").basic(" em...").toString()
+
+					hostPlayer.sendMessage(message)
+					guestPlayer.sendMessage(message)
+				}
+
+				val countdownMessage = Text.positivePrefix().basic(i.toString() + "...").toString()
+
+				hostPlayer.sendMessage(countdownMessage)
+				guestPlayer.sendMessage(countdownMessage)
+
+				i--
+
+				if (i == 0) {
+					val goMessage = Text.positivePrefix().positive("Já").basic("!").toString()
+
+					hostPlayer.sendMessage(goMessage)
+					guestPlayer.sendMessage(goMessage)
+
+					cancel()
+				}
+			}
+		}, 0L, 20L)
 	}
+
+	/*fun start(fight: ClanVsClanFight) {
+		val hostClan = fight.host.clan!!
+		val guestClan = fight.guest
+
+		val hostGamers = hostClan.onlineMembers
+		val guestGamers = guestClan.onlineMembers
+
+		val hostPlayers = hostGamers.map { it.player }
+		val guestPlayers = guestGamers.map { it.player }
+
+		FIGHTS.values.forEach {
+			if (it is ClanVsClanFight && it.state == ONGOING) {
+				val anotherHostPlayers = it.host.clan!!.onlineMembers.map { it.player }
+				val anotherGuestPlayers = it.guest.onlineMembers.map { it.player }
+
+				anotherHostPlayers.forEach { anotherPlayer ->
+					hostPlayers.forEach { player -> player.hidePlayer(anotherPlayer) }
+					guestPlayers.forEach { player -> player.hidePlayer(anotherPlayer) }
+				}
+
+				anotherGuestPlayers.forEach { anotherPlayer ->
+					hostPlayers.forEach { player -> player.hidePlayer(anotherPlayer) }
+					guestPlayers.forEach { player -> player.hidePlayer(anotherPlayer) }
+				}
+
+				hostPlayers.forEach { player ->
+					anotherHostPlayers.forEach { anotherPlayer -> anotherPlayer.hidePlayer(player) }
+					anotherGuestPlayers.forEach { anotherPlayer -> anotherPlayer.hidePlayer(player) }
+				}
+
+				guestPlayers.forEach { player ->
+					anotherHostPlayers.forEach { anotherPlayer -> anotherPlayer.hidePlayer(player) }
+					anotherGuestPlayers.forEach { anotherPlayer -> anotherPlayer.hidePlayer(player) }
+				}
+			}
+		}
+
+		hostPlayers.forEach { it.teleport(clanVsClanFirst.spread(4.0)) }
+		guestPlayers.forEach { it.teleport(clanVsClanSecond.spread(4.0)) }
+
+		hostGamers.forEach { it.freeze = 5000L }
+		guestGamers.forEach { it.freeze = 5000L }
+
+		hostGamers.forEach { it.setKitAndApply(fight.type.kit, false) }
+		guestGamers.forEach { it.setKitAndApply(fight.type.kit, false) }
+
+		hostPlayers.forEach {
+			it.fillSoups(true)
+			it.fillRecraft()
+		}
+		guestPlayers.forEach {
+			it.fillSoups(true)
+			it.fillRecraft()
+		}
+
+		hostGamers.forEach {
+			it.combatPartner = guestClan.leader
+			it.combatTag = Integer.MAX_VALUE.toLong()
+		}
+		guestGamers.forEach {
+			it.combatPartner = hostClan.leader
+			it.combatTag = Integer.MAX_VALUE.toLong()
+		}
+
+		fight.state = ONGOING
+
+		Tasks.sync(object: BukkitRunnable() {
+			var i = 5
+
+			override fun run() {
+				if (i == 5) {
+					val message = Text.positivePrefix().basic("A ").positive("luta").basic(" irá ").positive("começar").basic(" em...").toString()
+
+					hostPlayers.forEach { it.sendMessage(message) }
+					guestPlayers.forEach { it.sendMessage(message) }
+				}
+
+				val countdownMessage = Text.positivePrefix().basic(i.toString() + "...").toString()
+
+				hostPlayers.forEach { it.sendMessage(countdownMessage) }
+				guestPlayers.forEach { it.sendMessage(countdownMessage) }
+
+				i--
+
+				if (i == 0) {
+					val goMessage = Text.positivePrefix().positive("Já").basic("!").toString()
+
+					hostPlayers.forEach { it.sendMessage(goMessage) }
+					guestPlayers.forEach { it.sendMessage(goMessage) }
+
+					cancel()
+				}
+			}
+		}, 0L, 20L)
+	}*/
 
 	fun end(loser: Gamer, winner: Gamer) {
 		val loserPlayer = loser.player
 		val winnerPlayer = winner.player
 
-		FIGHTS.remove(loserPlayer)
-		FIGHTS.remove(winnerPlayer)
+		var fight: OneVsOneFight? = null
+
+		FIGHTS.remove(loserPlayer)?.run {
+			this as OneVsOneFight
+
+			if ((host == loser && guest == winner) || (host == winner && guest == loser)) fight = this
+		}
+		FIGHTS.remove(winnerPlayer)?.run {
+			this as OneVsOneFight
+
+			if ((host == loser && guest == winner) || (host == winner && guest == loser)) fight = this
+		}
+
+		if (fight?.type == GLADIATOR) {
+			ARENAS.remove(loserPlayer)?.destroyGlassArena(15, 10, 15)
+			ARENAS.remove(winnerPlayer)?.destroyGlassArena(15, 10, 15)
+
+			loserPlayer.gameMode = GameMode.ADVENTURE
+			winnerPlayer.gameMode = GameMode.ADVENTURE
+		}
 
 		loser.addOneVsOneLoss()
 		winner.addOneVsOneWin()
@@ -357,87 +546,91 @@ object OneVsOneWarp: Warp() {
 		gamer.setKitAndApply(entryKit, false)
 	}
 
-	override fun dispatchGamer(gamer: Gamer) {
-		if (FIGHTS.values.any { it is OneVsOneFight && (it.host == gamer || it.guest == gamer) }) end(gamer, gamer.combatPartner!!)
+	override fun dispatchGamer(gamer: Gamer, newWarp: Warp) {
+		if (gamer.isCombatTagged() && FIGHTS.values.any { it is OneVsOneFight && (it.host == gamer || it.guest == gamer) }) end(gamer, gamer.combatPartner!!)
 	}
 
-	override fun setLocation(player: Player, args: Array<String>) {
-		when (args[0]) {
-			"oneVsOneFirst"    -> {
-				oneVsOneFirst = player.location.normalize()
+	override fun execute(gamer: Gamer, alias: String, args: Array<String>) {
+		val player = gamer.player
 
-				player.sendMessage(Text.positivePrefix().basic("Você ").positive("definiu").basic(" o ").positive("primeiro").basic(" spawn do ").positive("1v1").basic("!").toString())
+		when (alias) {
+			in aliases -> {
+				if (args.isEmpty()) gamer.sendToWarp(this, false, true)
+				else when (args[0]) {
+					"aceitar" -> {
+					}
+				}
 			}
-			"oneVsOneSecond"   -> {
-				oneVsOneSecond = player.location.normalize()
+			"location" -> when (args[0]) {
+				"oneVsOneFirst"    -> {
+					oneVsOneFirst = player.location.normalize()
 
-				player.sendMessage(Text.positivePrefix().basic("Você ").positive("definiu").basic(" o ").positive("segundo").basic(" spawn do ").positive("1v1").basic("!").toString())
-			}
-			"gladiatorFirst"   -> {
-				gladiatorFirst = player.location.normalize()
+					player.sendMessage(Text.positivePrefix().basic("Você ").positive("definiu").basic(" o ").positive("primeiro").basic(" spawn do ").positive("1v1").basic("!").toString())
+				}
+				"oneVsOneSecond"   -> {
+					oneVsOneSecond = player.location.normalize()
 
-				player.sendMessage(Text.positivePrefix().basic("Você ").positive("definiu").basic(" o ").positive("primeiro").basic(" spawn do ").positive("gladiator").basic(" no 1v1!").toString())
-			}
-			"gladiatorSecond"  -> {
-				gladiatorSecond = player.location.normalize()
+					player.sendMessage(Text.positivePrefix().basic("Você ").positive("definiu").basic(" o ").positive("segundo").basic(" spawn do ").positive("1v1").basic("!").toString())
+				}
+				"clanVsClanFirst"  -> {
+					clanVsClanFirst = player.location.normalize()
 
-				player.sendMessage(Text.positivePrefix().basic("Você ").positive("definiu").basic(" o ").positive("segundo").basic(" spawn do ").positive("gladiator").basic(" no 1v1!").toString())
-			}
-			"clanVsClanFirst"  -> {
-				clanVsClanFirst = player.location.normalize()
+					player.sendMessage(Text.positivePrefix().basic("Você ").positive("definiu").basic(" o ").positive("primeiro").basic(" spawn do ").positive("ClanVsClan").basic("!").toString())
+				}
+				"clanVsClanSecond" -> {
+					clanVsClanSecond = player.location.normalize()
 
-				player.sendMessage(Text.positivePrefix().basic("Você ").positive("definiu").basic(" o ").positive("primeiro").basic(" spawn do ").positive("ClanVsClan").basic("!").toString())
-			}
-			"clanVsClanSecond" -> {
-				clanVsClanSecond = player.location.normalize()
-
-				player.sendMessage(Text.positivePrefix().basic("Você ").positive("definiu").basic(" o ").positive("segundo").basic(" spawn do ").positive("ClanVsClan").basic("!").toString())
+					player.sendMessage(Text.positivePrefix().basic("Você ").positive("definiu").basic(" o ").positive("segundo").basic(" spawn do ").positive("ClanVsClan").basic("!").toString())
+				}
 			}
 		}
 	}
 
-	sealed class Fight(val host: Gamer, val expiresOn: Long, val type: FightType, var state: FightState) {
+	sealed class Fight(val expiresOn: Long, val type: FightType, var state: FightState) {
 
-		class OneVsOneFight(host: Gamer, val guest: Gamer, timestamp: Long, type: FightType, state: FightState): Fight(host, timestamp, type, state)
-		class ClanVsClanFight(host: Gamer, val guest: Clan, timestamp: Long, type: FightType, state: FightState): Fight(host, timestamp, type, state)
+		class OneVsOneFight(val host: Gamer, val guest: Gamer, expiresOn: Long, type: FightType, state: FightState): Fight(expiresOn, type, state)
 	}
 
 	enum class FightType(val string: String, val kit: Kit, val item: ItemStack) {
 
 		STANDARD("Clássico",
 		         Kit(weapon = Inventories.DIAMOND_SWORD_SHARPNESS, armor = Inventories.ARMOR_FULL_IRON, isDummy = false),
-		         ItemStack(BLAZE_ROD).rename(Text.of("1v1 - Clássico").color(TextColor.GOLD).toString()).setDescription(arrayOf("Arena normal",
-		                                                                                                                        "Armadura de ferro completa",
-		                                                                                                                        "Espada de diamante encantada",
-		                                                                                                                        "Sopas apenas na hotbar").asList())),
+		         ItemStack(BLAZE_ROD).rename(Text.of("1v1 - Clássico").color(TextColor.GOLD).toString()).description(arrayListOf("Arena normal",
+		                                                                                                                         "Armadura de ferro completa",
+		                                                                                                                         "Espada de diamante encantada",
+		                                                                                                                         "Sopas apenas na hotbar"), true)),
 		FULL("Completo",
 		     Kit(weapon = Inventories.DIAMOND_SWORD_SHARPNESS, armor = Inventories.ARMOR_FULL_IRON, isDummy = false),
-		     ItemStack(MUSHROOM_SOUP).rename(Text.of("1v1 - Completo").color(TextColor.GOLD).toString()).setDescription(arrayOf("Arena normal",
-		                                                                                                                        "Armadura de ferro completa",
-		                                                                                                                        "Espada de diamante encantada",
-		                                                                                                                        "Sopas em todo o invetário",
-		                                                                                                                        "Material de recraft").asList())),
+		     ItemStack(MUSHROOM_SOUP).rename(Text.of("1v1 - Completo").color(TextColor.GOLD).toString()).description(arrayListOf("Arena normal",
+		                                                                                                                         "Armadura de ferro completa",
+		                                                                                                                         "Espada de diamante encantada",
+		                                                                                                                         "Sopas em todo o invetário",
+		                                                                                                                         "Material de recraft"), true)),
 		NUDE("Sem Armadura",
 		     Kit(weapon = ItemStack(STONE_SWORD), armor = arrayOfNulls(4), isDummy = false),
-		     ItemStack(STICK).rename(Text.of("1v1 - Sem Armadura").color(TextColor.GOLD).toString()).setDescription(arrayOf("Arena normal",
-		                                                                                                                    "Sem armadura",
-		                                                                                                                    "Espada de pedra",
-		                                                                                                                    "Sopas em todo o invetário",
-		                                                                                                                    "Material de recraft").asList())),
+		     ItemStack(STICK).rename(Text.of("1v1 - Sem Armadura").color(TextColor.GOLD).toString()).description(arrayListOf("Arena normal",
+		                                                                                                                     "Sem armadura",
+		                                                                                                                     "Espada de pedra",
+		                                                                                                                     "Sopas em todo o invetário",
+		                                                                                                                     "Material de recraft"), true)),
 		GLADIATOR("Gladiator",
-		          Kit(weapon = ItemStack(STONE_SWORD), armor = arrayOfNulls(4), isDummy = false),
-		          ItemStack(IRON_BARDING).rename(Text.of("1v1 - Gladiator").color(TextColor.GOLD).toString()).setDescription(arrayOf("Arena no estilo \"Gladiator\"",
-		                                                                                                                             "Sem armadura",
-		                                                                                                                             "Espada de pedra",
-		                                                                                                                             "Sopas em todo o invetário",
-		                                                                                                                             "Material de recraft").asList())),
+		          Kit(weapon = Inventories.DIAMOND_SWORD_SHARPNESS,
+		              armor = Inventories.ARMOR_FULL_IRON,
+		              items = arrayOf(ItemStack(STONE_PICKAXE), ItemStack(COBBLE_WALL, 64), ItemStack(LAVA_BUCKET), ItemStack(WATER_BUCKET)),
+		              isDummy = false),
+		          ItemStack(IRON_FENCE).rename(Text.of("1v1 - Gladiator").color(TextColor.GOLD).toString()).description(arrayListOf("Arena no estilo \"Gladiator\"",
+		                                                                                                                            "Armadura de ferro completa",
+		                                                                                                                            "Espada de diamante encantada",
+		                                                                                                                            "Sopas em todo o invetário",
+		                                                                                                                            "Material de recraft"), true)),
 		CLAN_VS_CLAN("Clan vs Clan",
 		             Kit(weapon = Inventories.DIAMOND_SWORD_SHARPNESS, armor = Inventories.ARMOR_FULL_IRON, isDummy = false),
-		             ItemStack(SKULL_ITEM, 1, SkullType.PLAYER.ordinal.toShort()).rename(Text.of("5v5 - Clan vs Clan").color(TextColor.GOLD).toString()).setDescription(arrayOf("Arena normal",
-		                                                                                                                                                                        "Armadura de ferro completa",
-		                                                                                                                                                                        "Espada de diamante encantada",
-		                                                                                                                                                                        "Sopas em todo o invetário",
-		                                                                                                                                                                        "Material de recraft").asList()))
+		             ItemStack(SKULL_ITEM, 1, SkullType.PLAYER.ordinal.toShort()).rename(Text.of("5v5 - Clan vs Clan").color(TextColor.GOLD).toString()).description(arrayListOf("Arena normal",
+		                                                                                                                                                                         "Armadura de ferro completa",
+		                                                                                                                                                                         "Espada de diamante encantada",
+		                                                                                                                                                                         "Sopas em todo o invetário",
+		                                                                                                                                                                         "Material de recraft"),
+		                                                                                                                                                             true))
 	}
 
 	enum class FightState {
@@ -449,8 +642,6 @@ object OneVsOneWarp: Warp() {
 
 	data class OneVsOneData(var oneVsOneFirst: SimpleLocation = SimpleLocation(),
 	                        var oneVsOneSecond: SimpleLocation = SimpleLocation(),
-	                        var gladiatorFirst: SimpleLocation = SimpleLocation(),
-	                        var gladiatorSecond: SimpleLocation = SimpleLocation(),
 	                        var clanVsClanFirst: SimpleLocation = SimpleLocation(),
 	                        var clanVsClanSecond: SimpleLocation = SimpleLocation()): Data()
 }

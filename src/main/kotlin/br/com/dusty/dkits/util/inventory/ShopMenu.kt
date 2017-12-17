@@ -1,10 +1,10 @@
 package br.com.dusty.dkits.util.inventory
 
-import br.com.dusty.dkits.gamer.gamer
+import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.util.rename
-import br.com.dusty.dkits.util.setDescription
+import br.com.dusty.dkits.util.description
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
 import org.bukkit.Bukkit
@@ -24,13 +24,11 @@ object ShopMenu {
 
 	val ALL_KITS = ItemStack(Material.YELLOW_FLOWER).rename(Text.of("Você já possui todos os kits!").color(TextColor.GOLD).toString())
 
-	val ARMOR = HashMap<ItemStack, Int>().apply {
-		put(ItemStack(Material.CHAINMAIL_CHESTPLATE).setDescription("Preço: " + 3000 + " créditos"), 3000)
-		put(ItemStack(Material.CHAINMAIL_LEGGINGS).setDescription("Preço: " + 4500 + " créditos"), 4500)
-		put(ItemStack(Material.IRON_CHESTPLATE).setDescription("Preço: " + 6000 + " créditos"), 6000)
-		put(ItemStack(Material.IRON_BOOTS).setDescription("Preço: " + 3000 + " créditos"), 3000)
-		put(ItemStack(Material.DIAMOND_HELMET).setDescription("Preço: " + 6000 + " créditos"), 6000)
-	}
+	val ARMOR = linkedMapOf(ItemStack(Material.CHAINMAIL_CHESTPLATE).description("Preço: " + 3000 + " créditos", true) to 3000,
+	                        ItemStack(Material.CHAINMAIL_LEGGINGS).description("Preço: " + 4500 + " créditos", true) to 4500,
+	                        ItemStack(Material.IRON_CHESTPLATE).description("Preço: " + 6000 + " créditos", true) to 6000,
+	                        ItemStack(Material.IRON_BOOTS).description("Preço: " + 3000 + " créditos", true) to 3000,
+	                        ItemStack(Material.DIAMOND_HELMET).description("Preço: " + 6000 + " créditos", true) to 6000)
 
 	fun menuShopMain(player: Player): Inventory = Bukkit.createInventory(player, 27, TITLE_MAIN).apply {
 		fillBackground(false)
@@ -55,12 +53,12 @@ object ShopMenu {
 
 	fun Inventory.fillKits(kits: List<Kit>) {
 		if (kits.isNotEmpty()) when (kits.size) {
-			1    -> setItem(13, kits[0].icon.setDescription("Preço: " + kits[0].data.price + " créditos"))
-			2    -> for (i in 0 .. 1) setItem(12 + i * 2, kits[i].icon.setDescription("Preço: " + kits[i].data.price + " créditos"))
-			3    -> for (i in 0 .. 2) setItem(11 + i * 2, kits[i].icon.setDescription("Preço: " + kits[i].data.price + " créditos"))
-			4    -> for (i in 0 .. 3) setItem(10 + i * 2, kits[i].icon.setDescription("Preço: " + kits[i].data.price + " créditos"))
-			5    -> for (i in 0 .. 4) setItem(13 + i, kits[i].icon.setDescription("Preço: " + kits[i].data.price + " créditos"))
-			else -> for (i in 0 .. 4) setItem(10 + i, kits[i].icon.setDescription("Preço: " + kits[i].data.price + " créditos"))
+			1    -> setItem(13, kits[0].icon.description("Preço: " + kits[0].data.price + " créditos", true))
+			2    -> for (i in 0 .. 1) setItem(12 + i * 2, kits[i].icon.description("Preço: " + kits[i].data.price + " créditos", true))
+			3    -> for (i in 0 .. 2) setItem(11 + i * 2, kits[i].icon.description("Preço: " + kits[i].data.price + " créditos", true))
+			4    -> for (i in 0 .. 3) setItem(10 + i * 2, kits[i].icon.description("Preço: " + kits[i].data.price + " créditos", true))
+			5    -> for (i in 0 .. 4) setItem(13 + i, kits[i].icon.description("Preço: " + kits[i].data.price + " créditos", true))
+			else -> for (i in 0 .. 4) setItem(10 + i, kits[i].icon.description("Preço: " + kits[i].data.price + " créditos", true))
 		}
 		else setItem(13, ALL_KITS)
 	}

@@ -1,14 +1,12 @@
 package br.com.dusty.dkits.util.text
 
-import java.util.*
-
 /**
  * Classe que gera uma [String] formatada com [TextColor] e [TextStyle], evitando a concatenação para ganhos
  * em performance e clareza de código.
  */
 class Text {
 
-	private val styles = HashSet<TextStyle>()
+	private var styles = arrayOf<TextStyle>()
 	private var color = TextColor.WHITE
 	private var string: String? = null
 	private var append: Text? = null
@@ -20,7 +18,7 @@ class Text {
 	 * @return Este [Text].
 	 */
 	fun styles(vararg styles: TextStyle): Text {
-		this.styles.addAll(Arrays.asList(*styles))
+		this.styles = arrayOf(*styles)
 
 		return this
 	}

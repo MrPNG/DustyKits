@@ -1,15 +1,13 @@
 package br.com.dusty.dkits.command
 
 import br.com.dusty.dkits.gamer.EnumRank
-import br.com.dusty.dkits.gamer.gamer
-import org.bukkit.Bukkit
+import br.com.dusty.dkits.util.gamer.gamer
+import br.com.dusty.dkits.warp.Warp
 import org.bukkit.Location
 import org.bukkit.command.Command
-import org.bukkit.command.CommandMap
 import org.bukkit.command.CommandSender
 import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.entity.Player
-import java.util.*
 import java.util.List
 
 /**
@@ -21,15 +19,9 @@ abstract class CustomCommand constructor(
 		 * [EnumRank] mínimo necessário para usar este comando (embora o [org.bukkit.command.ConsoleCommandSender]
 		 * sempre esteja autorizado).
 		 */
-		val rank: EnumRank, vararg aliases: String): Command(aliases[0], UNKNOWN, UNKNOWN, Arrays.asList(*aliases)) {
+		val rank: EnumRank, vararg aliases: String): Command(aliases[0], UNKNOWN, UNKNOWN, aliases.toList()) {
 
-	init {
-		if (commandMap == null) {
-			val f = Bukkit.getServer().javaClass.getDeclaredField("commandMap")
-			f.isAccessible = true
-			commandMap = f.get(Bukkit.getServer()) as CommandMap
-		}
-	}
+	val CUSTOM_EXECUTORS = arrayListOf<Warp>()
 
 	/**
 	 * Método invocado quando este comando é executado.
@@ -79,27 +71,11 @@ abstract class CustomCommand constructor(
 		return b
 	}
 
-	/**
-	 * Registra este comando no 'commandMap' definido.
-	 */
-	fun register() {
-		commandMap!!.register(label, PREFIX, this)
-	}
-
 	companion object {
 
-		/**
-		 * Prefixo de todos os comandos encontrado ao pressionar 'TAB' no chat.
-		 */
-		val PREFIX = "dusty"
 		/**
 		 * 'Placeholder' para comandos não autorizados a jogadores aleatórios.
 		 */
 		val UNKNOWN = "Unknown command. Type \"/help\" for help."
-
-		/**
-		 * [CommandMap] onde este comando será registrado.
-		 */
-		var commandMap: CommandMap? = null
 	}
 }

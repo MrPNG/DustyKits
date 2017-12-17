@@ -3,14 +3,14 @@ package br.com.dusty.dkits.command.gameplay
 import br.com.dusty.dkits.command.PlayerCustomCommand
 import br.com.dusty.dkits.gamer.EnumMode
 import br.com.dusty.dkits.gamer.EnumRank
-import br.com.dusty.dkits.gamer.gamer
+import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.util.inventory.KitMenu
 import br.com.dusty.dkits.util.text.Text
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-object KitCommand: PlayerCustomCommand(EnumRank.DEFAULT, "kit", *Kits.enabledKitsNames) {
+object KitCommand: PlayerCustomCommand(EnumRank.DEFAULT, "kit") {
 
 	override fun execute(sender: Player, alias: String, args: Array<String>): Boolean {
 		val gamer = sender.gamer()
@@ -27,7 +27,7 @@ object KitCommand: PlayerCustomCommand(EnumRank.DEFAULT, "kit", *Kits.enabledKit
 
 						if (kit == Kits.NONE || (!kit.data.isEnabled && gamer.mode != EnumMode.ADMIN)) sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um kit com o nome \"").negative(
 								args[0]).basic("\"!").toString())
-						else if (kit.isAllowed(gamer, true)) gamer.setKitAndApply(kit, true)
+						else if (gamer.warp.isAllowed(kit, gamer, true)) gamer.setKitAndApply(kit, true)
 					}
 				}
 			}
@@ -36,7 +36,7 @@ object KitCommand: PlayerCustomCommand(EnumRank.DEFAULT, "kit", *Kits.enabledKit
 
 				if (kit == Kits.NONE || (!kit.data.isEnabled && gamer.mode != EnumMode.ADMIN)) sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um kit com o nome \"").negative(
 						args[0]).basic("\"!").toString())
-				else if (kit.isAllowed(gamer, true)) gamer.setKitAndApply(kit, true)
+				else if (gamer.warp.isAllowed(kit, gamer, true)) gamer.setKitAndApply(kit, true)
 			}
 		}
 

@@ -27,18 +27,26 @@ object WarpMenu {
 		setItem(15, BUTTON_EVENT)
 	}
 
-	fun menuWarpGame(player: Player): Inventory = Bukkit.createInventory(player, 27, TITLE_GAME).apply {
-		fillBackground(true)
-		fillWarps(Warps.WARPS.filter { it.type == Warp.EnumWarpType.GAME && it.data.isEnabled })
+	fun menuWarpGame(player: Player): Inventory {
+		val warps = Warps.WARPS.filter { it.type == Warp.EnumWarpType.GAME && it.data.isEnabled }
 
-		setItem(0, Inventories.BUTTON_BACK)
+		return Bukkit.createInventory(player, 27 + Math.floor((warps.size - 1) / 7.0).toInt() * 9, TITLE_GAME).apply {
+			fillBackground(true)
+			fillWarps(warps)
+
+			setItem(0, Inventories.BUTTON_BACK)
+		}
 	}
 
-	fun menuWarpEvent(player: Player): Inventory = Bukkit.createInventory(player, 27, TITLE_EVENT).apply {
-		fillBackground(true)
-		fillWarps(Warps.WARPS.filter { it.type == Warp.EnumWarpType.EVENT && it.data.isEnabled })
+	fun menuWarpEvent(player: Player): Inventory {
+		val warps = Warps.WARPS.filter { (it.type == Warp.EnumWarpType.EVENT || it.type == Warp.EnumWarpType.BOTH) && it.data.isEnabled }
 
-		setItem(0, Inventories.BUTTON_BACK)
+		return Bukkit.createInventory(player, 27 + Math.floor((warps.size - 1) / 7.0).toInt() * 9, TITLE_EVENT).apply {
+			fillBackground(true)
+			fillWarps(warps)
+
+			setItem(0, Inventories.BUTTON_BACK)
+		}
 	}
 
 	fun Inventory.fillWarps(warps: List<Warp>) {
@@ -48,7 +56,15 @@ object WarpMenu {
 			3    -> for (i in 0 .. 2) setItem(11 + i * 2, warps[i].icon)
 			4    -> for (i in 0 .. 3) setItem(10 + i * 2, warps[i].icon)
 			5    -> for (i in 0 .. 4) setItem(11 + i, warps[i].icon)
-			else -> for (i in 0 until warps.size) setItem(10 + i, warps[i].icon)
+			else -> {
+				var i = -1
+
+				warps.forEach {
+					i += if ((i + 3) % 9 == 0) 3 else 1
+
+					setItem(10 + i, it.icon)
+				}
+			}
 		}
 	}
 }

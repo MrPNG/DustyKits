@@ -3,14 +3,14 @@ package br.com.dusty.dkits.command.gameplay
 import br.com.dusty.dkits.command.PlayerCustomCommand
 import br.com.dusty.dkits.gamer.EnumMode
 import br.com.dusty.dkits.gamer.EnumRank
-import br.com.dusty.dkits.gamer.gamer
+import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.util.inventory.WarpMenu
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.warp.Warps
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-object WarpCommand: PlayerCustomCommand(EnumRank.DEFAULT, "warp", "spawn", *Warps.enabledWarpsNames) {
+object WarpCommand: PlayerCustomCommand(EnumRank.DEFAULT, "warp", "spawn") {
 
 	override fun execute(sender: Player, alias: String, args: Array<String>): Boolean {
 		val gamer = sender.gamer()
@@ -31,11 +31,14 @@ object WarpCommand: PlayerCustomCommand(EnumRank.DEFAULT, "warp", "spawn", *Warp
 				gamer.sendToWarp(gamer.warp, false, false)
 			}
 			else    -> {
-				val warp = Warps[alias]
+				val warp = Warps.WARPS.firstOrNull { alias in it.aliases } ?: Warps[alias]
 
-				if (warp == Warps.NONE || (!warp.data.isEnabled && gamer.mode != EnumMode.ADMIN)) sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há uma warp com o nome \"").negative(
-						args[0]).basic("\"!").toString())
-				else gamer.sendToWarp(warp, false, true)
+				when {
+					warp == Warps.NONE || !warp.data.isEnabled && gamer.mode != EnumMode.ADMIN -> sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há uma warp com o nome \"").negative(
+							alias).basic("\"!").toString())
+					warp in CUSTOM_EXECUTORS                                                   -> warp.execute(gamer, alias, args)
+					else                                                                       -> gamer.sendToWarp(warp, false, true)
+				}
 			}
 		}
 

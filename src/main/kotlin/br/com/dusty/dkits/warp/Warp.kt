@@ -1,6 +1,7 @@
 package br.com.dusty.dkits.warp
 
 import br.com.dusty.dkits.Main
+import br.com.dusty.dkits.gamer.EnumMode
 import br.com.dusty.dkits.gamer.Gamer
 import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.kit.Kits
@@ -16,7 +17,7 @@ import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.World
-import org.bukkit.entity.Player
+import org.bukkit.event.Event
 import org.bukkit.event.Listener
 import org.bukkit.inventory.ItemStack
 import java.io.File
@@ -30,6 +31,17 @@ open class Warp: Listener {
 	var description = ""
 	var icon = ItemStack(Material.STONE_SWORD)
 	var type = EnumWarpType.GAME
+
+	var aliases = arrayOf<String>()
+
+	var overriddenEvents = arrayOf<Class<out Event>>()
+
+	var entryKit: Kit = GAME_WARP_KIT
+	var enabledKits = hashSetOf<Kit>()
+
+	var hasShop = false
+
+	var durabilityBehavior = EnumDurabilityBehavior.REGEN
 
 	var spawn = Locations.GENERIC
 		get() {
@@ -45,14 +57,9 @@ open class Warp: Listener {
 			saveData()
 		}
 
-	var entryKit: Kit = GAME_WARP_KIT
-	var enabledKits = HashSet<Kit>()
-
-	var hasShop = false
-
-	var durabilityBehavior = EnumDurabilityBehavior.REGEN
-
 	var data = Data()
+
+	fun overrides(event: Event): Boolean = event.javaClass in overriddenEvents
 
 	fun enable(enabled: Boolean): Boolean {
 		if (data.isEnabled == enabled) return false
@@ -67,8 +74,7 @@ open class Warp: Listener {
 	fun enableKit(kit: Kit, enable: Boolean): Boolean {
 		val b: Boolean = if (enable) enabledKits.add(kit) else enabledKits.remove(kit)
 
-		if (data.isListEnabledKits) data.kits = enabledKits.map { it.name }.toTypedArray()
-		else data.kits = Kits.KITS.filter { !enabledKits.contains(it) }.map { it.name }.toTypedArray()
+		data.kits = (if (data.isListEnabledKits) enabledKits else Kits.KITS.filter { it !in enabledKits }).map { it.name }.toTypedArray()
 
 		Tasks.async(Runnable { this.saveData() })
 
@@ -81,8 +87,7 @@ open class Warp: Listener {
 
 		if (file.exists()) data = Main.GSON.fromJson(FileReader(file), data.javaClass)
 
-		if (data.isListEnabledKits) data.kits.mapNotNull { Kits[it] }.filter { it.data.isEnabled }.forEach { enabledKits.add(it) }
-		else Kits.KITS.filter { it.data.isEnabled && !data.kits.contains(it.name) }.forEach { enabledKits.add(it) }
+		enabledKits.addAll(Kits.KITS.filter { it.data.isEnabled && if (data.isListEnabledKits) it.name in data.kits else it.name !in data.kits })
 
 		saveData()
 	}
@@ -94,9 +99,7 @@ open class Warp: Listener {
 		dir.mkdirs()
 		file.createNewFile()
 
-		val printWriter = PrintWriter(file)
-		printWriter.println(Main.GSON.toJson(data))
-		printWriter.close()
+		PrintWriter(file).use { it.println(Main.GSON.toJson(data)) }
 	}
 
 	fun loadLocation(world: World, coordinates: Array<Double>) = Location(world, coordinates[0], coordinates[1], coordinates[2])
@@ -107,6 +110,25 @@ open class Warp: Listener {
 		coordinates[2] = z
 
 		saveData()
+	}
+
+	open fun isAllowed(kit: Kit, gamer: Gamer, announce: Boolean): Boolean = when {
+		gamer.mode != EnumMode.ADMIN && !gamer.kit.isDummy         -> {
+			if (announce) gamer.player.sendMessage(Text.negativePrefix().basic("Você ").negative("já").basic(" está ").negative("usando").basic(" um kit!").toString())
+
+			false
+		}
+		gamer.mode != EnumMode.ADMIN && !enabledKits.contains(kit) -> {
+			if (announce) gamer.player.sendMessage(Text.negativePrefix().basic("Você ").negative("não pode").basic(" usar o kit ").negative(kit.name).basic(" nesta warp!").toString())
+
+			false
+		}
+		gamer.mode != EnumMode.ADMIN && !gamer.hasKit(kit)         -> {
+			if (announce) gamer.player.sendMessage(Text.negativePrefix().basic("Você ").negative("não").basic(" possui o kit ").negative(kit.name).basic("!").toString())
+
+			false
+		}
+		else                                                       -> true
 	}
 
 	open fun applyKit(gamer: Gamer, kit: Kit) {
@@ -123,7 +145,7 @@ open class Warp: Listener {
 		}
 	}
 
-	open fun setLocation(player: Player, args: Array<String>) {}
+	open fun execute(gamer: Gamer, alias: String, args: Array<String>) {}
 
 	open fun receiveGamer(gamer: Gamer, announce: Boolean) {
 		val player = gamer.player
@@ -144,12 +166,14 @@ open class Warp: Listener {
 		gamer.setKitAndApply(entryKit, false)
 	}
 
-	open fun dispatchGamer(gamer: Gamer) {}
+	open fun dispatchGamer(gamer: Gamer, newWarp: Warp) {}
+
+	open fun finalize() {}
 
 	override fun equals(other: Any?) = when {
 		this === other                -> true
-		javaClass != other?.javaClass -> false
-		else                          -> true
+		javaClass == other?.javaClass -> true
+		else                          -> false
 	}
 
 	override fun toString(): String {
@@ -158,7 +182,8 @@ open class Warp: Listener {
 
 	enum class EnumWarpType {
 		GAME,
-		EVENT
+		EVENT,
+		BOTH
 	}
 
 	enum class EnumDurabilityBehavior {

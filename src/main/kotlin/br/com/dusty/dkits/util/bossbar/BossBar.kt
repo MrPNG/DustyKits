@@ -7,7 +7,7 @@ import java.util.*
 
 class BossBar {
 
-	private val players = HashSet<Player>()
+	private val players = hashSetOf<Player>()
 
 	private var uuid: UUID? = null
 
@@ -87,7 +87,7 @@ class BossBar {
 		Protocols.sendPacket(object_PacketPlayOutBoss, *players)
 	}
 
-	private enum class EnumAction private constructor(internal var code: Int) {
+	private enum class EnumAction(internal var code: Int) {
 
 		ADD(0),
 		REMOVE(1),
@@ -97,7 +97,7 @@ class BossBar {
 		FLAGS(5)
 	}
 
-	enum class EnumBarColor private constructor(internal var code: Int) {
+	enum class EnumBarColor(internal var code: Int) {
 
 		PINK(0),
 		BLUE(1),
@@ -108,7 +108,7 @@ class BossBar {
 		WHITE(6)
 	}
 
-	enum class EnumBarStyle private constructor(internal var code: Int) {
+	enum class EnumBarStyle(internal var code: Int) {
 
 		PROGRESS(0),
 		NOTCHED_6(1),
@@ -117,7 +117,7 @@ class BossBar {
 		NOTCHED_20(4)
 	}
 
-	enum class EnumFlags private constructor(code: Int) {
+	enum class EnumFlags(code: Int) {
 
 		NONE(0x0),
 		DARKEN_SKY(0x1),

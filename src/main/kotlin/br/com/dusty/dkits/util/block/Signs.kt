@@ -1,9 +1,9 @@
 package br.com.dusty.dkits.util.block
 
-import br.com.dusty.dkits.gamer.gamer
+import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.util.clearFormatting
 import br.com.dusty.dkits.util.inventory.Inventories
-import br.com.dusty.dkits.util.millisToSeconds
+import br.com.dusty.dkits.util.millisToPeriod
 import br.com.dusty.dkits.util.text.Text
 import org.bukkit.block.Sign
 import org.bukkit.entity.Player
@@ -12,7 +12,7 @@ fun Sign.interact(player: Player) {
 	val gamer = player.gamer()
 
 	when (getLine(1).clearFormatting()) {
-		"[Grátis]" -> if (gamer.isOnSignCooldown()) player.sendMessage(Text.negativePrefix().basic("Você ainda deve ").negative("esperar").basic(" mais ").negative(gamer.signCooldown.millisToSeconds().toInt()).basic(
+		"[Grátis]" -> if (gamer.isOnSignCooldown()) player.sendMessage(Text.negativePrefix().basic("Você ainda deve ").negative("esperar").basic(" mais ").negative(gamer.signCooldown.millisToPeriod().toInt()).basic(
 				" segundo(s) para usar essa placa novamente!").toString())
 		else when (getLine(2).clearFormatting()) {
 			"Sopa"    -> {

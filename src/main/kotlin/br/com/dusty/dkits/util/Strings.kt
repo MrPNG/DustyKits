@@ -62,14 +62,8 @@ fun Collection<String>.format(): String {
  * @param millis
  * @return
  */
-fun Long.periodString(): String {
-	val periodFormatter = PeriodFormatterBuilder().appendDays().appendSuffix("d").appendSeparator(" ").appendHours().appendSuffix("h").appendSeparator(" ").appendMinutes().appendSuffix("min").appendSeparator(
-			" ").appendSeconds().appendSuffix("s").toFormatter()
-
-	val period = Period(this)
-
-	return periodFormatter.print(period.toPeriod())
-}
+fun Long.formatPeriod() = PeriodFormatterBuilder().appendDays().appendSuffix("d").appendSeparator(" ").appendHours().appendSuffix("h").appendSeparator(" ").appendMinutes().appendSuffix("min").appendSeparator(
+		" ").appendSeconds().appendSuffix("s").toFormatter().print(Period(this))
 
 /**
  * Cria uma [ArrayList] contendo todas as [String]'s do parâmetro 'arrayList' que iniciarem com o parâmetro 'start'.
@@ -78,7 +72,7 @@ fun Long.periodString(): String {
  * @param arrayList
  * @return
  */
-fun ArrayList<String>.sortOut(start: String): ArrayList<String> = filter { it.startsWith(start, true) }.sorted() as ArrayList<String>
+fun ArrayList<String>.sortOut(start: String) = filter { it.startsWith(start, true) }.sorted()
 
 /**
  * Remove qualquer formatação de uma [String], se houver.

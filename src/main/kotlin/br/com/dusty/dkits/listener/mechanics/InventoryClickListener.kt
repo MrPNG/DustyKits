@@ -1,15 +1,21 @@
 package br.com.dusty.dkits.listener.mechanics
 
 import br.com.dusty.dkits.gamer.EnumMode
-import br.com.dusty.dkits.gamer.gamer
+import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.kit.Kits
+import br.com.dusty.dkits.store.Store
+import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.util.inventory.Inventories
 import br.com.dusty.dkits.util.inventory.Inventories.BUTTON_BACK
 import br.com.dusty.dkits.util.inventory.KitMenu
 import br.com.dusty.dkits.util.inventory.ShopMenu
 import br.com.dusty.dkits.util.inventory.WarpMenu
 import br.com.dusty.dkits.util.text.Text
+import br.com.dusty.dkits.util.web.WebAPI
 import br.com.dusty.dkits.warp.Warps
+import io.reactivex.Observable
+import io.reactivex.functions.Consumer
+import io.reactivex.schedulers.Schedulers
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -18,14 +24,22 @@ import org.bukkit.event.inventory.InventoryType
 
 object InventoryClickListener: Listener {
 
-	val TITLE_CONTAINER_INVENTORY = "container.inventory"
+	val BUY_KIT_FAIL = Text.negativePrefix().negative("Não").basic(" foi possível ").negative("comprer").basic(" esse kit!").toString()
 
 	@EventHandler
 	fun onInventoryClick(event: InventoryClickEvent) {
 		val player = event.whoClicked as Player
 		val gamer = player.gamer()
 
+		if (gamer.warp.overrides(event)) return
+
 		if ((gamer.kit.isDummy || event.slotType == InventoryType.SlotType.ARMOR) && gamer.mode != EnumMode.ADMIN) event.isCancelled = true
+	}
+
+	@EventHandler
+	fun onMenuInventoryClick(event: InventoryClickEvent) {
+		val player = event.whoClicked as Player
+		val gamer = player.gamer()
 
 		val inventory = event.clickedInventory
 		val itemStack = event.currentItem
@@ -43,7 +57,7 @@ object InventoryClickListener: Listener {
 
 							val kit = Kits[itemStack]
 
-							if (kit.isAllowed(gamer, true)) gamer.setKitAndApply(kit, true)
+							if (gamer.warp.isAllowed(kit, gamer, true)) gamer.setKitAndApply(kit, true)
 						}
 					}
 				}
@@ -52,8 +66,9 @@ object InventoryClickListener: Listener {
 
 					when (itemStack) {
 						KitMenu.BUTTON_OWNED -> player.openInventory(KitMenu.menuKitOwned(player))
-						else                 -> player.sendMessage(Text.negativePrefix().basic("Você ").negative("não").basic(" possui o kit ").negative(itemStack.itemMeta?.displayName ?: "").basic(
-								"!").toString())
+						else                 -> {
+							player.sendMessage(Text.negativePrefix().basic("Você ").negative("não").basic(" possui o kit ").negative(Kits[itemStack].name).basic("!").toString())
+						}
 					}
 				}
 				ShopMenu.TITLE_MAIN                       -> {
@@ -79,10 +94,22 @@ object InventoryClickListener: Listener {
 								player.sendMessage(Text.negativePrefix().basic("Você ").negative("não").basic(" possui créditos ").negative("suficientes").basic(" para comprar o kit ").negative(
 										kit.name).basic("!").toString())
 							} else {
-								//TODO: Confirmation screen and actually give kit to player
-								gamer.removeMoney(kit.data.price.toDouble())
+								//TODO: Confirmation screen
+								val onNext = Consumer<Kit> {
+									WebAPI.addPurchase(Store.PseudoPurchase(0, player.uniqueId.toString(), 1, Store.ID_BY_KIT[kit] ?: -1, -1))
 
-								player.sendMessage(Text.positivePrefix().basic("Você ").positive("comprou").basic(" o kit ").positive(kit.name).basic("!").toString())
+									gamer.removeMoney(kit.data.price.toDouble())
+
+									gamer.kits.add(kit)
+
+									player.sendMessage(Text.positivePrefix().basic("Você ").positive("comprou").basic(" o kit ").positive(kit.name).basic("!").toString())
+								}
+
+								val onError = Consumer<Throwable> {
+									player.sendMessage(BUY_KIT_FAIL)
+								}
+
+								Observable.just(kit).subscribeOn(Schedulers.io()).subscribe(onNext, onError)
 							}
 						}
 					}
