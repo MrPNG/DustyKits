@@ -68,7 +68,7 @@ object ClanCommand: PlayerCustomCommand(EnumRank.DEFAULT, "clan") {
 	val ENTER_CLAN_FAIL = Text.negativePrefix().negative("Não").basic(" foi possível ").negative("entrar").basic(" nesse clan!").toString()
 
 	val LEADER_EXIT = Text.negativePrefix().basic("Você é o ").negative("líder").basic(" do seu ").negative("clan").basic(". Para ").negative("sair").basic(", escolha um novo líder ").negative(
-			"antes").basic(" ou seja ").negative("último").basic(" membro a sair!").toString()
+			"antes").basic(" ou seja o ").negative("último").basic(" membro a sair!").toString()
 
 	val AWAITING_API = arrayListOf<Player>()
 
