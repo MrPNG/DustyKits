@@ -9,6 +9,7 @@ object Kits {
 	val CHEMIST = ChemistKit
 	val CHICKENMAN = ChickenmanKit
 	val ELFO = ElfoKit
+	val ENDERMAGE = EndermageKit
 	val GRANDPA = GrandpaKit
 	val FISHERMAN = FishermanKit
 	val KANGAROO = KangarooKit
@@ -34,6 +35,7 @@ object Kits {
 		KITS.add(CHEMIST)
 		KITS.add(CHICKENMAN)
 		KITS.add(ELFO)
+		KITS.add(ENDERMAGE)
 		KITS.add(FISHERMAN)
 		KITS.add(GRANDPA)
 		KITS.add(KANGAROO)

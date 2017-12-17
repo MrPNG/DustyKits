@@ -22,14 +22,13 @@ object StomperAbility: Ability() {
 
 				if (damage > 4.0) event.damage = 4.0
 
-				GamerRegistry.onlineGamers().forEach {
-					if (canUse(gamer, it)) {
-						val distance = player.location.distance(it.player.location)
+				GamerRegistry.onlineGamers().filter { canUse(gamer, it) }.forEach {
+					val distance = player.location.distance(it.player.location)
 
-						if (distance < 5) {
-							val transferredDamage = damage * (1 - (distance / 5.0).pow(2))
-							it.player.damage(transferredDamage, player)
-						}
+					if (distance < 5) {
+						val transferredDamage = damage * (1 - (distance / 5.0).pow(2))
+
+						if (player.isSneaking) it.player.damage(1.0, player) else it.player.damage(transferredDamage, player)
 					}
 				}
 

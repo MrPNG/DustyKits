@@ -2,6 +2,7 @@ package br.com.dusty.dkits.util.web
 
 import br.com.dusty.dkits.clan.Clan
 import br.com.dusty.dkits.gamer.Gamer
+import br.com.dusty.dkits.store.Store
 import org.apache.http.client.config.RequestConfig
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.client.methods.HttpPost
@@ -13,7 +14,7 @@ object WebAPI {
 
 	val HTTP_CLIENT = HttpClientBuilder.create().setDefaultRequestConfig(RequestConfig.custom().setConnectTimeout(10000).build()).build()
 
-	val URL = "http://ec2-52-67-190-141.sa-east-1.compute.amazonaws.com/api/handler.php"
+	val URL = "http://api.dusty.com.br/api/handler.php"
 
 	fun loadProfile(uuid: UUID) = HttpGet(URL + "?type=perfil&uuid=" + uuid).response()
 
@@ -24,4 +25,12 @@ object WebAPI {
 
 	fun saveClans(vararg clans: Clan) = HttpPost(URL).setEntities(BasicNameValuePair("type", "salvarclan"),
 	                                                              BasicNameValuePair("dataclan", HttpClients.GSON.toJson(clans.map { it.primitiveClan }))).response()
+
+	fun loadPurchases(uuid: String) = HttpGet(URL + "?type=getcompras&uuid=" + uuid).response()
+
+	fun addPurchase(pseudoPurchase: Store.PseudoPurchase) = HttpGet(URL + "?type=addcompra&action=add&json=" + HttpClients.GSON.toJson(pseudoPurchase)).response()
+
+	fun updatePurchase(pseudoPurchase: Store.PseudoPurchase) = HttpGet(URL + "?type=addcompra&action=update&id=${pseudoPurchase.id}&json=" + HttpClients.GSON.toJson(pseudoPurchase)).response()
+
+	fun report(name: String, reporter: String, reason: String) = HTTP_CLIENT.execute(HttpGet("https://dusty.com.br/api/report.php?player=$name&reportby=$reporter&reason=$reason"))
 }

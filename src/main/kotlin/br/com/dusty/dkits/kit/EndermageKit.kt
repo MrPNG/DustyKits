@@ -1,6 +1,6 @@
 package br.com.dusty.dkits.kit
 
-import br.com.dusty.dkits.ability.TurtleAbility
+import br.com.dusty.dkits.ability.EndermageAbility
 import br.com.dusty.dkits.util.color
 import br.com.dusty.dkits.util.description
 import br.com.dusty.dkits.util.rename
@@ -9,19 +9,20 @@ import br.com.dusty.dkits.util.text.TextColor
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
-object TurtleKit: Kit() {
+object EndermageKit: Kit() {
 
 	init {
-		name = "Turtle"
+		name = "Endermage"
 
-		icon = ItemStack(Material.DIAMOND_CHESTPLATE)
+		icon = ItemStack(Material.ENDER_PORTAL)
 		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
 		icon.description(description, true)
 
 		weapon = ItemStack(Material.STONE_SWORD)
-		armor = arrayOf(null, ItemStack(Material.LEATHER_CHESTPLATE).color(0x658732), null, null)
+		armor = arrayOf(null, ItemStack(Material.LEATHER_CHESTPLATE).color(0x7F3FB2), null, null)
+		items = arrayOf(ItemStack(Material.ENDER_PORTAL).rename("Portal do Endermage"))
 
-		ability = TurtleAbility
+		ability = EndermageAbility
 
 		isDummy = false
 		isBroadcast = true

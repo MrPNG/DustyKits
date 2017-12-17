@@ -18,7 +18,7 @@ import br.com.dusty.dkits.util.inventory.Inventories
 import br.com.dusty.dkits.util.inventory.addItemStacks
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
-import br.com.dusty.dkits.warp.HGWarp.HGState.*
+import br.com.dusty.dkits.warp.ClanVsClanWarp.ClanVsClanState.*
 import org.bukkit.*
 import org.bukkit.Material.*
 import org.bukkit.block.Chest
@@ -31,15 +31,15 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.PlayerDropItemEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemStack
-import org.bukkit.inventory.ShapelessRecipe
 import org.bukkit.potion.PotionType.*
 import org.bukkit.scheduler.BukkitRunnable
 import org.bukkit.scheduler.BukkitTask
 import java.util.*
+import kotlin.collections.ArrayList
 
-object HGWarp: Warp() {
+object ClanVsClanWarp: Warp() {
 
-	val NAME = "Evento HG"
+	val NAME = "Evento ClanVsClan"
 
 	val PREFIX = Text.basicOf("[").neutral(NAME).basic("] ").toString()
 
@@ -95,8 +95,13 @@ object HGWarp: Warp() {
 	                          arrayOf(potions(1, true, false, POISON, true), 1, 0.05, 1),
 	                          arrayOf(potions(1, false, true, POISON, true), 1, 0.05, 1))
 
-	val playersLimit = 20.0
-	val minimumPlayers = 10
+	var clanFirst = arrayListOf<Gamer>()
+	var clanSecond = arrayListOf<Gamer>()
+
+	var evasions = arrayListOf<Gamer>()
+
+	val playersLimit = 10.0
+	val minimumPlayers = 10.0
 
 	val invincibility = 60 * 2
 	val feast = 60 * 10
@@ -110,11 +115,8 @@ object HGWarp: Warp() {
 	var nextGame = 0L
 	var start = 0L
 
-	val moneyPrize = 5000
-	val xpPrize = 2000
-
-	var moneyPrizeNormalized = 0.0
-	var xpPrizeNormalized = 0.0
+	val moneyPrize = 5000.0
+	val xpPrize = 2000.0
 
 	var world: World? = null
 
@@ -128,13 +130,13 @@ object HGWarp: Warp() {
 	init {
 		name = NAME
 
-		icon = ItemStack(CHEST)
+		icon = ItemStack(SKULL_ITEM, 1, SkullType.PLAYER.ordinal.toShort())
 		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
 		icon.description(description, true)
 
 		type = EnumWarpType.BOTH
 
-		aliases = arrayOf(name.replace(" ", "").toLowerCase(), "hg")
+		aliases = arrayOf(name.replace(" ", "").toLowerCase(), "cxc", "clanxclan")
 
 		overriddenEvents = arrayOf(InventoryClickEvent::class.java, PlayerDeathEvent::class.java, PlayerDropItemEvent::class.java, EntityPickupItemEvent::class.java)
 
@@ -142,25 +144,14 @@ object HGWarp: Warp() {
 
 		durabilityBehavior = EnumDurabilityBehavior.BREAK
 
-		data = HGData()
+		data = ClanVsClanData()
 
 		loadData()
 
 		LocationCommand.CUSTOM_EXECUTORS.add(this)
 		WarpCommand.CUSTOM_EXECUTORS.add(this)
 
-		val chocolateMilkRecipe = ShapelessRecipe(ItemStack(MUSHROOM_SOUP).rename("Chocolate Milk"))
-		chocolateMilkRecipe.addIngredient(1, BOWL)
-		chocolateMilkRecipe.addIngredient(1, INK_SACK, 3)
-
-		val cactiJuiceRecipe = ShapelessRecipe(ItemStack(MUSHROOM_SOUP).rename("Cacti Juice"))
-		cactiJuiceRecipe.addIngredient(1, BOWL)
-		cactiJuiceRecipe.addIngredient(1, CACTUS)
-
-		Bukkit.addRecipe(chocolateMilkRecipe)
-		Bukkit.addRecipe(cactiJuiceRecipe)
-
-		prepare()
+		schedule()
 	}
 
 	fun schedule() {
@@ -184,7 +175,7 @@ object HGWarp: Warp() {
 		if (state == CLOSED) {
 			state = PREPARING
 
-			val data = data as HGData
+			val data = data as ClanVsClanData
 
 			val worldData = data.worldsData[Main.RANDOM.nextInt(data.worldsData.size)]
 			world = Worlds.load(worldData.name, false) ?: return
@@ -206,18 +197,18 @@ object HGWarp: Warp() {
 							val div = i / 60
 
 							Bukkit.broadcastMessage(Text.neutralPrefix().append(PREFIX).basic("O ").neutral(NAME).basic(" iniciará em ").neutral(div.toString() + if (div == 1) " minuto" else " minutos").basic(
-									", use o comando ").neutral("/hg").basic(" para participar!").toString())
+									", use o comando ").neutral("/cxc").basic(" para participar!").toString())
 						}
 						i in (1 .. 60) && i % 15 == 0 -> Bukkit.broadcastMessage(Text.neutralPrefix().append(PREFIX).basic("O ").neutral(NAME).basic(" iniciará em ").neutral(i.toString() + " segundos").basic(
-								", use o comando ").neutral("/hg").basic(" para participar!").toString())
+								", use o comando ").neutral("/cxc").basic(" para participar!").toString())
 						i == 10                       -> Bukkit.broadcastMessage(Text.neutralPrefix().append(PREFIX).basic("O ").neutral(NAME).basic(" iniciará em ").neutral("10 segundos").basic(
-								", use o comando ").neutral("/hg").basic(" para participar!").toString())
+								", use o comando ").neutral("/cxc").basic(" para participar!").toString())
 						i in (1 .. 5)                 -> Bukkit.broadcastMessage(Text.neutralPrefix().append(PREFIX).basic("O ").neutral(NAME).basic(" iniciará em ").neutral(i.toString() + if (i == 1) " segundo" else " segundos").basic(
-								", use o comando ").neutral("/hg").basic(" para participar!").toString())
+								", use o comando ").neutral("/cxc").basic(" para participar!").toString())
 						i == 0                        -> {
 							cancel()
 
-							val gamers = GamerRegistry.onlineGamers().filter { it.warp == Warps.HG }
+							val gamers = GamerRegistry.onlineGamers().filter { it.warp == Warps.CLANVSCLAN }
 
 							if (gamers.size < minimumPlayers) {
 								Bukkit.broadcastMessage(Text.neutralPrefix().append(PREFIX).basic("Não há ").neutral("jogadores").basic(" suficientes para o ").neutral(NAME).basic("!").toString())
@@ -244,7 +235,7 @@ object HGWarp: Warp() {
 
 		gamers.forEach { it.sendToWarp(Warps.LOBBY, true, true) }
 
-		if(world != null) Worlds.rollback(world!!.name)
+		if(world != null )Worlds.rollback(world!!.name)
 
 		task?.cancel()
 
@@ -256,9 +247,10 @@ object HGWarp: Warp() {
 	fun start(gamers: Collection<Gamer>) {
 		state = STARTING
 
-		val normalizationFactor = Math.sqrt(gamers.size / playersLimit)
-		moneyPrizeNormalized = moneyPrize * normalizationFactor
-		xpPrizeNormalized = xpPrize * normalizationFactor
+		val participants = gamers.shuffled(Main.RANDOM)
+
+		clanFirst = ArrayList(participants.subList(0, 4))
+		clanSecond = ArrayList(participants.subList(5, 9))
 
 		gamers.forEach {
 			val player = it.player
@@ -267,13 +259,32 @@ object HGWarp: Warp() {
 
 			applyKit(it, it.kit)
 
-			val location = spawnLocation.spread(spreadRadius)
-			location.y = world!!.getHighestBlockYAt(location) + 0.5
-
-			player.teleport(location)
 			player.gameMode = GameMode.SURVIVAL
 
 			it.invincibility = invincibility * 1000L
+		}
+
+		val locationFirst = spawnLocation.spread(spreadRadius)
+
+		val x = locationFirst.x - spawnLocation.x
+		val z = locationFirst.z - spawnLocation.z
+
+		val locationSecond = spawnLocation.clone()
+		locationSecond.x -= x
+		locationSecond.z -= z
+
+		clanFirst.forEach {
+			val location = locationFirst.spread(4.0)
+			location.y = world!!.getHighestBlockYAt(location) + 0.5
+
+			it.player.teleport(location)
+		}
+
+		clanSecond.forEach {
+			val location = locationSecond.spread(4.0)
+			location.y = world!!.getHighestBlockYAt(location) + 0.5
+
+			it.player.teleport(location)
 		}
 
 		task?.cancel()
@@ -289,7 +300,7 @@ object HGWarp: Warp() {
 								"!").toString()
 
 						gamers.forEach {
-							if (it.warp == Warps.HG) it.player.sendMessage(message)
+							if (it.warp == Warps.CLANVSCLAN) it.player.sendMessage(message)
 						}
 					}
 					i in ((invincibility - 60) until invincibility) && i % 15 == 0 -> {
@@ -298,14 +309,14 @@ object HGWarp: Warp() {
 						val message = Text.neutralPrefix().append(PREFIX).basic("A ").neutral("invencibilidade").basic(" acabará em ").neutral(dif.toString() + " segundos").basic("!").toString()
 
 						gamers.forEach {
-							if (it.warp == Warps.HG) it.player.sendMessage(message)
+							if (it.warp == Warps.CLANVSCLAN) it.player.sendMessage(message)
 						}
 					}
 					i == invincibility - 10                                        -> {
 						val message = Text.neutralPrefix().append(PREFIX).basic("A ").neutral("invencibilidade").basic(" acabará em ").neutral("10 segundos").basic("!").toString()
 
 						gamers.forEach {
-							if (it.warp == Warps.HG) it.player.sendMessage(message)
+							if (it.warp == Warps.CLANVSCLAN) it.player.sendMessage(message)
 						}
 					}
 					i in ((invincibility - 5) until invincibility)                 -> {
@@ -315,14 +326,14 @@ object HGWarp: Warp() {
 								"!").toString()
 
 						gamers.forEach {
-							if (it.warp == Warps.HG) it.player.sendMessage(message)
+							if (it.warp == Warps.CLANVSCLAN) it.player.sendMessage(message)
 						}
 					}
 					i == invincibility                                             -> {
 						val message = Text.neutralPrefix().append(PREFIX).basic("A ").neutral("invencibilidade").basic(" acabou!").toString()
 
 						gamers.forEach {
-							if (it.warp == Warps.HG) it.player.sendMessage(message)
+							if (it.warp == Warps.CLANVSCLAN) it.player.sendMessage(message)
 						}
 					}
 					i in ((feast - 300) until feast) && i % 60 == 0                -> {
@@ -332,7 +343,7 @@ object HGWarp: Warp() {
 								"!").toString()
 
 						gamers.forEach {
-							if (it.warp == Warps.HG) it.player.sendMessage(message)
+							if (it.warp == Warps.CLANVSCLAN) it.player.sendMessage(message)
 						}
 					}
 					i in ((feast - 60) until feast) && i % 15 == 0                 -> {
@@ -341,14 +352,14 @@ object HGWarp: Warp() {
 						val message = Text.neutralPrefix().append(PREFIX).basic("O ").neutral("feast").basic(" iniciará em ").neutral(dif.toString() + " segundos").basic("!").toString()
 
 						gamers.forEach {
-							if (it.warp == Warps.HG) it.player.sendMessage(message)
+							if (it.warp == Warps.CLANVSCLAN) it.player.sendMessage(message)
 						}
 					}
 					i == feast - 10                                                -> {
 						val message = Text.neutralPrefix().append(PREFIX).basic("O ").neutral("feast").basic(" iniciará em ").neutral("10 segundos").basic("!").toString()
 
 						gamers.forEach {
-							if (it.warp == Warps.HG) it.player.sendMessage(message)
+							if (it.warp == Warps.CLANVSCLAN) it.player.sendMessage(message)
 						}
 					}
 					i in ((feast - 5) until feast)                                 -> {
@@ -358,7 +369,7 @@ object HGWarp: Warp() {
 								"!").toString()
 
 						gamers.forEach {
-							if (it.warp == Warps.HG) it.player.sendMessage(message)
+							if (it.warp == Warps.CLANVSCLAN) it.player.sendMessage(message)
 						}
 					}
 					i == feast                                                     -> {
@@ -367,17 +378,17 @@ object HGWarp: Warp() {
 						val message = Text.neutralPrefix().append(PREFIX).basic("O ").neutral("feast").basic(" começou!").toString()
 
 						gamers.forEach {
-							if (it.warp == Warps.HG) it.player.sendMessage(message)
+							if (it.warp == Warps.CLANVSCLAN) it.player.sendMessage(message)
 						}
 					}
 					i == maxDuration                                               -> {
 						cancel()
 
 						gamers.forEach {
-							if (it.warp == Warps.HG) it.player.sendMessage(GAME_DURATION_LIMIT)
+							if (it.warp == Warps.CLANVSCLAN) it.player.sendMessage(GAME_DURATION_LIMIT)
 						}
 
-						end(GamerRegistry.onlineGamers().filter { it.warp == Warps.HG })
+						end(GamerRegistry.onlineGamers().filter { it.warp == Warps.CLANVSCLAN })
 					}
 				}
 
@@ -416,30 +427,27 @@ object HGWarp: Warp() {
 			if (it !in winners) it.sendToWarp(Warps.LOBBY, true, true)
 		}
 
-		val iterator = winners.iterator()
-		val size = winners.size
+		var winnerClan: ArrayList<Gamer>? = clanFirst
 
-		val moneyPrizeIndividual = moneyPrizeNormalized / size
-		val xpPrizeIndividual = xpPrizeNormalized / size
+		if (winners.any { it !in clanFirst }) winnerClan = clanSecond
+		if (winners.any { it !in clanSecond }) winnerClan = null
 
-		winners.forEach {
-			it.addMoney(moneyPrizeIndividual)
-			it.addXp(xpPrizeIndividual)
+		if (winnerClan == null) {
+			Bukkit.broadcastMessage(Text.neutralPrefix().append(PREFIX).basic("Não houve um ").neutral("clan").basic(" vencedor no ").neutral(NAME).basic("!").toString())
 
-			it.fly(true)
+			val moneyPrizeIndividual = moneyPrize / 10.0
+			val xpPrizeIndividual = xpPrize / 10.0
 
-			Tasks.sync(object: BukkitRunnable() {
-				var i = 10
+			clanFirst.forEach {
+				it.addMoney(moneyPrizeIndividual)
+				it.addXp(xpPrizeIndividual)
+			}
 
-				override fun run() {
-					if (--i > 0) it.player.location.spawnFirework(1, FireworkEffect.builder().withColor(Colors.random()).with(FireworkEffect.Type.BALL).build())
-					else cancel()
-				}
-			}, 0L, 40L)
-		}
+			clanSecond.forEach {
+				it.addMoney(moneyPrizeIndividual)
+				it.addXp(xpPrizeIndividual)
+			}
 
-		task?.cancel()
-		task = Tasks.sync(Runnable {
 			winners.forEach {
 				if (it.player.isOnline) {
 					it.fly(false)
@@ -452,23 +460,71 @@ object HGWarp: Warp() {
 			schedule()
 
 			state = CLOSED
-		}, 400L)
-
-		val message: String
-
-		if (size == 1) {
-			val gamer = iterator.next()
-
-			message = Text.neutralPrefix().append(PREFIX).basic("O jogador ").neutral(gamer.player.displayName.clearFormatting()).basic(" venceu o ").neutral(NAME).basic("!").toString()
 		} else {
-			var text = Text.neutralOf(iterator.next().player.displayName.clearFormatting())
+			val iterator = winners.iterator()
+			val size = winners.size
 
-			for (i in 1 .. size) text = text.basic(if (i == size) " e " else ", ").neutral(iterator.next().player.displayName.clearFormatting())
+			var moneyPrizeIndividual = moneyPrize / 5.0
+			var xpPrizeIndividual = xpPrize / 5.0
 
-			message = Text.neutralPrefix().append(PREFIX).basic("Os jogadores ").append(text.toString()).basic(" venceram o ").neutral(NAME).basic("!").toString()
+			winnerClan.forEach {
+				if (it !in winners) {
+					it.addMoney(moneyPrizeIndividual)
+					it.addXp(xpPrizeIndividual)
+				}
+			}
+
+			moneyPrizeIndividual = moneyPrize / size
+			xpPrizeIndividual = xpPrize / size
+
+			winners.forEach {
+				it.addMoney(moneyPrizeIndividual)
+				it.addXp(xpPrizeIndividual)
+
+				it.fly(true)
+
+				Tasks.sync(object: BukkitRunnable() {
+					var i = 10
+
+					override fun run() {
+						if (--i > 0) it.player.location.spawnFirework(1, FireworkEffect.builder().withColor(Colors.random()).with(FireworkEffect.Type.BALL).build())
+						else cancel()
+					}
+				}, 0L, 40L)
+			}
+
+			task?.cancel()
+			task = Tasks.sync(Runnable {
+				winners.forEach {
+					if (it.player.isOnline) {
+						it.fly(false)
+						it.sendToWarp(Warps.LOBBY, true, true)
+					}
+				}
+
+				Worlds.rollback(world!!.name)
+
+				schedule()
+
+				state = CLOSED
+			}, 400L)
+
+			val message: String
+
+			if (size == 1) {
+				val gamer = iterator.next()
+
+				message = Text.neutralPrefix().append(PREFIX).basic("O jogador ").neutral(gamer.player.displayName.clearFormatting()).basic(" venceu o ").neutral(NAME).basic("!").toString()
+			} else {
+				var text = Text.neutralOf(iterator.next().player.displayName.clearFormatting())
+
+				for (i in 1 .. size) text = text.basic(if (i == size) " e " else ", ").neutral(iterator.next().player.displayName.clearFormatting())
+
+				message = Text.neutralPrefix().append(PREFIX).basic("Os jogadores ").append(text.toString()).basic(" venceram o ").neutral(NAME).basic("!").toString()
+			}
+
+			Bukkit.broadcastMessage(message)
 		}
-
-		Bukkit.broadcastMessage(message)
 	}
 
 	fun feast() {
@@ -578,7 +634,9 @@ object HGWarp: Warp() {
 		gamer.player.gameMode = GameMode.ADVENTURE
 
 		if (state == ONGOING) {
-			val gamers = GamerRegistry.onlineGamers().filter { it.warp == Warps.HG }
+			evasions.add(gamer)
+
+			val gamers = GamerRegistry.onlineGamers().filter { it.warp == Warps.CLANVSCLAN }
 			val size = gamers.size
 
 			if (size == 1) {
@@ -626,7 +684,7 @@ object HGWarp: Warp() {
 						}
 					}
 					ONGOING   -> player.sendMessage(Text.neutralPrefix().append(PREFIX).basic("O ").neutral(NAME).basic(" iniciou há ").neutral((System.currentTimeMillis() - start).formatPeriod()).basic(
-							" e ainda há ").neutral(GamerRegistry.onlineGamers().filter { it.warp == Warps.HG }.size).basic(" jogadores vivos!").toString())
+							" e ainda há ").neutral(GamerRegistry.onlineGamers().filter { it.warp == Warps.CLANVSCLAN }.size).basic(" jogadores vivos!").toString())
 					FINISHING -> player.sendMessage(Text.neutralPrefix().append(PREFIX).basic("O ").neutral(NAME).basic(" está sendo ").neutral("finalizado").basic("!").toString())
 				} else when (args[0]) {
 					"force" -> {
@@ -649,7 +707,7 @@ object HGWarp: Warp() {
 				when {
 					!Worlds.exists(name) -> player.sendMessage(Text.negativePrefix().negative("Não").basic(" há um mundo com o nome \"").negative(name).basic("\"!").toString())
 					else                 -> {
-						val data = data as HGData
+						val data = data as ClanVsClanData
 
 						val worldsData = data.worldsData.toMutableList()
 
@@ -697,7 +755,7 @@ object HGWarp: Warp() {
 		close(GamerRegistry.onlineGamers().filter { it.warp == this }, false)
 	}
 
-	enum class HGState {
+	enum class ClanVsClanState {
 
 		CLOSED,
 		PREPARING,
@@ -709,5 +767,5 @@ object HGWarp: Warp() {
 
 	class WorldData(var name: String = "", var spawn: SimpleLocation = SimpleLocation(), var feast: SimpleLocation = SimpleLocation(), var spreadRadius: Double = 0.0)
 
-	class HGData(var worldsData: Array<WorldData> = arrayOf()): Data()
+	class ClanVsClanData(var worldsData: Array<WorldData> = arrayOf()): Data()
 }

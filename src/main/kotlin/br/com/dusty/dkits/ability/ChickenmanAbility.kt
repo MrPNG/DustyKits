@@ -39,7 +39,9 @@ object ChickenmanAbility: Ability() {
 						player.inventory.itemInMainHand = RAW_CHICKEN
 
 						Tasks.sync(Runnable {
-							if (gamer.kit == Kits.CHICKENMAN) player.inventory.setItem(player.inventory.indexOfFirst { it == RAW_CHICKEN }, Kits.CHICKENMAN.items[0])
+							val index = player.inventory.indexOfFirst { it != null && it.type == Material.RAW_CHICKEN && it == RAW_CHICKEN }
+
+							if (index != -1 && gamer.kit == Kits.CHICKENMAN) player.inventory.setItem(index, Kits.CHICKENMAN.items[0])
 						}, 600L)
 
 						gamer.kitCooldown = 30000L

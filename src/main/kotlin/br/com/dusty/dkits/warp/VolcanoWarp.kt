@@ -1,5 +1,6 @@
 package br.com.dusty.dkits.warp
 
+import br.com.dusty.dkits.gamer.EnumRank
 import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.util.cosmetic.Colors
 import br.com.dusty.dkits.util.description
@@ -37,21 +38,27 @@ object VolcanoWarp: Warp() {
 
 		entryKit = Kit(weapon = ItemStack(WOOD_SWORD), armor = arrayOf(null, ItemStack(LEATHER_CHESTPLATE), null, null), isDummy = false)
 
-		durabilityBehavior = EnumDurabilityBehavior.REGEN_ON_KILL
+		durabilityBehavior = EnumDurabilityBehavior.REGEN
 
 		loadData()
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	fun onPlayerDeath(event: PlayerDeathEvent) {
-		val gamer = event.entity.gamer()
+		val dead = event.entity.gamer()
 
-		if (gamer.warp == this && gamer.isCombatTagged()) {
-			val killer = gamer.combatPartner!!
-			val player = killer.player
+		if (dead.warp == this && dead.isCombatTagged()) {
+			val gamer = dead.combatPartner!!
+			val player = gamer.player
 			val inventory = player.inventory
 
-			if (when (killer.warpKills) {
+			val normalizationFactor = when {
+				gamer.rank.isHigherThanOrEquals(EnumRank.PRO) -> 4.0 / 3.0
+				gamer.rank.isHigherThanOrEquals(EnumRank.VIP) -> 10.0 / 9.0
+				else                                          -> 1.0
+			}
+
+			if (when (Math.ceil(gamer.warpKills * normalizationFactor).toInt()) {
 				2    -> {
 					inventory.setItem(inventory.indexOfFirst { it.type == WOOD_SWORD }, ITEMSTACKS[0])
 					true
@@ -84,7 +91,7 @@ object VolcanoWarp: Warp() {
 			}) {
 				player.sendMessage(Text.positivePrefix().basic("Você ").positive("avançou").basic(" de ").positive("nível").basic(" na warp ").positive(this.name).basic("!").toString())
 
-				player.location.spawnFirework(killer.warpKills, FireworkEffect.builder().withColor(Colors.random()).build())
+				player.location.spawnFirework(gamer.warpKills, FireworkEffect.builder().withColor(Colors.random()).build())
 				player.spawnParticle(Particle.CRIT_MAGIC, player.location, 1)
 			}
 		}

@@ -45,6 +45,7 @@ object Listeners {
 		LISTENERS.add(FoodLevelChangeListener)
 		LISTENERS.add(InventoryClickListener)
 //		LISTENERS.add(ItemSpawnListener)
+		LISTENERS.add(PlayerCommandPreProcessListener)
 		LISTENERS.add(LeavesDecayListener)
 		LISTENERS.add(PlayerDropItemListener)
 		LISTENERS.add(PlayerInteractEntityListener)

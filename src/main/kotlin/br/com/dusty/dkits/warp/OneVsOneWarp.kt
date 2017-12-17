@@ -614,8 +614,8 @@ object OneVsOneWarp: Warp() {
 		                                                                                                                     "Sopas em todo o invetário",
 		                                                                                                                     "Material de recraft"), true)),
 		GLADIATOR("Gladiator",
-		          Kit(weapon = ItemStack(STONE_SWORD),
-		              armor = arrayOfNulls(4),
+		          Kit(weapon = Inventories.DIAMOND_SWORD_SHARPNESS,
+		              armor = Inventories.ARMOR_FULL_IRON,
 		              items = arrayOf(ItemStack(STONE_PICKAXE), ItemStack(COBBLE_WALL, 64), ItemStack(LAVA_BUCKET), ItemStack(WATER_BUCKET)),
 		              isDummy = false),
 		          ItemStack(IRON_FENCE).rename(Text.of("1v1 - Gladiator").color(TextColor.GOLD).toString()).description(arrayListOf("Arena no estilo \"Gladiator\"",
@@ -625,14 +625,12 @@ object OneVsOneWarp: Warp() {
 		                                                                                                                            "Material de recraft"), true)),
 		CLAN_VS_CLAN("Clan vs Clan",
 		             Kit(weapon = Inventories.DIAMOND_SWORD_SHARPNESS, armor = Inventories.ARMOR_FULL_IRON, isDummy = false),
-		             ItemStack(SKULL_ITEM,
-		                       1,
-		                       SkullType.PLAYER.ordinal.toShort()).rename(Text.of("5v5 - Clan vs Clan").color(TextColor.GOLD).toString()).description(arrayListOf("Arena normal",
-		                                                                                                                                                          "Armadura de ferro completa",
-		                                                                                                                                                          "Espada de diamante encantada",
-		                                                                                                                                                          "Sopas em todo o invetário",
-		                                                                                                                                                          "Material de recraft"),
-		                                                                                                                                              true))
+		             ItemStack(SKULL_ITEM, 1, SkullType.PLAYER.ordinal.toShort()).rename(Text.of("5v5 - Clan vs Clan").color(TextColor.GOLD).toString()).description(arrayListOf("Arena normal",
+		                                                                                                                                                                         "Armadura de ferro completa",
+		                                                                                                                                                                         "Espada de diamante encantada",
+		                                                                                                                                                                         "Sopas em todo o invetário",
+		                                                                                                                                                                         "Material de recraft"),
+		                                                                                                                                                             true))
 	}
 
 	enum class FightState {

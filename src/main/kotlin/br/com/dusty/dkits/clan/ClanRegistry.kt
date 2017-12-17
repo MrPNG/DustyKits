@@ -19,8 +19,8 @@ object ClanRegistry {
 			if (primitiveClan != null) {
 				clan = Clan(primitiveClan)
 
-				CLAN_BY_STRING.put(uuid, clan)
 				PRIMITIVE_CLAN_BY_STRING.remove(uuid)
+				CLAN_BY_STRING.put(uuid, clan)
 			}
 		}
 
@@ -29,7 +29,7 @@ object ClanRegistry {
 
 	fun primitiveClanFromJson(json: String?): PrimitiveClan? = when (json) {
 		null         -> null
-		"{status:2}" -> null
+		"{\"status\":2}" -> null
 		else         -> Main.GSON.fromJson(json, PrimitiveClan::class.java)
 	}
 }

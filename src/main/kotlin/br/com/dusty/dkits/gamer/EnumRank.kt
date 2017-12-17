@@ -13,9 +13,9 @@ import java.util.*
 enum class EnumRank {
 
 	NONE(-1),
-	DEFAULT(0, TextColor.WHITE),
-	//VIP(2, TextColor.GREEN),
-	//MVP(3, TextColor.BLUE),
+	DEFAULT(0, TextColor.GRAY),
+	VIP(2, TextColor.GREEN),
+	MVP(3, TextColor.BLUE),
 	PRO(4, TextColor.GOLD),
 	PRO_YOUTUBER(6, TextColor.AQUA),
 	YOUTUBER(6, TextColor.AQUA, TextStyle.ITALIC),
@@ -118,6 +118,8 @@ enum class EnumRank {
 	companion object {
 
 		private val BY_LEVEL = HashMap<Int, EnumRank>()
+
+		val names = values().map { it.name.toLowerCase() }
 
 		init {
 			values().forEach { BY_LEVEL.put(it.level, it) }

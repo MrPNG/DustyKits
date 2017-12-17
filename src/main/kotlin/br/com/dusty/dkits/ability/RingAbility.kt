@@ -51,7 +51,7 @@ object RingAbility: Ability() {
 						player.inventory.itemInMainHand = LEATHER_BOOTS
 
 						Tasks.sync(Runnable {
-							val index = player.inventory.indexOfFirst { it.type == Material.LEATHER_BOOTS }
+							val index = player.inventory.indexOfFirst { it != null && it.type == Material.LEATHER_BOOTS }
 
 							if (index != -1 && gamer.kit == Kits.RING) player.inventory.setItem(index, Kits.RING.items[0])
 						}, 600L)

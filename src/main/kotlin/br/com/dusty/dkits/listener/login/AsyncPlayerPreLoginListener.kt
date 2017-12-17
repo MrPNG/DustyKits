@@ -16,9 +16,7 @@ object AsyncPlayerPreLoginListener: Listener {
 	fun onAsyncPlayerPreLogin(event: AsyncPlayerPreLoginEvent) {
 		val uuid = event.uniqueId
 
-		//TODO: Reactivate Web API
-//		val primitiveGamer = GamerRegistry.primitiveGamerFromJson(WebAPI.loadProfile(uuid), uuid)
-		val primitiveGamer = GamerRegistry.tempPrimitiveGamer(uuid)
+		val primitiveGamer = GamerRegistry.primitiveGamerFromJson(WebAPI.loadProfile(uuid), uuid)
 
 		if (primitiveGamer == null) {
 			event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, KICK_NO_PROFILE)

@@ -14,7 +14,7 @@ object PoseidonAbility: Ability() {
 	fun onPlayerMove(event: PlayerMoveEvent) {
 		val type = event.to.block.type
 
-		if (type == Material.WATER && type == Material.STATIONARY_WATER) {
+		if (type == Material.WATER || type == Material.STATIONARY_WATER) {
 			val player = event.player
 			val gamer = player.gamer()
 

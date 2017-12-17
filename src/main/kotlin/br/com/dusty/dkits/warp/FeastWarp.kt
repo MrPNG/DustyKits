@@ -224,10 +224,11 @@ object FeastWarp: Warp() {
 	override fun applyKit(gamer: Gamer, kit: Kit) {
 		gamer.clear()
 		gamer.player.run {
-			inventory.addItemStacks(kit.items)
-
-			if (!kit.isDummy) {
+			if (kit.isDummy) {
+				inventory.addItemStacks(kit.items)
+			} else {
 				inventory.setItem(0, if (kit == Kits.PVP) Inventories.DIAMOND_SWORD_SHARPNESS else Inventories.DIAMOND_SWORD)
+				inventory.addItemStacks(kit.items)
 				fillRecraft()
 				fillSoups(true)
 				setArmor(Inventories.ARMOR_FULL_IRON)

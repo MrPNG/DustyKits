@@ -1,8 +1,8 @@
 package br.com.dusty.dkits.clan
 
 import br.com.dusty.dkits.gamer.Gamer
-import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.util.add
+import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.util.remove
 import org.bukkit.Bukkit
 import java.util.*
@@ -33,7 +33,7 @@ class Clan(val primitiveClan: PrimitiveClan) {
 	val rawMembers
 		get() = primitiveClan.members
 
-	val onlineMembers = primitiveClan.members.mapNotNull { Bukkit.getPlayer(UUID.fromString(it))?.gamer() }.toMutableList()
+	val onlineMembers = primitiveClan.members.filter { it != "" }.mapNotNull { Bukkit.getPlayer(UUID.fromString(it))?.gamer() }.toMutableList()
 
 	var kills
 		get() = primitiveClan.kills
