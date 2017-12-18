@@ -2,7 +2,6 @@ package br.com.dusty.dkits.warp
 
 import br.com.dusty.dkits.gamer.Gamer
 import br.com.dusty.dkits.util.description
-import br.com.dusty.dkits.util.protocol.EnumProtocolVersion
 import br.com.dusty.dkits.util.rename
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
@@ -35,10 +34,10 @@ object FakeCXC: Warp() {
 
 		player.sendMessage(Text.positivePrefix().basic("Você foi ").positive("teleportado").basic(" para a warp ").positive(lobby.name).basic(" pois o ").positive("Evento " + name).basic(" ainda não foi lançado!").toString())
 
-		if (gamer.protocolVersion.isGreaterThanOrEquals(EnumProtocolVersion.RELEASE_1_8)) player.sendTitle(Text.basicOf("Você está na warp ").positive(lobby.name).basic("!").toString(),
-		                                                                                                   Text.basicOf("O ").positive("Evento " + name).basic(" ainda não foi lançado!").toString(),
-		                                                                                                   10,
-		                                                                                                   80,
-		                                                                                                   10)
+//		if (gamer.protocolVersion.isGreaterThanOrEquals(EnumProtocolVersion.RELEASE_1_8)) player.sendTitle(Text.basicOf("Você está na warp ").positive(lobby.name).basic("!").toString(),
+//		                                                                                                   Text.basicOf("O ").positive("Evento " + name).basic(" ainda não foi lançado!").toString(),
+//		                                                                                                   10,
+//		                                                                                                   80,
+//		                                                                                                   10) //TODO: 1.8 switch
 	}
 }

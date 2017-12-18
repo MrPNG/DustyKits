@@ -332,7 +332,7 @@ object ClanCommand: PlayerCustomCommand(EnumRank.MOD, "clan") {
 													clan.leader?.player?.sendMessage(Text.positivePrefix().basic("O jogador ").positive(sender.name).basic(" entrou para o seu ").positive("clan").basic(
 															"!").toString())
 
-													INVITATIONS.forEach { key, value -> if (key == player && value.player == sender) INVITATIONS.remove(key, value) }
+//													INVITATIONS.forEach { key, value -> if (key == player && value.player == sender) INVITATIONS.remove(key, value) } //TODO: 1.8 switch
 
 													AWAITING_API.remove(sender)
 												}

@@ -11,7 +11,6 @@ import br.com.dusty.dkits.util.inventory.WarpMenu
 import br.com.dusty.dkits.warp.Warp
 import org.bukkit.GameMode
 import org.bukkit.Material.*
-import org.bukkit.attribute.Attribute
 import org.bukkit.block.Sign
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -21,7 +20,11 @@ import org.bukkit.event.player.PlayerInteractEvent
 
 object PlayerInteractListener: Listener {
 
-	val ALLOWED_ITEMS = arrayOf(WOOD_SWORD, GOLD_SWORD, STONE_SWORD, IRON_SWORD, DIAMOND_SWORD, SHIELD, BOW, FISHING_ROD, SPLASH_POTION, WRITTEN_BOOK)
+	val ALLOWED_ITEMS = arrayOf(WOOD_SWORD, GOLD_SWORD, STONE_SWORD, IRON_SWORD, DIAMOND_SWORD,
+//	                            SHIELD, //TODO: 1.8 switch
+                                BOW, FISHING_ROD,
+//	                            SPLASH_POTION, //TODO: 1.8 switch
+                                WRITTEN_BOOK)
 	val ALLOWED_BLOCKS = arrayOf(ACACIA_DOOR, BIRCH_DOOR, DARK_OAK_DOOR, JUNGLE_DOOR, SPRUCE_DOOR, WOOD_DOOR, WOOD_BUTTON, STONE_BUTTON, TRAP_DOOR)
 
 	@EventHandler
@@ -57,13 +60,14 @@ object PlayerInteractListener: Listener {
 				GOLD_INGOT    -> if (this == Inventories.STORE) player.spigot().sendMessage(*BuyCommand.STORE_LINK)
 				MUSHROOM_SOUP -> {
 					if (event.action == RIGHT_CLICK_AIR || event.action == RIGHT_CLICK_BLOCK) {
-						val maxHealth = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).value
+//						val maxHealth = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).value //TODO: 1.8 switch
+						val maxHealth = player.maxHealth
 
 						if (player.health < maxHealth) {
 							if (player.health < maxHealth - 7) player.health += 7.0
 							else player.health = maxHealth
 
-							player.inventory.itemInMainHand = Inventories.BOWL
+//							player.inventory.itemInMainHand = Inventories.BOWL //TODO: 1.8 switch
 						}
 					}
 				}

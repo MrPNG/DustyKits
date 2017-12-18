@@ -7,7 +7,6 @@ import br.com.dusty.dkits.util.Tasks
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.web.WebAPI
 import org.bukkit.Bukkit
-import org.bukkit.Sound
 import org.bukkit.entity.Player
 
 object ReportCommand: PlayerCustomCommand(EnumRank.DEFAULT, "dustyreport") {
@@ -27,7 +26,7 @@ object ReportCommand: PlayerCustomCommand(EnumRank.DEFAULT, "dustyreport") {
 					if (it.rank.isHigherThanOrEquals(EnumRank.MOD)) {
 						val staffPlayer = it.player
 
-						staffPlayer.playSound(staffPlayer.location, Sound.ENTITY_CHICKEN_HURT, 1F, 1F)
+//						staffPlayer.playSound(staffPlayer.location, Sound.ENTITY_CHICKEN_HURT, 1F, 1F) //TODO: 1.8 switch
 						staffPlayer.sendMessage(Text.negativePrefix().basic("[").negative("Report").basic("]: \n").negative("  Jogador").basic(": " + player.name + "\n").negative("  Motivo").basic(
 								": " + reason + "\n").negative("  Por").basic(": " + sender.name).toString())
 					}

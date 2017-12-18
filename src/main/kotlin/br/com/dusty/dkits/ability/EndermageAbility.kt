@@ -49,7 +49,8 @@ object EndermageAbility: Ability() {
 						val location = event.clickedBlock.location
 						location.y += 1.5
 
-						player.inventory.itemInMainHand = STAINED_GLASS_PANE
+//						player.inventory.itemInMainHand = STAINED_GLASS_PANE //TODO: 1.8 switch
+						player.itemInHand = STAINED_GLASS_PANE
 
 						fun undo() {
 							block.type = type

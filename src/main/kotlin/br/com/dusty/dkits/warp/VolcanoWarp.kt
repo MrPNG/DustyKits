@@ -11,7 +11,6 @@ import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
 import org.bukkit.FireworkEffect
 import org.bukkit.Material.*
-import org.bukkit.Particle
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
@@ -90,7 +89,7 @@ object VolcanoWarp: Warp() {
 				player.sendMessage(Text.positivePrefix().basic("Você ").positive("avançou").basic(" de ").positive("nível").basic(" na warp ").positive(this.name).basic("!").toString())
 
 				player.location.spawnFirework(gamer.warpKills, FireworkEffect.builder().withColor(Colors.random()).build())
-				player.spawnParticle(Particle.CRIT_MAGIC, player.location, 1)
+//				player.spawnParticle(Particle.CRIT_MAGIC, player.location, 1) //TODO: 1.8 switch
 			}
 		}
 	}
