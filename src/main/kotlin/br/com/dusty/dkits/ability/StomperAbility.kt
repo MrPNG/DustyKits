@@ -28,7 +28,7 @@ object StomperAbility: Ability() {
 					if (distance < 5) {
 						val transferredDamage = damage * (1 - (distance / 5.0).pow(2))
 
-						if (player.isSneaking) it.player.damage(1.0, player) else it.player.damage(transferredDamage, player)
+						if (it.player.isSneaking) it.player.damage(1.0, player) else it.player.damage(transferredDamage, player)
 					}
 				}
 

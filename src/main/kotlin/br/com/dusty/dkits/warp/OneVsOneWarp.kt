@@ -188,7 +188,13 @@ object OneVsOneWarp: Warp() {
 
 		if (gamer.warp == this) {
 			when {
-				!gamer.isFrozen() && FIGHTS.values.any { it.state == ONGOING && it.type == GLADIATOR && (it.host == gamer || it.guest == gamer) } -> event.isCancelled = false
+				!gamer.isFrozen() && FIGHTS.values.any { it.state == ONGOING && it.type == GLADIATOR && (it.host == gamer || it.guest == gamer) } -> {
+					event.isCancelled = false
+
+					val clickedBlock = event.clickedBlock
+
+					if (clickedBlock != null && clickedBlock.type == GLASS) player.sendBlockChange(clickedBlock.location, BEDROCK, 0)
+				}
 				event.item != null                                                                                                                -> {
 					val item = event.item
 
@@ -644,24 +650,24 @@ object OneVsOneWarp: Warp() {
 		                              null,
 		                              ItemStack(WATER_BUCKET),
 		                              ItemStack(LAVA_BUCKET),
-		                              Inventories.COCOA_BEAN,
-		                              Inventories.COCOA_BEAN,
-		                              Inventories.COCOA_BEAN,
-		                              Inventories.COCOA_BEAN,
-		                              ItemStack(BOWL, 64),
-		                              Inventories.DIAMOND_SWORD_SHARPNESS,
-		                              ItemStack(LAVA_BUCKET),
 		                              ItemStack(LAVA_BUCKET),
 		                              ItemStack(IRON_PICKAXE),
-		                              Inventories.COCOA_BEAN,
-		                              Inventories.COCOA_BEAN,
-		                              Inventories.COCOA_BEAN,
-		                              Inventories.COCOA_BEAN,
+		                              ItemStack(IRON_AXE),
+		                              Inventories.DIAMOND_SWORD_SHARPNESS,
 		                              ItemStack(BOWL, 64),
+		                              Inventories.COCOA_BEAN,
+		                              Inventories.COCOA_BEAN,
+		                              Inventories.COCOA_BEAN,
+		                              Inventories.COCOA_BEAN,
+		                              ItemStack(LAVA_BUCKET),
 		                              null,
 		                              null,
 		                              null,
-		                              ItemStack(IRON_AXE)),
+		                              ItemStack(BOWL, 64),
+		                              Inventories.COCOA_BEAN,
+		                              Inventories.COCOA_BEAN,
+		                              Inventories.COCOA_BEAN,
+		                              Inventories.COCOA_BEAN),
 		              isDummy = false),
 		          ItemStack(IRON_FENCE).rename(Text.of("1v1 - Gladiator").color(TextColor.GOLD).toString()).description(arrayListOf("Arena no estilo \"Gladiator\"",
 		                                                                                                                            "Armadura de ferro completa",

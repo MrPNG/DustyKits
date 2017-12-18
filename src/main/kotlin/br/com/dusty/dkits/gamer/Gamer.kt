@@ -456,10 +456,14 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 			val ticks = Math.ceil((combatTag - System.currentTimeMillis()) / 50.0).toLong()
 			val seconds = Math.round((ticks / 20).toFloat())
 
-			warpTask = Tasks.sync(Runnable { sendToWarp(warp, true, announce) }, ticks)
+			warpTask = Tasks.sync(Runnable {
+				player.closeInventory()
+
+				sendToWarp(warp, true, announce)
+			}, ticks)
 
 			player.sendMessage(if (seconds < 60 * 60 * 24) Text.neutralPrefix().basic("Você será teleportado em ").neutral(seconds).basic(if (seconds == 1) " segundo, " else " segundos, ").neutral(
-					"não").basic(" se ").neutral("mova").basic("!").toString() else Text.negativePrefix().basic("Você ").negative("não").basic(" pode ir para essa ").neutral("warp").basic(" nesse momento!").toString())
+					"não").basic(" se ").neutral("mova").basic("!").toString() else Text.negativePrefix().basic("Você ").negative("não").basic(" pode ir para essa ").negative("warp").basic(" nesse momento!").toString())
 		}
 	}
 

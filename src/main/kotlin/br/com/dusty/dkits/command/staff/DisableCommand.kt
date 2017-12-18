@@ -22,7 +22,7 @@ object DisableCommand: CustomCommand(EnumRank.MODPLUS, "disable") {
 					val warp = Warps[args[2]]
 
 					if (warp == Warps.NONE) {
-						sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há uma warp com o nome \"").negative(args[0]).basic("\"!").toString())
+						sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há uma warp com o nome \"").negative(args[2]).basic("\"!").toString())
 					} else {
 						if (warp.enableKit(kit,
 						                   false)) sender.sendMessage(Text.negativePrefix().basic("O kit ").negative(kit.name).basic(" foi ").negative("desabilitado").basic(" na warp ").negative(

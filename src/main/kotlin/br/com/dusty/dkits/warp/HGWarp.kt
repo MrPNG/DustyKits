@@ -27,7 +27,6 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.entity.EntityPickupItemEvent
 import org.bukkit.event.entity.PlayerDeathEvent
-import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryType
 import org.bukkit.event.player.PlayerDropItemEvent
 import org.bukkit.event.player.PlayerInteractEvent
@@ -145,7 +144,7 @@ object HGWarp: Warp() {
 
 		aliases = arrayOf(name.replace(" ", "").toLowerCase(), "hg")
 
-		overriddenEvents = arrayOf(InventoryClickEvent::class.java, PlayerDeathEvent::class.java, PlayerDropItemEvent::class.java, EntityPickupItemEvent::class.java)
+		overriddenEvents = arrayOf(PlayerDeathEvent::class.java, PlayerDropItemEvent::class.java, EntityPickupItemEvent::class.java)
 
 		entryKit = SIMPLE_GAME_WARP_KIT
 
@@ -507,18 +506,6 @@ object HGWarp: Warp() {
 				clear()
 				addItemStacks(items.toTypedArray())
 			}
-		}
-	}
-
-	@EventHandler
-	fun onInventoryClick(event: InventoryClickEvent) {
-		val gamer = (event.whoClicked as Player).gamer()
-
-		if (gamer.warp == this) {
-			val topInventory = event.view.topInventory
-			val currentItem = event.currentItem
-
-			if (gamer.kit.isDummy || (topInventory != null && topInventory.type in PROHIBITED_INVENTORIES && currentItem != null && currentItem in gamer.kit.items)) event.isCancelled = true
 		}
 	}
 

@@ -7,6 +7,7 @@ import br.com.dusty.dkits.util.rename
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
 import org.bukkit.event.block.Action
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.PlayerInteractEvent
@@ -18,16 +19,16 @@ object RingAbility: Ability() {
 
 	val LEATHER_BOOTS = ItemStack(Material.LEATHER_BOOTS).rename("Botas Comuns")
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGH)
 	fun onInventoryClick(event: InventoryClickEvent) {
-		if (event.isShiftClick) {
-			val player = event.whoClicked as Player
-			val gamer = player.gamer()
+		if (!event.isCancelled && event.isShiftClick) {
+			val currentItem = event.currentItem ?: return
 
-			if (hasAbility(gamer)) {
-				val item = event.currentItem
+			if (currentItem.type == Material.LEATHER_BOOTS || currentItem.type == Material.GOLD_BOOTS) {
+				val player = event.whoClicked as Player
+				val gamer = player.gamer()
 
-				if (item != null && (item.type == Material.LEATHER_BOOTS || item.type == Material.GOLD_BOOTS)) event.isCancelled = true
+				if (hasAbility(gamer)) event.isCancelled = true
 			}
 		}
 	}

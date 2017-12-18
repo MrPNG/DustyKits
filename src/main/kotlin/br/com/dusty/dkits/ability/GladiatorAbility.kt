@@ -101,7 +101,7 @@ object GladiatorAbility: Ability() {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler(priority = EventPriority.LOW)
 	fun onPlayerDeath(event: PlayerDeathEvent) {
 		val player = event.entity
 		val gamer = player.gamer()
@@ -109,7 +109,7 @@ object GladiatorAbility: Ability() {
 		val fight = FIGHTS.values.firstOrNull { it.host == gamer || it.guest == gamer }
 
 		if (fight != null) {
-			val alive = if (gamer == fight.host) fight.host else fight.guest
+			val alive = if (gamer == fight.host) fight.guest else fight.host
 			val alivePlayer = alive.player
 
 			alivePlayer.removePotionEffect(PotionEffectType.WITHER)
@@ -130,7 +130,7 @@ object GladiatorAbility: Ability() {
 		val fight = FIGHTS.values.firstOrNull { it.host == gamer || it.guest == gamer }
 
 		if (fight != null) {
-			val alive = if (gamer == fight.host) fight.host else fight.guest
+			val alive = if (gamer == fight.host) fight.guest else fight.host
 			val alivePlayer = alive.player
 
 			alivePlayer.removePotionEffect(PotionEffectType.WITHER)

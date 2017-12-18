@@ -52,9 +52,7 @@ object Store {
 		val vantagem = arrayOf<AdvantagePurchases>()
 
 		fun loadRank(gamer: Gamer) {
-			EnumRank.values().forEach {
-				if (gamer.player.hasPermission("dkits.rank." + it.name.toLowerCase())) gamer.rank = it
-			}
+			EnumRank.values().forEach { if (gamer.player.hasPermission("dkits.rank." + it.name.toLowerCase())) gamer.rank = it }
 
 			if (gamer.rank == EnumRank.NONE) vip.filter { it.datafinal > System.currentTimeMillis() }.forEach {
 				var rank = EnumRank.DEFAULT
@@ -69,14 +67,18 @@ object Store {
 		}
 
 		fun loadKits(gamer: Gamer) {
-			Kits.KITS.forEach {
-				if (gamer.player.hasPermission("dkits.kit." + it.name.toLowerCase())) gamer.kits.add(it)
-			}
+			Kits.KITS.forEach { if (gamer.player.hasPermission("dkits.kit." + it.name.toLowerCase())) gamer.kits.add(it) }
 
 			kit.forEach {
+				if (it.kit == 1) {
+					gamer.kits.addAll(ID_BY_KIT.keys)
+
+					return
+				}
+
 				val kit = KIT_BY_ID[it.kit]
 
-				if (kit != null) gamer.kits.add(kit)
+				if (kit != null && kit !in gamer.kits) gamer.kits.add(kit)
 			}
 		}
 

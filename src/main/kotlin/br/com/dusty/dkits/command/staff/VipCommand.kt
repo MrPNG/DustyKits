@@ -32,10 +32,11 @@ object VipCommand: PlayerCustomCommand(EnumRank.ADMIN, "vip") {
 					val time = days * (1000 * 60 * 60 * 24).toLong()
 
 					val gamer = player.gamer()
-					gamer.rank = rank
 
 					val onNext = Consumer<Player> {
 						WebAPI.addPurchase(Store.PseudoPurchase(0, player.uniqueId.toString(), 2, if (rank == EnumRank.PRO) 1001 else 1003, time))
+
+						gamer.rank = rank
 
 						sender.sendMessage(Text.positivePrefix().basic("Você deu um ").positive(rank.name).basic(" para o jogador ").positive(player.name).basic(" por ").positive(days).basic(" dias!").toString())
 						player.sendMessage(Text.positivePrefix().basic("Você ganhou um ").positive(rank.name).basic(" por ").positive(days).basic(" dias!").toString())

@@ -24,7 +24,6 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.block.Action
 import org.bukkit.event.entity.EntityDamageEvent
-import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.PlayerDropItemEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemStack
@@ -185,14 +184,6 @@ object FeastWarp: Warp() {
 			event.action == Action.RIGHT_CLICK_BLOCK && event.clickedBlock.type == CHEST -> player.openInventory((event.clickedBlock.state as Chest).blockInventory)
 			event.item == null || event.item.type in ALLOWED_ITEMS                       -> event.isCancelled = false
 		}
-	}
-
-	@EventHandler(priority = EventPriority.HIGHEST)
-	fun onInventoryClick(event: InventoryClickEvent) {
-		val player = event.whoClicked as Player
-		val gamer = player.gamer()
-
-		if (gamer.warp == this && !gamer.kit.isDummy) event.isCancelled = false
 	}
 
 	fun fillChests() {

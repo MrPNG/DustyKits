@@ -44,18 +44,18 @@ enum class EnumProtocolVersion {
 		this.safety = safety
 	}
 
-	fun isGreaterThan(protocolVersion: EnumProtocolVersion): Boolean = protocolVersion.max < min
+	fun isGreaterThan(protocolVersion: EnumProtocolVersion) = protocolVersion.max < min
 
-	fun isGreaterThanOrEquals(protocolVersion: EnumProtocolVersion): Boolean = this == protocolVersion || protocolVersion.max < min
+	fun isGreaterThanOrEquals(protocolVersion: EnumProtocolVersion) = this == protocolVersion || protocolVersion.max < min
 
-	fun isLowerThan(protocolVersion: EnumProtocolVersion): Boolean = protocolVersion.min > max
+	fun isLowerThan(protocolVersion: EnumProtocolVersion) = protocolVersion.min > max
 
-	fun isLowerThanOrEquals(protocolVersion: EnumProtocolVersion): Boolean = this == protocolVersion || protocolVersion.min > max
+	fun isLowerThanOrEquals(protocolVersion: EnumProtocolVersion) = this == protocolVersion || protocolVersion.min > max
 
 	override fun toString(): String = string
 
 	companion object {
 
-		operator fun get(version: Int?): EnumProtocolVersion = if (version == null) UNKNOWN else (values().firstOrNull { it.min <= version && it.max >= version } ?: UNKNOWN)
+		operator fun get(version: Int?) = if (version == null) UNKNOWN else (values().firstOrNull { it.min <= version && it.max >= version } ?: UNKNOWN)
 	}
 }

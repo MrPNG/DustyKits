@@ -14,7 +14,7 @@ object WebAPI {
 
 	val HTTP_CLIENT = HttpClientBuilder.create().setDefaultRequestConfig(RequestConfig.custom().setConnectTimeout(10000).build()).build()
 
-	val URL = "https://api.dusty.com.br/handler.php"
+	val URL = "http://api.dusty.com.br/handler.php"
 
 	fun loadProfile(uuid: UUID) = HttpGet(URL + "?type=perfil&uuid=" + uuid).response()
 
@@ -28,9 +28,9 @@ object WebAPI {
 
 	fun loadPurchases(uuid: String) = HttpGet(URL + "?type=getcompras&uuid=" + uuid).response()
 
-	fun addPurchase(pseudoPurchase: Store.PseudoPurchase) = HttpGet(URL + "?type=addcompra&action=add&json=" + HttpClients.GSON.toJson(pseudoPurchase)).response()
+	fun addPurchase(pseudoPurchase: Store.PseudoPurchase) = HttpGet(URL + "?type=addcompra&action=add&id=${pseudoPurchase.id}&json=" + HttpClients.GSON.toJson(pseudoPurchase)).response()
 
 	fun updatePurchase(pseudoPurchase: Store.PseudoPurchase) = HttpGet(URL + "?type=addcompra&action=update&id=${pseudoPurchase.id}&json=" + HttpClients.GSON.toJson(pseudoPurchase)).response()
 
-	fun report(name: String, reporter: String, reason: String) = HttpGet("https://api.dusty.com.br/report.php?player=$name&reportby=$reporter&reason=$reason").response()
+	fun report(name: String, reporter: String, reason: String) = HttpGet("http://api.dusty.com.br/report.php?player=$name&reportby=$reporter&reason=$reason").response()
 }
