@@ -10,7 +10,6 @@ import br.com.dusty.dkits.util.inventory.addItemStacks
 import br.com.dusty.dkits.util.inventory.fillRecraft
 import br.com.dusty.dkits.util.inventory.fillSoups
 import br.com.dusty.dkits.util.inventory.setArmor
-import br.com.dusty.dkits.util.protocol.EnumProtocolVersion
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
 import org.bukkit.Bukkit
@@ -154,12 +153,12 @@ open class Warp: Listener {
 		if (announce) {
 			player.sendMessage(Text.positivePrefix().basic("Você foi ").positive("teleportado").basic(" para a warp ").positive(name).basic("!").toString())
 
-			if (gamer.protocolVersion.isGreaterThanOrEquals(EnumProtocolVersion.RELEASE_1_8)) player.sendTitle(Text.basicOf("Você está na warp ").positive(name).basic("!").toString(),
-			                                                                                                   if (enabledKits.isNotEmpty()) Text.basicOf("Escolha um ").positive("kit").basic(" e ").positive(
-					                                                                                                   "divirta-se").basic("!").toString() else null,
-			                                                                                                   10,
-			                                                                                                   80,
-			                                                                                                   10)
+//			if (gamer.protocolVersion.isGreaterThanOrEquals(EnumProtocolVersion.RELEASE_1_8)) player.sendTitle(Text.basicOf("Você está na warp ").positive(name).basic("!").toString(),
+//			                                                                                                   if (enabledKits.isNotEmpty()) Text.basicOf("Escolha um ").positive("kit").basic(" e ").positive(
+//					                                                                                                   "divirta-se").basic("!").toString() else null,
+//			                                                                                                   10,
+//			                                                                                                   80,
+//			                                                                                                   10) //TODO: 1.8 switch
 		}
 
 		gamer.setKitAndApply(entryKit, false)

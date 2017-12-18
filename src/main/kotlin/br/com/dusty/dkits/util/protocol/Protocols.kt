@@ -9,7 +9,7 @@ object Protocols {
 
 	val CRAFTBUKKIT_PACKAGE = "org.bukkit.craftbukkit."
 	val NMS_PACKAGE = "net.minecraft.server."
-	val NMS_VERSION = "v1_12_R1"
+	val NMS_VERSION = "v1_8_R3"
 
 	val PROTOCOL_SUPPORT_PACKAGE = "protocolsupport.api."
 

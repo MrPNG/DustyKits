@@ -15,8 +15,6 @@ import br.com.dusty.dkits.util.text.TextColor
 import br.com.dusty.dkits.warp.Warp
 import br.com.dusty.dkits.warp.Warps
 import org.bukkit.GameMode
-import org.bukkit.Sound
-import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
 import org.bukkit.scheduler.BukkitTask
 
@@ -268,7 +266,7 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 	fun kill(gamer: Gamer) {
 		val killer = gamer.player
 
-		player.playSound(player.location, Sound.BLOCK_ANVIL_LAND, 1F, 1F)
+//		player.playSound(player.location, Sound.BLOCK_ANVIL_LAND, 1F, 1F) //TODO: 1.8 switch
 		player.sendMessage(Text.positivePrefix().basic("Você ").positive("matou").basic(" o jogador ").positive(killer.displayName.clearFormatting()).basic("!").toString())
 
 		addKill()
@@ -277,7 +275,7 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 		addKillMoney()
 		addKillXp()
 
-		killer.playSound(killer.location, Sound.BLOCK_ANVIL_LAND, 1F, 1F)
+//		killer.playSound(killer.location, Sound.BLOCK_ANVIL_LAND, 1F, 1F) //TODO: 1.8 switch
 		killer.sendMessage(Text.negativePrefix().basic("Você ").negative("foi morto").basic(" pelo jogador ").negative(player.displayName.clearFormatting()).basic("!").toString())
 
 		gamer.addDeath()
@@ -421,11 +419,11 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 
 		if (announce) {
 			player.sendMessage(Text.positivePrefix().basic("Você ").positive("escolheu").basic(" o kit ").positive(kit.name).basic("!").toString())
-			if (protocolVersion.isGreaterThanOrEquals(EnumProtocolVersion.RELEASE_1_8)) player.sendTitle(Text.basicOf("Você ").positive("escolheu").basic(" o kit ").positive(kit.name).basic("!").toString(),
-			                                                                                             null,
-			                                                                                             10,
-			                                                                                             80,
-			                                                                                             10)
+//			if (protocolVersion.isGreaterThanOrEquals(EnumProtocolVersion.RELEASE_1_8)) player.sendTitle(Text.basicOf("Você ").positive("escolheu").basic(" o kit ").positive(kit.name).basic("!").toString(),
+//			                                                                                             null,
+//			                                                                                             10,
+//			                                                                                             80,
+//			                                                                                             10) //TODO: 1.8 switch
 		}
 	}
 
@@ -469,7 +467,8 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 
 	fun clear() {
 		player.run {
-			health = getAttribute(Attribute.GENERIC_MAX_HEALTH).value
+			//			health = getAttribute(Attribute.GENERIC_MAX_HEALTH).value //TODO: 1.8 switch
+			health = player.maxHealth
 			saturation = 0F
 			foodLevel = 20
 			exp = 0F

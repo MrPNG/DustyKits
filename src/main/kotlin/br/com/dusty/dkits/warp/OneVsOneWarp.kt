@@ -221,7 +221,8 @@ object OneVsOneWarp: Warp() {
 			if (gamer.warp == this) {
 				val rightClicked = event.rightClicked as Player
 
-				player.inventory.itemInMainHand?.run {
+//				player.inventory.itemInMainHand?.run { //TODO: 1.8 switch
+				player.itemInHand?.run {
 					val fight = FIGHTS[rightClicked]
 
 					when (type) {
@@ -564,12 +565,12 @@ object OneVsOneWarp: Warp() {
 		if (announce) {
 			player.sendMessage(Text.positivePrefix().basic("Você foi ").positive("teleportado").basic(" para a warp ").positive(name).basic("!").toString())
 
-			if (gamer.protocolVersion.isGreaterThanOrEquals(EnumProtocolVersion.RELEASE_1_8)) player.sendTitle(Text.basicOf("Você está na warp ").positive(name).basic("!").toString(),
-			                                                                                                   Text.basicOf("Escolha um ").positive("oponente").basic(" e ").positive("divirta-se").basic(
-					                                                                                                   "!").toString(),
-			                                                                                                   10,
-			                                                                                                   80,
-			                                                                                                   10)
+//			if (gamer.protocolVersion.isGreaterThanOrEquals(EnumProtocolVersion.RELEASE_1_8)) player.sendTitle(Text.basicOf("Você está na warp ").positive(name).basic("!").toString(),
+//			                                                                                                   Text.basicOf("Escolha um ").positive("oponente").basic(" e ").positive("divirta-se").basic(
+//					                                                                                                   "!").toString(),
+//			                                                                                                   10,
+//			                                                                                                   80,
+//			                                                                                                   10) //TODO: 1.8 switch
 		}
 
 		gamer.setKitAndApply(entryKit, false)

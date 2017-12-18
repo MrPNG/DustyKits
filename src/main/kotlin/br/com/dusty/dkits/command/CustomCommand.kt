@@ -3,7 +3,6 @@ package br.com.dusty.dkits.command
 import br.com.dusty.dkits.gamer.EnumRank
 import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.warp.Warp
-import org.bukkit.Location
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.command.ConsoleCommandSender
@@ -53,8 +52,8 @@ abstract class CustomCommand constructor(
 	 * @param location
 	 * @return
 	 * @throws IllegalArgumentException
-	 */
-	override fun tabComplete(sender: CommandSender, alias: String, args: Array<String>, location: Location?): MutableList<String>? = tabComplete(sender, alias, args)
+	 *//*
+	override fun tabComplete(sender: CommandSender, alias: String, args: Array<String>, location: Location?): MutableList<String>? = tabComplete(sender, alias, args)*/ //TODO: 1.8 switch
 
 	/**
 	 * Verfica se o [CommandSender] 'sender' está autorizado a utilizar este comando.

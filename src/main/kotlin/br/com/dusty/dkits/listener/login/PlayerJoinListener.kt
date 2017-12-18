@@ -4,12 +4,10 @@ import br.com.dusty.dkits.gamer.EnumMode
 import br.com.dusty.dkits.gamer.EnumRank
 import br.com.dusty.dkits.util.Scoreboards
 import br.com.dusty.dkits.util.Tasks
-import br.com.dusty.dkits.util.bossbar.BossBars
 import br.com.dusty.dkits.util.clearFormatting
 import br.com.dusty.dkits.util.gamer.Tags
 import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.util.protocol.EnumProtocolVersion
-import br.com.dusty.dkits.util.protocol.Protocols
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
 import br.com.dusty.dkits.warp.Warps
@@ -29,7 +27,8 @@ object PlayerJoinListener: Listener {
 		val player = event.player
 		val gamer = player.gamer()
 
-		val protocolVersion = EnumProtocolVersion[Protocols.protocolVersion(player)]
+//		val protocolVersion = EnumProtocolVersion[Protocols.protocolVersion(player)]
+		val protocolVersion = EnumProtocolVersion.RELEASE_1_7_10
 
 		if (protocolVersion == EnumProtocolVersion.UNKNOWN) {
 			player.kickPlayer(KICK_NOT_READY)
@@ -37,13 +36,13 @@ object PlayerJoinListener: Listener {
 			gamer.protocolVersion = protocolVersion
 
 			if (protocolVersion.isGreaterThanOrEquals(EnumProtocolVersion.RELEASE_1_8)) {
-				player.sendTitle(Text.of("Bem vindo ao ").color(TextColor.RED).append("Dusty").color(TextColor.GOLD).append("!").color(TextColor.RED).toString(),
-				                 Text.basicOf("Escolha uma warp e divirta-se, ").append(player.name).color(TextColor.GOLD).basic("!").toString(),
-				                 10,
-				                 80,
-				                 10)
+//				player.sendTitle(Text.of("Bem vindo ao ").color(TextColor.RED).append("Dusty").color(TextColor.GOLD).append("!").color(TextColor.RED).toString(),
+//				                 Text.basicOf("Escolha uma warp e divirta-se, ").append(player.name).color(TextColor.GOLD).basic("!").toString(),
+//				                 10,
+//				                 80,
+//				                 10) //TODO: 1.8 switch
 			} else {
-				BossBars.MAIN.send(player)
+//				BossBars.MAIN.send(player) //TODO: 1.8 switch
 
 				player.sendMessage("\n" + Text.of("Bem vindo ao ").color(TextColor.RED).append("Dusty").color(TextColor.GOLD).append("!").color(TextColor.RED).toString() + "\n\n" + Text.basicOf(
 						"Escolha uma warp e divirta-se, ").append(player.name).color(TextColor.GOLD).basic("!").toString() + "\n")
