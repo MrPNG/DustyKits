@@ -54,9 +54,6 @@ object PlayerJoinListener: Listener {
 
 			Tags.applyTag(gamer)
 
-			gamer.createScoreboard()
-			Scoreboards.update()
-
 			gamer.sendToWarp(Warps.LOBBY, true, false)
 
 			Tasks.sync(Runnable {
@@ -67,7 +64,11 @@ object PlayerJoinListener: Listener {
 					}
 
 					hidePlayers()
+
+					createScoreboard()
 				}
+
+				Scoreboards.update()
 			})
 		}
 	}

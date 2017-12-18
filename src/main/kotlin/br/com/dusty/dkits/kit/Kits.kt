@@ -6,10 +6,12 @@ object Kits {
 
 	val NONE = NoneKit
 	val PVP = PvpKit
+	val BUBBLE = BubbleKit
 	val CHEMIST = ChemistKit
 	val CHICKENMAN = ChickenmanKit
 	val ELFO = ElfoKit
 	val ENDERMAGE = EndermageKit
+	val GLADIATOR = GladiatorKit
 	val GRANDPA = GrandpaKit
 	val FISHERMAN = FishermanKit
 	val KANGAROO = KangarooKit
@@ -32,11 +34,13 @@ object Kits {
 
 		KITS.add(NONE)
 		KITS.add(PVP)
+		KITS.add(BUBBLE)
 		KITS.add(CHEMIST)
 		KITS.add(CHICKENMAN)
 		KITS.add(ELFO)
 		KITS.add(ENDERMAGE)
 		KITS.add(FISHERMAN)
+		KITS.add(GLADIATOR)
 		KITS.add(GRANDPA)
 		KITS.add(KANGAROO)
 		KITS.add(NINJA)

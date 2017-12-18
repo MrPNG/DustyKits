@@ -10,11 +10,13 @@ object Abilities {
 	fun registerAll() {
 		//Usage: ABILITIES.add(FOO);
 
+		ABILITIES.add(BubbleAbility)
 		ABILITIES.add(ChemistAbility)
 		ABILITIES.add(ChickenmanAbility)
 		ABILITIES.add(ElfoAbility)
 		ABILITIES.add(EndermageAbility)
 		ABILITIES.add(FishermanAbility)
+		ABILITIES.add(GladiatorAbility)
 		ABILITIES.add(KangarooAbility)
 		ABILITIES.add(NinjaAbility)
 		ABILITIES.add(PoseidonAbility)

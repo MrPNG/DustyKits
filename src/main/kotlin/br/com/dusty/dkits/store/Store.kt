@@ -52,16 +52,14 @@ object Store {
 		val vantagem = arrayOf<AdvantagePurchases>()
 
 		fun loadRank(gamer: Gamer) {
-			EnumRank.values().forEach {
-				if (gamer.player.hasPermission("dkits.rank." + it.name.toLowerCase())) gamer.rank = it
-			}
+			EnumRank.values().forEach { if (gamer.player.hasPermission("dkits.rank." + it.name.toLowerCase())) gamer.rank = it }
 
 			if (gamer.rank == EnumRank.NONE) vip.filter { it.datafinal > System.currentTimeMillis() }.forEach {
 				var rank = EnumRank.DEFAULT
 
 				when (it.vip) {
 					1001, 1002 -> rank = EnumRank.PRO
-					1003, 1004 -> rank = EnumRank.VIP
+					1003, 1004 -> rank = EnumRank.MVP
 				}
 
 				if (gamer.rank.isLowerThan(rank)) gamer.rank = rank
@@ -69,20 +67,24 @@ object Store {
 		}
 
 		fun loadKits(gamer: Gamer) {
-			Kits.KITS.forEach {
-				if (gamer.player.hasPermission("dkits.kit." + it.name.toLowerCase())) gamer.kits.add(it)
-			}
+			Kits.KITS.forEach { if (gamer.player.hasPermission("dkits.kit." + it.name.toLowerCase())) gamer.kits.add(it) }
 
 			kit.forEach {
+				if (it.kit == 1) {
+					gamer.kits.addAll(ID_BY_KIT.keys)
+
+					return
+				}
+
 				val kit = KIT_BY_ID[it.kit]
 
-				if (kit != null) gamer.kits.add(kit)
+				if (kit != null && kit !in gamer.kits) gamer.kits.add(kit)
 			}
 		}
 
 		fun loadAvantages(gamer: Gamer) {
 			when {
-				gamer.rank.isHigherThanOrEquals(EnumRank.VIP) -> {
+				gamer.rank.isHigherThanOrEquals(EnumRank.MVP) -> {
 					gamer.advantages.add(EnumAdvantage.SLOT)
 					gamer.advantages.add(EnumAdvantage.HG_RESPAWN)
 				}

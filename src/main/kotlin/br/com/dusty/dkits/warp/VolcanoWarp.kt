@@ -38,8 +38,6 @@ object VolcanoWarp: Warp() {
 
 		entryKit = Kit(weapon = ItemStack(WOOD_SWORD), armor = arrayOf(null, ItemStack(LEATHER_CHESTPLATE), null, null), isDummy = false)
 
-		durabilityBehavior = EnumDurabilityBehavior.REGEN
-
 		loadData()
 	}
 
@@ -54,7 +52,7 @@ object VolcanoWarp: Warp() {
 
 			val normalizationFactor = when {
 				gamer.rank.isHigherThanOrEquals(EnumRank.PRO) -> 4.0 / 3.0
-				gamer.rank.isHigherThanOrEquals(EnumRank.VIP) -> 10.0 / 9.0
+				gamer.rank.isHigherThanOrEquals(EnumRank.MVP) -> 10.0 / 9.0
 				else                                          -> 1.0
 			}
 

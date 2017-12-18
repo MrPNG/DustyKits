@@ -27,13 +27,13 @@ object ReportCommand: PlayerCustomCommand(EnumRank.DEFAULT, "dustyreport") {
 					if (it.rank.isHigherThanOrEquals(EnumRank.MOD)) {
 						val staffPlayer = it.player
 
-						staffPlayer.playSound(staffPlayer.location, Sound.ENTITY_CHICKEN_HURT, 10F, 1F)
+						staffPlayer.playSound(staffPlayer.location, Sound.ENTITY_CHICKEN_HURT, 1F, 1F)
 						staffPlayer.sendMessage(Text.negativePrefix().basic("[").negative("Report").basic("]: \n").negative("  Jogador").basic(": " + player.name + "\n").negative("  Motivo").basic(
 								": " + reason + "\n").negative("  Por").basic(": " + sender.name).toString())
 					}
 				}
 
-				Tasks.async(Runnable { WebAPI.report(player.name, sender.name, reason) })
+				Tasks.async(Runnable { println(WebAPI.report(player.name, sender.name, reason)) })
 			}
 		}
 

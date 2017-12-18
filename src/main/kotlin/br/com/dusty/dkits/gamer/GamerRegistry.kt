@@ -20,7 +20,6 @@ object GamerRegistry {
 			gamer = Gamer(player, PRIMITIVE_GAMER_BY_UUID[uuid]!!)
 
 			PRIMITIVE_GAMER_BY_UUID.remove(uuid)
-			GAMER_BY_PLAYER.put(player.uniqueId, gamer)
 		}
 
 		return gamer

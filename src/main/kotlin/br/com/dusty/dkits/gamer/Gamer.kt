@@ -268,7 +268,7 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 	fun kill(gamer: Gamer) {
 		val killer = gamer.player
 
-		player.playSound(player.location, Sound.BLOCK_ANVIL_LAND, 10F, 1F)
+		player.playSound(player.location, Sound.BLOCK_ANVIL_LAND, 1F, 1F)
 		player.sendMessage(Text.positivePrefix().basic("Você ").positive("matou").basic(" o jogador ").positive(killer.displayName.clearFormatting()).basic("!").toString())
 
 		addKill()
@@ -277,7 +277,7 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 		addKillMoney()
 		addKillXp()
 
-		killer.playSound(killer.location, Sound.BLOCK_ANVIL_LAND, 10F, 1F)
+		killer.playSound(killer.location, Sound.BLOCK_ANVIL_LAND, 1F, 1F)
 		killer.sendMessage(Text.negativePrefix().basic("Você ").negative("foi morto").basic(" pelo jogador ").negative(player.displayName.clearFormatting()).basic("!").toString())
 
 		gamer.addDeath()
@@ -369,6 +369,10 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 	}
 
 	var combatPartner: Gamer? = null
+		set(value) {
+			if (value != this) field = value
+		}
+
 	var combatTask: BukkitTask? = null
 
 	var combatTag: Long = -1
@@ -452,15 +456,21 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 			val ticks = Math.ceil((combatTag - System.currentTimeMillis()) / 50.0).toLong()
 			val seconds = Math.round((ticks / 20).toFloat())
 
-			warpTask = Tasks.sync(Runnable { sendToWarp(warp, true, announce) }, ticks)
+			warpTask = Tasks.sync(Runnable {
+				player.closeInventory()
 
-			player.sendMessage(Text.neutralPrefix().basic("Você será teleportado em ").neutral(seconds).basic(" segundo(s), ").neutral("não").basic(" se ").neutral("mova").basic("!").toString())
+				sendToWarp(warp, true, announce)
+			}, ticks)
+
+			player.sendMessage(if (seconds < 60 * 60 * 24) Text.neutralPrefix().basic("Você será teleportado em ").neutral(seconds).basic(if (seconds == 1) " segundo, " else " segundos, ").neutral(
+					"não").basic(" se ").neutral("mova").basic("!").toString() else Text.negativePrefix().basic("Você ").negative("não").basic(" pode ir para essa ").negative("warp").basic(" nesse momento!").toString())
 		}
 	}
 
 	fun clear() {
 		player.run {
 			health = getAttribute(Attribute.GENERIC_MAX_HEALTH).value
+			saturation = 0F
 			foodLevel = 20
 			exp = 0F
 			level = 0

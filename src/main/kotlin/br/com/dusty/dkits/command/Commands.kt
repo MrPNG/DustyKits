@@ -40,7 +40,8 @@ object Commands {
 		//Staff
 		CUSTOM_COMMANDS.add(AdminCommand)
 		CUSTOM_COMMANDS.add(ChatCommand)
-		CUSTOM_COMMANDS.add(ClanCommand)
+		CUSTOM_COMMANDS.add(ConfigCommand)
+		CUSTOM_COMMANDS.add(DebugCommand)
 		CUSTOM_COMMANDS.add(DisableCommand)
 		CUSTOM_COMMANDS.add(EnableCommand)
 		CUSTOM_COMMANDS.add(FlyCommand)
@@ -54,11 +55,13 @@ object Commands {
 		CUSTOM_COMMANDS.add(SpyCommand)
 		CUSTOM_COMMANDS.add(SyncCommand)
 		CUSTOM_COMMANDS.add(StaffChatCommand)
+		CUSTOM_COMMANDS.add(VipCommand)
 		CUSTOM_COMMANDS.add(VisInvisCommand)
 		CUSTOM_COMMANDS.add(WorldCommand)
 
 		//Gameplay
-
+		CUSTOM_COMMANDS.add(BuyCommand)
+		CUSTOM_COMMANDS.add(ClanCommand)
 		CUSTOM_COMMANDS.add(ProfileCommand)
 		CUSTOM_COMMANDS.add(ReportCommand)
 		CUSTOM_COMMANDS.add(ShopCommand)

@@ -1,20 +1,19 @@
 package br.com.dusty.dkits.command.staff
 
 import br.com.dusty.dkits.command.PlayerCustomCommand
-import br.com.dusty.dkits.gamer.EnumMode
 import br.com.dusty.dkits.gamer.EnumRank
-import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.kit.Kits
+import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.warp.Warps
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
-object ForceCommand: PlayerCustomCommand(EnumRank.MODPLUS, "force") {
+object ForceCommand: PlayerCustomCommand(EnumRank.ADMIN, "force") {
 
 	override fun execute(sender: Player, alias: String, args: Array<String>): Boolean {
 		when {
-			sender.gamer().mode != EnumMode.ADMIN -> sender.sendMessage(Text.negativePrefix().basic("Você ").negative("não").basic(" está no modo ").negative("ADMIN").basic("!").toString())
+//			sender.gamer().mode != EnumMode.ADMIN -> sender.sendMessage(Text.negativePrefix().basic("Você ").negative("não").basic(" está no modo ").negative("ADMIN").basic("!").toString())
 			args.size < 3                         -> sender.sendMessage(Text.negativePrefix().negative("Uso:").basic(" /force ").negative("<kit>/<warp> <nomeDoKit>/<nomeDaWarp> <jogador>").toString())
 			else                                  -> when (args[0].toLowerCase()) {
 				"kit"  -> {

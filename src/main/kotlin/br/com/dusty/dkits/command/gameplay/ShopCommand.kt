@@ -2,8 +2,8 @@ package br.com.dusty.dkits.command.gameplay
 
 import br.com.dusty.dkits.command.PlayerCustomCommand
 import br.com.dusty.dkits.gamer.EnumRank
-import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.kit.Kits
+import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.util.inventory.ShopMenu
 import br.com.dusty.dkits.util.text.Text
 import org.bukkit.entity.Player
@@ -18,10 +18,10 @@ object ShopCommand: PlayerCustomCommand(EnumRank.DEFAULT, "shop") {
 			else sender.sendMessage(Text.negativePrefix().basic("Esta warp ").negative("não").basic(" permite o uso do ").negative("shop").basic("!").toString())
 		} else {
 			if (args[0] == "set" && args.size > 2) {
-				val kit = Kits[args[0]]
+				val kit = Kits[args[1]]
 
 				if (kit == Kits.NONE || !kit.data.isEnabled) {
-					sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um kit com o nome \"").negative(args[0]).basic("\"!").toString())
+					sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um kit com o nome \"").negative(args[1]).basic("\"!").toString())
 				} else {
 					val price = args[2].toIntOrNull()
 

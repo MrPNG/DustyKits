@@ -9,7 +9,6 @@ import br.com.dusty.dkits.util.addUuidDashes
 import br.com.dusty.dkits.util.clearFormatting
 import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.util.text.Text
-import br.com.dusty.dkits.util.web.HttpClients
 import br.com.dusty.dkits.util.web.MojangAPI
 import br.com.dusty.dkits.util.web.WebAPI
 import com.google.common.collect.HashMultimap
@@ -21,7 +20,7 @@ import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.util.*
 
-object ClanCommand: PlayerCustomCommand(EnumRank.DEFAULT, "clan") {
+object ClanCommand: PlayerCustomCommand(EnumRank.MOD, "clan") {
 
 	val HELP = arrayOf(Text.positivePrefix().positive("Comandos para clans:\n").toString(),
 	                   Text.positivePrefix().basic("/clan ").positive("criar <nomeDoClan> <tagDoClan>").basic(": Criar um clan com um nome (máximo de 16 caracteres) e uma tag (máximo de 3 caracteres)").toString(),
@@ -101,11 +100,10 @@ object ClanCommand: PlayerCustomCommand(EnumRank.DEFAULT, "clan") {
 									AWAITING_API.add(sender)
 
 									val onNext = Consumer<Clan> {
-										WebAPI.saveClans(clan)
-
-										Bukkit.broadcastMessage(HttpClients.GSON.toJson(clan.primitiveClan))
-
 										gamer.clan = clan
+										WebAPI.saveProfiles(gamer)
+
+										WebAPI.saveClans(clan)
 
 										sender.sendMessage(Text.positivePrefix().basic("Você ").basic("criou").basic(" o clan ").positive(clan.name).basic(" (").positive(clan.tag).basic(")!").toString())
 
@@ -267,11 +265,11 @@ object ClanCommand: PlayerCustomCommand(EnumRank.DEFAULT, "clan") {
 										AWAITING_API.add(sender)
 
 										val onNext = Consumer<Clan> {
-											removedGamer.clan = null
-											WebAPI.saveProfiles(gamer)
-
 											clan.remove(gamer)
 											WebAPI.saveClans(clan)
+
+											removedGamer.clan = null
+											WebAPI.saveProfiles(gamer)
 
 											player.sendMessage(Text.negativePrefix().basic("Você foi ").negative("removido").basic(" do clan ").negative(clan.name).basic(" (").negative(clan.tag).basic(
 													")!").toString())
@@ -365,11 +363,13 @@ object ClanCommand: PlayerCustomCommand(EnumRank.DEFAULT, "clan") {
 							AWAITING_API.add(sender)
 
 							val onNext = Consumer<Clan> {
-								gamer.clan = null
-								WebAPI.saveProfiles(gamer)
+								if(clan.leader == gamer) clan.leader = null
 
 								clan.remove(gamer)
 								WebAPI.saveClans(clan)
+
+								gamer.clan = null
+								WebAPI.saveProfiles(gamer)
 
 								sender.sendMessage(Text.negativePrefix().basic("Você ").negative("saiu").basic(" do clan ").negative(clan.name).basic(" (").negative(clan.tag).basic(")!").toString())
 

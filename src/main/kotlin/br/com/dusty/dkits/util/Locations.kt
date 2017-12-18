@@ -37,7 +37,25 @@ fun Location.generateGlassArena(width: Int, height: Int, length: Int, randomColo
 		data = 0
 	}
 
-	val startLocation: Location = if (!highestBlock) this.clone() else this.clone()
+	val startLocation = this.clone()
+
+	if (highestBlock) {
+		var highestBlockY = 0
+
+		for (x in 0 until width) {
+			for (z in 0 until length) {
+				val location = this.clone()
+				location.x += x
+				location.z += z
+
+				val y = location.world.getHighestBlockYAt(location)
+
+				if (y > highestBlockY) highestBlockY = y
+			}
+		}
+
+		startLocation.y = highestBlockY + 48.0
+	}
 
 	for (x in 0 until width) {
 		val floor = startLocation.clone()

@@ -27,7 +27,7 @@ class Clan(val primitiveClan: PrimitiveClan) {
 		set(value) {
 			field = leader
 
-			if (value != null) primitiveClan.leader = value.player.uniqueId.toString()
+			primitiveClan.leader = if (value == null) "" else value.player.uniqueId.toString()
 		}
 
 	val rawMembers

@@ -24,7 +24,6 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.block.Action
 import org.bukkit.event.entity.EntityDamageEvent
-import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.PlayerDropItemEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemStack
@@ -187,14 +186,6 @@ object FeastWarp: Warp() {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
-	fun onInventoryClick(event: InventoryClickEvent) {
-		val player = event.whoClicked as Player
-		val gamer = player.gamer()
-
-		if (gamer.warp == this && !gamer.kit.isDummy) event.isCancelled = false
-	}
-
 	fun fillChests() {
 		CHEST_LOCATIONS.filter { it.block.type == CHEST }.forEach {
 			val items = ArrayList<ItemStack?>(27)
@@ -227,7 +218,11 @@ object FeastWarp: Warp() {
 			if (kit.isDummy) {
 				inventory.addItemStacks(kit.items)
 			} else {
-				inventory.setItem(0, if (kit == Kits.PVP) Inventories.DIAMOND_SWORD_SHARPNESS else Inventories.DIAMOND_SWORD)
+				inventory.setItem(0, when (kit) {
+					Kits.PVP    -> Inventories.DIAMOND_SWORD_SHARPNESS
+					Kits.VIKING -> Inventories.DIAMOND_AXE
+					else        -> Inventories.DIAMOND_SWORD
+				})
 				inventory.addItemStacks(kit.items)
 				fillRecraft()
 				fillSoups(true)

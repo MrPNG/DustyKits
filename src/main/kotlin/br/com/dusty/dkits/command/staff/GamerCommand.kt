@@ -9,7 +9,9 @@ import org.bukkit.entity.Player
 object GamerCommand: PlayerCustomCommand(EnumRank.ADMIN, "gamers") {
 
 	override fun execute(sender: Player, alias: String, args: Array<String>): Boolean {
-		sender.sendMessage(GamerRegistry.onlineGamers().toString().clearFormatting())
+		val list = GamerRegistry.onlineGamers()
+
+		sender.sendMessage("Gamers (" + list.size + "): " + list.toString().clearFormatting())
 
 		return false
 	}

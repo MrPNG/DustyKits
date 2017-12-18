@@ -1,5 +1,6 @@
 package br.com.dusty.dkits.kit
 
+import br.com.dusty.dkits.ability.GladiatorAbility
 import br.com.dusty.dkits.util.color
 import br.com.dusty.dkits.util.description
 import br.com.dusty.dkits.util.rename
@@ -8,17 +9,20 @@ import br.com.dusty.dkits.util.text.TextColor
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
-object VikingKit: Kit() {
+object GladiatorKit: Kit() {
 
 	init {
-		name = "Viking"
+		name = "Gladiator"
 
-		icon = ItemStack(Material.IRON_AXE)
+		icon = ItemStack(Material.IRON_FENCE)
 		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
 		icon.description(description, true)
 
-		weapon = ItemStack(Material.IRON_AXE)
-		armor = arrayOf(null, ItemStack(Material.LEATHER_CHESTPLATE).color(0x3A2323), null, null)
+		weapon = ItemStack(Material.STONE_SWORD)
+		armor = arrayOf(null, ItemStack(Material.LEATHER_CHESTPLATE).color(0x727272), null, null)
+		items = arrayOf(ItemStack(Material.IRON_FENCE).rename("1v1"))
+
+		ability = GladiatorAbility
 
 		isDummy = false
 		isBroadcast = true

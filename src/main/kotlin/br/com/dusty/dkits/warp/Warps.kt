@@ -7,15 +7,18 @@ import org.bukkit.inventory.ItemStack
 object Warps {
 
 	val NONE = NoneWarp
+	val ANVIL = AnvilWarp
 	val ARENA = ArenaWarp
-	val CLANVSCLAN = ClanVsClanWarp
+	val FAKECXC = FakeCXC
 	val FEAST = FeastWarp
 	val GLADIATOR = GladiatorWarp
 	val FPS = FpsWarp
 	val HG = HGWarp
 	val LAVA_CHALLENGE = LavaChallengeWarp
 	val LOBBY = LobbyWarp
+	val MDR = MDRWarp
 	val ONE_VS_ONE = OneVsOneWarp
+	val RDM = RDMWarp
 	val VOLCANO = VolcanoWarp
 
 	val WARPS = arrayListOf<Warp>()
@@ -37,7 +40,10 @@ object Warps {
 
 		//Event
 		WARPS.add(HG)
-		WARPS.add(CLANVSCLAN)
+		WARPS.add(FAKECXC)
+		WARPS.add(ANVIL)
+		WARPS.add(MDR)
+		WARPS.add(RDM)
 
 		enabledWarpsNames = Warps.WARPS.filter { it.data.isEnabled }.map { it.name.toLowerCase().replace(" ", "") }.toTypedArray()
 
