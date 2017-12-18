@@ -61,7 +61,7 @@ object Store {
 
 				when (it.vip) {
 					1001, 1002 -> rank = EnumRank.PRO
-					1003, 1004 -> rank = EnumRank.VIP
+					1003, 1004 -> rank = EnumRank.MVP
 				}
 
 				if (gamer.rank.isLowerThan(rank)) gamer.rank = rank
@@ -82,7 +82,7 @@ object Store {
 
 		fun loadAvantages(gamer: Gamer) {
 			when {
-				gamer.rank.isHigherThanOrEquals(EnumRank.VIP) -> {
+				gamer.rank.isHigherThanOrEquals(EnumRank.MVP) -> {
 					gamer.advantages.add(EnumAdvantage.SLOT)
 					gamer.advantages.add(EnumAdvantage.HG_RESPAWN)
 				}

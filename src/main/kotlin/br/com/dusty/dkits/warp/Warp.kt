@@ -23,7 +23,6 @@ import org.bukkit.inventory.ItemStack
 import java.io.File
 import java.io.FileReader
 import java.io.PrintWriter
-import java.util.*
 
 open class Warp: Listener {
 
@@ -59,7 +58,7 @@ open class Warp: Listener {
 
 	var data = Data()
 
-	fun overrides(event: Event): Boolean = event.javaClass in overriddenEvents
+	fun overrides(event: Event) = event.javaClass in overriddenEvents
 
 	fun enable(enabled: Boolean): Boolean {
 		if (data.isEnabled == enabled) return false

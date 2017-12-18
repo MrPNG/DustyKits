@@ -35,7 +35,7 @@ object PlayerQuitListener: Listener {
 
 			warp.dispatchGamer(this, Warps.NONE)
 
-			if (Main.serverStatus == EnumServerStatus.ONLINE) Tasks.async(Runnable { WebAPI.saveProfiles(gamer) })
+			if (Main.data.serverStatus == EnumServerStatus.ONLINE) Tasks.async(Runnable { WebAPI.saveProfiles(gamer) })
 
 			if (clan != null) {
 				val clan = clan!!

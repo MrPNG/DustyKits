@@ -227,7 +227,11 @@ object FeastWarp: Warp() {
 			if (kit.isDummy) {
 				inventory.addItemStacks(kit.items)
 			} else {
-				inventory.setItem(0, if (kit == Kits.PVP) Inventories.DIAMOND_SWORD_SHARPNESS else Inventories.DIAMOND_SWORD)
+				inventory.setItem(0, when (kit) {
+					Kits.PVP    -> Inventories.DIAMOND_SWORD_SHARPNESS
+					Kits.VIKING -> Inventories.DIAMOND_AXE
+					else        -> Inventories.DIAMOND_SWORD
+				})
 				inventory.addItemStacks(kit.items)
 				fillRecraft()
 				fillSoups(true)

@@ -1,6 +1,12 @@
 package br.com.dusty.dkits.util.inventory
 
 import br.com.dusty.dkits.util.enchant
+import br.com.dusty.dkits.util.inventory.Inventories.BACKGROUND
+import br.com.dusty.dkits.util.inventory.Inventories.BOWLS
+import br.com.dusty.dkits.util.inventory.Inventories.BROWN_MUSHROOMS
+import br.com.dusty.dkits.util.inventory.Inventories.BUTTON_BACK
+import br.com.dusty.dkits.util.inventory.Inventories.RED_MUSHROOMS
+import br.com.dusty.dkits.util.inventory.Inventories.SOUP
 import br.com.dusty.dkits.util.rename
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
@@ -11,6 +17,7 @@ import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.BookMeta
 
 fun Inventory.addItemStacks(itemStacks: Array<ItemStack?>) {
 	var i = 0
@@ -36,9 +43,9 @@ fun Player.setArmor(itemStacks: Array<ItemStack?>) {
 }
 
 fun Inventory.fillBackground(backButton: Boolean): Inventory {
-	for (i in 0 until this.size) this.setItem(i, Inventories.BACKGROUND)
+	for (i in 0 until this.size) this.setItem(i, BACKGROUND)
 
-	if (backButton) this.setItem(0, Inventories.BUTTON_BACK)
+	if (backButton) this.setItem(0, BUTTON_BACK)
 
 	return this
 }
@@ -48,16 +55,12 @@ fun Player.openInventory(player: Player) {
 	sendMessage(Text.positivePrefix().basic("Você está ").positive("vendo").basic(" o inventário de ").positive(player.name).toString())
 }
 
-fun Player.fillSoups(fullInventory: Boolean): Inventory {
-	(0 .. (if (fullInventory) 35 else 8)).filter { inventory.getItem(it) == null }.forEach { inventory.setItem(it, Inventories.SOUP) }
-
-	return inventory
-}
+fun Player.fillSoups(fullInventory: Boolean) = inventory.apply { (0 .. (if (fullInventory) 35 else 8)).filter { getItem(it) == null }.forEach { setItem(it, SOUP) } }
 
 fun Player.fillRecraft(): Inventory = inventory.apply {
-	setItem(14, Inventories.RED_MUSHROOMS)
-	setItem(15, Inventories.BROWN_MUSHROOMS)
-	setItem(16, Inventories.BOWLS)
+	setItem(14, RED_MUSHROOMS)
+	setItem(15, BROWN_MUSHROOMS)
+	setItem(16, BOWLS)
 }
 
 object Inventories {
@@ -68,6 +71,8 @@ object Inventories {
 	val RED_MUSHROOMS = ItemStack(RED_MUSHROOM, 64)
 	val BROWN_MUSHROOMS = ItemStack(BROWN_MUSHROOM, 64)
 	val BOWLS = ItemStack(Material.BOWL, 64)
+
+	val COCOA_BEAN = ItemStack(Material.INK_SACK, 64, 3.toShort())
 
 	val COMPASS = ItemStack(Material.COMPASS)
 
@@ -80,13 +85,28 @@ object Inventories {
 	val DIAMOND_SWORD = ItemStack(Material.DIAMOND_SWORD)
 	val DIAMOND_SWORD_SHARPNESS = ItemStack(Material.DIAMOND_SWORD).enchant(Pair(Enchantment.DAMAGE_ALL, 1))
 
+	val DIAMOND_AXE = ItemStack(Material.DIAMOND_AXE)
+
 	val BACKGROUND = ItemStack(STAINED_GLASS_PANE, 1, 1.toShort(), 7.toByte()).rename(" ")
 
 	val BUTTON_BACK = ItemStack(CARPET, 1, 1.toShort(), 14.toByte()).rename(Text.negativeOf("Voltar").toString())
 
-	fun soups(player: Player): Inventory = Bukkit.createInventory(player, 54, SOUPS_TITLE).apply { for (i in 0 .. 53) setItem(i, SOUP) }
+	val STORE = ItemStack(Material.GOLD_INGOT).rename(Text.of("Loja").color(TextColor.GOLD).toString())
+	val RULEBOOK = ItemStack(Material.WRITTEN_BOOK).rename(Text.of("Livro de Regras").color(TextColor.GOLD).toString()).apply {
+		val bookMeta = itemMeta as BookMeta
 
-	fun recraft(player: Player): Inventory = Bukkit.createInventory(player, 54, RECRAFT_TITLE).apply {
+		bookMeta.title = "Livro de Regras"
+		bookMeta.addPage("Olá, seja bem-vindo ao Dusty!\n\nLeia atentamente as regras, todas elas são todas muito importantes!\n\n1. É proibido o uso de qualquer hack client;\n\n2. É proibido ameaçar um jogador de qualquer maneira;\n\n3. São proibidas quaisquer ofensas a outros jogadores e membros da staff",
+		                 "4. É proibido divulgar links ou outros servidores; 5. É proibido abusar de bugs, sendo que, se você encontrar algum, deve reportar a um membro da staff; 6. É proibido dar \'chargeback\' em qualquer produto comprado na loja (isso acarretará ban imediato).",
+		                 "O descumprimento de quaisquer regras neste livro acarretará nas devidas punições ao jogador, incluindo, mas não limitado a:\n\n- \'mutes\', temporários e permanentes;\n\n- \'bans\', temporários e permanentes;\n\n- \'kicks\'")
+		bookMeta.author = "BigGamerBR"
+
+		itemMeta = bookMeta
+	}
+
+	fun soups(player: Player) = Bukkit.createInventory(player, 54, SOUPS_TITLE).apply { for (i in 0 .. 53) setItem(i, SOUP) }
+
+	fun recraft(player: Player) = Bukkit.createInventory(player, 54, RECRAFT_TITLE).apply {
 		for (i in 0 .. 17) {
 			setItem(i * 3, RED_MUSHROOMS)
 			setItem(i * 3 + 1, BROWN_MUSHROOMS)

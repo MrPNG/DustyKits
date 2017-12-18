@@ -14,7 +14,7 @@ enum class EnumRank {
 
 	NONE(-1),
 	DEFAULT(0, TextColor.GRAY),
-	VIP(2, TextColor.GREEN),
+//	VIP(2, TextColor.GREEN),
 	MVP(3, TextColor.BLUE),
 	PRO(4, TextColor.GOLD),
 	PRO_YOUTUBER(6, TextColor.AQUA),

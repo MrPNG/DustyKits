@@ -49,7 +49,7 @@ object ClanVsClanWarp: Warp() {
 	val ALREADY_HAVE_KIT = Text.negativePrefix().basic("Você ").negative("já").basic(" está ").negative("usando").basic(" um kit!").toString()
 
 	val NOT_IN_PLAY_MODE = Text.negativePrefix().basic("Você deve estar no modo ").negative("PLAY").basic(" para entrar no ").negative(NAME).basic("!").toString()
-	val GAME_IS_FULL = Text.negativePrefix().basic("O ").negative(name).basic(" está ").negative("lotado").basic("!").toString()
+	val GAME_IS_FULL = Text.negativePrefix().basic("O ").negative(NAME).basic(" está ").negative("lotado").basic("!").toString()
 
 	val CHEST_POSITIONS = arrayOf(doubleArrayOf(-1.0, 0.0, -1.0),
 	                              doubleArrayOf(1.0, 0.0, -1.0),
@@ -77,9 +77,9 @@ object ClanVsClanWarp: Warp() {
 	                          arrayOf(ItemStack(EXP_BOTTLE), 2, 0.5, 8),
 	                          arrayOf(ItemStack(WATER_BUCKET), 1, 0.25, 1),
 	                          arrayOf(ItemStack(LAVA_BUCKET), 1, 0.25, 1),
-	                          arrayOf(Inventories.SOUP, 2, 0.5, 8),
-	                          arrayOf(Inventories.RED_MUSHROOMS, 2, 0.5, 8),
-	                          arrayOf(Inventories.BROWN_MUSHROOMS, 2, 0.5, 8),
+	                          arrayOf(ItemStack(MUSHROOM_SOUP), 2, 0.5, 8),
+	                          arrayOf(ItemStack(RED_MUSHROOM), 2, 0.5, 8),
+	                          arrayOf(ItemStack(BROWN_MUSHROOM), 2, 0.5, 8),
 	                          arrayOf(potions(1, false, false, SPEED, false), 1, 0.075, 1),
 	                          arrayOf(potions(1, true, false, SPEED, false), 1, 0.05, 1),
 	                          arrayOf(potions(1, false, true, SPEED, false), 1, 0.05, 1),
@@ -155,20 +155,22 @@ object ClanVsClanWarp: Warp() {
 	}
 
 	fun schedule() {
-		nextGame = interval * 50L
+		if (data.isEnabled) {
+			nextGame = interval * 50L
 
-		task?.cancel()
-		task = Tasks.sync(object: BukkitRunnable() {
-			override fun run() {
-				nextGame -= 50
+			task?.cancel()
+			task = Tasks.sync(object: BukkitRunnable() {
+				override fun run() {
+					nextGame -= 50
 
-				if (nextGame == 0L) {
-					cancel()
+					if (nextGame == 0L) {
+						cancel()
 
-					prepare()
+						prepare()
+					}
 				}
-			}
-		}, 0L, 20L)
+			}, 0L, 20L)
+		}
 	}
 
 	fun prepare() {
@@ -235,7 +237,7 @@ object ClanVsClanWarp: Warp() {
 
 		gamers.forEach { it.sendToWarp(Warps.LOBBY, true, true) }
 
-		if(world != null )Worlds.rollback(world!!.name)
+		if (world != null) Worlds.rollback(world!!.name)
 
 		task?.cancel()
 
@@ -251,6 +253,8 @@ object ClanVsClanWarp: Warp() {
 
 		clanFirst = ArrayList(participants.subList(0, 4))
 		clanSecond = ArrayList(participants.subList(5, 9))
+
+
 
 		gamers.forEach {
 			val player = it.player
@@ -273,18 +277,44 @@ object ClanVsClanWarp: Warp() {
 		locationSecond.x -= x
 		locationSecond.z -= z
 
+		val iteratorFirst = clanFirst.iterator()
+		val sizeFirst = clanFirst.size
+
+		println(clanFirst.toString())
+		println(iteratorFirst.toString())
+		println(sizeFirst)
+
 		clanFirst.forEach {
 			val location = locationFirst.spread(4.0)
 			location.y = world!!.getHighestBlockYAt(location) + 0.5
 
 			it.player.teleport(location)
+
+			/*var text = Text.neutralOf(iteratorFirst.next().player.displayName.clearFormatting())
+
+			for (i in 1 .. sizeFirst) text = text.basic(if (i == sizeFirst) " e " else ", ").neutral(iteratorFirst.next().player.displayName.clearFormatting())
+
+			it.player.sendMessage(Text.neutralPrefix().append(PREFIX).basic("Seu clan: ").append(text.toString()).toString())*/
 		}
+
+		val iteratorSecond = clanSecond.iterator()
+		val sizeSecond = clanSecond.size
+
+		println(clanSecond.toString())
+		println(iteratorSecond.toString())
+		println(sizeSecond)
 
 		clanSecond.forEach {
 			val location = locationSecond.spread(4.0)
 			location.y = world!!.getHighestBlockYAt(location) + 0.5
 
 			it.player.teleport(location)
+
+			/*var text = Text.neutralOf(iteratorSecond.next().player.displayName.clearFormatting())
+
+			for (i in 1 .. sizeSecond) text = text.basic(if (i == sizeSecond) " e " else ", ").neutral(iteratorSecond.next().player.displayName.clearFormatting())
+
+			it.player.sendMessage(Text.neutralPrefix().append(PREFIX).basic("Seu clan: ").append(text.toString()).toString())*/
 		}
 
 		task?.cancel()
@@ -591,7 +621,33 @@ object ClanVsClanWarp: Warp() {
 		val player = event.player
 		val gamer = player.gamer()
 
-		if (gamer.warp == this && state == ONGOING && event.item !in gamer.kit.items) event.isCancelled = false
+		if (gamer.warp == this) {
+			if (state == ONGOING && event.item !in gamer.kit.items) event.isCancelled = false
+
+			event.item?.run {
+				when (type) {
+					COMPASS -> {
+						var nearestPlayer: Player? = null
+						var smallestDistance = Double.MAX_VALUE
+
+						GamerRegistry.onlineGamers().filter { it.mode == EnumMode.PLAY && it.warp == Warps.CLANVSCLAN && it.player.world == player.world && (((gamer in clanFirst && it !in clanFirst) || (gamer in clanSecond && it !in clanSecond))) }.forEach {
+							val distance = it.player.location.distance(player.location)
+
+							if (distance > 0 && distance < smallestDistance) {
+								nearestPlayer = it.player
+								smallestDistance = distance
+							}
+						}
+
+						if (nearestPlayer != null) {
+							player.compassTarget = nearestPlayer!!.location
+							player.sendMessage(Text.neutralPrefix().basic("Sua ").neutral("bússola").basic(" está apontando para o jogador ").neutral(nearestPlayer!!.name.clearFormatting()).basic(
+									"!").toString())
+						}
+					}
+				}
+			}
+		}
 	}
 
 	@EventHandler
@@ -696,7 +752,7 @@ object ClanVsClanWarp: Warp() {
 					}
 					"close" -> {
 						when (state) {
-							OPEN, ONGOING -> close(GamerRegistry.onlineGamers().filter { it.warp == this }, false)
+							PREPARING, OPEN, STARTING, ONGOING -> close(GamerRegistry.onlineGamers().filter { it.warp == this }, false)
 						}
 					}
 				}

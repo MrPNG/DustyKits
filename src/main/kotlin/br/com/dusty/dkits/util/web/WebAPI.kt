@@ -14,7 +14,7 @@ object WebAPI {
 
 	val HTTP_CLIENT = HttpClientBuilder.create().setDefaultRequestConfig(RequestConfig.custom().setConnectTimeout(10000).build()).build()
 
-	val URL = "http://api.dusty.com.br/api/handler.php"
+	val URL = "https://api.dusty.com.br/handler.php"
 
 	fun loadProfile(uuid: UUID) = HttpGet(URL + "?type=perfil&uuid=" + uuid).response()
 
@@ -32,5 +32,5 @@ object WebAPI {
 
 	fun updatePurchase(pseudoPurchase: Store.PseudoPurchase) = HttpGet(URL + "?type=addcompra&action=update&id=${pseudoPurchase.id}&json=" + HttpClients.GSON.toJson(pseudoPurchase)).response()
 
-	fun report(name: String, reporter: String, reason: String) = HTTP_CLIENT.execute(HttpGet("https://dusty.com.br/api/report.php?player=$name&reportby=$reporter&reason=$reason"))
+	fun report(name: String, reporter: String, reason: String) = HttpGet("https://api.dusty.com.br/report.php?player=$name&reportby=$reporter&reason=$reason").response()
 }

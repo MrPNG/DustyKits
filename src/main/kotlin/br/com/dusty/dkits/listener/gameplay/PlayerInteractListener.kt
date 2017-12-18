@@ -1,22 +1,18 @@
 package br.com.dusty.dkits.listener.gameplay
 
-import br.com.dusty.dkits.gamer.EnumMode
-import br.com.dusty.dkits.gamer.GamerRegistry
+import br.com.dusty.dkits.command.staff.BuyCommand
 import br.com.dusty.dkits.util.block.interact
 import br.com.dusty.dkits.util.block.isSpecial
-import br.com.dusty.dkits.util.clearFormatting
 import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.util.inventory.Inventories
 import br.com.dusty.dkits.util.inventory.KitMenu
 import br.com.dusty.dkits.util.inventory.ShopMenu
 import br.com.dusty.dkits.util.inventory.WarpMenu
-import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.warp.Warp
 import org.bukkit.GameMode
 import org.bukkit.Material.*
 import org.bukkit.attribute.Attribute
 import org.bukkit.block.Sign
-import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action.RIGHT_CLICK_AIR
@@ -58,6 +54,7 @@ object PlayerInteractListener: Listener {
 				CHEST         -> if (this == Warp.GAME_WARP_KIT.items[0]) player.openInventory(KitMenu.menuKitOwned(player))
 				EMERALD       -> if (this == Warp.GAME_WARP_KIT.items[4]) player.openInventory(ShopMenu.menuShopMain(player))
 				EMPTY_MAP     -> if (this == Warp.GAME_WARP_KIT.items[8]) player.openInventory(WarpMenu.menuWarpMain(player))
+				GOLD_INGOT    -> if (this == Inventories.STORE) player.spigot().sendMessage(*BuyCommand.STORE_LINK)
 				MUSHROOM_SOUP -> {
 					if (event.action == RIGHT_CLICK_AIR || event.action == RIGHT_CLICK_BLOCK) {
 						val maxHealth = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).value
@@ -68,25 +65,6 @@ object PlayerInteractListener: Listener {
 
 							player.inventory.itemInMainHand = Inventories.BOWL
 						}
-					}
-				}
-				COMPASS       -> {
-					var nearestPlayer: Player? = null
-					var smallestDistance = Double.MAX_VALUE
-
-					GamerRegistry.onlineGamers().filter { it.mode == EnumMode.PLAY && it.player.world == player.world }.forEach {
-						val distance = it.player.location.distance(player.location)
-
-						if (distance > 0 && distance < smallestDistance) {
-							nearestPlayer = it.player
-							smallestDistance = distance
-						}
-					}
-
-					if (nearestPlayer != null) {
-						player.compassTarget = nearestPlayer!!.location
-						player.sendMessage(Text.neutralPrefix().basic("Sua ").neutral("bússola").basic(" está apontando para o jogador ").neutral(nearestPlayer!!.name.clearFormatting()).basic(
-								"!").toString())
 					}
 				}
 			}

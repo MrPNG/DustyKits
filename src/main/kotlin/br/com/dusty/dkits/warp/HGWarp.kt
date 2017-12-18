@@ -28,6 +28,7 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.entity.EntityPickupItemEvent
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.event.inventory.InventoryType
 import org.bukkit.event.player.PlayerDropItemEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemStack
@@ -49,7 +50,7 @@ object HGWarp: Warp() {
 	val ALREADY_HAVE_KIT = Text.negativePrefix().basic("Você ").negative("já").basic(" está ").negative("usando").basic(" um kit!").toString()
 
 	val NOT_IN_PLAY_MODE = Text.negativePrefix().basic("Você deve estar no modo ").negative("PLAY").basic(" para entrar no ").negative(NAME).basic("!").toString()
-	val GAME_IS_FULL = Text.negativePrefix().basic("O ").negative(name).basic(" está ").negative("lotado").basic("!").toString()
+	val GAME_IS_FULL = Text.negativePrefix().basic("O ").negative(NAME).basic(" está ").negative("lotado").basic("!").toString()
 
 	val CHEST_POSITIONS = arrayOf(doubleArrayOf(-1.0, 0.0, -1.0),
 	                              doubleArrayOf(1.0, 0.0, -1.0),
@@ -77,9 +78,9 @@ object HGWarp: Warp() {
 	                          arrayOf(ItemStack(EXP_BOTTLE), 2, 0.5, 8),
 	                          arrayOf(ItemStack(WATER_BUCKET), 1, 0.25, 1),
 	                          arrayOf(ItemStack(LAVA_BUCKET), 1, 0.25, 1),
-	                          arrayOf(Inventories.SOUP, 2, 0.5, 8),
-	                          arrayOf(Inventories.RED_MUSHROOMS, 2, 0.5, 8),
-	                          arrayOf(Inventories.BROWN_MUSHROOMS, 2, 0.5, 8),
+	                          arrayOf(ItemStack(MUSHROOM_SOUP), 2, 0.5, 8),
+	                          arrayOf(ItemStack(RED_MUSHROOM), 2, 0.5, 8),
+	                          arrayOf(ItemStack(BROWN_MUSHROOM), 2, 0.5, 8),
 	                          arrayOf(potions(1, false, false, SPEED, false), 1, 0.075, 1),
 	                          arrayOf(potions(1, true, false, SPEED, false), 1, 0.05, 1),
 	                          arrayOf(potions(1, false, true, SPEED, false), 1, 0.05, 1),
@@ -94,6 +95,14 @@ object HGWarp: Warp() {
 	                          arrayOf(potions(1, false, false, POISON, true), 1, 0.075, 1),
 	                          arrayOf(potions(1, true, false, POISON, true), 1, 0.05, 1),
 	                          arrayOf(potions(1, false, true, POISON, true), 1, 0.05, 1))
+
+	val PROHIBITED_INVENTORIES = arrayOf(InventoryType.CHEST,
+	                                     InventoryType.ENDER_CHEST,
+	                                     InventoryType.WORKBENCH,
+	                                     InventoryType.ANVIL,
+	                                     InventoryType.ENCHANTING,
+	                                     InventoryType.DROPPER,
+	                                     InventoryType.DISPENSER)
 
 	val playersLimit = 20.0
 	val minimumPlayers = 10
@@ -244,7 +253,7 @@ object HGWarp: Warp() {
 
 		gamers.forEach { it.sendToWarp(Warps.LOBBY, true, true) }
 
-		if(world != null) Worlds.rollback(world!!.name)
+		if (world != null) Worlds.rollback(world!!.name)
 
 		task?.cancel()
 
@@ -505,7 +514,12 @@ object HGWarp: Warp() {
 	fun onInventoryClick(event: InventoryClickEvent) {
 		val gamer = (event.whoClicked as Player).gamer()
 
-		if (gamer.warp == this && gamer.kit.isDummy) event.isCancelled = true
+		if (gamer.warp == this) {
+			val topInventory = event.view.topInventory
+			val currentItem = event.currentItem
+
+			if (gamer.kit.isDummy || (topInventory != null && topInventory.type in PROHIBITED_INVENTORIES && currentItem != null && currentItem in gamer.kit.items)) event.isCancelled = true
+		}
 	}
 
 	@EventHandler
@@ -535,7 +549,33 @@ object HGWarp: Warp() {
 		val player = event.player
 		val gamer = player.gamer()
 
-		if (gamer.warp == this && state == ONGOING && event.item !in gamer.kit.items) event.isCancelled = false
+		if (gamer.warp == this) {
+			if (state == ONGOING && event.item !in gamer.kit.items) event.isCancelled = false
+
+			event.item?.run {
+				when (type) {
+					COMPASS -> {
+						var nearestPlayer: Player? = null
+						var smallestDistance = Double.MAX_VALUE
+
+						GamerRegistry.onlineGamers().filter { it.mode == EnumMode.PLAY && it.warp == Warps.HG && it.player.world == player.world }.forEach {
+							val distance = it.player.location.distance(player.location)
+
+							if (distance > 0 && distance < smallestDistance) {
+								nearestPlayer = it.player
+								smallestDistance = distance
+							}
+						}
+
+						if (nearestPlayer != null) {
+							player.compassTarget = nearestPlayer!!.location
+							player.sendMessage(Text.neutralPrefix().basic("Sua ").neutral("bússola").basic(" está apontando para o jogador ").neutral(nearestPlayer!!.name.clearFormatting()).basic(
+									"!").toString())
+						}
+					}
+				}
+			}
+		}
 	}
 
 	@EventHandler

@@ -20,20 +20,27 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
-import org.bukkit.event.inventory.InventoryType
+import org.bukkit.event.inventory.InventoryType.*
 
 object InventoryClickListener: Listener {
 
 	val BUY_KIT_FAIL = Text.negativePrefix().negative("Não").basic(" foi possível ").negative("comprer").basic(" esse kit!").toString()
+
+	val PROHIBITED_INVENTORIES = arrayOf(CHEST, ENDER_CHEST, WORKBENCH, ANVIL, ENCHANTING, DROPPER, DISPENSER)
 
 	@EventHandler
 	fun onInventoryClick(event: InventoryClickEvent) {
 		val player = event.whoClicked as Player
 		val gamer = player.gamer()
 
+		if (player.name == "MrPingu_") player.sendMessage("clickedInventory.type: " + event.clickedInventory.type + (if (event.view.bottomInventory != null) "; event.view.bottomInventory.type: " + event.view.bottomInventory.type.name else "") + (if (event.view.topInventory != null) "; event.view.topInventory.type: " + event.view.topInventory.type.name else ""))
+
 		if (gamer.warp.overrides(event)) return
 
-		if ((gamer.kit.isDummy || event.slotType == InventoryType.SlotType.ARMOR) && gamer.mode != EnumMode.ADMIN) event.isCancelled = true
+		val topInventory = event.view.topInventory
+		val currentItem = event.currentItem
+
+		if (((topInventory != null && topInventory.type in PROHIBITED_INVENTORIES && currentItem != null && currentItem in gamer.kit.items) || gamer.kit.isDummy || event.slotType == SlotType.ARMOR) && gamer.mode != EnumMode.ADMIN) event.isCancelled = true
 	}
 
 	@EventHandler
@@ -44,7 +51,7 @@ object InventoryClickListener: Listener {
 		val inventory = event.clickedInventory
 		val itemStack = event.currentItem
 
-		if (event.slotType == InventoryType.SlotType.CONTAINER) {
+		if (event.slotType == SlotType.CONTAINER) {
 			if (itemStack == Inventories.BACKGROUND) event.isCancelled = true
 			else when (inventory.title) {
 				KitMenu.TITLE_OWNED                       -> {

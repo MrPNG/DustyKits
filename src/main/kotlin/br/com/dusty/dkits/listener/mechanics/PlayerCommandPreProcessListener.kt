@@ -11,10 +11,10 @@ object PlayerCommandPreProcessListener: Listener {
 
 	@EventHandler
 	fun onPlayerCommandPreProcess(event: PlayerCommandPreprocessEvent) {
-		if (event.message.startsWith("/report ")) {
+		if (event.message.startsWith("/report ", true)) {
 			event.isCancelled = true
 
-			event.player.chat(event.message.replace("/report", "/dustyreport"))
+			event.player.chat(event.message.replace("/report", "/dustyreport", true))
 		}
 	}
 }

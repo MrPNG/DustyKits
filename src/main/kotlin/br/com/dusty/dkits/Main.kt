@@ -7,9 +7,13 @@ import br.com.dusty.dkits.listener.Listeners
 import br.com.dusty.dkits.warp.Warps
 import com.comphenix.protocol.ProtocolLibrary
 import com.google.gson.GsonBuilder
+import com.sk89q.worldguard.bukkit.WGBukkit
+import com.sk89q.worldguard.protection.managers.RegionManager
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
+import java.io.FileReader
+import java.io.PrintWriter
 import java.util.*
 
 class Main: JavaPlugin() {
@@ -20,7 +24,9 @@ class Main: JavaPlugin() {
 		CONFIG_DIR.mkdirs()
 	}
 
-	override fun onLoad() {}
+	override fun onLoad() {
+
+	}
 
 	override fun onEnable() {
 		Kits.registerAll()
@@ -29,7 +35,7 @@ class Main: JavaPlugin() {
 		Listeners.registerAll()
 		Abilities.registerAll()
 
-		serverStatus = EnumServerStatus.ONLINE
+		data.serverStatus = EnumServerStatus.ONLINE
 	}
 
 	override fun onDisable() {
@@ -47,13 +53,35 @@ class Main: JavaPlugin() {
 
 		val PROTOCOL_MANAGER = ProtocolLibrary.getProtocolManager()
 
+		var REGION_MANAGER: RegionManager? = null
+			get() {
+				if (field == null) field = WGBukkit.getPlugin().getRegionManager(Bukkit.getWorlds()[0])
+
+				return field
+			}
+
 		val RANDOM = Random()
 		val GSON = GsonBuilder().setPrettyPrinting().create()
 
 		val CONFIG_DIR = File(Bukkit.getWorldContainer(), "config")
 
-		val MAX_PLAYERS = 100
+		var data = Data()
 
-		var serverStatus = EnumServerStatus.OFFLINE
+		fun loadData() {
+			val file = File(CONFIG_DIR, "config.json")
+
+			if (file.exists()) data = Main.GSON.fromJson(FileReader(file), data.javaClass)
+
+			saveData()
+		}
+
+		fun saveData() {
+			val file = File(CONFIG_DIR, "config.json")
+			file.createNewFile()
+
+			PrintWriter(file).use { it.println(Main.GSON.toJson(data)) }
+		}
 	}
+
+	data class Data(var slots: Int = 120, var serverStatus: EnumServerStatus = EnumServerStatus.OFFLINE)
 }

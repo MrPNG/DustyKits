@@ -10,7 +10,6 @@ import br.com.dusty.dkits.util.inventory.*
 import br.com.dusty.dkits.util.protocol.EnumProtocolVersion
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
-import br.com.dusty.dkits.warp.OneVsOneWarp.Fight.OneVsOneFight
 import br.com.dusty.dkits.warp.OneVsOneWarp.FightState.INVITATION
 import br.com.dusty.dkits.warp.OneVsOneWarp.FightState.ONGOING
 import br.com.dusty.dkits.warp.OneVsOneWarp.FightType.*
@@ -23,6 +22,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.entity.PlayerDeathEvent
+import org.bukkit.event.player.PlayerDropItemEvent
 import org.bukkit.event.player.PlayerInteractEntityEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemStack
@@ -33,9 +33,11 @@ object OneVsOneWarp: Warp() {
 	val HAS_NO_CLAN = Text.negativePrefix().basic("Você ").negative("não").basic(" faz parte de um ").negative("clan").basic("!").toString()
 	val IS_NOT_LEADER = Text.negativePrefix().basic("Você ").negative("não").basic(" é o ").negative("líder").basic(" do seu ").negative("clan").basic("!").toString()
 
-	val FIGHTS = hashMapOf<Player, Fight>()
+	val FIGHTS = hashMapOf<Player, OneVsOneFight>()
 
 	val ARENAS = hashMapOf<Player, Location>()
+
+	val ALLOWED_DROPS = arrayOf(RED_MUSHROOM, BROWN_MUSHROOM, BOWL, MUSHROOM_SOUP)
 
 	var oneVsOneFirst = Locations.GENERIC
 		get() {
@@ -112,6 +114,8 @@ object OneVsOneWarp: Warp() {
 
 		entryKit = Kit(items = arrayOf(STANDARD.item, FULL.item, NUDE.item, GLADIATOR.item, null, null, null, null, GAME_WARP_KIT.items[8]))
 
+		durabilityBehavior = EnumDurabilityBehavior.REGEN_ON_KILL
+
 		data = OneVsOneData()
 		data.spreadRange = 4.0
 
@@ -122,11 +126,23 @@ object OneVsOneWarp: Warp() {
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
+	fun onPlayerDropItem(event: PlayerDropItemEvent) {
+		val player = event.player
+		val gamer = player.gamer()
+
+		if (gamer.warp == this) {
+			val itemStack = event.itemDrop.itemStack
+
+			if (!gamer.kit.isDummy && itemStack != null && itemStack in gamer.kit.items) event.isCancelled = false
+		}
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
 	fun onPlayerDeath(event: PlayerDeathEvent) {
 		val loser = event.entity.gamer()
 
 		if (loser.warp == this) {
-			if (FIGHTS.values.any { it is OneVsOneFight && (it.host == loser || it.guest == loser) }) end(loser, loser.combatPartner!!)
+			if (FIGHTS.values.any { it.host == loser || it.guest == loser }) end(loser, loser.combatPartner!!)
 		}
 	}
 
@@ -172,8 +188,8 @@ object OneVsOneWarp: Warp() {
 
 		if (gamer.warp == this) {
 			when {
-				!gamer.isFrozen() && FIGHTS.values.any { it.state == ONGOING && it is OneVsOneFight && it.type == GLADIATOR && (it.host == gamer || it.guest == gamer) } -> event.isCancelled = false
-				event.item != null                                                                                                                                       -> {
+				!gamer.isFrozen() && FIGHTS.values.any { it.state == ONGOING && it.type == GLADIATOR && (it.host == gamer || it.guest == gamer) } -> event.isCancelled = false
+				event.item != null                                                                                                                -> {
 					val item = event.item
 
 					if (item.type == SKULL_ITEM && item == CLAN_VS_CLAN.item) {
@@ -204,19 +220,19 @@ object OneVsOneWarp: Warp() {
 
 					when (type) {
 						BLAZE_ROD     -> if (this == STANDARD.item) {
-							if (fight is OneVsOneFight && fight.type == STANDARD && fight.host.player == rightClicked) start(fight)
+							if (fight != null && fight.type == STANDARD && fight.guest.player == player && fight.expiresOn > System.currentTimeMillis()) start(fight)
 							else invite(player, rightClicked.player, STANDARD)
 						}
 						MUSHROOM_SOUP -> if (this == FULL.item) {
-							if (fight is OneVsOneFight && fight.type == FULL && fight.host.player == rightClicked) start(fight)
+							if (fight != null && fight.type == FULL && fight.guest.player == player && fight.expiresOn > System.currentTimeMillis()) start(fight)
 							else invite(player, rightClicked.player, FULL)
 						}
 						STICK         -> if (this == NUDE.item) {
-							if (fight is OneVsOneFight && fight.type == NUDE && fight.host.player == rightClicked) start(fight)
+							if (fight != null && fight.type == NUDE && fight.guest.player == player && fight.expiresOn > System.currentTimeMillis()) start(fight)
 							else invite(player, rightClicked.player, NUDE)
 						}
 						IRON_FENCE    -> if (this == GLADIATOR.item) {
-							if (fight is OneVsOneFight && fight.type == GLADIATOR && fight.host.player == rightClicked) start(fight)
+							if (fight != null && fight.type == GLADIATOR && fight.guest.player == player && fight.expiresOn > System.currentTimeMillis()) start(fight)
 							else invite(player, rightClicked.player, GLADIATOR)
 						}
 					}
@@ -228,7 +244,7 @@ object OneVsOneWarp: Warp() {
 	fun invite(host: Player, guest: Player, type: FightType) {
 		val oldFight = FIGHTS[host]
 
-		if (oldFight != null && oldFight is OneVsOneFight && oldFight.guest.player == guest && oldFight.expiresOn > System.currentTimeMillis()) {
+		if (oldFight != null && oldFight.guest.player == guest && oldFight.expiresOn > System.currentTimeMillis()) {
 			host.sendMessage(Text.negativePrefix().basic("Você ainda deve ").negative("esperar").basic(" mais ").negative(oldFight.expiresOn.millisToPeriod().toInt()).basic(" segundos antes de convidar esse ").negative(
 					"jogador").basic(" para uma luta novamente!").toString())
 		} else {
@@ -271,7 +287,7 @@ object OneVsOneWarp: Warp() {
 		val guestPlayer = guest.player
 
 		FIGHTS.values.forEach {
-			if (it is OneVsOneFight && it.state == ONGOING) {
+			if (it != fight && it.state == ONGOING) {
 				val anotherHost = it.host.player
 
 				anotherHost.hidePlayer(hostPlayer)
@@ -297,37 +313,38 @@ object OneVsOneWarp: Warp() {
 			val startLocation = spawn.clone()
 			startLocation.y = 240.0
 
-			var x = 0.0
-			var z = 0.0
+			var x = -16.0
+			var z = -16.0
 
 			while (startLocation.add(x, 0.0, z).block.type != AIR) {
 				x += 16
 				z += 16
 			}
 
-			val triple = startLocation.generateGlassArena(15, 10, 15, false, false)
+			val locations = startLocation.generateGlassArena(15, 10, 15, false, false)
 
-			ARENAS.put(hostPlayer, triple.first)
+			ARENAS.put(hostPlayer, locations.first)
 
-			hostPlayer.teleport(triple.second)
-			guestPlayer.teleport(triple.third)
+			hostPlayer.teleport(locations.second)
+			guestPlayer.teleport(locations.third)
 		} else {
 			hostPlayer.teleport(oneVsOneFirst)
 			guestPlayer.teleport(oneVsOneSecond)
 		}
 
-		host.freeze = 5000L
-		guest.freeze = 5000L
-
 		host.setKitAndApply(fight.type.kit, false)
 		guest.setKitAndApply(fight.type.kit, false)
 
 		when (fight.type) {
-			STANDARD -> {
+			STANDARD  -> {
 				hostPlayer.fillSoups(false)
 				guestPlayer.fillSoups(false)
 			}
-			else     -> {
+			GLADIATOR -> {
+				hostPlayer.fillSoups(true)
+				guestPlayer.fillSoups(true)
+			}
+			else      -> {
 				hostPlayer.fillSoups(true)
 				guestPlayer.fillSoups(true)
 
@@ -341,6 +358,12 @@ object OneVsOneWarp: Warp() {
 
 		host.combatTag = Integer.MAX_VALUE.toLong()
 		guest.combatTag = Integer.MAX_VALUE.toLong()
+
+		host.invincibility = 5000L
+		guest.invincibility = 5000L
+
+		host.freeze = 5000L
+		guest.freeze = 5000L
 
 		fight.state = ONGOING
 
@@ -547,7 +570,7 @@ object OneVsOneWarp: Warp() {
 	}
 
 	override fun dispatchGamer(gamer: Gamer, newWarp: Warp) {
-		if (gamer.isCombatTagged() && FIGHTS.values.any { it is OneVsOneFight && (it.host == gamer || it.guest == gamer) }) end(gamer, gamer.combatPartner!!)
+		if (gamer.isCombatTagged() && FIGHTS.values.any { it.host == gamer || it.guest == gamer }) end(gamer, gamer.combatPartner!!)
 	}
 
 	override fun execute(gamer: Gamer, alias: String, args: Array<String>) {
@@ -586,10 +609,7 @@ object OneVsOneWarp: Warp() {
 		}
 	}
 
-	sealed class Fight(val expiresOn: Long, val type: FightType, var state: FightState) {
-
-		class OneVsOneFight(val host: Gamer, val guest: Gamer, expiresOn: Long, type: FightType, state: FightState): Fight(expiresOn, type, state)
-	}
+	class OneVsOneFight(val host: Gamer, val guest: Gamer, val expiresOn: Long, val type: FightType, var state: FightState)
 
 	enum class FightType(val string: String, val kit: Kit, val item: ItemStack) {
 
@@ -616,7 +636,32 @@ object OneVsOneWarp: Warp() {
 		GLADIATOR("Gladiator",
 		          Kit(weapon = Inventories.DIAMOND_SWORD_SHARPNESS,
 		              armor = Inventories.ARMOR_FULL_IRON,
-		              items = arrayOf(ItemStack(STONE_PICKAXE), ItemStack(COBBLE_WALL, 64), ItemStack(LAVA_BUCKET), ItemStack(WATER_BUCKET)),
+		              items = arrayOf(ItemStack(COBBLE_WALL, 64),
+		                              ItemStack(WOOD, 64),
+		                              null,
+		                              null,
+		                              null,
+		                              null,
+		                              ItemStack(WATER_BUCKET),
+		                              ItemStack(LAVA_BUCKET),
+		                              Inventories.COCOA_BEAN,
+		                              Inventories.COCOA_BEAN,
+		                              Inventories.COCOA_BEAN,
+		                              Inventories.COCOA_BEAN,
+		                              ItemStack(BOWL, 64),
+		                              Inventories.DIAMOND_SWORD_SHARPNESS,
+		                              ItemStack(LAVA_BUCKET),
+		                              ItemStack(LAVA_BUCKET),
+		                              ItemStack(IRON_PICKAXE),
+		                              Inventories.COCOA_BEAN,
+		                              Inventories.COCOA_BEAN,
+		                              Inventories.COCOA_BEAN,
+		                              Inventories.COCOA_BEAN,
+		                              ItemStack(BOWL, 64),
+		                              null,
+		                              null,
+		                              null,
+		                              ItemStack(IRON_AXE)),
 		              isDummy = false),
 		          ItemStack(IRON_FENCE).rename(Text.of("1v1 - Gladiator").color(TextColor.GOLD).toString()).description(arrayListOf("Arena no estilo \"Gladiator\"",
 		                                                                                                                            "Armadura de ferro completa",

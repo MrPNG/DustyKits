@@ -8,6 +8,7 @@ object Warps {
 
 	val NONE = NoneWarp
 	val ARENA = ArenaWarp
+	val FAKECXC = FakeCXC
 	val CLANVSCLAN = ClanVsClanWarp
 	val FEAST = FeastWarp
 	val GLADIATOR = GladiatorWarp
@@ -37,6 +38,7 @@ object Warps {
 
 		//Event
 		WARPS.add(HG)
+		WARPS.add(FAKECXC)
 		WARPS.add(CLANVSCLAN)
 
 		enabledWarpsNames = Warps.WARPS.filter { it.data.isEnabled }.map { it.name.toLowerCase().replace(" ", "") }.toTypedArray()

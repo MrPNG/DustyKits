@@ -3,6 +3,7 @@ package br.com.dusty.dkits.listener.login
 import br.com.dusty.dkits.EnumServerStatus
 import br.com.dusty.dkits.Main
 import br.com.dusty.dkits.clan.ClanRegistry
+import br.com.dusty.dkits.gamer.EnumMode
 import br.com.dusty.dkits.gamer.EnumRank
 import br.com.dusty.dkits.gamer.GamerRegistry
 import br.com.dusty.dkits.store.EnumAdvantage
@@ -44,7 +45,7 @@ object PlayerLoginListener: Listener {
 
 		gamer.purchases = purchases
 
-		if (Main.serverStatus != EnumServerStatus.ONLINE && gamer.rank.isLowerThan(EnumRank.MOD)) {
+		if (Main.data.serverStatus != EnumServerStatus.ONLINE && gamer.rank.isLowerThan(EnumRank.MOD)) {
 			event.disallow(PlayerLoginEvent.Result.KICK_OTHER, KICK_NOT_READY)
 
 			GamerRegistry.unregister(player.uniqueId)
@@ -53,9 +54,9 @@ object PlayerLoginListener: Listener {
 		}
 
 		if (event.result == PlayerLoginEvent.Result.KICK_FULL) {
-			if (gamer.hasAdvantage(EnumAdvantage.SLOT)) {
+			if (gamer.rank.isHigherThanOrEquals(EnumRank.MOD) || gamer.hasAdvantage(EnumAdvantage.SLOT)) {
 				event.allow()
-			} else {
+			} else if (GamerRegistry.onlineGamers().filterNot { it.mode == EnumMode.ADMIN }.size >= Main.data.slots) {
 				event.disallow(PlayerLoginEvent.Result.KICK_FULL, KICK_FULL_MESSAGE)
 
 				GamerRegistry.unregister(player.uniqueId)
@@ -63,6 +64,8 @@ object PlayerLoginListener: Listener {
 				return
 			}
 		}
+
+		GamerRegistry.GAMER_BY_PLAYER.put(player.uniqueId, gamer)
 
 		ClanRegistry.clan(gamer.primitiveGamer.clan)?.run {
 			if (player.uniqueId.toString() in rawMembers) {

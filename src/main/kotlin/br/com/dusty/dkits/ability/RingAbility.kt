@@ -48,12 +48,20 @@ object RingAbility: Ability() {
 						player.addPotionEffect(PotionEffect(PotionEffectType.INVISIBILITY, 200, 0), true)
 						player.addPotionEffect(PotionEffect(PotionEffectType.INCREASE_DAMAGE, 200, 0), true)
 
-						player.inventory.itemInMainHand = LEATHER_BOOTS
+						val inventory = player.inventory
+						inventory.itemInMainHand = LEATHER_BOOTS
+
+						val chestplate = inventory.chestplate
+
+						inventory.chestplate = null
 
 						Tasks.sync(Runnable {
 							val index = player.inventory.indexOfFirst { it != null && it.type == Material.LEATHER_BOOTS }
 
-							if (index != -1 && gamer.kit == Kits.RING) player.inventory.setItem(index, Kits.RING.items[0])
+							if (index != -1 && gamer.kit == Kits.RING) {
+								inventory.setItem(index, Kits.RING.items[0])
+								inventory.chestplate = chestplate
+							}
 						}, 600L)
 
 						gamer.kitCooldown = 30000L

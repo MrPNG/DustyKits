@@ -20,7 +20,7 @@ object PlayerDropItemListener: Listener {
 		if (gamer.warp.overrides(event)) return
 
 		val item = event.itemDrop
-		val itemStack = event.itemDrop.itemStack
+		val itemStack = item.itemStack
 
 		if (player.gameMode != GameMode.CREATIVE) {
 			if (itemStack.type !in ALLOWED_DROPS || itemStack in gamer.kit.items) event.isCancelled = true else if (itemStack.type != MUSHROOM_SOUP) Tasks.sync(Runnable { item.remove() })

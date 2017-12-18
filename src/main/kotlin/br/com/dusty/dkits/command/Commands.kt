@@ -41,6 +41,7 @@ object Commands {
 		CUSTOM_COMMANDS.add(AdminCommand)
 		CUSTOM_COMMANDS.add(ChatCommand)
 		CUSTOM_COMMANDS.add(ClanCommand)
+		CUSTOM_COMMANDS.add(ConfigCommand)
 		CUSTOM_COMMANDS.add(DisableCommand)
 		CUSTOM_COMMANDS.add(EnableCommand)
 		CUSTOM_COMMANDS.add(FlyCommand)
