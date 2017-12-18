@@ -7,7 +7,6 @@ import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.util.*
 import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.util.inventory.*
-import br.com.dusty.dkits.util.protocol.EnumProtocolVersion
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
 import br.com.dusty.dkits.warp.OneVsOneWarp.FightState.INVITATION
@@ -221,7 +220,6 @@ object OneVsOneWarp: Warp() {
 			if (gamer.warp == this) {
 				val rightClicked = event.rightClicked as Player
 
-//				player.inventory.itemInMainHand?.run { //TODO: 1.8 switch
 				player.itemInHand?.run {
 					val fight = FIGHTS[rightClicked]
 

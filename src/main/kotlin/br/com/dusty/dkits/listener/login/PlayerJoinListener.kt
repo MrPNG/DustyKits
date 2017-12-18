@@ -8,6 +8,7 @@ import br.com.dusty.dkits.util.clearFormatting
 import br.com.dusty.dkits.util.gamer.Tags
 import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.util.protocol.EnumProtocolVersion
+import br.com.dusty.dkits.util.protocol.Protocols
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
 import br.com.dusty.dkits.warp.Warps
@@ -27,8 +28,7 @@ object PlayerJoinListener: Listener {
 		val player = event.player
 		val gamer = player.gamer()
 
-//		val protocolVersion = EnumProtocolVersion[Protocols.protocolVersion(player)]
-		val protocolVersion = EnumProtocolVersion.RELEASE_1_7_10
+		val protocolVersion = EnumProtocolVersion[Protocols.protocolVersion(player)]
 
 		if (protocolVersion == EnumProtocolVersion.UNKNOWN) {
 			player.kickPlayer(KICK_NOT_READY)

@@ -2,6 +2,7 @@ package br.com.dusty.dkits.ability
 
 import br.com.dusty.dkits.gamer.GamerRegistry
 import br.com.dusty.dkits.util.gamer.gamer
+import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
@@ -32,7 +33,7 @@ object StomperAbility: Ability() {
 				}
 
 				val location = player.location
-//				location.world.playSound(location, Sound.BLOCK_ANVIL_LAND, 1F, 1F) //TODO: 1.8 switch
+				location.world.playSound(location, Sound.ANVIL_LAND, 1F, 1F)
 			}
 		}
 	}

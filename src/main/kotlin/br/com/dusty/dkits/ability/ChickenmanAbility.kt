@@ -36,7 +36,6 @@ object ChickenmanAbility: Ability() {
 
 						player.location.playEffect(Effect.POTION_BREAK, 0x400B, 16)
 
-//						player.inventory.itemInMainHand = RAW_CHICKEN //TODO: 1.8 switch
 						player.itemInHand = RAW_CHICKEN
 
 						Tasks.sync(Runnable {

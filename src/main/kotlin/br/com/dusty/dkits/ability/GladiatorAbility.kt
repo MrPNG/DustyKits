@@ -34,7 +34,6 @@ object GladiatorAbility: Ability() {
 	fun onPlayerInteractEntity(event: PlayerInteractEntityEvent) {
 		if (event.rightClicked is Player) {
 			val player = event.player
-//			val item = player.inventory.itemInMainHand //TODO: 1.8 switch
 			val item = player.itemInHand
 
 			if (item != null && item.type == Material.IRON_FENCE && item == Kits.GLADIATOR.items[0]) {

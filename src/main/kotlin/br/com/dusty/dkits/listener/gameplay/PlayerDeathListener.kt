@@ -31,7 +31,7 @@ object PlayerDeathListener: Listener {
 			if (combatPartner.warp.durabilityBehavior == Warp.EnumDurabilityBehavior.REGEN_ON_KILL) {
 				val inventory = combatPartner.player.inventory
 
-//				inventory.itemInMainHand?.durability = 0 //TODO: 1.8 switch
+				inventory.itemInHand?.durability = 0
 				inventory.armorContents.forEach { it?.durability = 0 }
 			}
 		}

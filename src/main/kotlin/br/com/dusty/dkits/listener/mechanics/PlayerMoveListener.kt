@@ -6,6 +6,7 @@ import br.com.dusty.dkits.gamer.Gamer
 import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.util.isWalk
 import br.com.dusty.dkits.util.text.Text
+import com.sk89q.worldguard.protection.flags.DefaultFlag
 import org.bukkit.Location
 import org.bukkit.Material.SPONGE
 import org.bukkit.block.BlockFace
@@ -54,9 +55,8 @@ object PlayerMoveListener: Listener {
 		}
 	}
 
-//	fun toInvincibleLocation(from: Location, to: Location) = !Main.REGION_MANAGER!!.getApplicableRegions(from).allows(DefaultFlag.INVINCIBILITY) && Main.REGION_MANAGER!!.getApplicableRegions(
-//			to).allows(DefaultFlag.INVINCIBILITY) //TODO: 1.8 switch
-	fun toInvincibleLocation(from: Location, to: Location) = false
+	fun toInvincibleLocation(from: Location, to: Location) = !Main.REGION_MANAGER!!.getApplicableRegions(from).allows(DefaultFlag.INVINCIBILITY) && Main.REGION_MANAGER!!.getApplicableRegions(
+			to).allows(DefaultFlag.INVINCIBILITY)
 
 	fun boost(gamer: Gamer, location: Location) {
 		val player = gamer.player

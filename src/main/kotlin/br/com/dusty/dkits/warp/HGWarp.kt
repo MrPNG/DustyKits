@@ -29,6 +29,7 @@ import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.inventory.InventoryType
 import org.bukkit.event.player.PlayerDropItemEvent
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.event.player.PlayerPickupItemEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.ShapelessRecipe
 import org.bukkit.potion.PotionType.*
@@ -143,8 +144,7 @@ object HGWarp: Warp() {
 
 		aliases = arrayOf(name.replace(" ", "").toLowerCase(), "hg")
 
-//		overriddenEvents = arrayOf(PlayerDeathEvent::class.java, PlayerDropItemEvent::class.java, EntityPickupItemEvent::class.java) //TODO: 1.8 switch
-		overriddenEvents = arrayOf(PlayerDeathEvent::class.java, PlayerDropItemEvent::class.java)
+		overriddenEvents = arrayOf(PlayerDeathEvent::class.java, PlayerDropItemEvent::class.java, PlayerPickupItemEvent::class.java)
 
 		entryKit = SIMPLE_GAME_WARP_KIT
 
@@ -572,15 +572,13 @@ object HGWarp: Warp() {
 		if (gamer.warp == this && event.itemDrop.itemStack in gamer.kit.items) event.isCancelled = true
 	}
 
-	/*@EventHandler
-	fun onEntityPickupItem(event: EntityPickupItemEvent) {
-		if (event.entity is Player) {
-			val player = event.entity as Player
-			val gamer = player.gamer()
+	@EventHandler
+	fun onPlayerPickupItem(event: PlayerPickupItemEvent) {
+		val player = event.player
+		val gamer = player.gamer()
 
-			if (gamer.warp == this && state == ONGOING) event.isCancelled = false
-		}
-	}*/ //TODO: 1.8 switch
+		if (gamer.warp == this && state == ONGOING) event.isCancelled = false
+	}
 
 	override fun isAllowed(kit: Kit, gamer: Gamer, announce: Boolean): Boolean = when {
 		state == ONGOING           -> {
