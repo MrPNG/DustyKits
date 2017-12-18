@@ -7,8 +7,6 @@ import java.lang.reflect.Method
 
 object Protocols {
 
-	val PROTOCOL_VERSION = 335
-
 	val CRAFTBUKKIT_PACKAGE = "org.bukkit.craftbukkit."
 	val NMS_PACKAGE = "net.minecraft.server."
 	val NMS_VERSION = "v1_12_R1"

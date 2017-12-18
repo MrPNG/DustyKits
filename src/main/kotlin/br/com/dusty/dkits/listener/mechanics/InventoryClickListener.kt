@@ -53,7 +53,7 @@ object InventoryClickListener: Listener {
 
 		val topInventory = event.view.topInventory
 
-		if (((topInventory != null && topInventory.type in PROHIBITED_INVENTORIES && currentItem in gamer.kit.items) || gamer.kit.isDummy || event.slotType == SlotType.ARMOR) && gamer.mode != EnumMode.ADMIN) event.isCancelled = true
+		if (((topInventory != null && topInventory.type in PROHIBITED_INVENTORIES && currentItem in gamer.kit.items) || gamer.kit.isDummy) && gamer.mode != EnumMode.ADMIN) event.isCancelled = true
 	}
 
 	@EventHandler
