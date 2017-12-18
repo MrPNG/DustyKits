@@ -9,6 +9,7 @@ import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.util.rename
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
+import org.bukkit.Effect
 import org.bukkit.FireworkEffect
 import org.bukkit.Material.*
 import org.bukkit.entity.Player
@@ -89,7 +90,7 @@ object VolcanoWarp: Warp() {
 				player.sendMessage(Text.positivePrefix().basic("Você ").positive("avançou").basic(" de ").positive("nível").basic(" na warp ").positive(this.name).basic("!").toString())
 
 				player.location.spawnFirework(gamer.warpKills, FireworkEffect.builder().withColor(Colors.random()).build())
-//				player.spawnParticle(Particle.CRIT_MAGIC, player.location, 1) //TODO: 1.8 switch
+				player.playEffect(player.location, Effect.CRIT, 0)
 			}
 		}
 	}

@@ -6,6 +6,8 @@ import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.listener.Listeners
 import br.com.dusty.dkits.warp.Warps
 import com.google.gson.GsonBuilder
+import com.sk89q.worldguard.bukkit.WGBukkit
+import com.sk89q.worldguard.protection.managers.RegionManager
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
@@ -50,12 +52,12 @@ class Main: JavaPlugin() {
 
 //		val PROTOCOL_MANAGER = ProtocolLibrary.getProtocolManager()
 
-		/*var REGION_MANAGER: RegionManager? = null
+		var REGION_MANAGER: RegionManager? = null
 			get() {
 				if (field == null) field = WGBukkit.getPlugin().getRegionManager(Bukkit.getWorlds()[0])
 
 				return field
-			}*/ //TODO: 1.8 switch
+			}
 
 		val RANDOM = Random()
 		val GSON = GsonBuilder().setPrettyPrinting().create()

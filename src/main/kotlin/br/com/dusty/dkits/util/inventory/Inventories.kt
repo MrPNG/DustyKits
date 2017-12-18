@@ -96,10 +96,10 @@ object Inventories {
 		val bookMeta = itemMeta as BookMeta
 
 		bookMeta.title = "Livro de Regras"
-		bookMeta.addPage("Olá, seja bem-vindo ao Dusty!\n\nLeia atentamente as regras, todas elas são todas muito importantes!\n\n1. É proibido o uso de qualquer hack client;\n2. É proibido ameaçar um jogador de qualquer maneira;",
-		                 "3. São proibidas quaisquer ofensas a outros jogadores e membros da staff;\n4. É proibido divulgar links ou outros servidores;\n",
-		                 "5. É proibido abusar de bugs, sendo que, se você encontrar algum, deve reportar a um membro da staff; 6. É proibido dar \'chargeback\' em qualquer produto comprado na loja (isso acarretará ban imediato).",
-		                 "O descumprimento de quaisquer regras neste livro acarretará nas devidas punições ao jogador, incluindo, mas não limitado a:\n\n- \'mutes\', temporários e permanentes;\n- \'bans\', temporários e permanentes;\n- \'kicks\'")
+		bookMeta.addPage("Olá, seja bem-vindo ao Dusty!\n\nLeia atentamente as regras, todas elas são todas muito importantes!\n\n1. É proibido o uso de qualquer hack client;\n\n2. É proibido ameaçar um jogador de qualquer maneira;",
+		                 "3. São proibidas quaisquer ofensas a outros jogadores e membros da staff;\n\n4. É proibido divulgar links ou outros servidores;\n",
+		                 "5. É proibido abusar de bugs, sendo que, se você encontrar algum, deve reportar a um membro da staff;\n\n6. É proibido dar \'chargeback\' em qualquer produto comprado na loja (isso acarretará ban imediato).",
+		                 "O descumprimento de quaisquer regras neste livro acarretará as devidas punições ao jogador, incluindo, mas não limitado a:\n\n- \'mutes\', temporários e permanentes;\n- \'bans\', temporários e permanentes;\n- \'kicks\'")
 		bookMeta.author = "BigGamerBR"
 
 		itemMeta = bookMeta

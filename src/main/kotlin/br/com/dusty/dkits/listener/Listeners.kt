@@ -41,7 +41,7 @@ object Listeners {
 		LISTENERS.add(BlockBreakListener)
 		LISTENERS.add(BlockPlaceListener)
 		LISTENERS.add(EntityDamageListener)
-		LISTENERS.add(EntityPickupItemListener)
+		LISTENERS.add(PlayerPickupItemListener)
 		LISTENERS.add(FoodLevelChangeListener)
 		LISTENERS.add(InventoryClickListener)
 //		LISTENERS.add(ItemSpawnListener)

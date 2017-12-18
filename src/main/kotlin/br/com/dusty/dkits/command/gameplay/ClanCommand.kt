@@ -12,7 +12,6 @@ import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.web.MojangAPI
 import br.com.dusty.dkits.util.web.WebAPI
 import com.google.common.collect.HashMultimap
-import com.google.common.collect.Multimap
 import io.reactivex.Observable
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
@@ -71,7 +70,7 @@ object ClanCommand: PlayerCustomCommand(EnumRank.MOD, "clan") {
 
 	val AWAITING_API = arrayListOf<Player>()
 
-	val INVITATIONS: Multimap<Player, ClanInvitation> = HashMultimap.create()
+	val INVITATIONS = HashMultimap.create<Player, ClanInvitation>()
 
 	override fun execute(sender: Player, alias: String, args: Array<String>): Boolean {
 		if (args.isEmpty()) {
@@ -332,7 +331,7 @@ object ClanCommand: PlayerCustomCommand(EnumRank.MOD, "clan") {
 													clan.leader?.player?.sendMessage(Text.positivePrefix().basic("O jogador ").positive(sender.name).basic(" entrou para o seu ").positive("clan").basic(
 															"!").toString())
 
-//													INVITATIONS.forEach { key, value -> if (key == player && value.player == sender) INVITATIONS.remove(key, value) } //TODO: 1.8 switch
+													INVITATIONS.forEach { key, value -> if (key == player && value.player == sender) INVITATIONS.remove(key, value) }
 
 													AWAITING_API.remove(sender)
 												}
@@ -363,7 +362,7 @@ object ClanCommand: PlayerCustomCommand(EnumRank.MOD, "clan") {
 							AWAITING_API.add(sender)
 
 							val onNext = Consumer<Clan> {
-								if(clan.leader == gamer) clan.leader = null
+								if (clan.leader == gamer) clan.leader = null
 
 								clan.remove(gamer)
 								WebAPI.saveClans(clan)
