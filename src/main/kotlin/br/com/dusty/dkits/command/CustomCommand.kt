@@ -44,18 +44,6 @@ abstract class CustomCommand constructor(
 	override fun tabComplete(sender: CommandSender, alias: String, args: Array<String>): MutableList<String>? = arrayListOf()
 
 	/**
-	 * Usar 'tabComplete(CommandSender sender, String alias, String[] args)'.
-	 *
-	 * @param sender
-	 * @param alias
-	 * @param args
-	 * @param location
-	 * @return
-	 * @throws IllegalArgumentException
-	 *//*
-	override fun tabComplete(sender: CommandSender, alias: String, args: Array<String>, location: Location?): MutableList<String>? = tabComplete(sender, alias, args)*/ //TODO: 1.8 switch
-
-	/**
 	 * Verfica se o [CommandSender] 'sender' está autorizado a utilizar este comando.
 	 *
 	 * @param sender

@@ -7,7 +7,9 @@ import br.com.dusty.dkits.util.clearFormatting
 import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.util.rename
 import br.com.dusty.dkits.util.text.Text
+import org.bukkit.Effect
 import org.bukkit.Material
+import org.bukkit.Sound
 import org.bukkit.event.EventHandler
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
@@ -58,12 +60,12 @@ object BubbleAbility: Ability() {
 									0    -> {
 										cancel()
 
-//										players.forEach { it.world.playSound(it.location, Sound.ENTITY_ITEM_PICKUP, 1F, 1F) } //TODO: 1.8 switch
+										players.forEach { it.world.playSound(it.location, Sound.ITEM_PICKUP, 1F, 1F) }
 									}
 									else -> {
 										players.forEach {
 											it.velocity = Vector(0.0, velocityY, 0.0)
-//											it.spawnParticle(Particle.SLIME, it.location.add(0.0, 1.0, 0.0), 1) //TODO: 1.8 switch
+											it.playEffect(it.location.add(0.0, 1.0, 0.0), Effect.SLIME, 0)
 										}
 									}
 								}
@@ -72,7 +74,7 @@ object BubbleAbility: Ability() {
 							}
 						}, 0L, 1L)
 
-//						player.inventory.itemInMainHand = MAGMA_CREAM //TODO: 1.8 switch
+						player.itemInHand = MAGMA_CREAM
 
 						Tasks.sync(Runnable {
 							val index = player.inventory.indexOfFirst { it != null && it.type == Material.MAGMA_CREAM && it == MAGMA_CREAM }
