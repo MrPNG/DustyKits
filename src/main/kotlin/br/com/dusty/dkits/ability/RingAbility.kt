@@ -50,7 +50,7 @@ object RingAbility: Ability() {
 						player.addPotionEffect(PotionEffect(PotionEffectType.INCREASE_DAMAGE, 200, 0), true)
 
 						val inventory = player.inventory
-						inventory.itemInMainHand = LEATHER_BOOTS
+//						inventory.itemInMainHand = LEATHER_BOOTS //TODO: 1.8 switch
 
 						val chestplate = inventory.chestplate
 

@@ -4,16 +4,15 @@ import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
 import org.bukkit.Color
 import org.bukkit.DyeColor
-import org.bukkit.Material.*
+import org.bukkit.Material.POTION
+import org.bukkit.Material.SKULL_ITEM
 import org.bukkit.OfflinePlayer
 import org.bukkit.SkullType
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.LeatherArmorMeta
-import org.bukkit.inventory.meta.PotionMeta
 import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.material.Dye
-import org.bukkit.potion.PotionData
 import org.bukkit.potion.PotionType
 
 fun ItemStack.rename(name: String): ItemStack {
@@ -65,7 +64,7 @@ fun ItemStack.unformattedDisplayName(): String? {
 
 fun OfflinePlayer.skull() = ItemStack(SKULL_ITEM, 1, SkullType.PLAYER.ordinal.toShort()).also {
 	val skullMeta = it.itemMeta as SkullMeta
-	skullMeta.owningPlayer = this
+//	skullMeta.owningPlayer = this //TODO: 1.8 switch
 
 	it.itemMeta = skullMeta
 }
@@ -85,13 +84,14 @@ object ItemStacks {
 	}
 
 	fun potions(amount: Int, extended: Boolean, upgraded: Boolean, potionType: PotionType, splash: Boolean): ItemStack {
-		val itemStack = ItemStack(if (splash) SPLASH_POTION else POTION, amount)
+		/*val itemStack = ItemStack(if (splash) SPLASH_POTION else POTION, amount)
 
 		val potionMeta = itemStack.itemMeta as PotionMeta
 		potionMeta.basePotionData = PotionData(potionType, extended, upgraded)
 
 		itemStack.itemMeta = potionMeta
 
-		return itemStack
+		return itemStack*/ //TODO: 1.8 switch
+		return ItemStack(POTION)
 	}
 }
