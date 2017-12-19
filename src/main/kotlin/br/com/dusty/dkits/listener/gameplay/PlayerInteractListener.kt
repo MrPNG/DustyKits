@@ -63,7 +63,9 @@ object PlayerInteractListener: Listener {
 							if (player.health < maxHealth - 7) player.health += 7.0
 							else player.health = maxHealth
 
-							Tasks.sync(Runnable { player.inventory.itemInHand = Inventories.BOWL })
+							val slot = player.inventory.heldItemSlot
+
+							Tasks.sync(Runnable { player.inventory.setItem(slot, Inventories.BOWL) })
 						}
 					}
 				}

@@ -575,7 +575,9 @@ object OneVsOneWarp: Warp() {
 	}
 
 	override fun dispatchGamer(gamer: Gamer, newWarp: Warp) {
-		if (gamer.isCombatTagged() && FIGHTS.values.any { it.host == gamer || it.guest == gamer }) end(gamer, gamer.combatPartner!!)
+		val fight = FIGHTS.values.firstOrNull { it.host == gamer || it.guest == gamer } ?: return
+
+		end(gamer, if (gamer == fight.host) fight.guest else fight.host)
 	}
 
 	override fun execute(gamer: Gamer, alias: String, args: Array<String>) {

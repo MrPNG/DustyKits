@@ -30,45 +30,45 @@ object PlayerJoinListener: Listener {
 
 		val protocolVersion = EnumProtocolVersion[Protocols.protocolVersion(player)]
 
-		if (protocolVersion == EnumProtocolVersion.UNKNOWN) {
-			player.kickPlayer(KICK_NOT_READY)
-		} else {
-			gamer.protocolVersion = protocolVersion
+//		if (protocolVersion == EnumProtocolVersion.UNKNOWN) {
+//			player.kickPlayer(KICK_NOT_READY)
+//		} else {
+		gamer.protocolVersion = protocolVersion
 
-			if (protocolVersion.isGreaterThanOrEquals(EnumProtocolVersion.RELEASE_1_8)) {
+//		if (protocolVersion.isGreaterThanOrEquals(EnumProtocolVersion.RELEASE_1_8)) {
 //				player.sendTitle(Text.of("Bem vindo ao ").color(TextColor.RED).append("Dusty").color(TextColor.GOLD).append("!").color(TextColor.RED).toString(),
 //				                 Text.basicOf("Escolha uma warp e divirta-se, ").append(player.name).color(TextColor.GOLD).basic("!").toString(),
 //				                 10,
 //				                 80,
 //				                 10) //TODO: 1.8 switch
-			} else {
+//		} else {
 //				BossBars.MAIN.send(player) //TODO: 1.8 switch
 
-				player.sendMessage("\n" + Text.of("Bem vindo ao ").color(TextColor.RED).append("Dusty").color(TextColor.GOLD).append("!").color(TextColor.RED).toString() + "\n\n" + Text.basicOf(
-						"Escolha uma warp e divirta-se, ").append(player.name).color(TextColor.GOLD).basic("!").toString() + "\n")
-			}
+			player.sendMessage("\n" + Text.of("Bem vindo ao ").color(TextColor.RED).append("Dusty").color(TextColor.GOLD).append("!").color(TextColor.RED).toString() + "\n\n" + Text.basicOf("Escolha uma warp e divirta-se, ").append(
+					player.name).color(TextColor.GOLD).basic("!").toString() + "\n")
+//		}
 
-			if (gamer.rank.isLowerThan(EnumRank.MOD)) event.joinMessage = JOIN_MESSAGE_PREFIX + player.displayName.clearFormatting()
-			else event.joinMessage = null
+		if (gamer.rank.isLowerThan(EnumRank.MOD)) event.joinMessage = JOIN_MESSAGE_PREFIX + player.displayName.clearFormatting()
+		else event.joinMessage = null
 
-			Tags.applyTag(gamer)
+		Tags.applyTag(gamer)
 
-			gamer.sendToWarp(Warps.LOBBY, true, false)
+		gamer.sendToWarp(Warps.LOBBY, true, false)
 
-			Tasks.sync(Runnable {
-				gamer.run {
-					when {
-						rank.isLowerThan(EnumRank.MOD) -> player.gameMode = GameMode.ADVENTURE
-						else                           -> mode = EnumMode.ADMIN
-					}
-
-					hidePlayers()
-
-					createScoreboard()
+		Tasks.sync(Runnable {
+			gamer.run {
+				when {
+					rank.isLowerThan(EnumRank.MOD) -> player.gameMode = GameMode.ADVENTURE
+					else                           -> mode = EnumMode.ADMIN
 				}
 
-				Scoreboards.update()
-			})
-		}
+				hidePlayers()
+
+				createScoreboard()
+			}
+
+			Scoreboards.update()
+		})
+//		}
 	}
 }
