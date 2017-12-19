@@ -86,14 +86,14 @@ object HGWarp: Warp() {
 	                          arrayOf(potions(1, false, false, REGEN, false), 1, 0.075, 1),
 	                          arrayOf(potions(1, true, false, REGEN, false), 1, 0.05, 1),
 	                          arrayOf(potions(1, false, true, REGEN, false), 1, 0.05, 1),
-	                          arrayOf(potions(1, false, false, STRENGTH, false), 1, 0.075, 1),
-	                          arrayOf(potions(1, true, false, STRENGTH, false), 1, 0.05, 1),
-	                          arrayOf(potions(1, false, true, STRENGTH, false), 1, 0.05, 1),
-	                          arrayOf(potions(1, false, false, WEAKNESS, true), 1, 0.075, 1),
-	                          arrayOf(potions(1, true, false, WEAKNESS, true), 1, 0.05, 1),
-	                          arrayOf(potions(1, false, false, POISON, true), 1, 0.075, 1),
-	                          arrayOf(potions(1, true, false, POISON, true), 1, 0.05, 1),
-	                          arrayOf(potions(1, false, true, POISON, true), 1, 0.05, 1))
+//	                          arrayOf(potions(1, false, false, STRENGTH, false), 1, 0.075, 1),
+//	                          arrayOf(potions(1, true, false, STRENGTH, false), 1, 0.05, 1),
+//	                          arrayOf(potions(1, false, true, STRENGTH, false), 1, 0.05, 1),
+                              arrayOf(potions(1, false, false, WEAKNESS, true), 1, 0.075, 1),
+                              arrayOf(potions(1, true, false, WEAKNESS, true), 1, 0.05, 1),
+                              arrayOf(potions(1, false, false, POISON, true), 1, 0.075, 1),
+                              arrayOf(potions(1, true, false, POISON, true), 1, 0.05, 1),
+                              arrayOf(potions(1, false, true, POISON, true), 1, 0.05, 1))
 
 	val PROHIBITED_INVENTORIES = arrayOf(InventoryType.CHEST,
 	                                     InventoryType.ENDER_CHEST,
@@ -185,7 +185,7 @@ object HGWarp: Warp() {
 					prepare()
 				}
 			}
-		}, 0L, 20L)
+		}, 0L, 1L)
 	}
 
 	fun prepare() {
