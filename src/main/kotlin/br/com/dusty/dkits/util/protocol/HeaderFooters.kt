@@ -7,7 +7,7 @@ import java.lang.reflect.Field
 
 object HeaderFooters {
 
-	val HEADER_MAIN = Text.of("\n          Dusty").color(TextColor.RED).append(" - ").color(TextColor.WHITE).append("dusty.com.br          \n").color(TextColor.GOLD).toString()
+	val HEADER_MAIN = Text.of("\n                Dusty                \n").color(TextColor.GREEN).append(" dusty.com.br\n ").color(TextColor.GOLD).toString()
 
 	var class_PacketPlayOutPlayerListHeaderFooter: Class<*> = Class.forName(Protocols.NMS_PACKAGE + Protocols.NMS_VERSION + ".PacketPlayOutPlayerListHeaderFooter")
 	var field_PacketPlayOutPlayerListHeaderFooter_a: Field
@@ -24,7 +24,7 @@ object HeaderFooters {
 		val object_PacketPlayOutPlayerListHeaderFooter = class_PacketPlayOutPlayerListHeaderFooter.newInstance()
 		field_PacketPlayOutPlayerListHeaderFooter_a.set(object_PacketPlayOutPlayerListHeaderFooter, Protocols.chatMessage(HEADER_MAIN))
 		field_PacketPlayOutPlayerListHeaderFooter_b.set(object_PacketPlayOutPlayerListHeaderFooter,
-		                                                Protocols.chatMessage(Text.of("\nWarp: ").color(TextColor.RED).append(gamer.warp.name).color(TextColor.YELLOW).toString() + "\n"))
+		                                                Protocols.chatMessage(Text.of("\nWarp: ").color(TextColor.GREEN).append(gamer.warp.name).color(TextColor.GOLD).toString() + "\n"))
 
 		Protocols.sendPacket(object_PacketPlayOutPlayerListHeaderFooter, player)
 	}
