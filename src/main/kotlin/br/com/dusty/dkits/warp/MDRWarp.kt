@@ -19,7 +19,7 @@ object MDRWarp: Warp() {
 
 		type = EnumWarpType.EVENT
 
-		entryKit = Kit()
+		entryKit = Kit(isDummy = false)
 
 		loadData()
 	}

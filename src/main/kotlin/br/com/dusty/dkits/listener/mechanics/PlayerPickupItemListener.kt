@@ -14,11 +14,13 @@ object PlayerPickupItemListener: Listener {
 
 	@EventHandler
 	fun onEntityPickupItem(event: PlayerPickupItemEvent) {
-		val player = event.player
-		val gamer = player.gamer()
+		if (event.item.itemStack.type !in ALLOWED_PICKUPS) {
+			val player = event.player
+			val gamer = player.gamer()
 
-		if (gamer.warp.overrides(event)) return
+			if (gamer.warp.overrides(event)) return
 
-		if (player.gameMode != GameMode.CREATIVE && gamer.visibleTo != EnumRank.DEFAULT && event.item.itemStack.type !in ALLOWED_PICKUPS) event.isCancelled = true
+			if (player.gameMode != GameMode.CREATIVE || gamer.visibleTo != EnumRank.DEFAULT) event.isCancelled = true
+		}
 	}
 }

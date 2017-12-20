@@ -43,7 +43,7 @@ object BubbleAbility: Ability() {
 					if (gamer.isOnKitCooldown()) {
 						sendKitCooldownMessage(gamer)
 					} else if (item == Kits.BUBBLE.items[0]) {
-						val players = GamerRegistry.onlineGamers().filter { canUse(gamer, it) && player.location.distance(it.player.location) < 5.0 }.map { it.player }
+						val players = GamerRegistry.onlineGamers().filter { canUse(gamer, it) && player.world == it.player.world && player.location.distance(it.player.location) < 5.0 }.map { it.player }
 
 						Tasks.sync(object: BukkitRunnable() {
 							var i = 100

@@ -44,8 +44,8 @@ object PlayerJoinListener: Listener {
 //		} else {
 //				BossBars.MAIN.send(player) //TODO: 1.8 switch
 
-			player.sendMessage("\n" + Text.of("Bem vindo ao ").color(TextColor.RED).append("Dusty").color(TextColor.GOLD).append("!").color(TextColor.RED).toString() + "\n\n" + Text.basicOf("Escolha uma warp e divirta-se, ").append(
-					player.name).color(TextColor.GOLD).basic("!").toString() + "\n")
+			player.sendMessage(" \n" + Text.of("Bem vindo ao ").color(TextColor.RED).append("Dusty").color(TextColor.GOLD).append("!").color(TextColor.RED).toString() + "\n\n" + Text.basicOf("Escolha uma warp e divirta-se, ").append(
+					player.name).color(TextColor.GOLD).basic("!").toString() + "\n ")
 //		}
 
 		if (gamer.rank.isLowerThan(EnumRank.MOD)) event.joinMessage = JOIN_MESSAGE_PREFIX + player.displayName.clearFormatting()

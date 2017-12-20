@@ -3,6 +3,7 @@ package br.com.dusty.dkits.listener.mechanics
 import br.com.dusty.dkits.Main
 import br.com.dusty.dkits.gamer.EnumMode
 import br.com.dusty.dkits.gamer.Gamer
+import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.util.isWalk
 import br.com.dusty.dkits.util.text.Text
@@ -36,8 +37,10 @@ object PlayerMoveListener: Listener {
 
 		if (gamer.mode != EnumMode.ADMIN) {
 			when {
-				gamer.isFrozen() && event.isWalk()                  -> event.to = Location(from.world, from.x, to.y, from.z, to.yaw, to.pitch)
-				toInvincibleLocation(from, to)                      -> {
+				gamer.isFrozen() && event.isWalk()                                                           -> event.to = Location(from.world, from.x, to.y, from.z, to.yaw, to.pitch)
+				to.block.getRelative(BlockFace.DOWN).type == SPONGE                                          -> boost(gamer, to)
+				gamer.kit.isDummy && gamer.warp.enabledKits.isNotEmpty() && fromInvincibleLocation(from, to) -> gamer.setKitAndApply(Kits.PVP, false)
+				toInvincibleLocation(from, to)                                                               -> {
 					val velocity = player.velocity.clone()
 
 					val signX = velocity.x.sign
@@ -50,10 +53,13 @@ object PlayerMoveListener: Listener {
 
 					player.velocity = velocity
 				}
-				to.block.getRelative(BlockFace.DOWN).type == SPONGE -> boost(gamer, to)
 			}
 		}
 	}
+
+	fun fromInvincibleLocation(from: Location,
+	                           to: Location) = Main.REGION_MANAGER!!.getApplicableRegions(from).allows(DefaultFlag.INVINCIBILITY) && !Main.REGION_MANAGER!!.getApplicableRegions(to).allows(
+			DefaultFlag.INVINCIBILITY)
 
 	fun toInvincibleLocation(from: Location, to: Location) = !Main.REGION_MANAGER!!.getApplicableRegions(from).allows(DefaultFlag.INVINCIBILITY) && Main.REGION_MANAGER!!.getApplicableRegions(
 			to).allows(DefaultFlag.INVINCIBILITY)
@@ -86,9 +92,9 @@ object PlayerMoveListener: Listener {
 		while (locationNorth.clone().add(0.0, -1.0, 0.0).block.type == SPONGE) north++*/
 
 		val velocity = player.velocity.clone()
-		velocity.x = 0.75 * (east - west)
-		velocity.y = 0.75 * under
-		velocity.z = 0.75 * (south - north)
+		velocity.x = 0.8 * (east - west)
+		velocity.y = 0.8 * under
+		velocity.z = 0.8 * (south - north)
 
 		player.velocity = velocity
 

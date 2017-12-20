@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.block.Action
 import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.event.inventory.InventoryType
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffect
@@ -21,15 +22,13 @@ object RingAbility: Ability() {
 
 	@EventHandler(priority = EventPriority.HIGH)
 	fun onInventoryClick(event: InventoryClickEvent) {
-		if (!event.isCancelled && event.isShiftClick) {
-			val currentItem = event.currentItem ?: return
+		val currentItem = event.currentItem ?: return
 
-			if (currentItem.type == Material.LEATHER_BOOTS || currentItem.type == Material.GOLD_BOOTS) {
-				val player = event.whoClicked as Player
-				val gamer = player.gamer()
+		if ((currentItem.type == Material.LEATHER_BOOTS || currentItem.type == Material.GOLD_BOOTS) && !event.isCancelled && (event.isShiftClick || event.slotType == InventoryType.SlotType.ARMOR)) {
+			val player = event.whoClicked as Player
+			val gamer = player.gamer()
 
-				if (hasAbility(gamer)) event.isCancelled = true
-			}
+			if (hasAbility(gamer)) event.isCancelled = true
 		}
 	}
 

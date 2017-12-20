@@ -20,6 +20,7 @@ import org.bukkit.SkullType
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
+import org.bukkit.event.block.Action
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerDropItemEvent
 import org.bukkit.event.player.PlayerInteractEntityEvent
@@ -35,8 +36,6 @@ object OneVsOneWarp: Warp() {
 	val FIGHTS = hashMapOf<Player, OneVsOneFight>()
 
 	val ARENAS = hashMapOf<Player, Location>()
-
-	val ALLOWED_DROPS = arrayOf(RED_MUSHROOM, BROWN_MUSHROOM, BOWL, MUSHROOM_SOUP)
 
 	var oneVsOneFirst = Locations.GENERIC
 		get() {
@@ -126,22 +125,24 @@ object OneVsOneWarp: Warp() {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	fun onPlayerDropItem(event: PlayerDropItemEvent) {
-		val player = event.player
-		val gamer = player.gamer()
+		if (event.isCancelled) {
+			val itemStack = event.itemDrop.itemStack ?: return
 
-		if (gamer.warp == this) {
-			val itemStack = event.itemDrop.itemStack
+			val player = event.player
+			val gamer = player.gamer()
 
-			if (!gamer.kit.isDummy && itemStack != null && itemStack in gamer.kit.items) event.isCancelled = false
+			if (gamer.warp == this && !gamer.kit.isDummy && itemStack in gamer.kit.items) event.isCancelled = false
 		}
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	fun onPlayerDeath(event: PlayerDeathEvent) {
-		val loser = event.entity.gamer()
+		val gamer = event.entity.gamer()
 
-		if (loser.warp == this) {
-			if (FIGHTS.values.any { it.host == loser || it.guest == loser }) end(loser, loser.combatPartner!!)
+		if (gamer.warp == this) {
+			val fight = FIGHTS.values.firstOrNull { it.host == gamer || it.guest == gamer } ?: return
+
+			end(gamer, if (gamer == fight.host) fight.guest else fight.host)
 		}
 	}
 
@@ -187,14 +188,14 @@ object OneVsOneWarp: Warp() {
 
 		if (gamer.warp == this) {
 			when {
-				!gamer.isFrozen() && FIGHTS.values.any { it.state == ONGOING && it.type == GLADIATOR && (it.host == gamer || it.guest == gamer) } -> {
+				!gamer.isFrozen() && FIGHTS.values.any { it.state == ONGOING && (it.host == gamer || it.guest == gamer) } -> {
 					event.isCancelled = false
 
-					val clickedBlock = event.clickedBlock
+					val clickedBlock = event.clickedBlock ?: return
 
-					if (clickedBlock != null && clickedBlock.type == GLASS) player.sendBlockChange(clickedBlock.location, BEDROCK, 0)
+					if (event.action == Action.LEFT_CLICK_BLOCK && clickedBlock.type == GLASS) player.sendBlockChange(clickedBlock.location, BEDROCK, 0)
 				}
-				event.item != null                                                                                                                -> {
+				event.item != null                                                                                        -> {
 					val item = event.item
 
 					if (item.type == SKULL_ITEM && item == CLAN_VS_CLAN.item) {
@@ -222,6 +223,8 @@ object OneVsOneWarp: Warp() {
 
 				player.itemInHand?.run {
 					val fight = FIGHTS[rightClicked]
+
+					if (fight != null && fight.state == ONGOING) return
 
 					when (type) {
 						BLAZE_ROD     -> if (this == STANDARD.item) {

@@ -6,8 +6,6 @@ import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.store.Store
 import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.util.inventory.Inventories
-import br.com.dusty.dkits.util.inventory.Inventories.BOWLS
-import br.com.dusty.dkits.util.inventory.Inventories.BROWN_MUSHROOMS
 import br.com.dusty.dkits.util.inventory.Inventories.BUTTON_BACK
 import br.com.dusty.dkits.util.inventory.KitMenu
 import br.com.dusty.dkits.util.inventory.ShopMenu
@@ -18,8 +16,7 @@ import br.com.dusty.dkits.warp.Warps
 import io.reactivex.Observable
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
-import org.bukkit.Material.MUSHROOM_SOUP
-import org.bukkit.Material.RED_MUSHROOM
+import org.bukkit.Material.*
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -31,7 +28,7 @@ object InventoryClickListener: Listener {
 
 	val BUY_KIT_FAIL = Text.negativePrefix().negative("Não").basic(" foi possível ").negative("comprar").basic(" esse kit!").toString()
 
-	val ALLOWED_ITEMS = arrayOf(MUSHROOM_SOUP, RED_MUSHROOM, BROWN_MUSHROOMS, BOWLS)
+	val DELIBERATELY_ALLOWED_ITEMS = arrayOf(MUSHROOM_SOUP, RED_MUSHROOM, BROWN_MUSHROOM, BOWL)
 	val PROHIBITED_INVENTORIES = arrayOf(InventoryType.CHEST,
 	                                     InventoryType.ENDER_CHEST,
 	                                     InventoryType.WORKBENCH,
@@ -44,7 +41,7 @@ object InventoryClickListener: Listener {
 	fun onInventoryClick(event: InventoryClickEvent) {
 		val currentItem = event.currentItem ?: return
 
-		if (currentItem in ALLOWED_ITEMS) return
+		if (currentItem.type in DELIBERATELY_ALLOWED_ITEMS) return
 
 		val player = event.whoClicked as Player
 		val gamer = player.gamer()

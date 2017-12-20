@@ -2,6 +2,7 @@ package br.com.dusty.dkits.listener.gameplay
 
 import br.com.dusty.dkits.gamer.EnumMode
 import br.com.dusty.dkits.util.gamer.gamer
+import org.bukkit.Material.*
 import org.bukkit.entity.Arrow
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -15,13 +16,24 @@ object EntityDamageByEntityListener: Listener {
 	fun onEntityDamage(event: EntityDamageByEntityEvent) {
 		var damagerPlayer: Player? = null
 
-		if (event.damager is Arrow) {
-			val arrow = event.damager as Arrow
+		var damage = event.damage
 
-			if (arrow.shooter is Player) damagerPlayer = arrow.shooter as Player
+		when (event.damager) {
+			is Arrow  -> {
+				val arrow = event.damager as Arrow
+
+				if (arrow.shooter is Player) damagerPlayer = arrow.shooter as Player
+			}
+			is Player -> {
+				damagerPlayer = event.damager as Player
+
+				if (damagerPlayer.itemInHand != null) when (damagerPlayer.itemInHand.type) {
+					WOOD_SWORD, GOLD_SWORD, STONE_SWORD, IRON_SWORD, DIAMOND_SWORD -> damage *= 0.75
+				}
+			}
 		}
 
-		if (event.damager is Player) damagerPlayer = event.damager as Player
+		event.damage = damage
 
 		if (damagerPlayer != null) {
 			val damager = damagerPlayer.gamer()

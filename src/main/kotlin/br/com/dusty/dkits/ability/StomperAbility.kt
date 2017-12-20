@@ -22,7 +22,7 @@ object StomperAbility: Ability() {
 
 				if (damage > 4.0) event.damage = 4.0
 
-				GamerRegistry.onlineGamers().filter { canUse(gamer, it) }.forEach {
+				GamerRegistry.onlineGamers().filter { canUse(gamer, it) && player.world == it.player.world }.forEach {
 					val distance = player.location.distance(it.player.location)
 
 					if (distance < 5) {
