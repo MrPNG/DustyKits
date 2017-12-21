@@ -34,7 +34,7 @@ object VipCommand: PlayerCustomCommand(EnumRank.ADMIN, "vip") {
 					val gamer = player.gamer()
 
 					val onNext = Consumer<Player> {
-						WebAPI.addPurchase(Store.PseudoPurchase(0, player.uniqueId.toString(), 2, if (rank == EnumRank.PRO) 1001 else 1003, time))
+						WebAPI.addPurchase(Store.PseudoPurchase(0, player.uniqueId.toString(), 2, if (rank == EnumRank.PRO) 1001 else 1003, System.currentTimeMillis() + time))
 
 						gamer.rank = rank
 

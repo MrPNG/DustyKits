@@ -19,7 +19,7 @@ object EndermageKit: Kit() {
 		icon.description(description, true)
 
 		weapon = ItemStack(Material.STONE_SWORD)
-		armor = arrayOf(null, ItemStack(Material.LEATHER_CHESTPLATE).color(0x7F3FB2), null, null)
+		armor = arrayOf(null, null, ItemStack(Material.LEATHER_CHESTPLATE).color(0x7F3FB2), null)
 		items = arrayOf(ItemStack(Material.ENDER_PORTAL_FRAME).rename("Portal do Endermage"))
 
 		ability = EndermageAbility

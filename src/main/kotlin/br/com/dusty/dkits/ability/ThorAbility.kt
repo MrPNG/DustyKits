@@ -17,7 +17,7 @@ object ThorAbility: Ability() {
 			val player = event.entity as Player
 			val gamer = player.gamer()
 
-			if (hasAbility(gamer) && canUse(gamer)) event.isCancelled = true
+			if (hasAbility(gamer) && gamer.canUse()) event.isCancelled = true
 		}
 	}
 
@@ -34,7 +34,7 @@ object ThorAbility: Ability() {
 
 				if (gamer.isOnKitCooldown()) {
 					sendKitCooldownMessage(gamer)
-				} else if (hasAbility(gamer) && canUse(gamer)) {
+				} else if (hasAbility(gamer) && gamer.canUse()) {
 					val location = event.clickedBlock.location
 					location.world.strikeLightning(location)
 

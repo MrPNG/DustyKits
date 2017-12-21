@@ -19,7 +19,7 @@ object KangarooKit: Kit() {
 		icon.description(description, true)
 
 		weapon = ItemStack(Material.STONE_SWORD)
-		armor = arrayOf(null, ItemStack(Material.LEATHER_CHESTPLATE).color(0x9A3B33), null, null)
+		armor = arrayOf(null, null, ItemStack(Material.LEATHER_CHESTPLATE).color(0x9A3B33), null)
 		items = arrayOf(ItemStack(Material.FIREWORK).rename("Boost do Kangaroo"))
 
 		ability = KangarooAbility

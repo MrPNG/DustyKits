@@ -21,7 +21,7 @@ object RingKit: Kit() {
 		icon.description(description, true)
 
 		weapon = ItemStack(Material.GOLD_SWORD)
-		armor = arrayOf(null, ItemStack(Material.LEATHER_CHESTPLATE).color(0xFFE100), null, null)
+		armor = arrayOf(null, null, ItemStack(Material.LEATHER_CHESTPLATE).color(0xFFE100), null)
 		items = arrayOf(ItemStack(Material.GOLD_BOOTS).enchant(Pair(Enchantment.DURABILITY, 1)).rename("Botas de Invisibilidade"))
 
 		ability = RingAbility

@@ -19,7 +19,7 @@ object ThorKit: Kit() {
 		icon.description(description, true)
 
 		weapon = ItemStack(Material.STONE_SWORD)
-		armor = arrayOf(null, ItemStack(Material.LEATHER_CHESTPLATE).color(0x704E22), null, null)
+		armor = arrayOf(null, null, ItemStack(Material.LEATHER_CHESTPLATE).color(0x704E22), null)
 		items = arrayOf(ItemStack(Material.WOOD_AXE).rename("Machado do Thor"))
 
 		ability = ThorAbility

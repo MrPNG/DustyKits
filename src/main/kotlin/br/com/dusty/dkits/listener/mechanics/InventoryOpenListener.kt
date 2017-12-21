@@ -15,9 +15,9 @@ object InventoryOpenListener: Listener {
 	fun onInventoryOpen(event: InventoryOpenEvent) {
 		if (event.inventory.type == InventoryType.ENCHANTING) {
 			val inventory = event.inventory
-			val itemStack = inventory.getItem(1) ?: return
+			val itemStack = inventory.getItem(1)
 
-			if (itemStack.type != INK_SACK || itemStack.amount != 64) inventory.setItem(1, LAPIS_LAZULI)
+			if (itemStack == null || itemStack.amount != 64) inventory.setItem(1, LAPIS_LAZULI)
 		}
 	}
 }

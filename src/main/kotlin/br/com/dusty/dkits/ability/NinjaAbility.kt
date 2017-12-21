@@ -21,7 +21,7 @@ object NinjaAbility: Ability() {
 			if (hasAbility(gamer)) {
 				val damager = (event.damager as Player).gamer()
 
-				if (canUse(gamer, damager)) GAMER_BY_NINJA.put(damager, gamer)
+				if (damager.canUse(gamer)) GAMER_BY_NINJA.put(damager, gamer)
 			}
 		}
 	}
@@ -37,7 +37,7 @@ object NinjaAbility: Ability() {
 				else {
 					val otherGamer = GAMER_BY_NINJA[gamer] ?: return
 
-					if (gamer.combatPartner == otherGamer && canUse(gamer, otherGamer)) {
+					if (gamer.combatPartner == otherGamer && gamer.canUse(otherGamer)) {
 						val otherPlayer = otherGamer.player
 
 						player.teleport(otherPlayer)

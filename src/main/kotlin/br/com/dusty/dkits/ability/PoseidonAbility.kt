@@ -18,7 +18,7 @@ object PoseidonAbility: Ability() {
 			val player = event.player
 			val gamer = player.gamer()
 
-			if (hasAbility(gamer) && canUse(gamer) && event.isWalk()) {
+			if (hasAbility(gamer) && gamer.canUse() && event.isWalk()) {
 				player.addPotionEffect(PotionEffect(PotionEffectType.SPEED, 60, 1))
 				player.addPotionEffect(PotionEffect(PotionEffectType.INCREASE_DAMAGE, 60, 0))
 			}

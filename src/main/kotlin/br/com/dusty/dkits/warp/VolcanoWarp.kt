@@ -1,7 +1,7 @@
 package br.com.dusty.dkits.warp
 
-import br.com.dusty.dkits.gamer.EnumRank
 import br.com.dusty.dkits.kit.Kit
+import br.com.dusty.dkits.store.EnumAdvantage.*
 import br.com.dusty.dkits.util.cosmetic.Colors
 import br.com.dusty.dkits.util.description
 import br.com.dusty.dkits.util.entity.spawnFirework
@@ -17,6 +17,8 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.inventory.ItemStack
+import org.bukkit.potion.PotionEffect
+import org.bukkit.potion.PotionEffectType
 
 object VolcanoWarp: Warp() {
 
@@ -35,7 +37,7 @@ object VolcanoWarp: Warp() {
 		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
 		icon.description(description, true)
 
-		entryKit = Kit(weapon = ItemStack(WOOD_SWORD), armor = arrayOf(null, ItemStack(LEATHER_CHESTPLATE), null, null), isDummy = false)
+		entryKit = Kit(weapon = ItemStack(WOOD_SWORD), armor = arrayOf(null, null, ItemStack(LEATHER_CHESTPLATE), null), isDummy = false)
 
 		loadData()
 	}
@@ -49,10 +51,12 @@ object VolcanoWarp: Warp() {
 			val player = gamer.player
 			val inventory = player.inventory
 
+			if (gamer.hasAdvantage(VOLCANO_FIRE_PROTECTION)) player.addPotionEffect(PotionEffect(PotionEffectType.FIRE_RESISTANCE, 100, 1))
+
 			val normalizationFactor = when {
-				gamer.rank.isHigherThanOrEquals(EnumRank.PRO) -> 4.0 / 3.0
-				gamer.rank.isHigherThanOrEquals(EnumRank.MVP) -> 10.0 / 9.0
-				else                                          -> 1.0
+				gamer.hasAdvantage(VOLCANO_25) -> 4.0 / 3.0
+				gamer.hasAdvantage(VOLCANO_10) -> 10.0 / 9.0
+				else                           -> 1.0
 			}
 
 			val normalizedKills = Math.floor(gamer.warpKills * normalizationFactor).toInt()

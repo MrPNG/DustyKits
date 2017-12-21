@@ -7,12 +7,16 @@ import br.com.dusty.dkits.gamer.Gamer
 import br.com.dusty.dkits.gamer.GamerRegistry
 import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.kit.Kits
+import br.com.dusty.dkits.store.EnumAdvantage.FEAST_CHANCES
 import br.com.dusty.dkits.util.*
 import br.com.dusty.dkits.util.ItemStacks.potions
 import br.com.dusty.dkits.util.cosmetic.Colors
 import br.com.dusty.dkits.util.entity.spawnFirework
 import br.com.dusty.dkits.util.gamer.gamer
-import br.com.dusty.dkits.util.inventory.*
+import br.com.dusty.dkits.util.inventory.Inventories
+import br.com.dusty.dkits.util.inventory.addItemStacks
+import br.com.dusty.dkits.util.inventory.fillRecraft
+import br.com.dusty.dkits.util.inventory.fillSoups
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
 import org.bukkit.Bukkit
@@ -20,6 +24,7 @@ import org.bukkit.FireworkEffect
 import org.bukkit.Location
 import org.bukkit.Material.*
 import org.bukkit.block.Chest
+import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
@@ -229,9 +234,19 @@ object FeastWarp: Warp() {
 					else        -> Inventories.DIAMOND_SWORD
 				})
 				inventory.addItemStacks(kit.items)
+				inventory.armorContents = Inventories.ARMOR_FULL_IRON
 				fillRecraft()
 				fillSoups(true)
-				setArmor(Inventories.ARMOR_FULL_IRON)
+
+				if (gamer.hasAdvantage(FEAST_CHANCES)) {
+					val protectionEnchantment = Pair(Enchantment.PROTECTION_ENVIRONMENTAL, 1)
+
+					if (Main.RANDOM.nextDouble() < 0.12944943670387585) inventory.helmet = inventory.helmet.enchant(protectionEnchantment)
+					if (Main.RANDOM.nextDouble() < 0.12944943670387585) inventory.chestplate = inventory.chestplate.enchant(protectionEnchantment)
+					if (Main.RANDOM.nextDouble() < 0.12944943670387585) inventory.leggings = inventory.leggings.enchant(protectionEnchantment)
+					if (Main.RANDOM.nextDouble() < 0.12944943670387585) inventory.boots = inventory.boots.enchant(protectionEnchantment)
+					if (Main.RANDOM.nextDouble() < 0.12944943670387585) inventory.setItem(0, inventory.getItem(0).enchant(Pair(Enchantment.DAMAGE_ALL, 1)))
+				}
 			}
 		}
 	}

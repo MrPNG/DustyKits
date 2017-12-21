@@ -21,7 +21,7 @@ object KangarooAbility: Ability() {
 			val player = event.entity as Player
 			val gamer = player.gamer()
 
-			if (hasAbility(gamer) && canUse(gamer)) event.damage = 7.0
+			if (hasAbility(gamer) && gamer.canUse()) event.damage = 7.0
 		}
 	}
 
@@ -31,7 +31,7 @@ object KangarooAbility: Ability() {
 			val player = event.entity as Player
 			val gamer = player.gamer()
 
-			if (hasAbility(gamer) && canUse(gamer)) gamer.kitCooldown = 5000L
+			if (hasAbility(gamer) && gamer.canUse()) gamer.kitCooldown = 5000L
 		}
 	}
 
@@ -51,7 +51,7 @@ object KangarooAbility: Ability() {
 
 				if (count == null) count = 0
 
-				if (count < 2 && hasAbility(gamer) && canUse(gamer)) {
+				if (count < 2 && hasAbility(gamer) && gamer.canUse()) {
 					val velocity = player.velocity
 					val velocityLength = Math.sqrt(velocity.x.pow(2) + velocity.z.pow(2))
 

@@ -555,7 +555,7 @@ object OneVsOneWarp: Warp() {
 		gamer.player.run {
 			inventory.setItem(0, kit.weapon)
 			inventory.addItemStacks(kit.items)
-			setArmor(kit.armor)
+			inventory.armorContents = kit.armor
 		}
 	}
 
