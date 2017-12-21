@@ -3,6 +3,7 @@ package br.com.dusty.dkits.kit
 import br.com.dusty.dkits.Main
 import br.com.dusty.dkits.ability.Ability
 import br.com.dusty.dkits.util.Tasks
+import br.com.dusty.dkits.util.inventory.Inventories
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import java.io.File
@@ -13,7 +14,7 @@ open class Kit(var name: String = "None",
                var description: String = "",
                var icon: ItemStack = ItemStack(Material.STONE_SWORD),
                var weapon: ItemStack? = null,
-               var armor: Array<ItemStack?> = arrayOf(null, null, null, null),
+               var armor: Array<ItemStack?> = Inventories.NO_ARMOR,
                var items: Array<ItemStack?> = arrayOf(),
                var ability: Ability = Ability(),
                var isDummy: Boolean = true,

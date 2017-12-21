@@ -37,10 +37,11 @@ object KangarooAbility: Ability() {
 
 	@EventHandler
 	fun onPlayerInteract(event: PlayerInteractEvent) {
-		val item = event.item
+		val player = event.player
+
+		val item = player.itemInHand
 
 		if (item != null && item.type == Material.FIREWORK && item == Kits.KANGAROO.items[0]) {
-			val player = event.player
 			val gamer = player.gamer()
 
 			if (gamer.isOnKitCooldown()) {

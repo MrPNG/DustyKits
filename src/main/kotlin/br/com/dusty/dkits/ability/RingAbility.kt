@@ -35,10 +35,11 @@ object RingAbility: Ability() {
 	@EventHandler
 	fun onPlayerInteract(event: PlayerInteractEvent) {
 		if (event.action == Action.RIGHT_CLICK_BLOCK || event.action == Action.RIGHT_CLICK_AIR) {
-			val item = event.item
+			val player = event.player
+
+			val item = player.itemInHand
 
 			if (item != null && (item.type == Material.LEATHER_BOOTS || item.type == Material.GOLD_BOOTS)) {
-				val player = event.player
 				val gamer = player.gamer()
 
 				if (hasAbility(gamer) && canUse(gamer)) {
@@ -56,10 +57,11 @@ object RingAbility: Ability() {
 						inventory.chestplate = null
 
 						Tasks.sync(Runnable {
-							val index = player.inventory.indexOfFirst { it != null && it.type == Material.LEATHER_BOOTS }
+							if (gamer.kit == Kits.RING) {
+								val index = player.inventory.indexOfFirst { it != null && it.type == Material.LEATHER_BOOTS }
 
-							if (index != -1 && gamer.kit == Kits.RING) {
-								inventory.setItem(index, Kits.RING.items[0])
+								if (index != -1) inventory.setItem(index, Kits.RING.items[0])
+
 								inventory.chestplate = chestplate
 							}
 						}, 600L)

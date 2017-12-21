@@ -24,10 +24,12 @@ object ThorAbility: Ability() {
 	@EventHandler
 	fun onPlayerInteract(event: PlayerInteractEvent) {
 		if (event.action == Action.LEFT_CLICK_BLOCK || event.action == Action.RIGHT_CLICK_BLOCK) {
-			val item = event.item
+			val player = event.player
+
+			val item = player.itemInHand
 
 			if (item != null && item.type == Material.WOOD_AXE && item == Kits.THOR.items[0]) {
-				val player = event.player
+
 				val gamer = player.gamer()
 
 				if (gamer.isOnKitCooldown()) {

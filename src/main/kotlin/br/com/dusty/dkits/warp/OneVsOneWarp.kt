@@ -112,7 +112,7 @@ object OneVsOneWarp: Warp() {
 
 		entryKit = Kit(items = arrayOf(STANDARD.item, FULL.item, NUDE.item, GLADIATOR.item, null, null, null, null, GAME_WARP_KIT.items[8]))
 
-		durabilityBehavior = EnumDurabilityBehavior.REGEN_ON_KILL
+		durabilityBehavior = EnumDurabilityBehavior.BREAK
 
 		data = OneVsOneData()
 		data.spreadRange = 4.0
@@ -187,6 +187,8 @@ object OneVsOneWarp: Warp() {
 		val gamer = player.gamer()
 
 		if (gamer.warp == this) {
+			val item = player.itemInHand
+
 			when {
 				!gamer.isFrozen() && FIGHTS.values.any { it.state == ONGOING && (it.host == gamer || it.guest == gamer) } -> {
 					event.isCancelled = false
@@ -195,8 +197,7 @@ object OneVsOneWarp: Warp() {
 
 					if (event.action == Action.LEFT_CLICK_BLOCK && clickedBlock.type == GLASS) player.sendBlockChange(clickedBlock.location, BEDROCK, 0)
 				}
-				event.item != null                                                                                        -> {
-					val item = event.item
+				item != null                                                                                              -> {
 
 					if (item.type == SKULL_ITEM && item == CLAN_VS_CLAN.item) {
 						val clan = gamer.clan

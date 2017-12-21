@@ -47,8 +47,7 @@ object Warps {
 
 		enabledWarpsNames = Warps.WARPS.filter { it.data.isEnabled }.map { it.name.toLowerCase().replace(" ", "") }.toTypedArray()
 
-		val pluginManager = Bukkit.getPluginManager()
-		WARPS.forEach { warp -> pluginManager.registerEvents(warp, Main.INSTANCE) }
+		WARPS.forEach { warp -> Bukkit.getPluginManager().registerEvents(warp, Main.INSTANCE) }
 	}
 
 	operator fun get(name: String): Warp = WARPS.firstOrNull { it.name.toLowerCase().replace(" ", "") == name.toLowerCase() } ?: NONE

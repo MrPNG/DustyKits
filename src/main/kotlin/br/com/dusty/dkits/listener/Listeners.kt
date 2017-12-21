@@ -44,12 +44,13 @@ object Listeners {
 		LISTENERS.add(PlayerPickupItemListener)
 		LISTENERS.add(FoodLevelChangeListener)
 		LISTENERS.add(InventoryClickListener)
+		LISTENERS.add(InventoryOpenListener)
 //		LISTENERS.add(ItemSpawnListener)
 		LISTENERS.add(PlayerCommandPreProcessListener)
 		LISTENERS.add(LeavesDecayListener)
 		LISTENERS.add(PlayerDropItemListener)
 		LISTENERS.add(PlayerInteractEntityListener)
-		LISTENERS.add(PlayerItemDamageListener)
+//		LISTENERS.add(PlayerItemDamageListener)
 		LISTENERS.add(PlayerMoveListener)
 		LISTENERS.add(ServerListPingListener)
 		LISTENERS.add(SignChangeListener)
@@ -59,7 +60,6 @@ object Listeners {
 		//Quit
 		LISTENERS.add(PlayerQuitListener)
 
-		val pluginManager = Bukkit.getPluginManager()
-		LISTENERS.forEach { listener -> pluginManager.registerEvents(listener, Main.INSTANCE) }
+		LISTENERS.forEach { listener -> Bukkit.getPluginManager().registerEvents(listener, Main.INSTANCE) }
 	}
 }

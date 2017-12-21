@@ -9,7 +9,6 @@ import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.util.rename
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
-import org.bukkit.Effect
 import org.bukkit.FireworkEffect
 import org.bukkit.Material.*
 import org.bukkit.entity.Player
@@ -41,7 +40,7 @@ object VolcanoWarp: Warp() {
 		loadData()
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.LOW)
 	fun onPlayerDeath(event: PlayerDeathEvent) {
 		val dead = event.entity.gamer()
 
@@ -56,7 +55,9 @@ object VolcanoWarp: Warp() {
 				else                                          -> 1.0
 			}
 
-			if (when (Math.ceil(gamer.warpKills * normalizationFactor).toInt()) {
+			val normalizedKills = Math.floor(gamer.warpKills * normalizationFactor).toInt()
+
+			if (when (normalizedKills) {
 				2    -> {
 					inventory.setItem(inventory.indexOfFirst { it.type == WOOD_SWORD }, ITEMSTACKS[0])
 					true
@@ -89,8 +90,7 @@ object VolcanoWarp: Warp() {
 			}) {
 				player.sendMessage(Text.positivePrefix().basic("Você ").positive("avançou").basic(" de ").positive("nível").basic(" na warp ").positive(this.name).basic("!").toString())
 
-				player.location.spawnFirework(gamer.warpKills, FireworkEffect.builder().withColor(Colors.random()).build())
-				player.playEffect(player.location, Effect.CRIT, 0)
+				player.location.spawnFirework(normalizedKills, FireworkEffect.builder().withColor(Colors.random()).build())
 			}
 		}
 	}

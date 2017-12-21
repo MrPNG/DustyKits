@@ -36,6 +36,8 @@ object Scoreboards {
 	                         ChatColor.AQUA.toString() + "Combate: ",
 	                         ChatColor.AQUA.toString() + "Players: ")
 
+	val MAIN_SCOREBOARD = Bukkit.getScoreboardManager().mainScoreboard
+
 	fun create(player: Player) {
 		val scoreboard = Bukkit.getScoreboardManager().newScoreboard
 		player.scoreboard = scoreboard
@@ -89,5 +91,26 @@ object Scoreboards {
 
 	fun clear(scoreboard: Scoreboard) {
 		scoreboard.entries.forEach({ scoreboard.resetScores(it) })
+	}
+
+	fun team(gamer: Gamer) {
+		/*if (MAIN_SCOREBOARD.getObjective("EnumRank") == null) {
+			val objective = MAIN_SCOREBOARD.registerNewObjective("EnumRank", "dummy")
+
+			objective.displaySlot = DisplaySlot.PLAYER_LIST
+		}*/
+
+		val rank = gamer.rank
+		val team = MAIN_SCOREBOARD.getTeam(rank.name) ?: MAIN_SCOREBOARD.registerNewTeam(rank.name).apply {
+			prefix = rank.format("")
+			Bukkit.broadcastMessage(prefix + rank.name + " ")
+
+			setAllowFriendlyFire(false)
+			setCanSeeFriendlyInvisibles(false)
+		}
+
+		val name = gamer.player.name
+
+		if (!team.hasEntry(name)) team.addEntry(name)
 	}
 }

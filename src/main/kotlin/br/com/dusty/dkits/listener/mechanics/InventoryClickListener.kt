@@ -22,6 +22,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryType
+import org.bukkit.event.inventory.InventoryType.ENCHANTING
 import org.bukkit.event.inventory.InventoryType.SlotType
 
 object InventoryClickListener: Listener {
@@ -41,7 +42,10 @@ object InventoryClickListener: Listener {
 	fun onInventoryClick(event: InventoryClickEvent) {
 		val currentItem = event.currentItem ?: return
 
-		if (currentItem.type in DELIBERATELY_ALLOWED_ITEMS) return
+		when (currentItem.type) {
+			in DELIBERATELY_ALLOWED_ITEMS -> return
+			INK_SACK                      -> if (event.inventory.type == ENCHANTING) event.isCancelled = true
+		}
 
 		val player = event.whoClicked as Player
 		val gamer = player.gamer()

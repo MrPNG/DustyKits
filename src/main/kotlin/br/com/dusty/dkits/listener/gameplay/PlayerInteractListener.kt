@@ -15,8 +15,7 @@ import org.bukkit.Material.*
 import org.bukkit.block.Sign
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.event.block.Action.RIGHT_CLICK_AIR
-import org.bukkit.event.block.Action.RIGHT_CLICK_BLOCK
+import org.bukkit.event.block.Action.*
 import org.bukkit.event.player.PlayerInteractEvent
 
 object PlayerInteractListener: Listener {
@@ -26,6 +25,8 @@ object PlayerInteractListener: Listener {
 
 	@EventHandler
 	fun onPlayerInteract(event: PlayerInteractEvent) {
+		if (event.action == PHYSICAL) return
+
 		val player = event.player
 		val gamer = player.gamer()
 
@@ -47,7 +48,9 @@ object PlayerInteractListener: Listener {
 			}
 		}
 
-		event.item?.run {
+		val item = player.itemInHand
+
+		item?.run {
 			if (event.action == RIGHT_CLICK_AIR && type in ALLOWED_ITEMS) event.isCancelled = false
 
 			when (type) {

@@ -8,15 +8,15 @@ import java.text.DecimalFormat
 
 object RamCommand: PlayerCustomCommand(EnumRank.ADMIN, "ram") {
 
-	val MB = 1024 * 1024
+	val MB = 1024.0 * 1024.0
 	val runtime = Runtime.getRuntime()
 	val decimalFormat = DecimalFormat("#.##")
 
 	override fun execute(sender: Player, alias: String, args: Array<String>): Boolean {
-		val totalMemory = runtime.totalMemory() / MB
-		val freeMemory = runtime.freeMemory() / MB
+		val totalMemory = Math.floor(runtime.totalMemory() / MB)
+		val freeMemory = Math.floor(runtime.freeMemory() / MB)
 		val usedMemory = totalMemory - freeMemory
-		val maxMemory = runtime.maxMemory() / MB
+		val maxMemory = Math.floor(runtime.maxMemory() / MB)
 
 		sender.sendMessage(Text.neutralPrefix().basic("Memória RAM:").neutral("\nEm uso: ").basic(usedMemory.toString() + "MB (" + decimalFormat.format(usedMemory * 100 / totalMemory) + "% do total)").neutral(
 				"\nLivre: ").basic(freeMemory.toString() + "MB (" + decimalFormat.format(freeMemory * 100 / totalMemory) + "% do total)").neutral("\nTotal: ").basic(totalMemory.toString() + "MB (" + decimalFormat.format(

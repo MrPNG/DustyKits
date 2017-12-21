@@ -27,7 +27,6 @@ object Abilities {
 		ABILITIES.add(TurtleAbility)
 		ABILITIES.add(ViperAbility)
 
-		val pluginManager = Bukkit.getPluginManager()
-		ABILITIES.forEach { ability -> pluginManager.registerEvents(ability, Main.INSTANCE) }
+		ABILITIES.forEach { ability -> Bukkit.getPluginManager().registerEvents(ability, Main.INSTANCE) }
 	}
 }

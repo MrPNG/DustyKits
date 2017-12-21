@@ -29,7 +29,6 @@ import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.inventory.InventoryType
 import org.bukkit.event.player.PlayerDropItemEvent
 import org.bukkit.event.player.PlayerInteractEvent
-import org.bukkit.event.player.PlayerPickupItemEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.ShapelessRecipe
 import org.bukkit.potion.PotionType.*
@@ -144,7 +143,7 @@ object HGWarp: Warp() {
 
 		aliases = arrayOf(name.replace(" ", "").toLowerCase(), "hg")
 
-		overriddenEvents = arrayOf(PlayerDeathEvent::class.java, PlayerDropItemEvent::class.java, PlayerPickupItemEvent::class.java)
+		overriddenEvents = arrayOf(PlayerDeathEvent::class.java, PlayerDropItemEvent::class.java)
 
 		entryKit = SIMPLE_GAME_WARP_KIT
 
@@ -169,6 +168,79 @@ object HGWarp: Warp() {
 		Bukkit.addRecipe(cactiJuiceRecipe)
 
 		prepare()
+	}
+
+	@EventHandler
+	fun onPlayerDeath(event: PlayerDeathEvent) {
+		val player = event.entity
+		val gamer = player.gamer()
+
+		if (gamer.warp == this) {
+			event.deathMessage = null
+
+			event.drops.removeIf { it in gamer.kit.items }
+
+			if (gamer.isCombatTagged()) gamer.combatPartner!!.kill(gamer)
+
+			gamer.resetKillStreak()
+
+			Tasks.sync(Runnable {
+				player.spigot().respawn()
+
+				gamer.sendToWarp(Warps.LOBBY, true, true)
+			})
+		}
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	fun onPlayerInteract(event: PlayerInteractEvent) {
+		if (state == ONGOING || state == FINISHING) {
+			val player = event.player
+			val gamer = player.gamer()
+
+			if (gamer.warp == this) {
+				val item = player.itemInHand
+
+				if (item !in gamer.kit.items) event.isCancelled = false
+
+				item?.run {
+					when (type) {
+						COMPASS -> {
+							var nearestPlayer: Player? = null
+							var smallestDistance = Double.MAX_VALUE
+
+							GamerRegistry.onlineGamers().filter { it.mode == EnumMode.PLAY && it.warp == Warps.HG && it.player.world == player.world }.forEach {
+								val distance = it.player.location.distance(player.location)
+
+								if (distance > 0 && distance < smallestDistance) {
+									nearestPlayer = it.player
+									smallestDistance = distance
+								}
+							}
+
+							if (nearestPlayer != null) {
+								player.compassTarget = nearestPlayer!!.location
+								player.sendMessage(Text.neutralPrefix().basic("Sua ").neutral("bússola").basic(" está apontando para o jogador ").neutral(nearestPlayer!!.name.clearFormatting()).basic(
+										"!").toString())
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	fun onPlayerDropItem(event: PlayerDropItemEvent) {
+		if (state == ONGOING || state == FINISHING) {
+			val gamer = event.player.gamer()
+
+			if (gamer.warp == this) when (gamer.mode) {
+				EnumMode.ADMIN    -> return //TODO: Logging
+				EnumMode.SPECTATE -> event.isCancelled = true
+				EnumMode.PLAY     -> if (event.itemDrop.itemStack in gamer.kit.items) event.isCancelled = true
+			}
+		}
 	}
 
 	fun schedule() {
@@ -509,78 +581,7 @@ object HGWarp: Warp() {
 		}
 	}
 
-	@EventHandler
-	fun onPlayerDeath(event: PlayerDeathEvent) {
-		val player = event.entity
-		val gamer = player.gamer()
-
-		if (gamer.warp == this) {
-			event.deathMessage = null
-
-			event.drops.removeIf { it in gamer.kit.items }
-
-			if (gamer.isCombatTagged()) gamer.combatPartner!!.kill(gamer)
-
-			gamer.resetKillStreak()
-
-			Tasks.sync(Runnable {
-				player.spigot().respawn()
-
-				gamer.sendToWarp(Warps.LOBBY, true, true)
-			})
-		}
-	}
-
-	@EventHandler(priority = EventPriority.HIGHEST)
-	fun onPlayerInteract(event: PlayerInteractEvent) {
-		val player = event.player
-		val gamer = player.gamer()
-
-		if (gamer.warp == this) {
-			if (state == ONGOING && event.item !in gamer.kit.items) event.isCancelled = false
-
-			event.item?.run {
-				when (type) {
-					COMPASS -> {
-						var nearestPlayer: Player? = null
-						var smallestDistance = Double.MAX_VALUE
-
-						GamerRegistry.onlineGamers().filter { it.mode == EnumMode.PLAY && it.warp == Warps.HG && it.player.world == player.world }.forEach {
-							val distance = it.player.location.distance(player.location)
-
-							if (distance > 0 && distance < smallestDistance) {
-								nearestPlayer = it.player
-								smallestDistance = distance
-							}
-						}
-
-						if (nearestPlayer != null) {
-							player.compassTarget = nearestPlayer!!.location
-							player.sendMessage(Text.neutralPrefix().basic("Sua ").neutral("bússola").basic(" está apontando para o jogador ").neutral(nearestPlayer!!.name.clearFormatting()).basic(
-									"!").toString())
-						}
-					}
-				}
-			}
-		}
-	}
-
-	@EventHandler
-	fun onPlayerDropItem(event: PlayerDropItemEvent) {
-		val gamer = event.player.gamer()
-
-		if (gamer.warp == this && event.itemDrop.itemStack in gamer.kit.items) event.isCancelled = true
-	}
-
-	@EventHandler
-	fun onPlayerPickupItem(event: PlayerPickupItemEvent) {
-		val player = event.player
-		val gamer = player.gamer()
-
-		if (gamer.warp == this && state == ONGOING) event.isCancelled = false
-	}
-
-	override fun isAllowed(kit: Kit, gamer: Gamer, announce: Boolean): Boolean = when {
+	override fun isAllowed(kit: Kit, gamer: Gamer, announce: Boolean) = when {
 		state == ONGOING           -> {
 			if (announce) gamer.player.sendMessage(ALREADY_HAVE_KIT)
 

@@ -110,7 +110,7 @@ open class Warp: Listener {
 		saveData()
 	}
 
-	open fun isAllowed(kit: Kit, gamer: Gamer, announce: Boolean): Boolean = when {
+	open fun isAllowed(kit: Kit, gamer: Gamer, announce: Boolean) = when {
 		gamer.mode != EnumMode.ADMIN && !gamer.kit.isDummy         -> {
 			if (announce) gamer.player.sendMessage(Text.negativePrefix().basic("Você ").negative("já").basic(" está ").negative("usando").basic(" um kit!").toString())
 
@@ -204,6 +204,7 @@ open class Warp: Listener {
 
 	companion object {
 
+		val EMPTY_NOT_DUMMY_KIT = Kit(isDummy = false)
 		val GAME_WARP_KIT = Kit(items = arrayOf(ItemStack(Material.CHEST).rename(Text.of("Kits").color(TextColor.GOLD).toString()),
 		                                        null,
 		                                        null,
@@ -213,9 +214,7 @@ open class Warp: Listener {
 		                                        null,
 		                                        null,
 		                                        ItemStack(Material.EMPTY_MAP).rename(Text.of("Warps").color(TextColor.GOLD).toString())))
-
 		val SIMPLE_GAME_WARP_KIT = Kit(items = arrayOf(GAME_WARP_KIT.items[0], null, null, null, null, null, null, null, GAME_WARP_KIT.items[8]))
-
 		val EVENT_WARP_KIT = Kit(items = arrayOf(null, null, null, null, null, null, null, null, GAME_WARP_KIT.items[8]))
 	}
 }

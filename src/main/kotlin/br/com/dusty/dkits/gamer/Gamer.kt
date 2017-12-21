@@ -8,6 +8,7 @@ import br.com.dusty.dkits.store.Store
 import br.com.dusty.dkits.util.Scoreboards
 import br.com.dusty.dkits.util.Tasks
 import br.com.dusty.dkits.util.clearFormatting
+import br.com.dusty.dkits.util.inventory.Inventories
 import br.com.dusty.dkits.util.protocol.EnumProtocolVersion
 import br.com.dusty.dkits.util.protocol.HeaderFooters
 import br.com.dusty.dkits.util.text.Text
@@ -478,8 +479,10 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 			foodLevel = 20
 			exp = 0F
 			level = 0
+			fireTicks = 0
 
 			inventory.clear()
+			inventory.armorContents = Inventories.NO_ARMOR
 
 			activePotionEffects.forEach { removePotionEffect(it.type) }
 		}
