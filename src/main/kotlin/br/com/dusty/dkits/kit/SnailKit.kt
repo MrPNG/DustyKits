@@ -21,7 +21,7 @@ object SnailKit: Kit() {
 		icon.description(description, true)
 
 		weapon = ItemStack(Material.STONE_SWORD)
-		armor = arrayOf(null, ItemStack(Material.LEATHER_CHESTPLATE).color(0x91A38D), null, null)
+		armor = arrayOf(null, null, ItemStack(Material.LEATHER_CHESTPLATE).color(0x91A38D), null)
 
 		ability = SnailAbility
 

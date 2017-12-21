@@ -19,7 +19,7 @@ object FishermanKit: Kit() {
 		icon.description(description, true)
 
 		weapon = ItemStack(Material.STONE_SWORD)
-		armor = arrayOf(null, ItemStack(Material.LEATHER_CHESTPLATE).color(0x7F99B8), null, null)
+		armor = arrayOf(null, null, ItemStack(Material.LEATHER_CHESTPLATE).color(0x7F99B8), null)
 		items = arrayOf(ItemStack(Material.FISHING_ROD).rename("Vara de Pescar do Fisherman"))
 
 		ability = FishermanAbility

@@ -19,7 +19,7 @@ object GladiatorKit: Kit() {
 		icon.description(description, true)
 
 		weapon = ItemStack(Material.STONE_SWORD)
-		armor = arrayOf(null, ItemStack(Material.LEATHER_CHESTPLATE).color(0x727272), null, null)
+		armor = arrayOf(null, null, ItemStack(Material.LEATHER_CHESTPLATE).color(0x727272), null)
 		items = arrayOf(ItemStack(Material.IRON_FENCE).rename("1v1"))
 
 		ability = GladiatorAbility

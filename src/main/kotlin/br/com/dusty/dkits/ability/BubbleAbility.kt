@@ -40,12 +40,12 @@ object BubbleAbility: Ability() {
 			if (item != null && (item.type == Material.SLIME_BALL || item.type == Material.MAGMA_CREAM)) {
 				val gamer = player.gamer()
 
-				if (hasAbility(gamer) && canUse(gamer)) {
+				if (hasAbility(gamer) && gamer.canUse()) {
 					if (gamer.isOnKitCooldown()) {
 						sendKitCooldownMessage(gamer)
 					} else if (item == Kits.BUBBLE.items[0]) {
 						val players = GamerRegistry.onlineGamers().filter {
-							canUse(gamer, it) && player.world == it.player.world && player.location.distance(it.player.location) < 5.0
+							gamer.canUse(it) && player.world == it.player.world && player.location.distance(it.player.location) < 5.0
 						}.map { it.player }
 
 						Tasks.sync(object: BukkitRunnable() {

@@ -20,7 +20,7 @@ object GrandpaKit: Kit() {
 		icon.description(description, true)
 
 		weapon = ItemStack(Material.STONE_SWORD)
-		armor = arrayOf(null, ItemStack(Material.LEATHER_CHESTPLATE).color(0x928C85), null, null)
+		armor = arrayOf(null, null, ItemStack(Material.LEATHER_CHESTPLATE).color(0x928C85), null)
 		items = arrayOf(ItemStack(Material.STICK).enchant(Pair(Enchantment.KNOCKBACK, 2), Pair(Enchantment.PROTECTION_FALL, 1)).rename("Bengala"))
 
 		isDummy = false

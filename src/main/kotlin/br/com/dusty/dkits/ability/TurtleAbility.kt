@@ -15,7 +15,7 @@ object TurtleAbility: Ability() {
 			if (player.isSneaking) {
 				val gamer = player.gamer()
 
-				if (hasAbility(gamer) && canUse(gamer)) event.damage = 1.0
+				if (hasAbility(gamer) && gamer.canUse()) event.damage = 1.0
 			}
 		}
 	}

@@ -27,21 +27,6 @@ fun Inventory.addItemStacks(itemStacks: Array<ItemStack?>) {
 	for (itemStack in itemStacks) this.setItem(i++, itemStack)
 }
 
-/**
- * Aplica um [ItemStack][] contendo, nessa ordem, 'helmet', 'chestplate', 'leggings' e 'boots' como armadura de um [Player].
- *
- * @param player
- * @param itemStacks
- */
-fun Player.setArmor(itemStacks: Array<ItemStack?>) {
-	inventory.apply {
-		helmet = itemStacks[0]
-		chestplate = itemStacks[1]
-		leggings = itemStacks[2]
-		boots = itemStacks[3]
-	}
-}
-
 fun Inventory.fillBackground(backButton: Boolean): Inventory {
 	for (i in 0 until this.size) this.setItem(i, BACKGROUND)
 
@@ -80,7 +65,7 @@ object Inventories {
 	val RECRAFT_TITLE = Text.of("Recraft").color(TextColor.GOLD).toString()
 
 	val NO_ARMOR = arrayOfNulls<ItemStack>(4)
-	val ARMOR_FULL_IRON: Array<ItemStack?> = arrayOf(ItemStack(IRON_HELMET), ItemStack(IRON_CHESTPLATE), ItemStack(IRON_LEGGINGS), ItemStack(IRON_BOOTS))
+	val ARMOR_FULL_IRON: Array<ItemStack?> = arrayOf(ItemStack(IRON_BOOTS), ItemStack(IRON_LEGGINGS), ItemStack(IRON_CHESTPLATE), ItemStack(IRON_HELMET))
 
 	val WOOD_SWORD = ItemStack(Material.WOOD_SWORD)
 	val DIAMOND_SWORD = ItemStack(Material.DIAMOND_SWORD)

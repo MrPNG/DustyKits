@@ -18,7 +18,7 @@ object VikingKit: Kit() {
 		icon.description(description, true)
 
 		weapon = ItemStack(Material.IRON_AXE)
-		armor = arrayOf(null, ItemStack(Material.LEATHER_CHESTPLATE).color(0x3A2323), null, null)
+		armor = arrayOf(null, null, ItemStack(Material.LEATHER_CHESTPLATE).color(0x3A2323), null)
 
 		isDummy = false
 		isBroadcast = true

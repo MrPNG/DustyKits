@@ -17,7 +17,7 @@ object PvpKit: Kit() {
 		icon.description(description, true)
 
 		weapon = ItemStack(Material.STONE_SWORD)
-		armor = arrayOf(null, ItemStack(Material.LEATHER_CHESTPLATE), null, null)
+		armor = arrayOf(null, null, ItemStack(Material.LEATHER_CHESTPLATE), null)
 
 		isDummy = false
 		isBroadcast = true

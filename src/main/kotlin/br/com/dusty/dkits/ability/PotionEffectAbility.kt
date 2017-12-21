@@ -16,9 +16,10 @@ open class PotionEffectAbility(val type: PotionEffectType, val duration: Int, va
 			val player = event.entity as Player
 			val damagerPlayer = event.damager as Player
 
+			val gamer = player.gamer()
 			val damager = damagerPlayer.gamer()
 
-			if (hasAbility(damager) && canUse(damager, player.gamer()) && chances.chances()) player.addPotionEffect(PotionEffect(type, duration, amplifier), true)
+			if (hasAbility(damager) && damager.canUse(gamer) && chances.chances()) player.addPotionEffect(PotionEffect(type, duration, amplifier), true)
 		}
 	}
 }

@@ -19,7 +19,7 @@ object BubbleKit: Kit() {
 		icon.description(description, true)
 
 		weapon = ItemStack(Material.STONE_SWORD)
-		armor = arrayOf(null, ItemStack(Material.LEATHER_CHESTPLATE).color(0x62A391), null, null)
+		armor = arrayOf(null, null, ItemStack(Material.LEATHER_CHESTPLATE).color(0x62A391), null)
 		items = arrayOf(ItemStack(Material.SLIME_BALL).rename("Bolha"))
 
 		ability = BubbleAbility

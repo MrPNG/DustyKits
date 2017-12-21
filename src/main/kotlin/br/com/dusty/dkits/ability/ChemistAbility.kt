@@ -15,7 +15,7 @@ object ChemistAbility: Ability() {
 		if (gamer.isCombatTagged()) {
 			val combatPartner = gamer.combatPartner!!
 
-			if (hasAbility(combatPartner) && canUse(combatPartner)) combatPartner.player.inventory.addItem(*Kits.CHEMIST.items)
+			if (hasAbility(combatPartner) && combatPartner.canUse()) combatPartner.player.inventory.addItem(*Kits.CHEMIST.items)
 		}
 	}
 }

@@ -33,7 +33,7 @@ object EndermageAbility: Ability() {
 
 				if (gamer.isOnKitCooldown()) {
 					sendKitCooldownMessage(gamer)
-				} else if (hasAbility(gamer) && canUse(gamer)) {
+				} else if (hasAbility(gamer) && gamer.canUse()) {
 					val block = event.clickedBlock
 					val blockAbove = block.getRelative(BlockFace.UP)
 					val blockAboveTheAboveBlock = blockAbove.getRelative(BlockFace.UP)
@@ -73,7 +73,7 @@ object EndermageAbility: Ability() {
 								} else {
 									val gamers = arrayListOf<Gamer>()
 
-									GamerRegistry.onlineGamers().filter { canUse(gamer, it) }.forEach {
+									GamerRegistry.onlineGamers().filter { gamer.canUse(it) }.forEach {
 										val otherLocation = it.player.location
 
 										if (Math.sqrt((location.x - otherLocation.x).pow(2) + (location.z - otherLocation.z).pow(2)) < 3) gamers.add(it)

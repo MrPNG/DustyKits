@@ -19,7 +19,7 @@ object ChickenmanKit: Kit() {
 		icon.description(description, true)
 
 		weapon = ItemStack(Material.WOOD_SWORD)
-		armor = arrayOf(null, ItemStack(Material.LEATHER_CHESTPLATE).color(0xAA842D), null, null)
+		armor = arrayOf(null, null, ItemStack(Material.LEATHER_CHESTPLATE).color(0xAA842D), null)
 		items = arrayOf(ItemStack(Material.COOKED_CHICKEN).rename("Frango Radioativo"))
 
 		ability = ChickenmanAbility

@@ -1,5 +1,6 @@
 package br.com.dusty.dkits.gamer
 
+import br.com.dusty.dkits.Main
 import br.com.dusty.dkits.clan.Clan
 import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.kit.Kits
@@ -15,6 +16,7 @@ import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
 import br.com.dusty.dkits.warp.Warp
 import br.com.dusty.dkits.warp.Warps
+import com.sk89q.worldguard.protection.flags.DefaultFlag
 import org.bukkit.GameMode
 import org.bukkit.Sound
 import org.bukkit.entity.Player
@@ -284,7 +286,6 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 		killer.sendMessage(Text.negativePrefix().basic("Você ").negative("foi morto").basic(" pelo jogador ").negative(player.displayName.clearFormatting()).basic("!").toString())
 
 		gamer.addDeath()
-		gamer.resetKillStreak()
 		gamer.removeDeathMoney()
 		gamer.removeDeathXp()
 		gamer.removeCombatTag(false)
@@ -435,6 +436,11 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 	}
 
 	fun hasKit(kit: Kit) = mode == EnumMode.ADMIN || kit in kits
+
+	fun canUse() = mode == EnumMode.PLAY && !Main.REGION_MANAGER!!.getApplicableRegions(player.location).allows(DefaultFlag.INVINCIBILITY)
+
+	fun canUse(otherGamer: Gamer) = this != otherGamer && canUse() && otherGamer.mode == EnumMode.PLAY && otherGamer.player.canSee(player) && !Main.REGION_MANAGER!!.getApplicableRegions(
+			otherGamer.player.location).allows(DefaultFlag.INVINCIBILITY)
 
 	var warp: Warp = Warps.LOBBY
 	var warpTask: BukkitTask? = null

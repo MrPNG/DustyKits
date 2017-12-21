@@ -22,7 +22,7 @@ object ElfoAbility: Ability() {
 				val gamer = player.gamer()
 				val damager = damagerPlayer.gamer()
 
-				if (hasAbility(damager) && canUse(damager, gamer)) {
+				if (hasAbility(damager) && damager.canUse(gamer)) {
 					val distance = damagerPlayer.location.distance(player.location)
 
 					if (distance >= 40 && arrow.location.y >= player.location.y + 1.62) {

@@ -6,11 +6,15 @@ import br.com.dusty.dkits.gamer.GamerRegistry
 import br.com.dusty.dkits.util.Tasks
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.web.WebAPI
+import com.google.common.collect.HashMultimap
 import org.bukkit.Bukkit
 import org.bukkit.Sound
 import org.bukkit.entity.Player
+import java.util.*
 
 object ReportCommand: PlayerCustomCommand(EnumRank.DEFAULT, "dustyreport") {
+
+	val REPORTS_BY_UUID = HashMultimap.create<UUID, UUID>()
 
 	override fun execute(sender: Player, alias: String, args: Array<String>): Boolean {
 		if (args.size < 2) {
@@ -18,22 +22,31 @@ object ReportCommand: PlayerCustomCommand(EnumRank.DEFAULT, "dustyreport") {
 		} else {
 			val player = Bukkit.getPlayerExact(args[0])
 
-			if (player == null) {
-				sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um jogador online com o nome \"").negative(args[0]).basic("\"!").toString())
-			} else {
-				val reason = args.copyOfRange(1, args.size).joinToString(separator = " ")
+			when {
+				player == null                                                  -> sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um jogador online com o nome \"").negative(
+						args[0]).basic("\"!").toString())
+				REPORTS_BY_UUID.containsEntry(sender.uniqueId,
+				                              player.uniqueId)                  -> sender.sendMessage(Text.negativePrefix().basic("Você ").negative("já").basic(" reportou o jogador ").negative(
+						player.name).basic(" antes!").toString())
+				else                                                            -> {
+					val reason = args.copyOfRange(1, args.size).joinToString(separator = " ")
 
-				GamerRegistry.onlineGamers().forEach {
-					if (it.rank.isHigherThanOrEquals(EnumRank.MOD)) {
-						val staffPlayer = it.player
+					sender.sendMessage(Text.positivePrefix().basic("Você ").positive("reportou").basic(" o jogador ").positive(player.name).basic(" por ").positive(reason).basic("!").toString())
 
-						staffPlayer.playSound(staffPlayer.location, Sound.CHICKEN_HURT, 1F, 1F)
-						staffPlayer.sendMessage(Text.negativePrefix().basic("[").negative("Report").basic("]: \n").negative("  Jogador").basic(": " + player.name + "\n").negative("  Motivo").basic(
-								": " + reason + "\n").negative("  Por").basic(": " + sender.name).toString())
+					GamerRegistry.onlineGamers().forEach {
+						if (it.rank.isHigherThanOrEquals(EnumRank.MOD)) {
+							val staffPlayer = it.player
+
+							staffPlayer.playSound(staffPlayer.location, Sound.CHICKEN_HURT, 1F, 1F)
+							staffPlayer.sendMessage(Text.negativePrefix().basic("[").negative("Report").basic("]: \n").negative("  Jogador").basic(": " + player.name + "\n").negative("  Motivo").basic(
+									": " + reason + "\n").negative("  Por").basic(": " + sender.name).toString())
+						}
 					}
-				}
 
-				Tasks.async(Runnable { println(WebAPI.report(player.name, sender.name, reason)) })
+					REPORTS_BY_UUID.put(sender.uniqueId, player.uniqueId)
+
+					Tasks.async(Runnable { println(WebAPI.report(player.name, sender.name, reason)) })
+				}
 			}
 		}
 

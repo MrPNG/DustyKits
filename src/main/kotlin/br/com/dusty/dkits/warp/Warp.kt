@@ -9,7 +9,6 @@ import br.com.dusty.dkits.util.*
 import br.com.dusty.dkits.util.inventory.addItemStacks
 import br.com.dusty.dkits.util.inventory.fillRecraft
 import br.com.dusty.dkits.util.inventory.fillSoups
-import br.com.dusty.dkits.util.inventory.setArmor
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
 import org.bukkit.Bukkit
@@ -134,7 +133,7 @@ open class Warp: Listener {
 		gamer.player.run {
 			inventory.setItem(0, kit.weapon)
 			inventory.addItemStacks(kit.items)
-			setArmor(kit.armor)
+			inventory.armorContents = kit.armor
 
 			if (!kit.isDummy) {
 				fillRecraft()

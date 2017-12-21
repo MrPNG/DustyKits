@@ -28,7 +28,7 @@ object ChickenmanAbility: Ability() {
 			if (item != null && (item.type == Material.RAW_CHICKEN || item.type == Material.COOKED_CHICKEN)) {
 				val gamer = player.gamer()
 
-				if (hasAbility(gamer) && canUse(gamer)) {
+				if (hasAbility(gamer) && gamer.canUse()) {
 					if (gamer.isOnKitCooldown()) {
 						sendKitCooldownMessage(gamer)
 					} else if (item == Kits.CHICKENMAN.items[0]) {

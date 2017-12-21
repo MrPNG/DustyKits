@@ -9,6 +9,7 @@ import br.com.dusty.dkits.gamer.Gamer
 import br.com.dusty.dkits.gamer.GamerRegistry
 import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.kit.Kits
+import br.com.dusty.dkits.store.EnumAdvantage
 import br.com.dusty.dkits.util.*
 import br.com.dusty.dkits.util.ItemStacks.potions
 import br.com.dusty.dkits.util.cosmetic.Colors
@@ -187,7 +188,10 @@ object HGWarp: Warp() {
 			Tasks.sync(Runnable {
 				player.spigot().respawn()
 
-				gamer.sendToWarp(Warps.LOBBY, true, true)
+				if (gamer.hasAdvantage(EnumAdvantage.HG_RESPAWN) && System.currentTimeMillis() - start < (invincibility + 2 * 60) * 1000) player.teleport(feastLocation) else gamer.sendToWarp(
+						Warps.LOBBY,
+						true,
+						true)
 			})
 		}
 	}
@@ -645,10 +649,12 @@ object HGWarp: Warp() {
 					}
 					OPEN      -> {
 						when {
-							gamer.mode != EnumMode.PLAY                                                 -> player.sendMessage(NOT_IN_PLAY_MODE)
-							gamer.warp == this                                                          -> gamer.sendToWarp(Warps.LOBBY, false, true)
-							GamerRegistry.onlineGamers().filter { it.warp == this }.size < playersLimit -> gamer.sendToWarp(this, false, true)
-							else                                                                        -> player.sendMessage(GAME_IS_FULL)
+							gamer.mode != EnumMode.PLAY                                                                                              -> player.sendMessage(NOT_IN_PLAY_MODE)
+							gamer.warp == this                                                                                                       -> gamer.sendToWarp(Warps.LOBBY,
+							                                                                                                                                             false,
+							                                                                                                                                             true)
+							gamer.hasAdvantage(EnumAdvantage.HG_SLOT) || GamerRegistry.onlineGamers().filter { it.warp == this }.size < playersLimit -> gamer.sendToWarp(this, false, true)
+							else                                                                                                                     -> player.sendMessage(GAME_IS_FULL)
 						}
 					}
 					ONGOING   -> player.sendMessage(Text.neutralPrefix().append(PREFIX).basic("O ").neutral(NAME).basic(" iniciou há ").neutral((System.currentTimeMillis() - start).formatPeriod()).basic(

@@ -50,7 +50,7 @@ object Listeners {
 		LISTENERS.add(LeavesDecayListener)
 		LISTENERS.add(PlayerDropItemListener)
 		LISTENERS.add(PlayerInteractEntityListener)
-//		LISTENERS.add(PlayerItemDamageListener)
+		LISTENERS.add(PlayerItemDamageListener)
 		LISTENERS.add(PlayerMoveListener)
 		LISTENERS.add(ServerListPingListener)
 		LISTENERS.add(SignChangeListener)

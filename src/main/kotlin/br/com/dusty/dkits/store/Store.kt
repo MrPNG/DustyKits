@@ -4,6 +4,7 @@ import br.com.dusty.dkits.gamer.EnumRank
 import br.com.dusty.dkits.gamer.Gamer
 import br.com.dusty.dkits.gamer.PrimitiveGamer
 import br.com.dusty.dkits.kit.Kits
+import br.com.dusty.dkits.store.EnumAdvantage.*
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.web.HttpClients
 import com.google.common.collect.HashBiMap
@@ -31,6 +32,9 @@ object Store {
 
 	val ID_BY_KIT = KIT_BY_ID.inverse()
 
+	val MVP_ADVANTAGES = arrayOf(SLOT, HG_SLOT, HG_RESPAWN, VOLCANO_10)
+	val PRO_ADVANTAGES = arrayOf(DOUBLE, FEAST_CHANCES, VOLCANO_25, VOLCANO_FIRE_PROTECTION)
+
 	fun parsePurchases(json: String?) = when (json) {
 		null, "[]" -> Purchases()
 		else       -> HttpClients.GSON.fromJson(json, PurchasesData::class.java)?.compras ?: Purchases()
@@ -52,14 +56,16 @@ object Store {
 		val vantagem = arrayOf<AdvantagePurchases>()
 
 		fun loadRank(gamer: Gamer) {
-			EnumRank.values().forEach { if (gamer.player.hasPermission("dkits.rank." + it.name.toLowerCase())) gamer.rank = it }
+			gamer.rank = EnumRank.values().lastOrNull { gamer.player.hasPermission("dkits.rank." + it.name.toLowerCase()) } ?: EnumRank.NONE
 
-			if (gamer.rank == EnumRank.NONE) vip.filter { it.datafinal > System.currentTimeMillis() }.forEach {
+			if (gamer.rank == EnumRank.NONE || gamer.rank == EnumRank.DEFAULT) {
 				var rank = EnumRank.DEFAULT
 
-				when (it.vip) {
-					1001, 1002 -> rank = EnumRank.PRO
-					1003, 1004 -> rank = EnumRank.MVP
+				vip.filter { it.datafinal > System.currentTimeMillis() }.forEach {
+					when (it.vip) {
+						1001, 1002 -> rank = EnumRank.PRO
+						1003, 1004 -> rank = EnumRank.MVP
+					}
 				}
 
 				if (gamer.rank.isLowerThan(rank)) gamer.rank = rank
@@ -84,16 +90,13 @@ object Store {
 
 		fun loadAvantages(gamer: Gamer) {
 			when {
-				gamer.rank.isHigherThanOrEquals(EnumRank.MVP) -> {
-					gamer.advantages.add(EnumAdvantage.SLOT)
-					gamer.advantages.add(EnumAdvantage.HG_RESPAWN)
-				}
-				gamer.rank.isHigherThanOrEquals(EnumRank.PRO) -> gamer.advantages.add(EnumAdvantage.DOUBLE)
+				gamer.rank.isHigherThanOrEquals(EnumRank.MVP) -> gamer.advantages.addAll(MVP_ADVANTAGES)
+				gamer.rank.isHigherThanOrEquals(EnumRank.PRO) -> gamer.advantages.addAll(PRO_ADVANTAGES)
 			}
 
 			vantagem.filter { it.datafinal > System.currentTimeMillis() }.forEach {
 				when (it.vantagem) {
-					1005 -> gamer.advantages.add(EnumAdvantage.SLOT)
+					1005 -> gamer.advantages.add(SLOT)
 					1006 -> {
 						val oldPrimitiveGamer = gamer.primitiveGamer
 
@@ -106,7 +109,7 @@ object Store {
 						gamer.player.kickPlayer(Text.basicOf("Entre ").positive("novamente").basic(" no servidor para que o \'").positive("reset").basic("\' do seu perfil seja ").positive("concluído").basic(
 								"!").toString())
 					}
-					1007 -> gamer.advantages.add(EnumAdvantage.DOUBLE)
+					1007 -> gamer.advantages.add(DOUBLE)
 					1008 -> {
 						gamer.primitiveGamer.money += 1000.0
 

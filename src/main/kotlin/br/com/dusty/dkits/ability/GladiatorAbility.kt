@@ -42,7 +42,7 @@ object GladiatorAbility: Ability() {
 				val rightClickedPlayer = event.rightClicked as Player
 				val rightClicked = rightClickedPlayer.gamer()
 
-				if (hasAbility(gamer) && canUse(gamer, rightClicked)) {
+				if (hasAbility(gamer) && gamer.canUse(rightClicked)) {
 					if (FIGHTS.containsKey(gamer) || FIGHTS.containsKey(rightClicked)) {
 						player.sendMessage(ALREADY_FIGHTING)
 					} else {

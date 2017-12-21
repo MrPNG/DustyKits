@@ -7,7 +7,7 @@ import java.lang.reflect.Field
 
 object HeaderFooters {
 
-	val HEADER_MAIN = Text.of("\n                Dusty                \n").color(TextColor.GREEN).append(" dusty.com.br\n ").color(TextColor.GOLD).toString()
+	val HEADER_MAIN = Text.of("\n                Dusty                \n").color(TextColor.GREEN).append(" www.dusty.com.br\n ").color(TextColor.GOLD).toString()
 
 	var class_PacketPlayOutPlayerListHeaderFooter: Class<*> = Class.forName(Protocols.NMS_PACKAGE + Protocols.NMS_VERSION + ".PacketPlayOutPlayerListHeaderFooter")
 	var field_PacketPlayOutPlayerListHeaderFooter_a: Field

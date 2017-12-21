@@ -21,7 +21,7 @@ object ElfoKit: Kit() {
 		icon.description(description, true)
 
 		weapon = ItemStack(Material.GOLD_SWORD)
-		armor = arrayOf(null, ItemStack(Material.LEATHER_CHESTPLATE).color(0xBA8B00), null, null)
+		armor = arrayOf(null, null, ItemStack(Material.LEATHER_CHESTPLATE).color(0xBA8B00), null)
 		items = arrayOf(ItemStack(Material.BOW).enchant(Pair(Enchantment.ARROW_INFINITE, 1)).rename("Arco do Elfo"),
 		                ItemStack(Material.ARROW).enchant(Pair(Enchantment.ARROW_INFINITE, 1)).rename("Flecha do Elfo"))
 

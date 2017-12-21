@@ -1,10 +1,10 @@
 package br.com.dusty.dkits.util.inventory
 
-import br.com.dusty.dkits.util.gamer.gamer
 import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.kit.Kits
-import br.com.dusty.dkits.util.rename
 import br.com.dusty.dkits.util.description
+import br.com.dusty.dkits.util.gamer.gamer
+import br.com.dusty.dkits.util.rename
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
 import org.bukkit.Bukkit
@@ -39,7 +39,7 @@ object ShopMenu {
 
 	fun menuShopKit(player: Player): Inventory = Bukkit.createInventory(player, 27, TITLE_KITS).apply {
 		fillBackground(true)
-		fillKits(Kits.KITS.filter { it.data.isEnabled && it.data.price != -1 && player.gamer().hasKit(it) })
+		fillKits(Kits.KITS.filter { it.data.isEnabled && it.data.price != -1 && !player.gamer().hasKit(it) })
 
 		setItem(0, Inventories.BUTTON_BACK)
 	}
@@ -52,7 +52,8 @@ object ShopMenu {
 	}
 
 	fun Inventory.fillKits(kits: List<Kit>) {
-		if (kits.isNotEmpty()) when (kits.size) {
+		if (kits.isEmpty()) setItem(13, ALL_KITS)
+		else when (kits.size) {
 			1    -> setItem(13, kits[0].icon.description("Preço: " + kits[0].data.price + " créditos", true))
 			2    -> for (i in 0 .. 1) setItem(12 + i * 2, kits[i].icon.description("Preço: " + kits[i].data.price + " créditos", true))
 			3    -> for (i in 0 .. 2) setItem(11 + i * 2, kits[i].icon.description("Preço: " + kits[i].data.price + " créditos", true))
@@ -60,7 +61,6 @@ object ShopMenu {
 			5    -> for (i in 0 .. 4) setItem(13 + i, kits[i].icon.description("Preço: " + kits[i].data.price + " créditos", true))
 			else -> for (i in 0 .. 4) setItem(10 + i, kits[i].icon.description("Preço: " + kits[i].data.price + " créditos", true))
 		}
-		else setItem(13, ALL_KITS)
 	}
 
 	fun Inventory.fillArmor(items: Array<ItemStack>) {

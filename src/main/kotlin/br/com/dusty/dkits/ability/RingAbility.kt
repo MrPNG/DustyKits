@@ -42,7 +42,7 @@ object RingAbility: Ability() {
 			if (item != null && (item.type == Material.LEATHER_BOOTS || item.type == Material.GOLD_BOOTS)) {
 				val gamer = player.gamer()
 
-				if (hasAbility(gamer) && canUse(gamer)) {
+				if (hasAbility(gamer) && gamer.canUse()) {
 					if (gamer.isOnKitCooldown()) {
 						sendKitCooldownMessage(gamer)
 					} else {
