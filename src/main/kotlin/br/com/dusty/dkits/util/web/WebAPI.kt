@@ -28,9 +28,12 @@ object WebAPI {
 
 	fun loadPurchases(uuid: String) = HttpGet(URL + "?type=getcompras&uuid=" + uuid).response()
 
-	fun addPurchase(pseudoPurchase: Store.PseudoPurchase) = HttpGet(URL + "?type=addcompra&action=add&id=${pseudoPurchase.id}&json=" + HttpClients.GSON.toJson(pseudoPurchase)).response()
+	fun addPurchase(pseudoPurchase: Store.PseudoPurchase) = HttpPost(URL).setEntities(BasicNameValuePair("type", "addcompra"),
+	                                                                                  BasicNameValuePair("action", "add"),
+	                                                                                  BasicNameValuePair("id", pseudoPurchase.id.toString()),
+	                                                                                  BasicNameValuePair("json", HttpClients.GSON.toJson(pseudoPurchase))).response()
 
 	fun updatePurchase(pseudoPurchase: Store.PseudoPurchase) = HttpGet(URL + "?type=addcompra&action=update&id=${pseudoPurchase.id}&json=" + HttpClients.GSON.toJson(pseudoPurchase)).response()
 
-	fun report(name: String, reporter: String, reason: String) = HttpGet("http://api.dusty.com.br/report.php?player=$name&reportby=$reporter&reason=$reason").response()
+	fun report(name: String, reporter: String, reason: String) = HttpGet("http://api.dusty.com.br/report.php?player=$name&reportby=$reporter&reason=${reason.replace(" ", "%20")}").response()
 }

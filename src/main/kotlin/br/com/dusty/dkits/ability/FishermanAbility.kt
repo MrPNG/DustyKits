@@ -19,8 +19,7 @@ object FishermanAbility: Ability() {
 			val gamer = player.gamer()
 			val damager = damagerPlayer.gamer()
 
-			if (hasAbility(damager) && canUse(damager, gamer) &&
-                damagerPlayer.itemInHand == Kits.FISHERMAN.items[0]) {
+			if (hasAbility(damager) && canUse(damager, gamer) && damagerPlayer.itemInHand == Kits.FISHERMAN.items[0]) {
 				player.teleport(damagerPlayer)
 				player.sendMessage(Text.negativePrefix().basic("Você foi ").negative("capturado").basic(" pelo fisherman ").negative(damagerPlayer.displayName.clearFormatting()).basic("!").toString())
 			}

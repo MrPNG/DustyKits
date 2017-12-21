@@ -28,11 +28,9 @@ object PlayerDeathListener: Listener {
 
 			if (gamer.warp.type != Warp.EnumWarpType.EVENT) combatPartner.kill(gamer)
 
-			if (combatPartner.warp.durabilityBehavior == Warp.EnumDurabilityBehavior.REGEN_ON_KILL) {
-				val inventory = combatPartner.player.inventory
-
-				inventory.itemInHand?.durability = 0
-				inventory.armorContents.forEach { it?.durability = 0 }
+			if (combatPartner.warp.durabilityBehavior == Warp.EnumDurabilityBehavior.REGEN_ON_KILL) combatPartner.player.inventory.apply {
+				itemInHand?.durability = 0
+				armorContents.forEach { it?.durability = 0 }
 			}
 		}
 

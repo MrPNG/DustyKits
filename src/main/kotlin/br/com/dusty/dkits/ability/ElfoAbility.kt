@@ -25,7 +25,7 @@ object ElfoAbility: Ability() {
 				if (hasAbility(damager) && canUse(damager, gamer)) {
 					val distance = damagerPlayer.location.distance(player.location)
 
-					if (distance >= 30 && arrow.location.y >= player.location.y + 1.62) {
+					if (distance >= 40 && arrow.location.y >= player.location.y + 1.62) {
 						event.damage = 1024.0
 
 						player.sendMessage(Text.negativePrefix().basic("Você levou um ").negative("headshot").basic(" do jogador ").negative(damagerPlayer.displayName.clearFormatting()).basic(

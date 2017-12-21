@@ -14,7 +14,7 @@ enum class EnumRank {
 
 	NONE(-1),
 	DEFAULT(0, TextColor.GRAY),
-//	VIP(2, TextColor.GREEN),
+	//	VIP(2, TextColor.GREEN),
 	MVP(3, TextColor.BLUE),
 	PRO(4, TextColor.GOLD),
 	PRO_YOUTUBER(6, TextColor.AQUA),
@@ -51,30 +51,30 @@ enum class EnumRank {
 	 * @param rank
 	 * @return **true** se este [EnumRank] está hierarquicamente **acima** do parâmetro 'rank'.
 	 */
-	fun isHigherThan(rank: EnumRank): Boolean = level > rank.level
+	fun isHigherThan(rank: EnumRank) = level > rank.level
 
 	/**
 	 * @param rank
 	 * @return **true** se este [EnumRank] não está hierarquicamente **abaixo** do parâmetro 'rank'.
 	 */
-	fun isHigherThanOrEquals(rank: EnumRank): Boolean = level >= rank.level
+	fun isHigherThanOrEquals(rank: EnumRank) = level >= rank.level
 
 	/**
 	 * @param rank
 	 * @return **true** se este [EnumRank] está hierarquicamente **abaixo** do parâmetro 'rank'.
 	 */
-	fun isLowerThan(rank: EnumRank): Boolean = level < rank.level
+	fun isLowerThan(rank: EnumRank) = level < rank.level
 
 	/**
 	 * @param rank
 	 * @return **true** se este [EnumRank] não está hierarquicamente **acima** do parâmetro 'rank'.
 	 */
-	fun isLowerThanOrEquals(rank: EnumRank): Boolean = level <= rank.level
+	fun isLowerThanOrEquals(rank: EnumRank) = level <= rank.level
 
 	/**
 	 * @return **true** se este [EnumRank] não é o **maior**.
 	 */
-	fun hasNext(): Boolean = level < Integer.MAX_VALUE
+	fun hasNext() = level < Integer.MAX_VALUE
 
 	/**
 	 * @return [EnumRank] imediatamente **acima** deste na hirarquia, 'null' se este for o mais alto.
@@ -94,7 +94,7 @@ enum class EnumRank {
 	/**
 	 * @return **true** se este [EnumRank] não é o **menor**.
 	 */
-	fun hasPrev(): Boolean = level > 0
+	fun hasPrev() = level > 0
 
 	/**
 	 * @return [EnumRank] imediatamente **abaixo** deste na hirarquia, 'null' se este for o mais baixo.
@@ -111,9 +111,9 @@ enum class EnumRank {
 		return rank
 	}
 
-	fun format(s: String): String = Text.of(s).color(color).styles(*styles).toString()
+	fun format(s: String) = Text.of(s).color(color).styles(*styles).toString()
 
-	override fun toString(): String = string
+	override fun toString() = string
 
 	companion object {
 

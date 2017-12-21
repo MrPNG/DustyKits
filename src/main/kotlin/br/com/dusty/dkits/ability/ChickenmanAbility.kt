@@ -21,10 +21,11 @@ object ChickenmanAbility: Ability() {
 	@EventHandler
 	fun onPlayerInteract(event: PlayerInteractEvent) {
 		if (event.action == Action.RIGHT_CLICK_BLOCK || event.action == Action.RIGHT_CLICK_AIR) {
-			val item = event.item
+			val player = event.player
+
+			val item = player.itemInHand
 
 			if (item != null && (item.type == Material.RAW_CHICKEN || item.type == Material.COOKED_CHICKEN)) {
-				val player = event.player
 				val gamer = player.gamer()
 
 				if (hasAbility(gamer) && canUse(gamer)) {
@@ -39,9 +40,11 @@ object ChickenmanAbility: Ability() {
 						player.itemInHand = RAW_CHICKEN
 
 						Tasks.sync(Runnable {
-							val index = player.inventory.indexOfFirst { it != null && it.type == Material.RAW_CHICKEN && it == RAW_CHICKEN }
+							if (gamer.kit == Kits.CHICKENMAN) {
+								val index = player.inventory.indexOfFirst { it != null && it.type == Material.RAW_CHICKEN && it == RAW_CHICKEN }
 
-							if (index != -1 && gamer.kit == Kits.CHICKENMAN) player.inventory.setItem(index, Kits.CHICKENMAN.items[0])
+								if (index != -1) player.inventory.setItem(index, Kits.CHICKENMAN.items[0])
+							}
 						}, 600L)
 
 						gamer.kitCooldown = 30000L

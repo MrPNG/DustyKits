@@ -2,6 +2,7 @@ package br.com.dusty.dkits.warp
 
 import br.com.dusty.dkits.Main
 import br.com.dusty.dkits.command.staff.LocationCommand
+import br.com.dusty.dkits.gamer.EnumMode
 import br.com.dusty.dkits.gamer.Gamer
 import br.com.dusty.dkits.gamer.GamerRegistry
 import br.com.dusty.dkits.kit.Kit
@@ -103,14 +104,14 @@ object FeastWarp: Warp() {
 	                          arrayOf(potions(1, false, false, REGEN, false), 1, 0.075, 1),
 	                          arrayOf(potions(1, true, false, REGEN, false), 1, 0.05, 1),
 	                          arrayOf(potions(1, false, true, REGEN, false), 1, 0.05, 1),
-//	                          arrayOf(potions(1, false, false, STRENGTH, false), 1, 0.075, 1),
-//	                          arrayOf(potions(1, true, false, STRENGTH, false), 1, 0.05, 1),
-//	                          arrayOf(potions(1, false, true, STRENGTH, false), 1, 0.05, 1),
-	                          arrayOf(potions(1, false, false, WEAKNESS, true), 1, 0.075, 1),
-	                          arrayOf(potions(1, true, false, WEAKNESS, true), 1, 0.05, 1),
-	                          arrayOf(potions(1, false, false, POISON, true), 1, 0.075, 1),
-	                          arrayOf(potions(1, true, false, POISON, true), 1, 0.05, 1),
-	                          arrayOf(potions(1, false, true, POISON, true), 1, 0.05, 1))
+	                          arrayOf(potions(1, false, false, STRENGTH, false), 1, 0.075, 1),
+	                          arrayOf(potions(1, true, false, STRENGTH, false), 1, 0.05, 1),
+	                          arrayOf(potions(1, false, true, STRENGTH, false), 1, 0.05, 1),
+                              arrayOf(potions(1, false, false, WEAKNESS, true), 1, 0.075, 1),
+                              arrayOf(potions(1, true, false, WEAKNESS, true), 1, 0.05, 1),
+                              arrayOf(potions(1, false, false, POISON, true), 1, 0.075, 1),
+                              arrayOf(potions(1, true, false, POISON, true), 1, 0.05, 1),
+                              arrayOf(potions(1, false, true, POISON, true), 1, 0.05, 1))
 
 	var enchantmentTable = Locations.GENERIC
 		get() {
@@ -135,6 +136,8 @@ object FeastWarp: Warp() {
 		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
 		icon.description(description, true)
 
+		overriddenEvents = arrayOf(PlayerDropItemEvent::class.java)
+
 		entryKit = SIMPLE_GAME_WARP_KIT
 
 		hasShop = true
@@ -158,20 +161,13 @@ object FeastWarp: Warp() {
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
-	fun onEntityDamage(event: EntityDamageEvent) {
-		if (event.cause == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION && event.entity is Player && (event.entity as Player).gamer().warp == this) event.isCancelled = true
-	}
-
-	@EventHandler(priority = EventPriority.HIGHEST)
 	fun onPlayerDropItem(event: PlayerDropItemEvent) {
-		if (event.player.gamer().warp == this) {
-			val item = event.itemDrop
+		val gamer = event.player.gamer()
 
-			if (item.itemStack.type in ALLOWED_ITEMS) {
-				event.isCancelled = false
-
-				Tasks.sync(Runnable { item.remove() })
-			}
+		if (gamer.warp == this) when (gamer.mode) {
+			EnumMode.ADMIN    -> return //TODO: Logging
+			EnumMode.SPECTATE -> event.isCancelled = true
+			EnumMode.PLAY     -> if (event.itemDrop.itemStack in gamer.kit.items) event.isCancelled = true else Tasks.sync(Runnable { event.itemDrop.remove() })
 		}
 	}
 
@@ -180,10 +176,19 @@ object FeastWarp: Warp() {
 		val player = event.player
 		val gamer = player.gamer()
 
-		if (gamer.warp == this) when {
-			event.action == Action.RIGHT_CLICK_BLOCK && event.clickedBlock.type == CHEST -> player.openInventory((event.clickedBlock.state as Chest).blockInventory)
-			event.item == null || event.item.type in ALLOWED_ITEMS                       -> event.isCancelled = false
+		if (gamer.warp == this) {
+			val item = player.itemInHand
+
+			when {
+				event.action == Action.RIGHT_CLICK_BLOCK && event.clickedBlock.type == CHEST -> player.openInventory((event.clickedBlock.state as Chest).blockInventory)
+				item == null || item.type in ALLOWED_ITEMS                                   -> event.isCancelled = false
+			}
 		}
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	fun onEntityDamage(event: EntityDamageEvent) {
+		if (event.cause == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION && event.entity is Player && (event.entity as Player).gamer().warp == this) event.isCancelled = true
 	}
 
 	fun fillChests() {

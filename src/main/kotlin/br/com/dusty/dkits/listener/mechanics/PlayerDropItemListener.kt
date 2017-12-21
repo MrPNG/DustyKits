@@ -1,16 +1,14 @@
 package br.com.dusty.dkits.listener.mechanics
 
-import br.com.dusty.dkits.util.gamer.gamer
+import br.com.dusty.dkits.gamer.EnumMode
 import br.com.dusty.dkits.util.Tasks
-import org.bukkit.GameMode
-import org.bukkit.Material.*
+import br.com.dusty.dkits.util.gamer.gamer
+import org.bukkit.Material.MUSHROOM_SOUP
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerDropItemEvent
 
 object PlayerDropItemListener: Listener {
-
-	val ALLOWED_DROPS = arrayOf(RED_MUSHROOM, BROWN_MUSHROOM, BOWL, MUSHROOM_SOUP)
 
 	@EventHandler
 	fun onPlayerDropItem(event: PlayerDropItemEvent) {
@@ -19,11 +17,13 @@ object PlayerDropItemListener: Listener {
 
 		if (gamer.warp.overrides(event)) return
 
-		val item = event.itemDrop
-		val itemStack = item.itemStack
+		val itemDrop = event.itemDrop
+		val itemStack = itemDrop.itemStack
 
-		if (player.gameMode != GameMode.CREATIVE) {
-			if (itemStack.type !in ALLOWED_DROPS || itemStack in gamer.kit.items) event.isCancelled = true else if (itemStack.type != MUSHROOM_SOUP) Tasks.sync(Runnable { item.remove() })
+		when {
+			gamer.mode == EnumMode.ADMIN                                  -> return //TODO: Logging
+			itemStack == gamer.kit.weapon || itemStack in gamer.kit.items -> event.isCancelled = true
+			itemStack.type != MUSHROOM_SOUP                               -> Tasks.sync(Runnable { itemDrop.remove() })
 		}
 	}
 }

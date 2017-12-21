@@ -1,6 +1,5 @@
 package br.com.dusty.dkits.warp
 
-import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.util.description
 import br.com.dusty.dkits.util.rename
 import br.com.dusty.dkits.util.text.Text
@@ -19,7 +18,7 @@ object MDRWarp: Warp() {
 
 		type = EnumWarpType.EVENT
 
-		entryKit = Kit()
+		entryKit = EMPTY_NOT_DUMMY_KIT
 
 		loadData()
 	}

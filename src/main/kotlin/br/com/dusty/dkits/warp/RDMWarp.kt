@@ -24,7 +24,8 @@ object RDMWarp: Warp() {
 
 		entryKit = Kit(weapon = Inventories.DIAMOND_SWORD_SHARPNESS,
 		               armor = Inventories.ARMOR_FULL_IRON,
-		               items = arrayOf(Inventories.RED_MUSHROOMS, Inventories.BROWN_MUSHROOMS, Inventories.BOWLS))
+		               items = arrayOf(Inventories.RED_MUSHROOMS, Inventories.BROWN_MUSHROOMS, Inventories.BOWLS),
+		               isDummy = false)
 
 		loadData()
 	}

@@ -17,7 +17,7 @@ object GamerRegistry {
 		if (gamer == null) {
 			val uuid = player.uniqueId
 
-			gamer = Gamer(player, PRIMITIVE_GAMER_BY_UUID[uuid]!!)
+			gamer = Gamer(player, PRIMITIVE_GAMER_BY_UUID[uuid] ?: tempPrimitiveGamer(uuid))
 
 			PRIMITIVE_GAMER_BY_UUID.remove(uuid)
 		}
@@ -31,7 +31,7 @@ object GamerRegistry {
 		else             -> Main.GSON.fromJson(json, PrimitiveGamer::class.java)
 	}
 
-	fun tempPrimitiveGamer(uuid: UUID): PrimitiveGamer = primitiveGamerFromJson("{status:2}", uuid)!!
+	fun tempPrimitiveGamer(uuid: UUID) = PrimitiveGamer(uuid.toString())
 
 	fun unregister(uuid: UUID): Gamer? {
 		PRIMITIVE_GAMER_BY_UUID.remove(uuid)

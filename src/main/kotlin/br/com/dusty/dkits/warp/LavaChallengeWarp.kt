@@ -1,10 +1,6 @@
 package br.com.dusty.dkits.warp
 
-import br.com.dusty.dkits.gamer.Gamer
-import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.util.description
-import br.com.dusty.dkits.util.inventory.fillRecraft
-import br.com.dusty.dkits.util.inventory.fillSoups
 import br.com.dusty.dkits.util.rename
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
@@ -20,16 +16,8 @@ object LavaChallengeWarp: Warp() {
 		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
 		icon.description(description, true)
 
-		entryKit = Kit(isDummy = false)
+		entryKit = EMPTY_NOT_DUMMY_KIT
 
 		loadData()
-	}
-
-	override fun applyKit(gamer: Gamer, kit: Kit) {
-		gamer.clear()
-		gamer.player.run {
-			fillRecraft()
-			fillSoups(true)
-		}
 	}
 }

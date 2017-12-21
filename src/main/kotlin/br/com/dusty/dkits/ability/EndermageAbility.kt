@@ -24,10 +24,11 @@ object EndermageAbility: Ability() {
 	@EventHandler
 	fun onPlayerInteract(event: PlayerInteractEvent) {
 		if (event.action == Action.RIGHT_CLICK_BLOCK) {
-			val item = event.item
+			val player = event.player
+
+			val item = player.itemInHand
 
 			if (item != null && ((item.type == Material.STAINED_GLASS_PANE && item == STAINED_GLASS_PANE) || (item.type == Material.ENDER_PORTAL_FRAME && item == Kits.ENDERMAGE.items[0]))) {
-				val player = event.player
 				val gamer = player.gamer()
 
 				if (gamer.isOnKitCooldown()) {
@@ -55,9 +56,11 @@ object EndermageAbility: Ability() {
 							block.type = type
 							block.data = data
 
-							val index = player.inventory.indexOfFirst { it != null && it.type == Material.STAINED_GLASS_PANE && it == STAINED_GLASS_PANE }
+							if (gamer.kit == Kits.ENDERMAGE) {
+								val index = player.inventory.indexOfFirst { it != null && it.type == Material.STAINED_GLASS_PANE && it == STAINED_GLASS_PANE }
 
-							if (index != -1 && gamer.kit == Kits.ENDERMAGE) player.inventory.setItem(index, Kits.ENDERMAGE.items[0])
+								if (index != -1) player.inventory.setItem(index, Kits.ENDERMAGE.items[0])
+							}
 						}
 
 						Tasks.sync(object: BukkitRunnable() {

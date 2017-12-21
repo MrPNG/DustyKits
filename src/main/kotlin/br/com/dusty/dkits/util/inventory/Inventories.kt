@@ -58,9 +58,9 @@ fun Player.openInventory(player: Player) {
 fun Player.fillSoups(fullInventory: Boolean) = inventory.apply { (0 .. (if (fullInventory) 35 else 8)).filter { getItem(it) == null }.forEach { setItem(it, SOUP) } }
 
 fun Player.fillRecraft(): Inventory = inventory.apply {
-	setItem(14, RED_MUSHROOMS)
-	setItem(15, BROWN_MUSHROOMS)
-	setItem(16, BOWLS)
+	setItem(13, RED_MUSHROOMS)
+	setItem(14, BROWN_MUSHROOMS)
+	setItem(15, BOWLS)
 }
 
 object Inventories {
@@ -79,6 +79,7 @@ object Inventories {
 	val SOUPS_TITLE = Text.of("Sopas").color(TextColor.GOLD).toString()
 	val RECRAFT_TITLE = Text.of("Recraft").color(TextColor.GOLD).toString()
 
+	val NO_ARMOR = arrayOfNulls<ItemStack>(4)
 	val ARMOR_FULL_IRON: Array<ItemStack?> = arrayOf(ItemStack(IRON_HELMET), ItemStack(IRON_CHESTPLATE), ItemStack(IRON_LEGGINGS), ItemStack(IRON_BOOTS))
 
 	val WOOD_SWORD = ItemStack(Material.WOOD_SWORD)
