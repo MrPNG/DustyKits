@@ -14,8 +14,8 @@ object ForceCommand: PlayerCustomCommand(EnumRank.ADMIN, "force") {
 	override fun execute(sender: Player, alias: String, args: Array<String>): Boolean {
 		when {
 //			sender.gamer().mode != EnumMode.ADMIN -> sender.sendMessage(Text.negativePrefix().basic("Você ").negative("não").basic(" está no modo ").negative("ADMIN").basic("!").toString())
-			args.size < 3                         -> sender.sendMessage(Text.negativePrefix().negative("Uso:").basic(" /force ").negative("<kit>/<warp> <nomeDoKit>/<nomeDaWarp> <jogador>").toString())
-			else                                  -> when (args[0].toLowerCase()) {
+			args.size < 3 -> sender.sendMessage(Text.negativePrefix().negative("Uso:").basic(" /force ").negative("<kit>/<warp> <nomeDoKit>/<nomeDaWarp> <jogador>").toString())
+			else          -> when (args[0].toLowerCase()) {
 				"kit"  -> {
 					val kit = Kits[args[1]]
 					val player = Bukkit.getPlayerExact(args[2])

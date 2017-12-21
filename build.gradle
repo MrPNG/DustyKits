@@ -46,20 +46,6 @@ shadowJar {
     version = null
 }
 
-//Copy shadowed jar to plugins folder on 'run' folder
-task copyJar(type: Copy) {
-    from shadowJar
-    into '/run/plugins/'
-}
-
-//Run Spigot server from Gradle command line (but it isn't closed when build is completed)
-task runServer(type: Exec) {
-    workingDir '/run/'
-    standardInput = System.in
-
-    commandLine 'cmd', '/c java -Xmx256M -jar spigot.jar'
-}
-
 repositories {
     jcenter()
     mavenLocal()

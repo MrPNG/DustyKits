@@ -107,11 +107,11 @@ object FeastWarp: Warp() {
 	                          arrayOf(potions(1, false, false, STRENGTH, false), 1, 0.075, 1),
 	                          arrayOf(potions(1, true, false, STRENGTH, false), 1, 0.05, 1),
 	                          arrayOf(potions(1, false, true, STRENGTH, false), 1, 0.05, 1),
-                              arrayOf(potions(1, false, false, WEAKNESS, true), 1, 0.075, 1),
-                              arrayOf(potions(1, true, false, WEAKNESS, true), 1, 0.05, 1),
-                              arrayOf(potions(1, false, false, POISON, true), 1, 0.075, 1),
-                              arrayOf(potions(1, true, false, POISON, true), 1, 0.05, 1),
-                              arrayOf(potions(1, false, true, POISON, true), 1, 0.05, 1))
+	                          arrayOf(potions(1, false, false, WEAKNESS, true), 1, 0.075, 1),
+	                          arrayOf(potions(1, true, false, WEAKNESS, true), 1, 0.05, 1),
+	                          arrayOf(potions(1, false, false, POISON, true), 1, 0.075, 1),
+	                          arrayOf(potions(1, true, false, POISON, true), 1, 0.05, 1),
+	                          arrayOf(potions(1, false, true, POISON, true), 1, 0.05, 1))
 
 	var enchantmentTable = Locations.GENERIC
 		get() {

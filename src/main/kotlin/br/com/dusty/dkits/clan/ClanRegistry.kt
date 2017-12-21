@@ -28,8 +28,8 @@ object ClanRegistry {
 	}
 
 	fun primitiveClanFromJson(json: String?): PrimitiveClan? = when (json) {
-		null         -> null
+		null             -> null
 		"{\"status\":2}" -> null
-		else         -> Main.GSON.fromJson(json, PrimitiveClan::class.java)
+		else             -> Main.GSON.fromJson(json, PrimitiveClan::class.java)
 	}
 }
