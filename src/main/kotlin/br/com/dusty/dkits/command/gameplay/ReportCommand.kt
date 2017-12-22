@@ -27,7 +27,7 @@ object ReportCommand: PlayerCustomCommand(EnumRank.DEFAULT, "dustyreport") {
 						args[0]).basic("\"!").toString())
 				REPORTS_BY_UUID.containsEntry(sender.uniqueId,
 				                              player.uniqueId)                  -> sender.sendMessage(Text.negativePrefix().basic("Você ").negative("já").basic(" reportou o jogador ").negative(
-						player.name).basic(" antes!").toString())
+						player.name).basic("!").toString())
 				else                                                            -> {
 					val reason = args.copyOfRange(1, args.size).joinToString(separator = " ")
 
@@ -44,6 +44,8 @@ object ReportCommand: PlayerCustomCommand(EnumRank.DEFAULT, "dustyreport") {
 					}
 
 					REPORTS_BY_UUID.put(sender.uniqueId, player.uniqueId)
+
+					Tasks.sync(Runnable { REPORTS_BY_UUID.remove(sender.uniqueId, player.uniqueId) }, 1200L)
 
 					Tasks.async(Runnable { println(WebAPI.report(player.name, sender.name, reason)) })
 				}

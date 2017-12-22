@@ -107,6 +107,7 @@ object HGWarp: Warp() {
 	val minimumPlayers = 10
 
 	val invincibility = 60 * 2
+	val additionalInvincibility = 30
 	val feast = 60 * 10
 
 	var state = CLOSED
@@ -188,10 +189,14 @@ object HGWarp: Warp() {
 			Tasks.sync(Runnable {
 				player.spigot().respawn()
 
-				if (gamer.hasAdvantage(EnumAdvantage.HG_RESPAWN) && System.currentTimeMillis() - start < (invincibility + 2 * 60) * 1000) player.teleport(feastLocation) else gamer.sendToWarp(
-						Warps.LOBBY,
-						true,
-						true)
+				if (gamer.hasAdvantage(EnumAdvantage.HG_RESPAWN) && System.currentTimeMillis() - start < (invincibility + 2 * 60) * 1000) {
+					gamer.invincibility = additionalInvincibility * 1000L
+
+					player.teleport(feastLocation)
+
+					player.sendMessage(Text.neutralPrefix().append(PREFIX).basic("Você ").basic("renasceu").basic(" no ").neutral(NAME).basic(" e tem mais ").neutral(additionalInvincibility.toString() + " segundos").basic(
+							" de invencibilidade!").toString())
+				} else gamer.sendToWarp(Warps.LOBBY, true, true)
 			})
 		}
 	}
@@ -236,14 +241,12 @@ object HGWarp: Warp() {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	fun onPlayerDropItem(event: PlayerDropItemEvent) {
-		if (state == ONGOING || state == FINISHING) {
-			val gamer = event.player.gamer()
+		val gamer = event.player.gamer()
 
-			if (gamer.warp == this) when (gamer.mode) {
-				EnumMode.ADMIN    -> return //TODO: Logging
-				EnumMode.SPECTATE -> event.isCancelled = true
-				EnumMode.PLAY     -> if (event.itemDrop.itemStack in gamer.kit.items) event.isCancelled = true
-			}
+		if (gamer.warp == this) when (gamer.mode) {
+			EnumMode.ADMIN    -> return //TODO: Logging
+			EnumMode.SPECTATE -> event.isCancelled = true
+			EnumMode.PLAY     -> if (event.itemDrop.itemStack in gamer.kit.items) event.isCancelled = true
 		}
 	}
 

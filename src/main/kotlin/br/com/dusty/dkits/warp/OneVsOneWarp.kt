@@ -20,7 +20,6 @@ import org.bukkit.SkullType
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
-import org.bukkit.event.block.Action
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerDropItemEvent
 import org.bukkit.event.player.PlayerInteractEntityEvent
@@ -195,7 +194,7 @@ object OneVsOneWarp: Warp() {
 
 					val clickedBlock = event.clickedBlock ?: return
 
-					if (event.action == Action.LEFT_CLICK_BLOCK && clickedBlock.type == GLASS) player.sendBlockChange(clickedBlock.location, BEDROCK, 0)
+					if (clickedBlock.type == GLASS) player.sendBlockChange(clickedBlock.location, BEDROCK, 0)
 				}
 				item != null                                                                                              -> {
 
