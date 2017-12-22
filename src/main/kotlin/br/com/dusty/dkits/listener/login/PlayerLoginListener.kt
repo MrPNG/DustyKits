@@ -54,14 +54,14 @@ object PlayerLoginListener: Listener {
 		}
 
 		if (event.result == PlayerLoginEvent.Result.KICK_FULL) {
-			if (gamer.rank.isHigherThanOrEquals(EnumRank.MOD) || gamer.hasAdvantage(EnumAdvantage.SLOT)) {
-				event.allow()
-			} else if (GamerRegistry.onlineGamers().filterNot { it.mode == EnumMode.ADMIN }.size >= Main.data.slots) {
+			if (gamer.rank.isLowerThan(EnumRank.MOD) && !gamer.hasAdvantage(EnumAdvantage.SLOT) && GamerRegistry.onlineGamers().filterNot { it.mode == EnumMode.ADMIN }.size >= Main.data.slots) {
 				event.disallow(PlayerLoginEvent.Result.KICK_FULL, KICK_FULL_MESSAGE)
 
 				GamerRegistry.unregister(player.uniqueId)
 
 				return
+			} else {
+				event.allow()
 			}
 		}
 
