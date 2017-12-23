@@ -31,16 +31,15 @@ object EndermageAbility: Ability() {
 			if (item != null && ((item.type == Material.STAINED_GLASS_PANE && item == STAINED_GLASS_PANE) || (item.type == Material.ENDER_PORTAL_FRAME && item == Kits.ENDERMAGE.items[0]))) {
 				val gamer = player.gamer()
 
-				if (gamer.isOnKitCooldown()) {
-					sendKitCooldownMessage(gamer)
-				} else if (hasAbility(gamer) && gamer.canUse()) {
+				if (gamer.isOnKitCooldown()) sendKitCooldownMessage(gamer)
+				else if (hasAbility(gamer) && gamer.canUse()) {
 					val block = event.clickedBlock
 					val blockAbove = block.getRelative(BlockFace.UP)
 					val blockAboveTheAboveBlock = blockAbove.getRelative(BlockFace.UP)
 
-					if (!block.type.isSolid || block.type == Material.GLASS || block.type == Material.STAINED_GLASS || blockAbove.type.isSolid || blockAboveTheAboveBlock.type.isSolid) {
-						event.player.sendMessage(Text.negativePrefix().basic("Você ").negative("não").basic(" pode colocar um ").negative("portal").basic(" nesse local!").toString())
-					} else {
+					if (!block.type.isSolid || block.type == Material.GLASS || block.type == Material.STAINED_GLASS || blockAbove.type.isSolid || blockAboveTheAboveBlock.type.isSolid) event.player.sendMessage(
+							Text.negativePrefix().basic("Você ").negative("não").basic(" pode colocar um ").negative("portal").basic(" nesse local!").toString())
+					else {
 						val type = block.type
 						val data = block.data
 
