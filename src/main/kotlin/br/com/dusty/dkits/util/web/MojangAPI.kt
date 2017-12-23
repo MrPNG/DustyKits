@@ -19,12 +19,12 @@ object MojangAPI {
 
 	fun profile(name: String) = HttpGet(URL_PROFILE + name).response()?.run { HttpClients.GSON.fromJson(this, Profile::class.java) }
 
-	fun profiles(vararg names: String): Collection<Profile>? = HttpPost(URL_PROFILES).apply {
+	fun profiles(vararg names: String): ArrayList<Profile>? = HttpPost(URL_PROFILES).apply {
 		setHeader("Content-type", "application/json")
 		entity = StringEntity(HttpClients.GSON.toJson(names))
 	}.response()?.run { HttpClients.GSON.fromJson(this, PROFILES_TYPE_TOKEN) }
 
-	fun nameHistory(uuid: String): Collection<Profile>? = HttpGet(URL_NAME_HISTORY.format(uuid)).response()?.run {
+	fun nameHistory(uuid: String): ArrayList<Profile>? = HttpGet(URL_NAME_HISTORY.format(uuid)).response()?.run {
 		HttpClients.GSON.fromJson(this, PROFILES_TYPE_TOKEN)
 	}
 

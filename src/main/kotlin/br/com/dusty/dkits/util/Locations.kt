@@ -1,12 +1,11 @@
 package br.com.dusty.dkits.util
 
 import br.com.dusty.dkits.Main
-import br.com.dusty.dkits.warp.Warp
-import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
+import org.bukkit.World
 
-fun Location.toSimpleLocation() = Warp.SimpleLocation(x, y, z, yaw, pitch)
+fun Location.toSimpleLocation() = SimpleLocation(x, y, z, yaw, pitch)
 
 fun Location.normalize() = Location(world, Math.floor(x) + 0.5, Math.floor(y) + 0.5, Math.floor(z) + 0.5, yaw.toInt().round(90.0).toFloat(), pitch.toInt().round(90.0).toFloat())
 
@@ -147,5 +146,10 @@ fun Location.destroyGlassArena(width: Int, height: Int, length: Int) {
 
 object Locations {
 
-	val GENERIC = Location(Bukkit.getWorlds()[0], 0.0, 0.0, 0.0)
+	val GENERIC = Location(Main.WORLD, 0.0, 0.0, 0.0)
+}
+
+data class SimpleLocation(var x: Double = 0.0, var y: Double = 0.0, var z: Double = 0.0, var yaw: Float = 0F, var pitch: Float = 0F) {
+
+	fun toLocation(world: World) = Location(world, x, y, z, yaw, pitch)
 }

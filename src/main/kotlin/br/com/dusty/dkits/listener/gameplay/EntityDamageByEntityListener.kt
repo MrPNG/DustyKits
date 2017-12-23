@@ -46,17 +46,15 @@ object EntityDamageByEntityListener: Listener {
 				val player = (event.entity as Player)
 				val gamer = player.gamer()
 
-				if (damager.mode == EnumMode.SPECTATE || !player.canSee(damagerPlayer) || Main.REGION_MANAGER!!.getApplicableRegions(damager.player.location).allows(DefaultFlag.INVINCIBILITY)) {
-					event.isCancelled = true
+				if (damager.isInvincible || damager.mode == EnumMode.SPECTATE || !player.canSee(damagerPlayer) || Main.REGION_MANAGER!!.getApplicableRegions(damager.player.location).allows(
+						DefaultFlag.INVINCIBILITY)) event.isCancelled = true
+				else {
+					if (gamer.combatTag < 10000L) gamer.combatTag = 10000L
+					if (damager.combatTag < 10000L) damager.combatTag = 10000L
 
-					return
+					gamer.combatPartner = damager
+					damager.combatPartner = gamer
 				}
-
-				if (gamer.combatTag < 10000L) gamer.combatTag = 10000L
-				if (damager.combatTag < 10000L) damager.combatTag = 10000L
-
-				gamer.combatPartner = damager
-				damager.combatPartner = gamer
 			}
 		}
 	}

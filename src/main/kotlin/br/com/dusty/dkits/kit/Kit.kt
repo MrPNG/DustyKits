@@ -53,8 +53,8 @@ open class Kit(var name: String = "None",
 		val dir = File(Main.CONFIG_DIR, "kit")
 		val file = File(dir, name.toLowerCase() + ".json")
 
-		dir.mkdirs()
-		file.createNewFile()
+		if (!dir.exists()) dir.mkdirs()
+		if (!file.exists()) file.createNewFile()
 
 		PrintWriter(file).use { it.println(Main.GSON.toJson(data)) }
 	}
