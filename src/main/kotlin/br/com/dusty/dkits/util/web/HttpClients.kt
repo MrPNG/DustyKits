@@ -1,6 +1,7 @@
 package br.com.dusty.dkits.util.web
 
 import com.google.gson.Gson
+import com.google.gson.JsonParser
 import org.apache.http.NameValuePair
 import org.apache.http.client.entity.UrlEncodedFormEntity
 import org.apache.http.client.methods.HttpGet
@@ -21,4 +22,6 @@ fun HttpPost.response(): String? = EntityUtils.toString(WebAPI.HTTP_CLIENT.execu
 object HttpClients {
 
 	val GSON = Gson()
+
+	val JSON_PARSER = JsonParser()
 }

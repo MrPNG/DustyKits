@@ -4,6 +4,7 @@ import br.com.dusty.dkits.ability.Abilities
 import br.com.dusty.dkits.command.Commands
 import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.listener.Listeners
+import br.com.dusty.dkits.util.leaderboard.Leaderboards
 import br.com.dusty.dkits.warp.Warps
 import com.google.gson.GsonBuilder
 import com.sk89q.worldguard.bukkit.WGBukkit
@@ -34,6 +35,8 @@ class Main: JavaPlugin() {
 		Listeners.registerAll()
 		Abilities.registerAll()
 
+		Bukkit.getLogger().info("Loaded " + Leaderboards.leaderboards.size + " leaderboards!")
+
 		data.serverStatus = EnumServerStatus.ONLINE
 	}
 
@@ -54,15 +57,18 @@ class Main: JavaPlugin() {
 
 		var REGION_MANAGER: RegionManager? = null
 			get() {
-				if (field == null) field = WGBukkit.getPlugin().getRegionManager(Bukkit.getWorlds()[0])
+				if (field == null) field = WGBukkit.getPlugin().getRegionManager(Main.WORLD)
 
 				return field
 			}
 
+		val WORLD
+			get() = Bukkit.getWorlds()[0]
+
 		val RANDOM = Random()
 		val GSON = GsonBuilder().setPrettyPrinting().create()
 
-		val CONFIG_DIR = File(Bukkit.getWorldContainer(), "config")
+		val CONFIG_DIR = File(Bukkit.getWorldContainer(), "config").apply { if (!exists()) mkdirs() }
 
 		var data = Data()
 

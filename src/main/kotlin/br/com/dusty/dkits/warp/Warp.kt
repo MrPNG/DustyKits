@@ -11,7 +11,6 @@ import br.com.dusty.dkits.util.inventory.fillRecraft
 import br.com.dusty.dkits.util.inventory.fillSoups
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
-import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.World
@@ -42,7 +41,7 @@ open class Warp: Listener {
 
 	var spawn = Locations.GENERIC
 		get() {
-			if (field == Locations.GENERIC) field = data.spawn.toLocation(Bukkit.getWorlds()[0])
+			if (field == Locations.GENERIC) field = data.spawn.toLocation(Main.WORLD)
 
 			return field
 		}
@@ -93,8 +92,8 @@ open class Warp: Listener {
 		val dir = File(Main.CONFIG_DIR, "warp")
 		val file = File(dir, name.toLowerCase().replace(" ", "_") + ".json")
 
-		dir.mkdirs()
-		file.createNewFile()
+		if (!dir.exists()) dir.mkdirs()
+		if (!file.exists()) file.createNewFile()
 
 		PrintWriter(file).use { it.println(Main.GSON.toJson(data)) }
 	}

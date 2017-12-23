@@ -19,7 +19,6 @@ import br.com.dusty.dkits.util.inventory.fillRecraft
 import br.com.dusty.dkits.util.inventory.fillSoups
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
-import org.bukkit.Bukkit
 import org.bukkit.FireworkEffect
 import org.bukkit.Location
 import org.bukkit.Material.*
@@ -120,7 +119,7 @@ object FeastWarp: Warp() {
 
 	var enchantmentTable = Locations.GENERIC
 		get() {
-			if (field == Locations.GENERIC && data is FeastData) field = (data as FeastData).enchantmentTable.toLocation(Bukkit.getWorlds()[0])
+			if (field == Locations.GENERIC && data is FeastData) field = (data as FeastData).enchantmentTable.toLocation(Main.WORLD)
 
 			return field
 		}

@@ -1,5 +1,6 @@
 package br.com.dusty.dkits.warp
 
+import br.com.dusty.dkits.Main
 import br.com.dusty.dkits.command.gameplay.WarpCommand
 import br.com.dusty.dkits.command.staff.LocationCommand
 import br.com.dusty.dkits.gamer.Gamer
@@ -12,7 +13,6 @@ import br.com.dusty.dkits.util.text.TextColor
 import br.com.dusty.dkits.warp.OneVsOneWarp.FightState.INVITATION
 import br.com.dusty.dkits.warp.OneVsOneWarp.FightState.ONGOING
 import br.com.dusty.dkits.warp.OneVsOneWarp.FightType.*
-import org.bukkit.Bukkit
 import org.bukkit.GameMode
 import org.bukkit.Location
 import org.bukkit.Material.*
@@ -38,7 +38,7 @@ object OneVsOneWarp: Warp() {
 
 	var oneVsOneFirst = Locations.GENERIC
 		get() {
-			if (field == Locations.GENERIC && data is OneVsOneData) field = (data as OneVsOneData).oneVsOneFirst.toLocation(Bukkit.getWorlds()[0])
+			if (field == Locations.GENERIC && data is OneVsOneData) field = (data as OneVsOneData).oneVsOneFirst.toLocation(Main.WORLD)
 
 			return field
 		}
@@ -54,7 +54,7 @@ object OneVsOneWarp: Warp() {
 
 	var oneVsOneSecond = Locations.GENERIC
 		get() {
-			if (field == Locations.GENERIC && data is OneVsOneData) field = (data as OneVsOneData).oneVsOneSecond.toLocation(Bukkit.getWorlds()[0])
+			if (field == Locations.GENERIC && data is OneVsOneData) field = (data as OneVsOneData).oneVsOneSecond.toLocation(Main.WORLD)
 
 			return field
 		}
@@ -70,7 +70,7 @@ object OneVsOneWarp: Warp() {
 
 	var clanVsClanFirst = Locations.GENERIC
 		get() {
-			if (field == Locations.GENERIC && data is OneVsOneData) field = (data as OneVsOneData).clanVsClanFirst.toLocation(Bukkit.getWorlds()[0])
+			if (field == Locations.GENERIC && data is OneVsOneData) field = (data as OneVsOneData).clanVsClanFirst.toLocation(Main.WORLD)
 
 			return field
 		}
@@ -86,7 +86,7 @@ object OneVsOneWarp: Warp() {
 
 	var clanVsClanSecond = Locations.GENERIC
 		get() {
-			if (field == Locations.GENERIC && data is OneVsOneData) field = (data as OneVsOneData).clanVsClanSecond.toLocation(Bukkit.getWorlds()[0])
+			if (field == Locations.GENERIC && data is OneVsOneData) field = (data as OneVsOneData).clanVsClanSecond.toLocation(Main.WORLD)
 
 			return field
 		}
