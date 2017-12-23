@@ -189,11 +189,6 @@ open class Warp: Listener {
 		BREAK
 	}
 
-	data class SimpleLocation(var x: Double = 0.0, var y: Double = 0.0, var z: Double = 0.0, var yaw: Float = 0F, var pitch: Float = 0F) {
-
-		fun toLocation(world: World) = Location(world, x, y, z, yaw, pitch)
-	}
-
 	open class Data(var isEnabled: Boolean = false,
 	                var isListEnabledKits: Boolean = true,
 	                var kits: Array<String> = arrayOf(),
