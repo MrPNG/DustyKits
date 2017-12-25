@@ -1,5 +1,6 @@
 package br.com.dusty.dkits.listener.gameplay
 
+import br.com.dusty.dkits.Main
 import br.com.dusty.dkits.command.staff.BuyCommand
 import br.com.dusty.dkits.util.Tasks
 import br.com.dusty.dkits.util.block.interact
@@ -63,12 +64,13 @@ object PlayerInteractListener: Listener {
 						val maxHealth = player.maxHealth
 
 						if (player.health < maxHealth) {
-							if (player.health < maxHealth - 7) player.health += 7.0
-							else player.health = maxHealth
+							if (player.health < maxHealth - 7) player.health += 7.0 else player.health = maxHealth
 
 							val slot = player.inventory.heldItemSlot
 
 							Tasks.sync(Runnable { player.inventory.setItem(slot, Inventories.BOWL) })
+
+							Main.data.soups++
 						}
 					}
 				}

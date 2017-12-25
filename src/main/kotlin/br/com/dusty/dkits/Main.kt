@@ -34,14 +34,15 @@ class Main: JavaPlugin() {
 		Commands.registerAll()
 		Listeners.registerAll()
 		Abilities.registerAll()
-
-		Bukkit.getLogger().info("Loaded " + Leaderboards.leaderboards.size + " leaderboards!")
+		Leaderboards.registerAll()
 
 		data.serverStatus = EnumServerStatus.ONLINE
 	}
 
 	override fun onDisable() {
 		Warps.WARPS.forEach { it.finalize() }
+
+		saveData()
 	}
 
 	companion object {
@@ -88,5 +89,5 @@ class Main: JavaPlugin() {
 		}
 	}
 
-	data class Data(var slots: Int = 120, var serverStatus: EnumServerStatus = EnumServerStatus.OFFLINE)
+	data class Data(var slots: Int = 120, var serverStatus: EnumServerStatus = EnumServerStatus.OFFLINE, var soups: Int = 0)
 }

@@ -11,7 +11,7 @@ object DebugCommand: PlayerCustomCommand(EnumRank.ADMIN, "debug") {
 
 	override fun execute(sender: Player, alias: String, args: Array<String>): Boolean {
 		if (args.isEmpty()) {
-			sender.sendMessage(Text.negativePrefix().negative("Uso:").basic(" /debug ").negative("<gladiator>/<1v1>").toString())
+			sender.sendMessage(Text.negativePrefix().negative("Uso:").basic(" /debug ").negative("<gladiator>/<1v1>/<kill>").toString())
 		} else {
 			when (args[0].toLowerCase()) {
 				"gladiator" -> {
@@ -19,6 +19,13 @@ object DebugCommand: PlayerCustomCommand(EnumRank.ADMIN, "debug") {
 				}
 				"1v1"       -> {
 					sender.sendMessage(OneVsOneWarp.FIGHTS.toString())
+				}
+				"kill"      -> {
+					if (args.size > 1) {
+						val radius = args[1].toDoubleOrNull() ?: 0.0
+
+						sender.world.getNearbyEntities(sender.location, radius, radius, radius).forEach { it.remove() }
+					}
 				}
 			}
 		}

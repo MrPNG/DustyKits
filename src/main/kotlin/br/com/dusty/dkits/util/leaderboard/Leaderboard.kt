@@ -5,7 +5,6 @@ import br.com.dusty.dkits.util.leaderboard.Leaderboards.EnumLeaderboardType.KILL
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
 import br.com.dusty.dkits.util.text.TextStyle
-import br.com.dusty.dkits.util.toSimpleLocation
 import br.com.dusty.dkits.util.web.WebAPI
 import org.bukkit.Location
 import org.bukkit.entity.ArmorStand
@@ -51,31 +50,35 @@ class Leaderboard(val location: Location,
 						isVisible = false
 						setGravity(false)
 					})
+
+					Leaderboards.saveData()
 				})
 			})
-
-			Leaderboards.leaderboards.add(this)
-			Leaderboards.leaderboardsData.add(Leaderboards.LeaderboardData(location.toSimpleLocation(), type.name, amount, descending, entities.map { it.entityId }.toTypedArray()))
-			Leaderboards.saveData()
 		}
 
-		Tasks.async(Runnable { update() }, 0L, 20L * 60L * 10L)
+		Tasks.async(Runnable { update() }, 0L, 20L * 3L * 10L)
 	}
 
 	fun update() {
-		val pairs = WebAPI.leaderboard(this)
+		if (entities.isNotEmpty()) {
+			val pairs = WebAPI.leaderboard(this)
 
-		Tasks.sync(Runnable {
-			var index = amount
+			Tasks.sync(Runnable {
+				var index = amount
 
-			val iterator = entities.iterator()
+				val iterator = entities.iterator()
 
-			pairs.reversed().forEach {
-				iterator.next().customName = Text.of((index).toString() + ". ").color(TextColor.GOLD).styles(TextStyle.BOLD).append(it.first).color(TextColor.YELLOW).basic(" - ").append(it.second).color(
-						TextColor.GOLD).styles(TextStyle.BOLD).toString()
+				pairs.reversed().forEach {
+					iterator.next().customName = Text.of((index).toString() + ". ").color(TextColor.GOLD).styles(TextStyle.BOLD).append(it.first).color(TextColor.YELLOW).basic(" - ").append(it.second).color(
+							TextColor.GOLD).styles(TextStyle.BOLD).toString()
 
-				index--
-			}
-		})
+					index--
+				}
+			})
+		}
+	}
+
+	fun remove() {
+		entities.forEach { it.remove() }
 	}
 }

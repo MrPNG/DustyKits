@@ -205,34 +205,48 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 			primitiveGamer.maxKillStreak = maxKillStreak
 		}
 
-	val xp: Double
-		get() = primitiveGamer.xp
+	var skillGroup = EnumSkillGroup.INICIANTE
+
+	var xp = primitiveGamer.xp
+		set(value) {
+			field = value
+
+			primitiveGamer.xp = value
+
+			val oldSkillGroup = skillGroup
+
+			skillGroup = EnumSkillGroup.values().firstOrNull { value in it.range } ?: EnumSkillGroup.INICIANTE
+
+			if (skillGroup > oldSkillGroup) player.sendMessage(Text.positivePrefix().basic("Você ").positive("subiu").basic(" para o rank ").positive(skillGroup.string).basic("!").toString())
+			else if (skillGroup < oldSkillGroup) player.sendMessage(Text.negativePrefix().basic("Você ").negative("caiu").basic(" para o rank ").negative(skillGroup.string).basic("!").toString())
+		}
 
 	fun addXp(amount: Double) {
 		val advantage = (rank.isHigherThanOrEquals(EnumRank.PRO) && rank.isLowerThan(EnumRank.MOD)) || hasAdvantage(EnumAdvantage.DOUBLE)
 
 		val absAmount = Math.abs(amount)
 
-		if (advantage) {
-			primitiveGamer.xp += absAmount * 2
-
+		xp += if (advantage) {
 			player.sendMessage(Text.positiveOf("+").positive(Math.round(absAmount).toInt()).append("x2").color(TextColor.GOLD).basic(" = ").append(Math.round(absAmount * 2).toInt()).color(
 					TextColor.GOLD).basic(" XP!").toString())
-		} else {
-			primitiveGamer.xp += absAmount
 
+			absAmount * 2
+		} else {
 			player.sendMessage(Text.positiveOf("+").positive(Math.round(absAmount).toInt()).basic(" XP!").toString())
+
+			absAmount
 		}
 
 		updateScoreboard()
 	}
 
 	fun removeXp(amount: Double) {
-		primitiveGamer.xp -= Math.abs(amount)
+		val absAmount = Math.abs(amount)
 
-		if (primitiveGamer.xp < 0) primitiveGamer.xp = 0.0
+		if (xp < absAmount) xp = 0.0
+		else xp -= absAmount
 
-		player.sendMessage(Text.negativeOf("-").negative(Math.round(amount).toInt()).basic(" XP!").toString())
+		player.sendMessage(Text.negativeOf("-").negative(Math.round(absAmount).toInt()).basic(" XP!").toString())
 		updateScoreboard()
 	}
 
@@ -244,24 +258,25 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 
 		val absAmount = Math.abs(amount)
 
-		if (advantage) {
-			primitiveGamer.money += absAmount * 2
-
+		primitiveGamer.money += if (advantage) {
 			player.sendMessage(Text.positiveOf("+").positive(Math.round(absAmount).toInt()).append("x2").color(TextColor.GOLD).basic(" = ").append(Math.round(absAmount * 2).toInt()).color(
 					TextColor.GOLD).basic(" créditos!").toString())
-		} else {
-			primitiveGamer.money += absAmount
 
+			absAmount * 2
+		} else {
 			player.sendMessage(Text.positiveOf("+").positive(Math.round(absAmount).toInt()).basic(" créditos!").toString())
+
+			absAmount
 		}
 
 		updateScoreboard()
 	}
 
 	fun removeMoney(amount: Double) {
-		primitiveGamer.money -= Math.abs(amount)
+		val absAmount = Math.abs(amount)
 
-		if (primitiveGamer.money < 0) primitiveGamer.money = 0.0
+		if (primitiveGamer.money < absAmount) primitiveGamer.money = 0.0
+		else primitiveGamer.money -= absAmount
 
 		player.sendMessage(Text.negativeOf("-").negative(Math.round(amount).toInt()).basic(" créditos!").toString())
 		updateScoreboard()

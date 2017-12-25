@@ -44,8 +44,6 @@ object WebAPI {
 		return HttpClients.JSON_PARSER.parse(HttpGet("http://api.dusty.com.br/handler.php?type=getLeaderboard&tipo=$type&max=${leaderboard.amount}&ordem=${if (leaderboard.descending) "desc" else "asc"}").response()).asJsonArray.map {
 			val jsonObject = it.asJsonObject
 
-			println(it)
-
 			(jsonObject["uuid"] ?: null).toString().replace("\"", "") to jsonObject[type].asInt
 		}
 	}
