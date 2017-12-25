@@ -36,7 +36,7 @@ object AsyncPlayerChatListener: Listener {
 					player.sendMessage(Text.negativePrefix().basic("O chat está ").negative("restrito").basic(" apenas a ").negative(rank.string).basic(" e acima!").toString())
 				}
 
-				event.format = "" + Text.basicOf(if (gamer.clan != null) gamer.clan!!.tag + " " else "").toString() + "%s" + TextColor.GRAY + ":" + TextStyle.RESET + " %s"
+				event.format = Text.basicOf("[").toString() + gamer.skillGroup.prefix + Text.basicOf("] " + (if (gamer.clan != null) gamer.clan!!.tag + " " else "")).toString() + "%s" + TextColor.GRAY + ":" + TextStyle.RESET + " %s"
 			}
 			CLAN   -> {
 				event.recipients.clear()
