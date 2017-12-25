@@ -49,6 +49,7 @@ object Commands {
 		CUSTOM_COMMANDS.add(GamerCommand)
 		CUSTOM_COMMANDS.add(InvSeeCommand)
 		CUSTOM_COMMANDS.add(IpCheckCommand)
+		CUSTOM_COMMANDS.add(LeaderboardCommand)
 		CUSTOM_COMMANDS.add(LocationCommand)
 		CUSTOM_COMMANDS.add(ProtocolCommand)
 		CUSTOM_COMMANDS.add(RamCommand)

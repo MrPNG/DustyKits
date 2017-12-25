@@ -510,6 +510,7 @@ object HGWarp: Warp() {
 		val xpPrizeIndividual = xpPrizeNormalized / size
 
 		winners.forEach {
+			it.addHgWin()
 			it.addMoney(moneyPrizeIndividual)
 			it.addXp(xpPrizeIndividual)
 
@@ -611,6 +612,8 @@ object HGWarp: Warp() {
 		gamer.player.gameMode = GameMode.ADVENTURE
 
 		if (state == ONGOING) {
+			gamer.addHgLoss()
+
 			val gamers = GamerRegistry.onlineGamers().filter { it.warp == Warps.HG }
 			val size = gamers.size
 
