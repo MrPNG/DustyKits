@@ -2,11 +2,10 @@ package br.com.dusty.dkits.listener.login
 
 import br.com.dusty.dkits.gamer.EnumMode
 import br.com.dusty.dkits.gamer.EnumRank
-import br.com.dusty.dkits.util.Scoreboards
+import br.com.dusty.dkits.scoreboard.Scoreboards
 import br.com.dusty.dkits.util.Tasks
 import br.com.dusty.dkits.util.clearFormatting
-import br.com.dusty.dkits.util.gamer.Tags
-import br.com.dusty.dkits.util.gamer.gamer
+import br.com.dusty.dkits.util.entity.gamer
 import br.com.dusty.dkits.util.protocol.EnumProtocolVersion
 import br.com.dusty.dkits.util.protocol.Protocols
 import br.com.dusty.dkits.util.text.Text
@@ -51,19 +50,18 @@ object PlayerJoinListener: Listener {
 		if (gamer.rank.isLowerThan(EnumRank.MOD)) event.joinMessage = JOIN_MESSAGE_PREFIX + player.displayName.clearFormatting()
 		else event.joinMessage = null
 
-		Tags.applyTag(gamer)
-
 		gamer.sendToWarp(Warps.LOBBY, true, false)
 
 		Tasks.sync(Runnable {
 			gamer.run {
+				tag = rank
+
 				when {
 					rank.isLowerThan(EnumRank.MOD) -> player.gameMode = GameMode.ADVENTURE
 					else                           -> mode = EnumMode.ADMIN
 				}
 
 				hidePlayers()
-
 				createScoreboard()
 			}
 

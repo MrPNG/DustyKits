@@ -1,4 +1,4 @@
-package br.com.dusty.dkits.util
+package br.com.dusty.dkits.scoreboard
 
 import br.com.dusty.dkits.gamer.EnumMode
 import br.com.dusty.dkits.gamer.Gamer

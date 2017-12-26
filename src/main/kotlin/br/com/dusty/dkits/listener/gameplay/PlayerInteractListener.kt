@@ -5,11 +5,11 @@ import br.com.dusty.dkits.command.staff.BuyCommand
 import br.com.dusty.dkits.util.Tasks
 import br.com.dusty.dkits.util.block.interact
 import br.com.dusty.dkits.util.block.isSpecial
-import br.com.dusty.dkits.util.gamer.gamer
-import br.com.dusty.dkits.util.inventory.Inventories
-import br.com.dusty.dkits.util.inventory.KitMenu
-import br.com.dusty.dkits.util.inventory.ShopMenu
-import br.com.dusty.dkits.util.inventory.WarpMenu
+import br.com.dusty.dkits.util.entity.gamer
+import br.com.dusty.dkits.util.Inventories
+import br.com.dusty.dkits.inventory.KitMenu
+import br.com.dusty.dkits.inventory.ShopMenu
+import br.com.dusty.dkits.inventory.WarpMenu
 import br.com.dusty.dkits.warp.Warp
 import org.bukkit.GameMode
 import org.bukkit.Material.*

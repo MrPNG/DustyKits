@@ -6,6 +6,8 @@ import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.listener.Listeners
 import br.com.dusty.dkits.util.leaderboard.Leaderboards
 import br.com.dusty.dkits.warp.Warps
+import com.comphenix.protocol.ProtocolLibrary
+import com.comphenix.protocol.ProtocolManager
 import com.google.gson.GsonBuilder
 import com.sk89q.worldguard.bukkit.WGBukkit
 import com.sk89q.worldguard.protection.managers.RegionManager
@@ -54,7 +56,12 @@ class Main: JavaPlugin() {
 
 		//TODO: public static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
-//		val PROTOCOL_MANAGER = ProtocolLibrary.getProtocolManager()
+		var PROTOCOL_MANAGER: ProtocolManager? = null
+			get() {
+				if (field == null) field = ProtocolLibrary.getProtocolManager()
+
+				return field
+			}
 
 		var REGION_MANAGER: RegionManager? = null
 			get() {

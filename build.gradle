@@ -72,7 +72,7 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:1.2.10"
 
     compileOnly "org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT"
-//    compileOnly "com.comphenix.protocol:ProtocolLib:4.4.0-SNAPSHOT"
+    compileOnly "com.comphenix.protocol:ProtocolLib:4.4.0-SNAPSHOT"
     compileOnly 'com.sk89q.worldguard:worldguard-legacy:6.2'
 
     compile "io.reactivex.rxjava2:rxjava:2.1.7"

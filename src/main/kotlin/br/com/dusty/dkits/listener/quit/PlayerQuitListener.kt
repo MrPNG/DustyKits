@@ -5,10 +5,10 @@ import br.com.dusty.dkits.Main
 import br.com.dusty.dkits.clan.ClanRegistry
 import br.com.dusty.dkits.gamer.EnumRank
 import br.com.dusty.dkits.gamer.GamerRegistry
-import br.com.dusty.dkits.util.Scoreboards
+import br.com.dusty.dkits.scoreboard.Scoreboards
 import br.com.dusty.dkits.util.Tasks
 import br.com.dusty.dkits.util.clearFormatting
-import br.com.dusty.dkits.util.gamer.gamer
+import br.com.dusty.dkits.util.entity.gamer
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.web.WebAPI
 import br.com.dusty.dkits.warp.Warps

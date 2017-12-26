@@ -3,7 +3,7 @@ package br.com.dusty.dkits.kit
 import br.com.dusty.dkits.Main
 import br.com.dusty.dkits.ability.Ability
 import br.com.dusty.dkits.util.Tasks
-import br.com.dusty.dkits.util.inventory.Inventories
+import br.com.dusty.dkits.util.Inventories
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import java.io.File

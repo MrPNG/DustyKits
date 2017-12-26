@@ -1,7 +1,7 @@
 package br.com.dusty.dkits.command
 
 import br.com.dusty.dkits.gamer.EnumRank
-import br.com.dusty.dkits.util.gamer.gamer
+import br.com.dusty.dkits.util.entity.gamer
 import br.com.dusty.dkits.warp.Warp
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender

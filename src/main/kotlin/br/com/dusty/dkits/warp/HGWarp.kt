@@ -14,9 +14,9 @@ import br.com.dusty.dkits.util.*
 import br.com.dusty.dkits.util.ItemStacks.potions
 import br.com.dusty.dkits.util.cosmetic.Colors
 import br.com.dusty.dkits.util.entity.spawnFirework
-import br.com.dusty.dkits.util.gamer.gamer
-import br.com.dusty.dkits.util.inventory.Inventories
-import br.com.dusty.dkits.util.inventory.addItemStacks
+import br.com.dusty.dkits.util.entity.gamer
+import br.com.dusty.dkits.util.Inventories
+import br.com.dusty.dkits.util.addItemStacks
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
 import br.com.dusty.dkits.warp.HGWarp.HGState.*

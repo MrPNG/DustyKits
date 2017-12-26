@@ -4,16 +4,17 @@ import br.com.dusty.dkits.Main
 import br.com.dusty.dkits.clan.Clan
 import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.kit.Kits
+import br.com.dusty.dkits.scoreboard.Scoreboards
 import br.com.dusty.dkits.store.EnumAdvantage
 import br.com.dusty.dkits.store.Store
-import br.com.dusty.dkits.util.Scoreboards
+import br.com.dusty.dkits.util.Inventories
 import br.com.dusty.dkits.util.Tasks
 import br.com.dusty.dkits.util.clearFormatting
-import br.com.dusty.dkits.util.inventory.Inventories
 import br.com.dusty.dkits.util.protocol.EnumProtocolVersion
 import br.com.dusty.dkits.util.protocol.HeaderFooters
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
+import br.com.dusty.dkits.util.text.TextStyle
 import br.com.dusty.dkits.warp.Warp
 import br.com.dusty.dkits.warp.Warps
 import com.sk89q.worldguard.protection.flags.DefaultFlag
@@ -33,6 +34,16 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 	fun hasAdvantage(advantage: EnumAdvantage) = advantage in advantages
 
 	var rank = EnumRank.NONE
+
+	var tag = EnumRank.NONE
+		set(value) {
+			field = value
+
+			val displayName = value.format(player.name) + TextStyle.RESET
+
+			player.displayName = displayName
+			player.playerListName = displayName
+		}
 
 	/**
 	 * Menor [EnumRank] que pode ver este jogador.

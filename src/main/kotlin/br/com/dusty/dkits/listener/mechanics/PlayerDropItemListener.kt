@@ -2,7 +2,7 @@ package br.com.dusty.dkits.listener.mechanics
 
 import br.com.dusty.dkits.gamer.EnumMode
 import br.com.dusty.dkits.util.Tasks
-import br.com.dusty.dkits.util.gamer.gamer
+import br.com.dusty.dkits.util.entity.gamer
 import org.bukkit.Material.*
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener

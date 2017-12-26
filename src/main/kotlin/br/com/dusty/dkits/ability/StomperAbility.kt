@@ -1,7 +1,7 @@
 package br.com.dusty.dkits.ability
 
 import br.com.dusty.dkits.gamer.GamerRegistry
-import br.com.dusty.dkits.util.gamer.gamer
+import br.com.dusty.dkits.util.entity.gamer
 import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler

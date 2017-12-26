@@ -7,7 +7,7 @@ import br.com.dusty.dkits.gamer.EnumChat
 import br.com.dusty.dkits.gamer.EnumRank
 import br.com.dusty.dkits.util.addUuidDashes
 import br.com.dusty.dkits.util.clearFormatting
-import br.com.dusty.dkits.util.gamer.gamer
+import br.com.dusty.dkits.util.entity.gamer
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.web.MojangAPI
 import br.com.dusty.dkits.util.web.WebAPI

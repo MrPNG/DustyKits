@@ -6,8 +6,8 @@ import br.com.dusty.dkits.command.staff.LocationCommand
 import br.com.dusty.dkits.gamer.Gamer
 import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.util.*
-import br.com.dusty.dkits.util.gamer.gamer
-import br.com.dusty.dkits.util.inventory.*
+import br.com.dusty.dkits.util.entity.gamer
+import br.com.dusty.dkits.inventory.*
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
 import br.com.dusty.dkits.warp.OneVsOneWarp.FightState.INVITATION

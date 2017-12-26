@@ -5,7 +5,7 @@ import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.util.Tasks
 import br.com.dusty.dkits.util.clearFormatting
 import br.com.dusty.dkits.util.destroyGlassArena
-import br.com.dusty.dkits.util.gamer.gamer
+import br.com.dusty.dkits.util.entity.gamer
 import br.com.dusty.dkits.util.generateGlassArena
 import br.com.dusty.dkits.util.text.Text
 import org.bukkit.Location

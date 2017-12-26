@@ -2,7 +2,7 @@ package br.com.dusty.dkits.ability
 
 import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.util.Tasks
-import br.com.dusty.dkits.util.gamer.gamer
+import br.com.dusty.dkits.util.entity.gamer
 import br.com.dusty.dkits.util.rename
 import org.bukkit.Material
 import org.bukkit.entity.Player

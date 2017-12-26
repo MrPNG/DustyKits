@@ -6,9 +6,9 @@ import br.com.dusty.dkits.gamer.Gamer
 import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.util.*
-import br.com.dusty.dkits.util.inventory.addItemStacks
-import br.com.dusty.dkits.util.inventory.fillRecraft
-import br.com.dusty.dkits.util.inventory.fillSoups
+import br.com.dusty.dkits.util.addItemStacks
+import br.com.dusty.dkits.util.fillRecraft
+import br.com.dusty.dkits.util.fillSoups
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
 import org.bukkit.Location
