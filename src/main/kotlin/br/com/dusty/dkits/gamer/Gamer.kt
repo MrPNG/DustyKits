@@ -35,14 +35,16 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 
 	var rank = EnumRank.NONE
 
+	var displayName = player.name
+
 	var tag = EnumRank.NONE
 		set(value) {
 			field = value
 
-			val displayName = value.format(player.name) + TextStyle.RESET
+			val tag = value.format(displayName) + TextStyle.RESET
 
-			player.displayName = displayName
-			player.playerListName = displayName
+			player.displayName = tag
+			player.playerListName = tag
 		}
 
 	/**
