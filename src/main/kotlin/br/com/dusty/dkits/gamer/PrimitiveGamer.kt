@@ -16,4 +16,6 @@ class PrimitiveGamer(val uuid: String) {
 	var hgLosses = 0
 	var oneVsOneWins = 0
 	var oneVsOneLosses = 0
+	var gladiatorWins = 0
+	var gladiatorLosses = 0
 }
