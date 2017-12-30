@@ -2,6 +2,8 @@ package br.com.dusty.dkits.util
 
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
+import br.com.dusty.dkits.util.stdlib.clearFormatting
+import br.com.dusty.dkits.util.stdlib.fancySplit
 import org.bukkit.Color
 import org.bukkit.DyeColor
 import org.bukkit.Material.SKULL_ITEM

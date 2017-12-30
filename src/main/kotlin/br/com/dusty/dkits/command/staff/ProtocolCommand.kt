@@ -15,7 +15,7 @@ object ProtocolCommand: PlayerCustomCommand(EnumRank.ADMIN, "protocols") {
 			var text = Text.neutralPrefix()
 			var first = true
 
-			GamerRegistry.onlineGamers().forEach {
+			GamerRegistry.onlineGamers().sortedBy { it.protocolVersion }.forEach {
 				val protocolVersion = it.protocolVersion
 
 				text = text.basic((if (first) {

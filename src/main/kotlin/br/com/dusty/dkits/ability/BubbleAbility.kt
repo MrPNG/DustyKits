@@ -3,7 +3,7 @@ package br.com.dusty.dkits.ability
 import br.com.dusty.dkits.gamer.GamerRegistry
 import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.util.Tasks
-import br.com.dusty.dkits.util.clearFormatting
+import br.com.dusty.dkits.util.stdlib.clearFormatting
 import br.com.dusty.dkits.util.entity.gamer
 import br.com.dusty.dkits.util.rename
 import br.com.dusty.dkits.util.text.Text

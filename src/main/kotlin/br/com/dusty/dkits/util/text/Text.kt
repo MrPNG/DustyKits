@@ -140,7 +140,7 @@ class Text {
 		} else {
 			sb.append(append!!.toString())
 
-			if (append!!.styles != styles) {
+			if (!append!!.styles.contentEquals(styles)) {
 				sb.append(TextStyle.RESET)
 
 				sb.append(color)

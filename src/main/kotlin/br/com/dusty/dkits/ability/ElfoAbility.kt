@@ -1,6 +1,6 @@
 package br.com.dusty.dkits.ability
 
-import br.com.dusty.dkits.util.clearFormatting
+import br.com.dusty.dkits.util.stdlib.clearFormatting
 import br.com.dusty.dkits.util.entity.gamer
 import br.com.dusty.dkits.util.text.Text
 import org.bukkit.entity.Arrow

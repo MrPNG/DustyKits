@@ -1,4 +1,4 @@
-package br.com.dusty.dkits.util
+package br.com.dusty.dkits.util.stdlib
 
 import br.com.dusty.dkits.Main
 import org.bukkit.ChatColor

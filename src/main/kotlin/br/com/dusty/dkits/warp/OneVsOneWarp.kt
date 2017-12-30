@@ -1,15 +1,17 @@
 package br.com.dusty.dkits.warp
 
-import br.com.dusty.dkits.Main
 import br.com.dusty.dkits.command.gameplay.WarpCommand
 import br.com.dusty.dkits.command.staff.LocationCommand
 import br.com.dusty.dkits.gamer.Gamer
+import br.com.dusty.dkits.inventory.ClanVsClanMenu
 import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.util.*
 import br.com.dusty.dkits.util.entity.gamer
-import br.com.dusty.dkits.inventory.*
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
+import br.com.dusty.dkits.util.stdlib.clearFormatting
+import br.com.dusty.dkits.util.stdlib.millisToPeriod
+import br.com.dusty.dkits.util.world.*
 import br.com.dusty.dkits.warp.OneVsOneWarp.FightState.INVITATION
 import br.com.dusty.dkits.warp.OneVsOneWarp.FightState.ONGOING
 import br.com.dusty.dkits.warp.OneVsOneWarp.FightType.*
@@ -38,7 +40,7 @@ object OneVsOneWarp: Warp() {
 
 	var oneVsOneFirst = Locations.GENERIC
 		get() {
-			if (field == Locations.GENERIC && data is OneVsOneData) field = (data as OneVsOneData).oneVsOneFirst.toLocation(Main.WORLD)
+			if (field == Locations.GENERIC && data is OneVsOneData) field = (data as OneVsOneData).oneVsOneFirst.toLocation(Worlds.WORLD)
 
 			return field
 		}
@@ -54,7 +56,7 @@ object OneVsOneWarp: Warp() {
 
 	var oneVsOneSecond = Locations.GENERIC
 		get() {
-			if (field == Locations.GENERIC && data is OneVsOneData) field = (data as OneVsOneData).oneVsOneSecond.toLocation(Main.WORLD)
+			if (field == Locations.GENERIC && data is OneVsOneData) field = (data as OneVsOneData).oneVsOneSecond.toLocation(Worlds.WORLD)
 
 			return field
 		}
@@ -70,7 +72,7 @@ object OneVsOneWarp: Warp() {
 
 	var clanVsClanFirst = Locations.GENERIC
 		get() {
-			if (field == Locations.GENERIC && data is OneVsOneData) field = (data as OneVsOneData).clanVsClanFirst.toLocation(Main.WORLD)
+			if (field == Locations.GENERIC && data is OneVsOneData) field = (data as OneVsOneData).clanVsClanFirst.toLocation(Worlds.WORLD)
 
 			return field
 		}
@@ -86,7 +88,7 @@ object OneVsOneWarp: Warp() {
 
 	var clanVsClanSecond = Locations.GENERIC
 		get() {
-			if (field == Locations.GENERIC && data is OneVsOneData) field = (data as OneVsOneData).clanVsClanSecond.toLocation(Main.WORLD)
+			if (field == Locations.GENERIC && data is OneVsOneData) field = (data as OneVsOneData).clanVsClanSecond.toLocation(Worlds.WORLD)
 
 			return field
 		}

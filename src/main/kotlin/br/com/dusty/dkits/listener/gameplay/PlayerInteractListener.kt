@@ -1,15 +1,15 @@
 package br.com.dusty.dkits.listener.gameplay
 
-import br.com.dusty.dkits.Main
+import br.com.dusty.dkits.Config
 import br.com.dusty.dkits.command.staff.BuyCommand
+import br.com.dusty.dkits.inventory.KitMenu
+import br.com.dusty.dkits.inventory.ShopMenu
+import br.com.dusty.dkits.inventory.WarpMenu
+import br.com.dusty.dkits.util.Inventories
 import br.com.dusty.dkits.util.Tasks
 import br.com.dusty.dkits.util.block.interact
 import br.com.dusty.dkits.util.block.isSpecial
 import br.com.dusty.dkits.util.entity.gamer
-import br.com.dusty.dkits.util.Inventories
-import br.com.dusty.dkits.inventory.KitMenu
-import br.com.dusty.dkits.inventory.ShopMenu
-import br.com.dusty.dkits.inventory.WarpMenu
 import br.com.dusty.dkits.warp.Warp
 import org.bukkit.GameMode
 import org.bukkit.Material.*
@@ -70,7 +70,7 @@ object PlayerInteractListener: Listener {
 
 							Tasks.sync(Runnable { player.inventory.setItem(slot, Inventories.BOWL) })
 
-							Main.data.soups++
+							Config.data.soups++
 						}
 					}
 				}

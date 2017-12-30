@@ -17,7 +17,7 @@ enum class EnumRank {
 	//	VIP(2, TextColor.GREEN),
 	MVP(3, TextColor.BLUE),
 	PRO(4, TextColor.GOLD),
-	PRO_YOUTUBER(6, TextColor.AQUA),
+	//	PRO_YOUTUBER(6, TextColor.AQUA),
 	YOUTUBER(6, TextColor.AQUA, TextStyle.ITALIC),
 	MOD(8, TextColor.DARK_PURPLE),
 	MODPLUS(9, TextColor.DARK_PURPLE, TextStyle.ITALIC),

@@ -4,6 +4,7 @@ import br.com.dusty.dkits.Main
 import br.com.dusty.dkits.gamer.EnumMode
 import br.com.dusty.dkits.gamer.Gamer
 import br.com.dusty.dkits.kit.Kits
+import br.com.dusty.dkits.util.world.Worlds
 import br.com.dusty.dkits.util.entity.gamer
 import br.com.dusty.dkits.util.isWalk
 import br.com.dusty.dkits.util.text.Text
@@ -58,11 +59,12 @@ object PlayerMoveListener: Listener {
 	}
 
 	fun fromInvincibleLocation(from: Location,
-	                           to: Location) = Main.REGION_MANAGER!!.getApplicableRegions(from).allows(DefaultFlag.INVINCIBILITY) && !Main.REGION_MANAGER!!.getApplicableRegions(to).allows(
+	                           to: Location) = Worlds.REGION_MANAGER!!.getApplicableRegions(from).allows(DefaultFlag.INVINCIBILITY) && !Worlds.REGION_MANAGER!!.getApplicableRegions(to).allows(
 			DefaultFlag.INVINCIBILITY)
 
-	fun toInvincibleLocation(from: Location, to: Location) = !Main.REGION_MANAGER!!.getApplicableRegions(from).allows(DefaultFlag.INVINCIBILITY) && Main.REGION_MANAGER!!.getApplicableRegions(
-			to).allows(DefaultFlag.INVINCIBILITY)
+	fun toInvincibleLocation(from: Location,
+	                         to: Location) = !Worlds.REGION_MANAGER!!.getApplicableRegions(from).allows(DefaultFlag.INVINCIBILITY) && Worlds.REGION_MANAGER!!.getApplicableRegions(to).allows(
+			DefaultFlag.INVINCIBILITY)
 
 	fun boost(gamer: Gamer, location: Location) {
 		val player = gamer.player

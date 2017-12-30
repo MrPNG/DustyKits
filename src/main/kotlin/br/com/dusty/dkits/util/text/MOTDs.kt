@@ -1,8 +1,6 @@
-package br.com.dusty.dkits.util
+package br.com.dusty.dkits.util.text
 
 import br.com.dusty.dkits.Main
-import br.com.dusty.dkits.util.text.Text
-import br.com.dusty.dkits.util.text.TextColor
 
 object MOTDs {
 
@@ -20,7 +18,9 @@ object MOTDs {
 	//fun randomMOTD() = MOTD_MAIN + MOTD_ALTERNATE[Main.RANDOM.nextInt(MOTD_ALTERNATE.size)] + "\n" + MOTD_SECONDARY[Main.RANDOM.nextInt(MOTD_ALTERNATE.size)]
 	fun randomMOTD() = NEW_MOTD_MAIN + "\n" + NEW_MOTD_SECONDARY
 
-	fun offlineMOTD() = MOTD_MAIN + MOTD_OFFLINE + "\n" + MOTD_SECONDARY[Main.RANDOM.nextInt(MOTD_ALTERNATE.size)]
+	fun offlineMOTD() = MOTD_MAIN + MOTD_OFFLINE + "\n" + MOTD_SECONDARY[Main.RANDOM.nextInt(
+			MOTD_ALTERNATE.size)]
 
-	fun maintenanceMOTD() = MOTD_MAIN + MOTD_MAINTENANCE + "\n" + MOTD_SECONDARY[Main.RANDOM.nextInt(MOTD_ALTERNATE.size)]
+	fun maintenanceMOTD() = MOTD_MAIN + MOTD_MAINTENANCE + "\n" + MOTD_SECONDARY[Main.RANDOM.nextInt(
+			MOTD_ALTERNATE.size)]
 }

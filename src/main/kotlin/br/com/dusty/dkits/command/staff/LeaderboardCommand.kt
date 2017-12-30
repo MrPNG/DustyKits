@@ -2,10 +2,10 @@ package br.com.dusty.dkits.command.staff
 
 import br.com.dusty.dkits.command.PlayerCustomCommand
 import br.com.dusty.dkits.gamer.EnumRank
+import br.com.dusty.dkits.leaderboard.Leaderboard
+import br.com.dusty.dkits.leaderboard.Leaderboards
 import br.com.dusty.dkits.util.Tasks
-import br.com.dusty.dkits.util.leaderboard.Leaderboard
-import br.com.dusty.dkits.util.leaderboard.Leaderboards
-import br.com.dusty.dkits.util.normalize
+import br.com.dusty.dkits.util.world.normalize
 import br.com.dusty.dkits.util.text.Text
 import org.bukkit.entity.Player
 
@@ -41,6 +41,11 @@ object LeaderboardCommand: PlayerCustomCommand(EnumRank.ADMIN, "leaderboard") {
 							})
 						}
 					}
+				}
+				args[0] == "update" -> {
+					sender.sendMessage(Text.positivePrefix().positive("Todas").basic(" as ").positive("leaderboards").basic(" serão ").positive("atualizadas").basic("!").toString())
+
+					Tasks.async(Runnable { Leaderboards.leaderboards.forEach { it.update() } })
 				}
 				args.size < 3       -> sender.sendMessage(USAGE_ADD)
 				else                -> {

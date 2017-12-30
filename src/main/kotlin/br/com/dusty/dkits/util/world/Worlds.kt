@@ -1,7 +1,9 @@
-package br.com.dusty.dkits.util
+package br.com.dusty.dkits.util.world
 
 import br.com.dusty.dkits.util.entity.gamer
 import br.com.dusty.dkits.warp.Warps
+import com.sk89q.worldguard.bukkit.WGBukkit
+import com.sk89q.worldguard.protection.managers.RegionManager
 import org.apache.commons.io.FileUtils
 import org.bukkit.Bukkit
 import org.bukkit.World
@@ -11,17 +13,27 @@ import java.io.File
 
 object Worlds {
 
-	val worldsDir = File(Bukkit.getWorldContainer(), "worlds")
+	var REGION_MANAGER: RegionManager? = null
+		get() {
+			if (field == null) field = WGBukkit.getPlugin().getRegionManager(WORLD)
 
-	fun exists(name: String) = File(worldsDir, name.toLowerCase()).exists()
+			return field
+		}
+
+	val WORLDS_DIR = File(Bukkit.getWorldContainer(), "worlds")
+
+	val WORLD
+		get() = Bukkit.getWorlds()[0]
+
+	fun exists(name: String) = File(WORLDS_DIR, name.toLowerCase()).exists()
 
 	fun isLoaded(name: String) = Bukkit.getWorld(name) != null
 
 	fun load(name: String, edit: Boolean): World? = when {
 		!exists(name) -> null
-		edit          -> Bukkit.createWorld(WorldCreator("worlds/" + name))
-		else          -> {
-			FileUtils.copyDirectory(File(worldsDir, name), File(Bukkit.getWorldContainer(), name))
+		edit                                               -> Bukkit.createWorld(WorldCreator("worlds/" + name))
+		else                                               -> {
+			FileUtils.copyDirectory(File(WORLDS_DIR, name), File(Bukkit.getWorldContainer(), name))
 
 			Bukkit.createWorld(WorldCreator(name))
 		}

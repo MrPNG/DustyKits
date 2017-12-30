@@ -1,8 +1,8 @@
-package br.com.dusty.dkits.command.overwrite
+package br.com.dusty.dkits.command.override
 
 import br.com.dusty.dkits.command.PlayerCustomCommand
 import br.com.dusty.dkits.gamer.EnumRank
-import br.com.dusty.dkits.util.clearFormatting
+import br.com.dusty.dkits.util.stdlib.clearFormatting
 import br.com.dusty.dkits.util.entity.gamer
 import br.com.dusty.dkits.util.text.Text
 import org.bukkit.Bukkit

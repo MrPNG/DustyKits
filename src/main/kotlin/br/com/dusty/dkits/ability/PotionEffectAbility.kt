@@ -1,6 +1,6 @@
 package br.com.dusty.dkits.ability
 
-import br.com.dusty.dkits.util.chances
+import br.com.dusty.dkits.util.stdlib.chances
 import br.com.dusty.dkits.util.entity.gamer
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler

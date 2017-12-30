@@ -1,4 +1,4 @@
-package br.com.dusty.dkits.util.cosmetic
+package br.com.dusty.dkits.util.graphics
 
 import br.com.dusty.dkits.Main
 import org.bukkit.Color

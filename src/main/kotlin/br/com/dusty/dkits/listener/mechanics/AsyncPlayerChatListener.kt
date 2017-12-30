@@ -41,9 +41,9 @@ object AsyncPlayerChatListener: Listener {
 			CLAN   -> {
 				event.recipients.clear()
 
-				val messagePositive = CLAN_CHAT_PREFIX_POSITIVE.basic(if (gamer.clan != null) gamer.clan!!.tag + " " else "").append(gamer.rank.format(player.name) + TextStyle.RESET).basic(": ").neutral(
+				val messagePositive = CLAN_CHAT_PREFIX_POSITIVE.basic(if (gamer.clan != null) gamer.clan!!.tag + " " else "").append(player.displayName + TextStyle.RESET).basic(": ").neutral(
 						event.message).toString()
-				val messageNegative = CLAN_CHAT_PREFIX_NEGATIVE.basic(if (gamer.clan != null) gamer.clan!!.tag + " " else "").append(gamer.rank.format(player.name) + TextStyle.RESET).basic(": ").negative(
+				val messageNegative = CLAN_CHAT_PREFIX_NEGATIVE.basic(if (gamer.clan != null) gamer.clan!!.tag + " " else "").append(player.displayName + TextStyle.RESET).basic(": ").negative(
 						event.message).toString()
 
 				GamerRegistry.onlineGamers().filter { it.clan == gamer.clan }.forEach {

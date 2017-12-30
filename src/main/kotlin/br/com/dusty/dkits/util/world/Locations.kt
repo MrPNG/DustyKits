@@ -1,6 +1,7 @@
-package br.com.dusty.dkits.util
+package br.com.dusty.dkits.util.world
 
 import br.com.dusty.dkits.Main
+import br.com.dusty.dkits.util.stdlib.round
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.World
@@ -146,7 +147,7 @@ fun Location.destroyGlassArena(width: Int, height: Int, length: Int) {
 
 object Locations {
 
-	val GENERIC = Location(Main.WORLD, 0.0, 0.0, 0.0)
+	val GENERIC = Location(Worlds.WORLD, 0.0, 0.0, 0.0)
 }
 
 data class SimpleLocation(var x: Double = 0.0, var y: Double = 0.0, var z: Double = 0.0, var yaw: Float = 0F, var pitch: Float = 0F) {

@@ -2,18 +2,15 @@ package br.com.dusty.dkits.util.web
 
 import br.com.dusty.dkits.clan.Clan
 import br.com.dusty.dkits.gamer.Gamer
+import br.com.dusty.dkits.leaderboard.Leaderboard
 import br.com.dusty.dkits.store.Store
-import br.com.dusty.dkits.util.leaderboard.Leaderboard
-import org.apache.http.client.config.RequestConfig
+import br.com.dusty.dkits.util.stdlib.removeUuidDashes
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.client.methods.HttpPost
-import org.apache.http.impl.client.HttpClientBuilder
 import org.apache.http.message.BasicNameValuePair
 import java.util.*
 
 object WebAPI {
-
-	val HTTP_CLIENT = HttpClientBuilder.create().setDefaultRequestConfig(RequestConfig.custom().setConnectTimeout(10000).build()).build()
 
 	val URL = "http://api.dusty.com.br/handler.php"
 
@@ -44,7 +41,7 @@ object WebAPI {
 		return HttpClients.JSON_PARSER.parse(HttpGet("http://api.dusty.com.br/handler.php?type=getLeaderboard&tipo=$type&max=${leaderboard.amount}&ordem=${if (leaderboard.descending) "desc" else "asc"}").response()).asJsonArray.map {
 			val jsonObject = it.asJsonObject
 
-			(jsonObject["uuid"] ?: null).toString().replace("\"", "") to jsonObject[type].asInt
+			(MojangAPI.profile(jsonObject["uuid"].asString.removeUuidDashes())?.name ?: "null") to jsonObject[type].asInt
 		}
 	}
 }

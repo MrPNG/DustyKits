@@ -1,4 +1,4 @@
-package br.com.dusty.dkits.command.overwrite
+package br.com.dusty.dkits.command.override
 
 import br.com.dusty.dkits.clan.ClanRegistry
 import br.com.dusty.dkits.command.CustomCommand

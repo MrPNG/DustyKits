@@ -3,8 +3,8 @@ package br.com.dusty.dkits.command.gameplay
 import br.com.dusty.dkits.command.PlayerCustomCommand
 import br.com.dusty.dkits.gamer.EnumMode
 import br.com.dusty.dkits.gamer.EnumRank
-import br.com.dusty.dkits.util.entity.gamer
 import br.com.dusty.dkits.inventory.WarpMenu
+import br.com.dusty.dkits.util.entity.gamer
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.warp.Warps
 import org.bukkit.command.CommandSender

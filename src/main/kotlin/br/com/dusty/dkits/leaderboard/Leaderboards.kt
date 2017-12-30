@@ -1,8 +1,9 @@
-package br.com.dusty.dkits.util.leaderboard
+package br.com.dusty.dkits.leaderboard
 
-import br.com.dusty.dkits.Main
-import br.com.dusty.dkits.util.SimpleLocation
-import br.com.dusty.dkits.util.toSimpleLocation
+import br.com.dusty.dkits.Config
+import br.com.dusty.dkits.util.world.SimpleLocation
+import br.com.dusty.dkits.util.world.Worlds
+import br.com.dusty.dkits.util.world.toSimpleLocation
 import com.google.gson.reflect.TypeToken
 import org.bukkit.entity.ArmorStand
 import org.bukkit.entity.EntityType
@@ -22,17 +23,17 @@ object Leaderboards {
 		loadData()
 
 		leaderboardsData.forEach {
-			val location = it.location.toLocation(Main.WORLD)
+			val location = it.location.toLocation(Worlds.WORLD)
 
 			val chunk = location.chunk
-			chunk.load()
+			if (!chunk.isLoaded) chunk.load()
 
 			val type = enumValueOf(it.type) as EnumLeaderboardType
 			val amount = it.amount
 			val descending = it.descending
 
 			val entities = it.uuids.map { uuid ->
-				(chunk.entities.firstOrNull { it.type == EntityType.ARMOR_STAND && it.uniqueId.toString() == uuid } ?: Main.WORLD.spawnEntity(location, EntityType.ARMOR_STAND)) as ArmorStand
+				(chunk.entities.firstOrNull { it.type == EntityType.ARMOR_STAND && it.uniqueId.toString() == uuid } ?: Worlds.WORLD.spawnEntity(location, EntityType.ARMOR_STAND)) as ArmorStand
 			} as ArrayList<ArmorStand>
 
 			leaderboards.add(Leaderboard(location, type, amount, descending, entities))
@@ -42,20 +43,20 @@ object Leaderboards {
 	}
 
 	fun loadData() {
-		val file = File(Main.CONFIG_DIR, "leaderboards.json")
+		val file = File(Config.CONFIG_DIR, "leaderboards.json")
 
-		if (file.exists()) leaderboardsData.addAll(Main.GSON.fromJson(FileReader(file), LEADERBOARDS_TYPE_TOKEN))
+		if (file.exists()) leaderboardsData.addAll(Config.GSON.fromJson(FileReader(file), LEADERBOARDS_TYPE_TOKEN))
 
 		saveData()
 	}
 
 	fun saveData() {
-		val file = File(Main.CONFIG_DIR, "leaderboards.json")
+		val file = File(Config.CONFIG_DIR, "leaderboards.json")
 
 		if (!file.exists()) file.createNewFile()
 
 		PrintWriter(file).use {
-			it.println(Main.GSON.toJson(leaderboards.map {
+			it.println(Config.GSON.toJson(leaderboards.map {
 				LeaderboardData(it.location.toSimpleLocation(), it.type.name, it.amount, it.descending, it.entities.map { it.uniqueId.toString() }.toTypedArray())
 			}))
 		}

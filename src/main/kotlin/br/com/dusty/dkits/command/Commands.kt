@@ -1,8 +1,8 @@
 package br.com.dusty.dkits.command
 
 import br.com.dusty.dkits.command.gameplay.*
-import br.com.dusty.dkits.command.overwrite.StopCommand
-import br.com.dusty.dkits.command.overwrite.TellCommand
+import br.com.dusty.dkits.command.override.StopCommand
+import br.com.dusty.dkits.command.override.TellCommand
 import br.com.dusty.dkits.command.staff.*
 import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.warp.Warps
@@ -23,7 +23,7 @@ object Commands {
 	/**
 	 * [ArrayList] que contém todos os [CustomCommand] a serem/já registrados pelo plugin.
 	 */
-	val CUSTOM_COMMANDS = hashSetOf<CustomCommand>()
+	val CUSTOM_COMMANDS = arrayListOf<CustomCommand>()
 
 	init {
 		val field_commandMap = Bukkit.getServer().javaClass.getDeclaredField("commandMap")
@@ -66,6 +66,7 @@ object Commands {
 		CUSTOM_COMMANDS.add(ProfileCommand)
 		CUSTOM_COMMANDS.add(ReportCommand)
 		CUSTOM_COMMANDS.add(ShopCommand)
+		CUSTOM_COMMANDS.add(TagCommand)
 
 		CUSTOM_COMMANDS.add(KitCommand)
 		KitCommand.aliases.addAll(Kits.enabledKitsNames)
@@ -78,13 +79,6 @@ object Commands {
 		CUSTOM_COMMANDS.add(StopCommand)
 		CUSTOM_COMMANDS.add(TellCommand)
 
-		CUSTOM_COMMANDS.forEach({ register(it) })
-	}
-
-	/**
-	 * Registra este comando no 'commandMap' definido.
-	 */
-	fun register(command: Command) {
-		COMMAND_MAP.register(command.label, PREFIX, command)
+		COMMAND_MAP.registerAll(PREFIX, CUSTOM_COMMANDS as List<Command>?)
 	}
 }
