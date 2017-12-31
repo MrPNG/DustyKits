@@ -5,9 +5,9 @@ enum class EnumProtocolVersion {
 	UNKNOWN(-1, "unknown", EnumProtocolSafety.TERRIBLE),
 	PRE_1_7(0, 3, "pre-1.7", EnumProtocolSafety.TERRIBLE),
 	RELEASE_1_7_2(4, "1.7.2-1.7.5", EnumProtocolSafety.BAD),
-	RELEASE_1_7_10(5, "1.7.6-1.7.10", EnumProtocolSafety.GOOD),
+	RELEASE_1_7_10(5, "1.7.6-1.7.10", EnumProtocolSafety.REGULAR),
 	SNAPSHOT_1_8(6, 46, "snapshot_1.8", EnumProtocolSafety.TERRIBLE),
-	RELEASE_1_8(47, "1.8.0-1.8.9", EnumProtocolSafety.REGULAR),
+	RELEASE_1_8(47, "1.8.0-1.8.9", EnumProtocolSafety.EXCELLENT),
 	SNAPSHOT_1_9(48, 106, "snapshot_1.9", EnumProtocolSafety.TERRIBLE),
 	RELEASE_1_9(107, "1.9.0", EnumProtocolSafety.TERRIBLE),
 	RELEASE_1_9_1(108, "1.9.1", EnumProtocolSafety.TERRIBLE),
@@ -19,11 +19,11 @@ enum class EnumProtocolVersion {
 	RELEASE_1_11(315, "1.11.0", EnumProtocolSafety.REGULAR),
 	RELEASE_1_11_2(316, "1.11.1-1.11.2", EnumProtocolSafety.GOOD),
 	SNAPSHOT_1_12(317, 334, "snapshot_1.12", EnumProtocolSafety.TERRIBLE),
-	RELEASE_1_12(335, "1.12", EnumProtocolSafety.EXCELLENT),
+	RELEASE_1_12(335, "1.12", EnumProtocolSafety.BAD),
 	SNAPSHOT_1_12_1(336, 337, "snapshot_1.12.1", EnumProtocolSafety.TERRIBLE),
 	RELEASE_1_12_1(338, "1.12.1", EnumProtocolSafety.BAD),
 	SNAPSHOT_1_12_2(339, 339, "snapshot_1.12.2", EnumProtocolSafety.TERRIBLE),
-	RELEASE_1_12_2(340, "1.12.2", EnumProtocolSafety.EXCELLENT);
+	RELEASE_1_12_2(340, "1.12.2", EnumProtocolSafety.GOOD);
 
 	var min: Int = 0
 	var max: Int = 0

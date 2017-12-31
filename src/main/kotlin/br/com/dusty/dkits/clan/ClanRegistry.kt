@@ -1,6 +1,6 @@
 package br.com.dusty.dkits.clan
 
-import br.com.dusty.dkits.Main
+import br.com.dusty.dkits.Config
 import java.util.*
 
 object ClanRegistry {
@@ -30,6 +30,6 @@ object ClanRegistry {
 	fun primitiveClanFromJson(json: String?): PrimitiveClan? = when (json) {
 		null             -> null
 		"{\"status\":2}" -> null
-		else             -> Main.GSON.fromJson(json, PrimitiveClan::class.java)
+		else             -> Config.GSON.fromJson(json, PrimitiveClan::class.java)
 	}
 }

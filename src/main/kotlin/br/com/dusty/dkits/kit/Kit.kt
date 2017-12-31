@@ -1,9 +1,9 @@
 package br.com.dusty.dkits.kit
 
-import br.com.dusty.dkits.Main
+import br.com.dusty.dkits.Config
 import br.com.dusty.dkits.ability.Ability
+import br.com.dusty.dkits.util.Inventories
 import br.com.dusty.dkits.util.Tasks
-import br.com.dusty.dkits.util.inventory.Inventories
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import java.io.File
@@ -42,21 +42,21 @@ open class Kit(var name: String = "None",
 	}
 
 	fun loadData() {
-		val dir = File(Main.CONFIG_DIR, "kit")
+		val dir = File(Config.CONFIG_DIR, "kit")
 		val file = File(dir, name.toLowerCase() + ".json")
 
-		if (file.exists()) data = Main.GSON.fromJson(FileReader(file), Kit.Data::class.java)
+		if (file.exists()) data = Config.GSON.fromJson(FileReader(file), Kit.Data::class.java)
 		else saveData()
 	}
 
 	fun saveData() {
-		val dir = File(Main.CONFIG_DIR, "kit")
+		val dir = File(Config.CONFIG_DIR, "kit")
 		val file = File(dir, name.toLowerCase() + ".json")
 
 		if (!dir.exists()) dir.mkdirs()
 		if (!file.exists()) file.createNewFile()
 
-		PrintWriter(file).use { it.println(Main.GSON.toJson(data)) }
+		PrintWriter(file).use { it.println(Config.GSON.toJson(data)) }
 	}
 
 	override fun equals(other: Any?) = when {

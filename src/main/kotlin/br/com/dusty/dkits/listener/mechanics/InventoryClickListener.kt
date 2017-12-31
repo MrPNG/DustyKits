@@ -1,15 +1,15 @@
 package br.com.dusty.dkits.listener.mechanics
 
 import br.com.dusty.dkits.gamer.EnumMode
+import br.com.dusty.dkits.inventory.KitMenu
+import br.com.dusty.dkits.inventory.ShopMenu
+import br.com.dusty.dkits.inventory.WarpMenu
 import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.store.Store
-import br.com.dusty.dkits.util.gamer.gamer
-import br.com.dusty.dkits.util.inventory.Inventories
-import br.com.dusty.dkits.util.inventory.Inventories.BUTTON_BACK
-import br.com.dusty.dkits.util.inventory.KitMenu
-import br.com.dusty.dkits.util.inventory.ShopMenu
-import br.com.dusty.dkits.util.inventory.WarpMenu
+import br.com.dusty.dkits.util.Inventories
+import br.com.dusty.dkits.util.Inventories.BUTTON_BACK
+import br.com.dusty.dkits.util.entity.gamer
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.web.WebAPI
 import br.com.dusty.dkits.warp.Warps

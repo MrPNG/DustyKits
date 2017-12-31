@@ -17,7 +17,7 @@ enum class EnumRank {
 	//	VIP(2, TextColor.GREEN),
 	MVP(3, TextColor.BLUE),
 	PRO(4, TextColor.GOLD),
-	PRO_YOUTUBER(6, TextColor.AQUA),
+	//	PRO_YOUTUBER(6, TextColor.AQUA),
 	YOUTUBER(6, TextColor.AQUA, TextStyle.ITALIC),
 	MOD(8, TextColor.DARK_PURPLE),
 	MODPLUS(9, TextColor.DARK_PURPLE, TextStyle.ITALIC),
@@ -28,16 +28,19 @@ enum class EnumRank {
 	var color = TextColor.WHITE
 	var styles = arrayOf<TextStyle>()
 	var string = ""
+	var prefix = ""
 
 	constructor(level: Int) {
 		this.level = level
 		this.string = format(name.replace("_", " "))
+		this.prefix = format("")
 	}
 
 	constructor(level: Int, color: TextColor) {
 		this.level = level
 		this.color = color
 		this.string = format(name.replace("_", " "))
+		this.prefix = format("")
 	}
 
 	constructor(level: Int, color: TextColor, vararg styles: TextStyle) {
@@ -45,6 +48,7 @@ enum class EnumRank {
 		this.color = color
 		this.styles = styles as Array<TextStyle>
 		this.string = format(name.replace("_", " "))
+		this.prefix = format("")
 	}
 
 	/**

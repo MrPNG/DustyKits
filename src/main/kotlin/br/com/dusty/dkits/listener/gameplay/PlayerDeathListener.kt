@@ -1,7 +1,7 @@
 package br.com.dusty.dkits.listener.gameplay
 
 import br.com.dusty.dkits.util.Tasks
-import br.com.dusty.dkits.util.gamer.gamer
+import br.com.dusty.dkits.util.entity.gamer
 import br.com.dusty.dkits.warp.Warp
 import br.com.dusty.dkits.warp.Warps
 import org.bukkit.Material.*

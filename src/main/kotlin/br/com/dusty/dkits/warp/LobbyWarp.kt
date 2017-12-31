@@ -1,8 +1,8 @@
 package br.com.dusty.dkits.warp
 
 import br.com.dusty.dkits.kit.Kit
+import br.com.dusty.dkits.util.Inventories
 import br.com.dusty.dkits.util.description
-import br.com.dusty.dkits.util.inventory.Inventories
 import br.com.dusty.dkits.util.rename
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor

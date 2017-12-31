@@ -1,19 +1,20 @@
 package br.com.dusty.dkits.gamer
 
-import br.com.dusty.dkits.Main
 import br.com.dusty.dkits.clan.Clan
 import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.kit.Kits
+import br.com.dusty.dkits.scoreboard.Scoreboards
 import br.com.dusty.dkits.store.EnumAdvantage
 import br.com.dusty.dkits.store.Store
-import br.com.dusty.dkits.util.Scoreboards
+import br.com.dusty.dkits.util.Inventories
 import br.com.dusty.dkits.util.Tasks
-import br.com.dusty.dkits.util.clearFormatting
-import br.com.dusty.dkits.util.inventory.Inventories
+import br.com.dusty.dkits.util.world.Worlds
+import br.com.dusty.dkits.util.stdlib.clearFormatting
 import br.com.dusty.dkits.util.protocol.EnumProtocolVersion
 import br.com.dusty.dkits.util.protocol.HeaderFooters
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
+import br.com.dusty.dkits.util.text.TextStyle
 import br.com.dusty.dkits.warp.Warp
 import br.com.dusty.dkits.warp.Warps
 import com.sk89q.worldguard.protection.flags.DefaultFlag
@@ -33,6 +34,18 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 	fun hasAdvantage(advantage: EnumAdvantage) = advantage in advantages
 
 	var rank = EnumRank.NONE
+
+	var displayName = player.name
+
+	var tag = EnumRank.NONE
+		set(value) {
+			field = value
+
+			val tag = value.format(displayName) + TextStyle.RESET
+
+			player.displayName = tag
+			player.playerListName = tag
+		}
 
 	/**
 	 * Menor [EnumRank] que pode ver este jogador.
@@ -205,7 +218,7 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 			primitiveGamer.maxKillStreak = maxKillStreak
 		}
 
-	var skillGroup = EnumSkillGroup.INICIANTE
+	var skillGroup = EnumSkillGroup.values().firstOrNull { primitiveGamer.xp in it.range } ?: EnumSkillGroup.INICIANTE
 
 	var xp = primitiveGamer.xp
 		set(value) {
@@ -285,8 +298,10 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 	fun kill(gamer: Gamer) {
 		val killer = gamer.player
 
-		player.playSound(player.location, Sound.ANVIL_LAND, 1F, 1F)
-		player.sendMessage(Text.positivePrefix().basic("Você ").positive("matou").basic(" o jogador ").positive(killer.displayName.clearFormatting()).basic("!").toString())
+		player.run {
+			playSound(player.location, Sound.ANVIL_LAND, 1F, 1F)
+			sendMessage(Text.positivePrefix().basic("Você ").positive("matou").basic(" o jogador ").positive(killer.displayName.clearFormatting()).basic("!").toString())
+		}
 
 		addKill()
 		addWarpKill()
@@ -297,14 +312,18 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 		combatPartner = null
 
 
-		killer.playSound(player.location, Sound.ANVIL_LAND, 1F, 1F)
-		killer.sendMessage(Text.negativePrefix().basic("Você ").negative("foi morto").basic(" pelo jogador ").negative(player.displayName.clearFormatting()).basic("!").toString())
+		killer.run {
+			playSound(player.location, Sound.ANVIL_LAND, 1F, 1F)
+			sendMessage(Text.negativePrefix().basic("Você ").negative("foi morto").basic(" pelo jogador ").negative(player.displayName.clearFormatting()).basic("!").toString())
+		}
 
-		gamer.addDeath()
-		gamer.removeDeathMoney()
-		gamer.removeDeathXp()
-		gamer.removeCombatTag(false)
-		gamer.combatPartner = null
+		gamer.run {
+			addDeath()
+			removeDeathMoney()
+			removeDeathXp()
+			removeCombatTag(false)
+			combatPartner = null
+		}
 	}
 
 	var hgWins: Int
@@ -452,9 +471,9 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 
 	fun hasKit(kit: Kit) = mode == EnumMode.ADMIN || kit in kits
 
-	fun canUse() = mode == EnumMode.PLAY && !Main.REGION_MANAGER!!.getApplicableRegions(player.location).allows(DefaultFlag.INVINCIBILITY)
+	fun canUse() = mode == EnumMode.PLAY && !Worlds.REGION_MANAGER!!.getApplicableRegions(player.location).allows(DefaultFlag.INVINCIBILITY)
 
-	fun canUse(otherGamer: Gamer) = this != otherGamer && canUse() && otherGamer.mode == EnumMode.PLAY && otherGamer.player.canSee(player) && !Main.REGION_MANAGER!!.getApplicableRegions(
+	fun canUse(otherGamer: Gamer) = this != otherGamer && canUse() && otherGamer.mode == EnumMode.PLAY && otherGamer.player.canSee(player) && !Worlds.REGION_MANAGER!!.getApplicableRegions(
 			otherGamer.player.location).allows(DefaultFlag.INVINCIBILITY)
 
 	var warp: Warp = Warps.LOBBY

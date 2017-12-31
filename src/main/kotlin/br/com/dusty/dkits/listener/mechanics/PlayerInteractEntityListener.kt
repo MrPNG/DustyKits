@@ -1,8 +1,8 @@
 package br.com.dusty.dkits.listener.mechanics
 
 import br.com.dusty.dkits.gamer.EnumMode
-import br.com.dusty.dkits.util.gamer.gamer
-import br.com.dusty.dkits.util.inventory.openInventory
+import br.com.dusty.dkits.util.entity.gamer
+import br.com.dusty.dkits.util.openInventory
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener

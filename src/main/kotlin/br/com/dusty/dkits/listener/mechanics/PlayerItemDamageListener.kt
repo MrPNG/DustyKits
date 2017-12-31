@@ -1,6 +1,6 @@
 package br.com.dusty.dkits.listener.mechanics
 
-import br.com.dusty.dkits.util.gamer.gamer
+import br.com.dusty.dkits.util.entity.gamer
 import br.com.dusty.dkits.warp.Warp
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener

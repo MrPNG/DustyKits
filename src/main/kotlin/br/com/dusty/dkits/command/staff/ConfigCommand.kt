@@ -1,6 +1,6 @@
 package br.com.dusty.dkits.command.staff
 
-import br.com.dusty.dkits.Main
+import br.com.dusty.dkits.Config
 import br.com.dusty.dkits.command.PlayerCustomCommand
 import br.com.dusty.dkits.gamer.EnumRank
 import br.com.dusty.dkits.util.text.Text
@@ -17,8 +17,11 @@ object ConfigCommand: PlayerCustomCommand(EnumRank.ADMIN, "config") {
 
 					sender.sendMessage(Text.positivePrefix().basic("Agora o número de ").positive("\'slots\'").basic(" do servidor é ").positive(slots).basic("!").toString())
 
-					Main.data.slots
-					Main.saveData()
+					with(Config) {
+						data.slots = slots
+
+						saveData()
+					}
 				}
 			}
 		}

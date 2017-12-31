@@ -1,13 +1,11 @@
-package br.com.dusty.dkits.util.inventory
+package br.com.dusty.dkits.util
 
-import br.com.dusty.dkits.util.enchant
-import br.com.dusty.dkits.util.inventory.Inventories.BACKGROUND
-import br.com.dusty.dkits.util.inventory.Inventories.BOWLS
-import br.com.dusty.dkits.util.inventory.Inventories.BROWN_MUSHROOMS
-import br.com.dusty.dkits.util.inventory.Inventories.BUTTON_BACK
-import br.com.dusty.dkits.util.inventory.Inventories.RED_MUSHROOMS
-import br.com.dusty.dkits.util.inventory.Inventories.SOUP
-import br.com.dusty.dkits.util.rename
+import br.com.dusty.dkits.util.Inventories.BACKGROUND
+import br.com.dusty.dkits.util.Inventories.BOWLS
+import br.com.dusty.dkits.util.Inventories.BROWN_MUSHROOMS
+import br.com.dusty.dkits.util.Inventories.BUTTON_BACK
+import br.com.dusty.dkits.util.Inventories.RED_MUSHROOMS
+import br.com.dusty.dkits.util.Inventories.SOUP
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
 import org.bukkit.Bukkit

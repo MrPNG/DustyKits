@@ -1,4 +1,4 @@
-package br.com.dusty.dkits.util
+package br.com.dusty.dkits.util.stdlib
 
 inline fun <reified T> Array<T>.add(element: T) = toMutableSet().run {
 	val updated = add(element)

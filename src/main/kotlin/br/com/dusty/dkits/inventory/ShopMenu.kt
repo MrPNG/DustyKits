@@ -1,9 +1,11 @@
-package br.com.dusty.dkits.util.inventory
+package br.com.dusty.dkits.inventory
 
 import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.kit.Kits
+import br.com.dusty.dkits.util.Inventories
 import br.com.dusty.dkits.util.description
-import br.com.dusty.dkits.util.gamer.gamer
+import br.com.dusty.dkits.util.entity.gamer
+import br.com.dusty.dkits.util.fillBackground
 import br.com.dusty.dkits.util.rename
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
