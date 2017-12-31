@@ -10,15 +10,13 @@ import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.store.EnumAdvantage.FEAST_CHANCES
 import br.com.dusty.dkits.util.*
 import br.com.dusty.dkits.util.ItemStacks.potions
-import br.com.dusty.dkits.util.cosmetic.Colors
+import br.com.dusty.dkits.util.graphics.Colors
+import br.com.dusty.dkits.util.entity.gamer
 import br.com.dusty.dkits.util.entity.spawnFirework
-import br.com.dusty.dkits.util.gamer.gamer
-import br.com.dusty.dkits.util.inventory.Inventories
-import br.com.dusty.dkits.util.inventory.addItemStacks
-import br.com.dusty.dkits.util.inventory.fillRecraft
-import br.com.dusty.dkits.util.inventory.fillSoups
+import br.com.dusty.dkits.util.stdlib.chances
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
+import br.com.dusty.dkits.util.world.*
 import org.bukkit.FireworkEffect
 import org.bukkit.Location
 import org.bukkit.Material.*
@@ -119,7 +117,7 @@ object FeastWarp: Warp() {
 
 	var enchantmentTable = Locations.GENERIC
 		get() {
-			if (field == Locations.GENERIC && data is FeastData) field = (data as FeastData).enchantmentTable.toLocation(Main.WORLD)
+			if (field == Locations.GENERIC && data is FeastData) field = (data as FeastData).enchantmentTable.toLocation(Worlds.WORLD)
 
 			return field
 		}

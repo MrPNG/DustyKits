@@ -1,17 +1,29 @@
 package br.com.dusty.dkits.util.protocol
 
+import com.comphenix.protocol.ProtocolLibrary
+import com.comphenix.protocol.ProtocolManager
 import org.bukkit.entity.Player
+import us.myles.ViaVersion.api.Via
 import java.lang.reflect.Constructor
 import java.lang.reflect.Field
 import java.lang.reflect.Method
 
 object Protocols {
 
-	val CRAFTBUKKIT_PACKAGE = "org.bukkit.craftbukkit."
+	val VIA_VERSION_API = Via.getAPI()
+
+	val OBC_PACKAGE = "org.bukkit.craftbukkit."
 	val NMS_PACKAGE = "net.minecraft.server."
-	val NMS_VERSION = "v1_8_R3"
+	val VERSION = "v1_8_R3"
 
 	val PROTOCOL_SUPPORT_PACKAGE = "protocolsupport.api."
+
+	var PROTOCOL_MANAGER: ProtocolManager? = null
+		get() {
+			if (field == null) field = ProtocolLibrary.getProtocolManager()
+
+			return field
+		}
 
 	var constructor_ChatMessage: Constructor<*>
 	var method_CraftPlayer_getHandle: Method
@@ -22,18 +34,18 @@ object Protocols {
 	var method_ProtocolVersion_getId: Method
 
 	init {
-		val class_ChatMessage = Class.forName(Protocols.NMS_PACKAGE + Protocols.NMS_VERSION + ".ChatMessage")
+		val class_ChatMessage = NMSClass("ChatMessage")
 		constructor_ChatMessage = class_ChatMessage.getDeclaredConstructor(String::class.java, Array<Any>::class.java)
 
-		val class_Packet = Class.forName(Protocols.NMS_PACKAGE + Protocols.NMS_VERSION + ".Packet")
+		val class_Packet = NMSClass("Packet")
 
-		val class_CraftPlayer = Class.forName(Protocols.CRAFTBUKKIT_PACKAGE + Protocols.NMS_VERSION + ".entity.CraftPlayer")
+		val class_CraftPlayer = OBCClass("entity.CraftPlayer")
 		method_CraftPlayer_getHandle = class_CraftPlayer.getDeclaredMethod("getHandle")
 
-		val class_EntityPlayer = Class.forName(Protocols.NMS_PACKAGE + Protocols.NMS_VERSION + ".EntityPlayer")
+		val class_EntityPlayer = NMSClass("EntityPlayer")
 		field_playerConnection = class_EntityPlayer.getDeclaredField("playerConnection")
 
-		val class_PlayerConnection = Class.forName(Protocols.NMS_PACKAGE + Protocols.NMS_VERSION + ".PlayerConnection")
+		val class_PlayerConnection = NMSClass("PlayerConnection")
 		method_PlayerConnection_sendPacket = class_PlayerConnection.getDeclaredMethod("sendPacket", class_Packet)
 
 		val class_ProtocolSupportAPI = Class.forName(PROTOCOL_SUPPORT_PACKAGE + "ProtocolSupportAPI")
@@ -49,6 +61,10 @@ object Protocols {
 
 		return field
 	}
+
+	fun NMSClass(name: String) = Class.forName(NMS_PACKAGE + VERSION + "." + name)
+
+	fun OBCClass(name: String) = Class.forName(OBC_PACKAGE + VERSION + "." + name)
 
 	fun chatMessage(s: String): Any = constructor_ChatMessage.newInstance(s, arrayOfNulls<Any>(0))
 

@@ -1,7 +1,7 @@
 package br.com.dusty.dkits.ability
 
 import br.com.dusty.dkits.gamer.Gamer
-import br.com.dusty.dkits.util.millisToPeriod
+import br.com.dusty.dkits.util.stdlib.millisToPeriod
 import br.com.dusty.dkits.util.text.Text
 import org.bukkit.event.Listener
 

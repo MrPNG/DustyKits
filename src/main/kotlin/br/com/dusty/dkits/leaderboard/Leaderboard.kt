@@ -1,11 +1,14 @@
-package br.com.dusty.dkits.util.leaderboard
+package br.com.dusty.dkits.leaderboard
 
+import br.com.dusty.dkits.leaderboard.Leaderboards.EnumLeaderboardType.KILLS
 import br.com.dusty.dkits.util.Tasks
-import br.com.dusty.dkits.util.leaderboard.Leaderboards.EnumLeaderboardType.KILLS
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
 import br.com.dusty.dkits.util.text.TextStyle
 import br.com.dusty.dkits.util.web.WebAPI
+import io.reactivex.Observable
+import io.reactivex.functions.Consumer
+import io.reactivex.schedulers.Schedulers
 import org.bukkit.Location
 import org.bukkit.entity.ArmorStand
 import org.bukkit.entity.EntityType
@@ -56,25 +59,38 @@ class Leaderboard(val location: Location,
 			})
 		}
 
-		Tasks.async(Runnable { update() }, 0L, 20L * 3L * 10L)
+		Tasks.async(Runnable { update() }, 0L, 20L * 60L * 5L)
 	}
 
 	fun update() {
-		if (entities.isNotEmpty()) {
-			val pairs = WebAPI.leaderboard(this)
+		if (entities.size == amount + 1) {
+			val onNext = Consumer<Leaderboard> {
+				val pairs = WebAPI.leaderboard(this)
 
-			Tasks.sync(Runnable {
-				var index = amount
+				if (pairs.size == amount) {
+					Tasks.sync(Runnable {
+						val chunk = location.chunk
+						if (!chunk.isLoaded) chunk.load()
 
-				val iterator = entities.iterator()
+						var index = amount
 
-				pairs.reversed().forEach {
-					iterator.next().customName = Text.of((index).toString() + ". ").color(TextColor.GOLD).styles(TextStyle.BOLD).append(it.first).color(TextColor.YELLOW).basic(" - ").append(it.second).color(
-							TextColor.GOLD).styles(TextStyle.BOLD).toString()
+						val iterator = entities.iterator()
 
-					index--
+						pairs.reversed().forEach {
+							iterator.next().customName = Text.of((index).toString() + ". ").color(TextColor.GOLD).styles(TextStyle.BOLD).append(it.first).color(TextColor.YELLOW).basic(" - ").append(
+									it.second).color(TextColor.GOLD).styles(TextStyle.BOLD).toString()
+
+							index--
+						}
+					})
 				}
-			})
+			}
+
+			val onError = Consumer<Throwable> {
+				println("Couldn't update leaderboard of type ${type.name} at (${location.x}, ${location.y}, ${location.z}): " + it.message?.substring(0, 100) + "...")
+			}
+
+			Observable.just(this).subscribeOn(Schedulers.io()).subscribe(onNext, onError)
 		}
 	}
 

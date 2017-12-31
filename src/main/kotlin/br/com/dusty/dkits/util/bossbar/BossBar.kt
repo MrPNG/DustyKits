@@ -132,7 +132,7 @@ class BossBar {
 
 	companion object {
 
-		var class_PacketPlayOutBoss: Class<*> = Class.forName(Protocols.NMS_PACKAGE + Protocols.NMS_VERSION + ".PacketPlayOutBoss")
+		var class_PacketPlayOutBoss: Class<*> = Class.forName(Protocols.NMS_PACKAGE + Protocols.VERSION + ".PacketPlayOutBoss")
 		var field_PacketPlayOutBoss_a: Field
 		var field_PacketPlayOutBoss_b: Field
 		var field_PacketPlayOutBoss_c: Field
@@ -158,13 +158,13 @@ class BossBar {
 			field_PacketPlayOutBoss_h = Protocols.getAccessibleField(class_PacketPlayOutBoss, "h")
 			field_PacketPlayOutBoss_i = Protocols.getAccessibleField(class_PacketPlayOutBoss, "i")
 
-			val enum_Action = Class.forName(Protocols.NMS_PACKAGE + Protocols.NMS_VERSION + ".PacketPlayOutBoss\$Action")
+			val enum_Action = Class.forName(Protocols.NMS_PACKAGE + Protocols.VERSION + ".PacketPlayOutBoss\$Action")
 			enum_Action_values = enum_Action.enumConstants
 
-			val enum_BarColor = Class.forName(Protocols.NMS_PACKAGE + Protocols.NMS_VERSION + ".BossBattle\$BarColor")
+			val enum_BarColor = Class.forName(Protocols.NMS_PACKAGE + Protocols.VERSION + ".BossBattle\$BarColor")
 			enum_BarColor_values = enum_BarColor.enumConstants
 
-			val enum_BarStyle = Class.forName(Protocols.NMS_PACKAGE + Protocols.NMS_VERSION + ".BossBattle\$BarStyle")
+			val enum_BarStyle = Class.forName(Protocols.NMS_PACKAGE + Protocols.VERSION + ".BossBattle\$BarStyle")
 			enum_BarStyle_values = enum_BarStyle.enumConstants
 		}
 

@@ -2,7 +2,7 @@ package br.com.dusty.dkits.command.staff
 
 import br.com.dusty.dkits.command.PlayerCustomCommand
 import br.com.dusty.dkits.gamer.EnumRank
-import br.com.dusty.dkits.util.Worlds
+import br.com.dusty.dkits.util.world.Worlds
 import br.com.dusty.dkits.util.text.Text
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
@@ -22,7 +22,7 @@ object WorldCommand: PlayerCustomCommand(EnumRank.ADMIN, "world") {
 						if (sender.teleport(Bukkit.getWorld(args[1]).spawnLocation)) sender.sendMessage(Text.positivePrefix().basic("Você foi ").positive("teleportado").basic("!").toString())
 						else sender.sendMessage(Text.positivePrefix().basic("Algo deu ").positive("errado").basic("!").toString())
 					}
-					else                     -> {
+					else                                                   -> {
 						sender.sendMessage(Text.positivePrefix().basic("Este mundo será ").positive("carregado").basic(" agora e você será ").positive("teleportado").basic(" ao spawn dele em seguida...").toString())
 
 						if (sender.teleport(Worlds.load(args[1],
@@ -39,7 +39,7 @@ object WorldCommand: PlayerCustomCommand(EnumRank.ADMIN, "world") {
 					!Worlds.exists(name)   -> sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um ").negative("mundo").basic(" com o nome ").negative("\"${args[1]}\"").basic(
 							"!").toString())
 					!Worlds.isLoaded(name) -> sender.sendMessage(Text.negativePrefix().basic("Esse mundo ").negative("não").basic(" foi ").negative("carregado").basic("!").toString())
-					else                   -> {
+					else                                                 -> {
 						sender.sendMessage(Text.positivePrefix().basic("Esse ").positive("mundo").basic(" será ").positive("fechado").basic(" agora...").toString())
 
 						Worlds.rollback(name)

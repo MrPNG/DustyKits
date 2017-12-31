@@ -1,7 +1,7 @@
 package br.com.dusty.dkits.ability
 
 import br.com.dusty.dkits.kit.Kits
-import br.com.dusty.dkits.util.gamer.gamer
+import br.com.dusty.dkits.util.entity.gamer
 import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.PlayerDeathEvent
 

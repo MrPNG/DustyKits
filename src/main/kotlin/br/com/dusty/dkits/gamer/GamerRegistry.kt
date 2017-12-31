@@ -1,6 +1,6 @@
 package br.com.dusty.dkits.gamer
 
-import br.com.dusty.dkits.Main
+import br.com.dusty.dkits.Config
 import org.bukkit.entity.Player
 import java.util.*
 
@@ -28,7 +28,7 @@ object GamerRegistry {
 	fun primitiveGamerFromJson(json: String?, uuid: UUID) = when (json) {
 		null             -> null
 		"{\"status\":2}" -> PrimitiveGamer(uuid.toString())
-		else             -> Main.GSON.fromJson(json, PrimitiveGamer::class.java)
+		else             -> Config.GSON.fromJson(json, PrimitiveGamer::class.java)
 	}
 
 	fun tempPrimitiveGamer(uuid: UUID) = PrimitiveGamer(uuid.toString())

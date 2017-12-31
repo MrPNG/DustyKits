@@ -1,35 +1,22 @@
 package br.com.dusty.dkits.util.web
 
 import com.google.gson.reflect.TypeToken
-import org.apache.http.client.config.RequestConfig
 import org.apache.http.client.methods.HttpGet
-import org.apache.http.client.methods.HttpPost
-import org.apache.http.entity.StringEntity
-import org.apache.http.impl.client.HttpClientBuilder
 
 object MojangAPI {
 
 	val PROFILES_TYPE_TOKEN = object: TypeToken<Collection<Profile>>() {}.type
 
-	val HTTP_CLIENT = HttpClientBuilder.create().setDefaultRequestConfig(RequestConfig.custom().setConnectTimeout(10000).build()).build()
+	val URL_PROFILES_BY_UUID = "https://api.mojang.com/user/profiles/%s/names"
+	val URL_PROFILE_BY_NAME = "https://use.gameapis.net/mc/player/profile/%s"
 
-	val URL_PROFILE = "https://api.mojang.com/users/profiles/minecraft/"
-	val URL_PROFILES = "https://api.mojang.com/profiles/minecraft"
-	val URL_NAME_HISTORY = "https://api.mojang.com/user/profiles/%s/names"
-
-	fun profile(name: String) = HttpGet(URL_PROFILE + name).response()?.run { HttpClients.GSON.fromJson(this, Profile::class.java) }
-
-	fun profiles(vararg names: String): ArrayList<Profile>? = HttpPost(URL_PROFILES).apply {
-		setHeader("Content-type", "application/json")
-		entity = StringEntity(HttpClients.GSON.toJson(names))
-	}.response()?.run { HttpClients.GSON.fromJson(this, PROFILES_TYPE_TOKEN) }
-
-	fun nameHistory(uuid: String): ArrayList<Profile>? = HttpGet(URL_NAME_HISTORY.format(uuid)).response()?.run {
-		HttpClients.GSON.fromJson(this, PROFILES_TYPE_TOKEN)
+	fun profile(string: String) = if (string.length > 16) {
+		HttpGet(URL_PROFILES_BY_UUID.format(string)).response()?.run { (HttpClients.GSON.fromJson(this, PROFILES_TYPE_TOKEN) as ArrayList<Profile>).last() }
+	} else {
+		HttpGet(URL_PROFILE_BY_NAME.format(string)).response()?.run { HttpClients.GSON.fromJson(this, Profile::class.java) }
 	}
 
-	class Profile(val id: String, val name: String, val changedToAt: Long, val legacy: Boolean, val demo: Boolean) {
+	fun profiles(string: String) = HttpGet(URL_PROFILES_BY_UUID + string).response()?.run { HttpClients.GSON.fromJson(this, PROFILES_TYPE_TOKEN) as ArrayList<Profile> }
 
-		override fun toString() = "Profile(id='$id', name='$name', changedToAt=$changedToAt, legacy=$legacy, demo=$demo)"
-	}
+	data class Profile(val id: String, val name: String, val changedToAt: Long, val legacy: Boolean, val demo: Boolean)
 }

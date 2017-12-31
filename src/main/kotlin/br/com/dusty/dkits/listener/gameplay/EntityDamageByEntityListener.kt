@@ -1,8 +1,8 @@
 package br.com.dusty.dkits.listener.gameplay
 
-import br.com.dusty.dkits.Main
 import br.com.dusty.dkits.gamer.EnumMode
-import br.com.dusty.dkits.util.gamer.gamer
+import br.com.dusty.dkits.util.world.Worlds
+import br.com.dusty.dkits.util.entity.gamer
 import com.sk89q.worldguard.protection.flags.DefaultFlag
 import org.bukkit.Material.*
 import org.bukkit.entity.Arrow
@@ -46,7 +46,7 @@ object EntityDamageByEntityListener: Listener {
 				val player = (event.entity as Player)
 				val gamer = player.gamer()
 
-				if (damager.isInvincible || damager.mode == EnumMode.SPECTATE || !player.canSee(damagerPlayer) || Main.REGION_MANAGER!!.getApplicableRegions(damager.player.location).allows(
+				if (damager.isInvincible || damager.mode == EnumMode.SPECTATE || !player.canSee(damagerPlayer) || Worlds.REGION_MANAGER!!.getApplicableRegions(damager.player.location).allows(
 						DefaultFlag.INVINCIBILITY)) event.isCancelled = true
 				else {
 					if (gamer.combatTag < 10000L) gamer.combatTag = 10000L

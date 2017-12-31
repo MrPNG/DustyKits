@@ -1,9 +1,9 @@
 package br.com.dusty.dkits.clan
 
 import br.com.dusty.dkits.gamer.Gamer
-import br.com.dusty.dkits.util.add
-import br.com.dusty.dkits.util.gamer.gamer
-import br.com.dusty.dkits.util.remove
+import br.com.dusty.dkits.util.stdlib.add
+import br.com.dusty.dkits.util.entity.gamer
+import br.com.dusty.dkits.util.stdlib.remove
 import org.bukkit.Bukkit
 import java.util.*
 

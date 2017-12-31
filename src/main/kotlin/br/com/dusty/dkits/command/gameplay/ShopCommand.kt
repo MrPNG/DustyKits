@@ -2,9 +2,9 @@ package br.com.dusty.dkits.command.gameplay
 
 import br.com.dusty.dkits.command.PlayerCustomCommand
 import br.com.dusty.dkits.gamer.EnumRank
+import br.com.dusty.dkits.inventory.ShopMenu
 import br.com.dusty.dkits.kit.Kits
-import br.com.dusty.dkits.util.gamer.gamer
-import br.com.dusty.dkits.util.inventory.ShopMenu
+import br.com.dusty.dkits.util.entity.gamer
 import br.com.dusty.dkits.util.text.Text
 import org.bukkit.entity.Player
 

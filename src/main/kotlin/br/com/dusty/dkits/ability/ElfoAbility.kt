@@ -1,7 +1,7 @@
 package br.com.dusty.dkits.ability
 
-import br.com.dusty.dkits.util.clearFormatting
-import br.com.dusty.dkits.util.gamer.gamer
+import br.com.dusty.dkits.util.stdlib.clearFormatting
+import br.com.dusty.dkits.util.entity.gamer
 import br.com.dusty.dkits.util.text.Text
 import org.bukkit.entity.Arrow
 import org.bukkit.entity.Player
@@ -25,7 +25,7 @@ object ElfoAbility: Ability() {
 				if (hasAbility(damager) && damager.canUse(gamer)) {
 					val distance = damagerPlayer.location.distance(player.location)
 
-					if (distance >= 40 && arrow.location.y >= player.location.y + 1.62) {
+					if (distance >= 60 && arrow.location.y >= player.location.y + 1.62) {
 						event.damage = 1024.0
 
 						player.sendMessage(Text.negativePrefix().basic("Você levou um ").negative("headshot").basic(" do jogador ").negative(damagerPlayer.displayName.clearFormatting()).basic(
