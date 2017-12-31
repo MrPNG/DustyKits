@@ -12,15 +12,13 @@ object MOTDs {
 	val MOTD_OFFLINE = Text.negativeOf("O servidor está iniciando...").toString()
 	val MOTD_MAINTENANCE = Text.negativeOf("Em manutenção...").toString()
 
-	val NEW_MOTD_MAIN = "        §e━━━━ §6§lDusty PvP §d» §3Venha jogar! §e━━━━"
-	val NEW_MOTD_SECONDARY = "        §aI-§c-§d-§e-§b-[ §fSite: §ewww.dusty.com.br §b]-§e-§d-§c-§a-I"
+	val NEW_MOTD_MAIN = "        §e§l§m---§7§l§m[-§6§l Dusty §c» §aVenha jogar! §7§l§m-]§e§l§m---§f"
+	val NEW_MOTD_SECONDARY = "     §a§l§m-§e§l§m-§6§l§m-§c§l§m-§d§l§m-§b§l§m-§b§l[ §7Site: §ewww.dusty.com.br §b§l]§b§l§m-§d§l§m-§c§l§m-§6§l§m-§e§l§m-§a§l§m-"
 
 	//fun randomMOTD() = MOTD_MAIN + MOTD_ALTERNATE[Main.RANDOM.nextInt(MOTD_ALTERNATE.size)] + "\n" + MOTD_SECONDARY[Main.RANDOM.nextInt(MOTD_ALTERNATE.size)]
 	fun randomMOTD() = NEW_MOTD_MAIN + "\n" + NEW_MOTD_SECONDARY
 
-	fun offlineMOTD() = MOTD_MAIN + MOTD_OFFLINE + "\n" + MOTD_SECONDARY[Main.RANDOM.nextInt(
-			MOTD_ALTERNATE.size)]
+	fun offlineMOTD() = MOTD_MAIN + MOTD_OFFLINE + "\n" + MOTD_SECONDARY[Main.RANDOM.nextInt(MOTD_ALTERNATE.size)]
 
-	fun maintenanceMOTD() = MOTD_MAIN + MOTD_MAINTENANCE + "\n" + MOTD_SECONDARY[Main.RANDOM.nextInt(
-			MOTD_ALTERNATE.size)]
+	fun maintenanceMOTD() = MOTD_MAIN + MOTD_MAINTENANCE + "\n" + MOTD_SECONDARY[Main.RANDOM.nextInt(MOTD_ALTERNATE.size)]
 }

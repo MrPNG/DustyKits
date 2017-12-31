@@ -5,9 +5,9 @@ import br.com.dusty.dkits.clan.PrimitiveClan
 import br.com.dusty.dkits.command.PlayerCustomCommand
 import br.com.dusty.dkits.gamer.EnumChat
 import br.com.dusty.dkits.gamer.EnumRank
+import br.com.dusty.dkits.util.entity.gamer
 import br.com.dusty.dkits.util.stdlib.addUuidDashes
 import br.com.dusty.dkits.util.stdlib.clearFormatting
-import br.com.dusty.dkits.util.entity.gamer
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.web.MojangAPI
 import br.com.dusty.dkits.util.web.WebAPI
@@ -331,7 +331,7 @@ object ClanCommand: PlayerCustomCommand(EnumRank.MOD, "clan") {
 													clan.leader?.player?.sendMessage(Text.positivePrefix().basic("O jogador ").positive(sender.name).basic(" entrou para o seu ").positive("clan").basic(
 															"!").toString())
 
-													INVITATIONS.forEach { key, value -> if (key == player && value.player == sender) INVITATIONS.remove(key, value) }
+													INVITATIONS.entries().forEach { if (it.key == player && it.value.player == sender) INVITATIONS.remove(it.key, it.value) }
 
 													AWAITING_API.remove(sender)
 												}

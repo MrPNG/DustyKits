@@ -1,10 +1,9 @@
 package br.com.dusty.dkits.listener.mechanics
 
 import br.com.dusty.dkits.Config
-import br.com.dusty.dkits.EnumServerStatus
 import br.com.dusty.dkits.gamer.EnumMode
-import br.com.dusty.dkits.util.text.MOTDs
 import br.com.dusty.dkits.util.entity.gamer
+import br.com.dusty.dkits.util.text.MOTDs
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.server.ServerListPingEvent
@@ -17,9 +16,9 @@ object ServerListPingListener: Listener {
 		event.maxPlayers = Config.data.slots
 
 		when (Config.data.serverStatus) {
-			EnumServerStatus.ONLINE      -> event.motd = MOTDs.randomMOTD()
-			EnumServerStatus.OFFLINE     -> event.motd = MOTDs.offlineMOTD()
-			EnumServerStatus.MAINTENANCE -> event.motd = MOTDs.maintenanceMOTD()
+			Config.EnumServerStatus.ONLINE      -> event.motd = MOTDs.randomMOTD()
+			Config.EnumServerStatus.OFFLINE     -> event.motd = MOTDs.offlineMOTD()
+			Config.EnumServerStatus.MAINTENANCE -> event.motd = MOTDs.maintenanceMOTD()
 		}
 	}
 }
