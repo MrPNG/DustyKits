@@ -31,8 +31,8 @@ object Worlds {
 
 	fun load(name: String, edit: Boolean): World? = when {
 		!exists(name) -> null
-		edit                                               -> Bukkit.createWorld(WorldCreator("worlds/" + name))
-		else                                               -> {
+		edit          -> Bukkit.createWorld(WorldCreator("worlds/" + name))
+		else          -> {
 			FileUtils.copyDirectory(File(WORLDS_DIR, name), File(Bukkit.getWorldContainer(), name))
 
 			Bukkit.createWorld(WorldCreator(name))

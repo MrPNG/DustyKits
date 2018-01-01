@@ -1,8 +1,8 @@
 package br.com.dusty.dkits.util.block
 
 import br.com.dusty.dkits.util.Inventories
-import br.com.dusty.dkits.util.stdlib.clearFormatting
 import br.com.dusty.dkits.util.entity.gamer
+import br.com.dusty.dkits.util.stdlib.clearFormatting
 import br.com.dusty.dkits.util.stdlib.millisToPeriod
 import br.com.dusty.dkits.util.text.Text
 import org.bukkit.block.Sign

@@ -16,9 +16,7 @@ class Main: JavaPlugin() {
 		INSTANCE = this
 	}
 
-	override fun onLoad() {
-
-	}
+	override fun onLoad() {}
 
 	override fun onEnable() {
 		Config.loadData()

@@ -4,9 +4,9 @@ import br.com.dusty.dkits.gamer.Gamer
 import br.com.dusty.dkits.gamer.GamerRegistry
 import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.util.Tasks
-import br.com.dusty.dkits.util.stdlib.clearFormatting
 import br.com.dusty.dkits.util.entity.gamer
 import br.com.dusty.dkits.util.rename
+import br.com.dusty.dkits.util.stdlib.clearFormatting
 import br.com.dusty.dkits.util.text.Text
 import org.bukkit.Material
 import org.bukkit.block.BlockFace
