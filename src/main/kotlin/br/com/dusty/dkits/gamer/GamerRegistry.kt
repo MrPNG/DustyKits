@@ -6,7 +6,7 @@ import java.util.*
 
 object GamerRegistry {
 
-	val PRIMITIVE_GAMER_BY_UUID = HashMap<UUID, PrimitiveGamer>()
+	val PRIMITIVE_GAMER_BY_UUID = linkedMapOf<UUID, PrimitiveGamer>()
 	val GAMER_BY_PLAYER = linkedMapOf<UUID, Gamer>()
 
 	fun onlineGamers() = GAMER_BY_PLAYER.values

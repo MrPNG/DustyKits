@@ -7,7 +7,6 @@ import br.com.dusty.dkits.inventory.KitMenu
 import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.util.entity.gamer
 import br.com.dusty.dkits.util.text.Text
-import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
 object KitCommand: PlayerCustomCommand(EnumRank.DEFAULT, "kit") {
@@ -43,10 +42,7 @@ object KitCommand: PlayerCustomCommand(EnumRank.DEFAULT, "kit") {
 		return false
 	}
 
-	override fun tabComplete(sender: CommandSender, alias: String, args: Array<String>): MutableList<String>? {
-		return if (sender !is Player) arrayListOf()
-		else Kits.KITS.filter {
-			it.data.isEnabled && it in sender.gamer().warp.enabledKits && (args.isEmpty() || it.name.startsWith(args[0], true))
-		}.map { it.name.toLowerCase() }.toMutableList()
-	}
+	override fun tabComplete(sender: Player, alias: String, args: Array<String>) = Kits.KITS.filter {
+		it.data.isEnabled && it in sender.gamer().warp.enabledKits && it.name.startsWith(args[0], true)
+	}.map { it.name.toLowerCase() }.toMutableList()
 }

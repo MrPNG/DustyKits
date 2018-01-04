@@ -27,4 +27,8 @@ object InvSeeCommand: PlayerCustomCommand(EnumRank.MOD, "invsee") {
 
 		return false
 	}
+
+	override fun tabComplete(sender: Player, alias: String, args: Array<String>) = Bukkit.getOnlinePlayers().filter {
+		sender.canSee(it) && it.name.startsWith(args[0], true)
+	}.map { it.name }.toMutableList()
 }

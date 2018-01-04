@@ -28,4 +28,8 @@ object TagCommand: PlayerCustomCommand(EnumRank.DEFAULT, "tag") {
 
 		return false
 	}
+
+	override fun tabComplete(sender: Player, alias: String, args: Array<String>) = EnumRank.values().filter {
+		it.isLowerThanOrEquals(sender.gamer().rank) && it.name.startsWith(args[0], true)
+	}.map { it.name.toLowerCase() }.toMutableList()
 }

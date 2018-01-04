@@ -236,13 +236,13 @@ object FeastWarp: Warp() {
 				fillSoups(true)
 
 				if (gamer.hasAdvantage(FEAST_CHANCES)) {
-					val protectionEnchantment = Pair(Enchantment.PROTECTION_ENVIRONMENTAL, 1)
+					val protectionEnchantment = Enchantment.PROTECTION_ENVIRONMENTAL to 1
 
 					if (Main.RANDOM.nextDouble() < 0.12944943670387585) inventory.helmet = inventory.helmet.enchant(protectionEnchantment)
 					if (Main.RANDOM.nextDouble() < 0.12944943670387585) inventory.chestplate = inventory.chestplate.enchant(protectionEnchantment)
 					if (Main.RANDOM.nextDouble() < 0.12944943670387585) inventory.leggings = inventory.leggings.enchant(protectionEnchantment)
 					if (Main.RANDOM.nextDouble() < 0.12944943670387585) inventory.boots = inventory.boots.enchant(protectionEnchantment)
-					if (Main.RANDOM.nextDouble() < 0.12944943670387585) inventory.setItem(0, inventory.getItem(0).enchant(Pair(Enchantment.DAMAGE_ALL, 1)))
+					if (Main.RANDOM.nextDouble() < 0.12944943670387585) inventory.setItem(0, inventory.getItem(0).enchant(Enchantment.DAMAGE_ALL to 1))
 				}
 			}
 		}

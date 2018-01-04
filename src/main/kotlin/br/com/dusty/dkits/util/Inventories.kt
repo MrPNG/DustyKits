@@ -67,7 +67,7 @@ object Inventories {
 
 	val WOOD_SWORD = ItemStack(Material.WOOD_SWORD)
 	val DIAMOND_SWORD = ItemStack(Material.DIAMOND_SWORD)
-	val DIAMOND_SWORD_SHARPNESS = ItemStack(Material.DIAMOND_SWORD).enchant(Pair(Enchantment.DAMAGE_ALL, 1))
+	val DIAMOND_SWORD_SHARPNESS = ItemStack(Material.DIAMOND_SWORD).enchant(Enchantment.DAMAGE_ALL to 1)
 
 	val DIAMOND_AXE = ItemStack(Material.DIAMOND_AXE)
 

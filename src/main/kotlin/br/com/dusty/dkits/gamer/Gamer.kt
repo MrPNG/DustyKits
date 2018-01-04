@@ -299,7 +299,7 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 		val killer = gamer.player
 
 		player.run {
-			playSound(player.location, Sound.ANVIL_LAND, 1F, 1F)
+			playSound(killer.location, Sound.ANVIL_LAND, 1F, 1F)
 			sendMessage(Text.positivePrefix().basic("Você ").positive("matou").basic(" o jogador ").positive(killer.displayName.clearFormatting()).basic("!").toString())
 		}
 
@@ -313,8 +313,8 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 
 
 		killer.run {
-			playSound(player.location, Sound.ANVIL_LAND, 1F, 1F)
-			sendMessage(Text.negativePrefix().basic("Você ").negative("foi morto").basic(" pelo jogador ").negative(player.displayName.clearFormatting()).basic("!").toString())
+			playSound(location, Sound.ANVIL_LAND, 1F, 1F)
+			sendMessage(Text.negativePrefix().basic("Você ").negative("foi morto").basic(" pelo jogador ").negative(this@Gamer.player.displayName.clearFormatting()).basic("!").toString())
 		}
 
 		gamer.run {

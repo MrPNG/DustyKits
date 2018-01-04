@@ -88,11 +88,11 @@ object EndermageAbility: Ability() {
 												sendMessage(message)
 											}
 
-											it.invincibility = 5000L
+											it.invincibility = 3000L
 										}
 
 										player.teleport(location)
-										gamer.invincibility = 5000L
+										gamer.invincibility = 3000L
 
 										cancel()
 										undo()

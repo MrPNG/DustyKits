@@ -7,7 +7,6 @@ import br.com.dusty.dkits.inventory.WarpMenu
 import br.com.dusty.dkits.util.entity.gamer
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.warp.Warps
-import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
 object WarpCommand: PlayerCustomCommand(EnumRank.DEFAULT, "warp", "spawn") {
@@ -45,10 +44,10 @@ object WarpCommand: PlayerCustomCommand(EnumRank.DEFAULT, "warp", "spawn") {
 		return false
 	}
 
-	override fun tabComplete(sender: CommandSender, alias: String, args: Array<String>): MutableList<String>? = when {
-		sender !is Player || alias == "spawn" || alias == "lobby" || Warps.enabledWarpsNames.contains(alias.toLowerCase()) -> arrayListOf()
-		else                                                                                                               -> Warps.WARPS.filter {
-			(it.data.isEnabled || (alias == "goto" && sender.gamer().mode == EnumMode.ADMIN)) && (args.isEmpty() || it.name.startsWith(args[0], true))
-		}.map { it.name.toLowerCase() }.toMutableList()
+	override fun tabComplete(sender: Player, alias: String, args: Array<String>) = when {
+		alias == "spawn" || alias == "lobby" || Warps.enabledWarpsNames.contains(alias.toLowerCase()) -> arrayListOf()
+		else                                                                                          -> Warps.WARPS.filter {
+			(it.data.isEnabled || (alias == "goto" && sender.gamer().mode == EnumMode.ADMIN)) && it.name.replace(" ", "").startsWith(args[0], true)
+		}.map { it.name.replace(" ", "").toLowerCase() }.toMutableList()
 	}
 }

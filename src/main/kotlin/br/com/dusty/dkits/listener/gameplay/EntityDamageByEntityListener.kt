@@ -31,6 +31,7 @@ object EntityDamageByEntityListener: Listener {
 
 				if (damagerPlayer.itemInHand != null) when (damagerPlayer.itemInHand.type) {
 					WOOD_SWORD, GOLD_SWORD, STONE_SWORD, IRON_SWORD, DIAMOND_SWORD -> damage *= 0.75
+					WOOD_AXE, GOLD_AXE, STONE_AXE, IRON_AXE, DIAMOND_AXE           -> damage *= 0.75
 				}
 			}
 		}
