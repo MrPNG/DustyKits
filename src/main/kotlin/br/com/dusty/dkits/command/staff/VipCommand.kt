@@ -14,6 +14,8 @@ import org.bukkit.entity.Player
 
 object VipCommand: PlayerCustomCommand(EnumRank.ADMIN, "vip") {
 
+	val COMPLETIONS = arrayListOf("mvp", "pro")
+
 	override fun execute(sender: Player, alias: String, args: Array<String>): Boolean {
 		if (args.size < 3) {
 			sender.sendMessage(Text.negativePrefix().negative("Uso:").basic(" /vip ").negative("<rank> <nomeDoJogador> <tempoEmDias>").toString())
@@ -52,5 +54,11 @@ object VipCommand: PlayerCustomCommand(EnumRank.ADMIN, "vip") {
 		}
 
 		return false
+	}
+
+	override fun tabComplete(sender: Player, alias: String, args: Array<String>) = when {
+		args.size == 1 -> COMPLETIONS.filter { it.startsWith(args[0], true) }.toMutableList()
+		args.size == 2 -> Bukkit.getOnlinePlayers().filter { it.name.startsWith(args[1], true) }.map { it.name }.toMutableList()
+		else           -> arrayListOf()
 	}
 }

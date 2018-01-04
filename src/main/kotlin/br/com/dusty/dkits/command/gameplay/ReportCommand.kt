@@ -14,6 +14,8 @@ import java.util.*
 
 object ReportCommand: PlayerCustomCommand(EnumRank.DEFAULT, "dustyreport") {
 
+	val COMPLETIONS = arrayListOf("ff", "forcefield", "killaura", "sneak", "fly", "flight", "speed", "velocity", "reach", "gc", "ghostclient", "spider")
+
 	val REPORTS_BY_UUID = HashMultimap.create<UUID, UUID>()
 
 	override fun execute(sender: Player, alias: String, args: Array<String>): Boolean {
@@ -54,4 +56,7 @@ object ReportCommand: PlayerCustomCommand(EnumRank.DEFAULT, "dustyreport") {
 
 		return false
 	}
+
+	override fun tabComplete(sender: Player, alias: String, args: Array<String>) = if (args.isEmpty()) Bukkit.getOnlinePlayers().filter { sender.canSee(it) }.map { it.name }.toMutableList()
+	else COMPLETIONS.filter { it.startsWith(args.last(), true) }.toMutableList()
 }

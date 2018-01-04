@@ -31,7 +31,7 @@ object KangarooAbility: Ability() {
 			val player = event.entity as Player
 			val gamer = player.gamer()
 
-			if (hasAbility(gamer) && gamer.canUse()) gamer.kitCooldown = 5000L
+			if (hasAbility(gamer) && gamer.canUse()) gamer.kitCooldown = 3000L
 		}
 	}
 

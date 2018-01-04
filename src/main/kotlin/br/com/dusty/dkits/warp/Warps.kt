@@ -50,7 +50,7 @@ object Warps {
 		WARPS.forEach { warp -> Bukkit.getPluginManager().registerEvents(warp, Main.INSTANCE) }
 	}
 
-	operator fun get(name: String): Warp = WARPS.firstOrNull { it.name.toLowerCase().replace(" ", "") == name.toLowerCase() } ?: NONE
+	operator fun get(name: String) = WARPS.firstOrNull { it.name.toLowerCase().replace(" ", "") == name.toLowerCase() } ?: NONE
 
-	operator fun get(icon: ItemStack): Warp = WARPS.firstOrNull { it.icon == icon } ?: NONE
+	operator fun get(icon: ItemStack) = WARPS.firstOrNull { it.icon == icon } ?: NONE
 }

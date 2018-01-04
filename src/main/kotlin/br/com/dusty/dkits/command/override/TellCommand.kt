@@ -67,4 +67,8 @@ object TellCommand: PlayerCustomCommand(EnumRank.DEFAULT, "tell", "msg", "w", "r
 
 		return false
 	}
+
+	override fun tabComplete(sender: Player, alias: String, args: Array<String>) = Bukkit.getOnlinePlayers().filter {
+		sender.canSee(it) && (args.size > 1 || it.name.startsWith(args[0], true))
+	}.map { it.name }.toMutableList()
 }
