@@ -16,7 +16,7 @@ object RDMWarp: Warp() {
 	init {
 		name = "Rei da Mesa"
 
-		icon = ItemStack(Material.DIAMOND_SWORD).enchant(Pair(Enchantment.DAMAGE_ALL, 1))
+		icon = ItemStack(Material.DIAMOND_SWORD).enchant(Enchantment.DAMAGE_ALL to 1)
 		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
 		icon.description(description, true)
 

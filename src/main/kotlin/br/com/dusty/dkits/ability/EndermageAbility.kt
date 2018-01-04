@@ -4,9 +4,9 @@ import br.com.dusty.dkits.gamer.Gamer
 import br.com.dusty.dkits.gamer.GamerRegistry
 import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.util.Tasks
-import br.com.dusty.dkits.util.stdlib.clearFormatting
 import br.com.dusty.dkits.util.entity.gamer
 import br.com.dusty.dkits.util.rename
+import br.com.dusty.dkits.util.stdlib.clearFormatting
 import br.com.dusty.dkits.util.text.Text
 import org.bukkit.Material
 import org.bukkit.block.BlockFace
@@ -88,11 +88,11 @@ object EndermageAbility: Ability() {
 												sendMessage(message)
 											}
 
-											it.invincibility = 5000L
+											it.invincibility = 3000L
 										}
 
 										player.teleport(location)
-										gamer.invincibility = 5000L
+										gamer.invincibility = 3000L
 
 										cancel()
 										undo()

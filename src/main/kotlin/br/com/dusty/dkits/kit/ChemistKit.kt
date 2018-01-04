@@ -23,7 +23,7 @@ object ChemistKit: Kit() {
 		weapon = ItemStack(Material.STONE_SWORD)
 		armor = arrayOf(null, null, ItemStack(Material.LEATHER_CHESTPLATE).color(0xB3AA96), null)
 		items = arrayOf(ItemStacks.potions(3, false, false, PotionType.INSTANT_DAMAGE, true),
-		                ItemStacks.potions(3, false, false, PotionType.POISON, true),
+		                ItemStacks.potions(3, false, true, PotionType.POISON, true),
 		                ItemStacks.potions(3, false, false, PotionType.WEAKNESS, true))
 
 		ability = ChemistAbility

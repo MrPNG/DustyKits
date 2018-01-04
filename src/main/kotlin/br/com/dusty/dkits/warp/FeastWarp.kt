@@ -10,9 +10,9 @@ import br.com.dusty.dkits.kit.Kits
 import br.com.dusty.dkits.store.EnumAdvantage.FEAST_CHANCES
 import br.com.dusty.dkits.util.*
 import br.com.dusty.dkits.util.ItemStacks.potions
-import br.com.dusty.dkits.util.graphics.Colors
 import br.com.dusty.dkits.util.entity.gamer
 import br.com.dusty.dkits.util.entity.spawnFirework
+import br.com.dusty.dkits.util.graphics.Colors
 import br.com.dusty.dkits.util.stdlib.chances
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
@@ -236,13 +236,13 @@ object FeastWarp: Warp() {
 				fillSoups(true)
 
 				if (gamer.hasAdvantage(FEAST_CHANCES)) {
-					val protectionEnchantment = Pair(Enchantment.PROTECTION_ENVIRONMENTAL, 1)
+					val protectionEnchantment = Enchantment.PROTECTION_ENVIRONMENTAL to 1
 
 					if (Main.RANDOM.nextDouble() < 0.12944943670387585) inventory.helmet = inventory.helmet.enchant(protectionEnchantment)
 					if (Main.RANDOM.nextDouble() < 0.12944943670387585) inventory.chestplate = inventory.chestplate.enchant(protectionEnchantment)
 					if (Main.RANDOM.nextDouble() < 0.12944943670387585) inventory.leggings = inventory.leggings.enchant(protectionEnchantment)
 					if (Main.RANDOM.nextDouble() < 0.12944943670387585) inventory.boots = inventory.boots.enchant(protectionEnchantment)
-					if (Main.RANDOM.nextDouble() < 0.12944943670387585) inventory.setItem(0, inventory.getItem(0).enchant(Pair(Enchantment.DAMAGE_ALL, 1)))
+					if (Main.RANDOM.nextDouble() < 0.12944943670387585) inventory.setItem(0, inventory.getItem(0).enchant(Enchantment.DAMAGE_ALL to 1))
 				}
 			}
 		}

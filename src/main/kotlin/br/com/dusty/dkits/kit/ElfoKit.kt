@@ -16,14 +16,14 @@ object ElfoKit: Kit() {
 	init {
 		name = "Elfo"
 
-		icon = ItemStack(Material.BOW).enchant(Pair(Enchantment.ARROW_INFINITE, 1))
+		icon = ItemStack(Material.BOW).enchant(Enchantment.ARROW_INFINITE to 1, Enchantment.ARROW_KNOCKBACK to 1, Enchantment.ARROW_DAMAGE to 1)
 		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
 		icon.description(description, true)
 
 		weapon = ItemStack(Material.GOLD_SWORD)
 		armor = arrayOf(null, null, ItemStack(Material.LEATHER_CHESTPLATE).color(0xBA8B00), null)
-		items = arrayOf(ItemStack(Material.BOW).enchant(Pair(Enchantment.ARROW_INFINITE, 1)).rename("Arco do Elfo"),
-		                ItemStack(Material.ARROW).enchant(Pair(Enchantment.ARROW_INFINITE, 1)).rename("Flecha do Elfo"))
+		items = arrayOf(ItemStack(Material.BOW).enchant(Enchantment.ARROW_INFINITE to 1, Enchantment.ARROW_KNOCKBACK to 1, Enchantment.ARROW_DAMAGE to 1).rename("Arco do Elfo"),
+		                ItemStack(Material.ARROW).rename("Flecha do Elfo"))
 
 		ability = ElfoAbility
 

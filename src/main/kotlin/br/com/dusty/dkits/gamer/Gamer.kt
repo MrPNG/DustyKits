@@ -8,13 +8,13 @@ import br.com.dusty.dkits.store.EnumAdvantage
 import br.com.dusty.dkits.store.Store
 import br.com.dusty.dkits.util.Inventories
 import br.com.dusty.dkits.util.Tasks
-import br.com.dusty.dkits.util.world.Worlds
-import br.com.dusty.dkits.util.stdlib.clearFormatting
 import br.com.dusty.dkits.util.protocol.EnumProtocolVersion
 import br.com.dusty.dkits.util.protocol.HeaderFooters
+import br.com.dusty.dkits.util.stdlib.clearFormatting
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.text.TextColor
 import br.com.dusty.dkits.util.text.TextStyle
+import br.com.dusty.dkits.util.world.Worlds
 import br.com.dusty.dkits.warp.Warp
 import br.com.dusty.dkits.warp.Warps
 import com.sk89q.worldguard.protection.flags.DefaultFlag
@@ -299,7 +299,7 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 		val killer = gamer.player
 
 		player.run {
-			playSound(player.location, Sound.ANVIL_LAND, 1F, 1F)
+			playSound(killer.location, Sound.ANVIL_LAND, 1F, 1F)
 			sendMessage(Text.positivePrefix().basic("Você ").positive("matou").basic(" o jogador ").positive(killer.displayName.clearFormatting()).basic("!").toString())
 		}
 
@@ -313,8 +313,8 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 
 
 		killer.run {
-			playSound(player.location, Sound.ANVIL_LAND, 1F, 1F)
-			sendMessage(Text.negativePrefix().basic("Você ").negative("foi morto").basic(" pelo jogador ").negative(player.displayName.clearFormatting()).basic("!").toString())
+			playSound(location, Sound.ANVIL_LAND, 1F, 1F)
+			sendMessage(Text.negativePrefix().basic("Você ").negative("foi morto").basic(" pelo jogador ").negative(this@Gamer.player.displayName.clearFormatting()).basic("!").toString())
 		}
 
 		gamer.run {

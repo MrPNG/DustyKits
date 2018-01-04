@@ -9,6 +9,8 @@ import org.bukkit.command.CommandSender
 
 object DisableCommand: CustomCommand(EnumRank.MODPLUS, "disable") {
 
+	val COMPLETIONS = arrayListOf("kit", "warp")
+
 	override fun execute(sender: CommandSender, alias: String, args: Array<String>): Boolean {
 		if (!testPermission(sender)) return true
 
@@ -51,10 +53,11 @@ object DisableCommand: CustomCommand(EnumRank.MODPLUS, "disable") {
 		return false
 	}
 
-	override fun tabComplete(sender: CommandSender, alias: String, args: Array<String>): MutableList<String>? = when {
-		args.isEmpty()    -> arrayListOf("kit", "warp")
-		args[0] == "warp" -> Warps.WARPS.filter { it.data.isEnabled }.map { it.name.toLowerCase() }.toMutableList()
-		args[0] == "kit"  -> Kits.KITS.filter { it.data.isEnabled }.map { it.name.toLowerCase() }.toMutableList()
+	override fun tabComplete(sender: CommandSender, alias: String, args: Array<String>) = when {
+		args.size == 1    -> COMPLETIONS.filter { it.startsWith(args[0], true) }.toMutableList()
+		args[0] == "warp" -> Warps.WARPS.filter { it.data.isEnabled && it.name.replace(" ", "").startsWith(args[1], true) }.map { it.name.replace(" ", "").toLowerCase() }.toMutableList()
+		args[0] == "kit"  -> if (args.size == 2) Kits.KITS.filter { !it.data.isEnabled && it.name.startsWith(args[1], true) }.map { it.name.toLowerCase() }.toMutableList()
+		else Warps.WARPS.filter { it.name.replace(" ", "").startsWith(args[2], true) && Kits[args[1]] in it.enabledKits }.map { it.name.replace(" ", "").toLowerCase() }.toMutableList()
 		else              -> arrayListOf()
 	}
 }

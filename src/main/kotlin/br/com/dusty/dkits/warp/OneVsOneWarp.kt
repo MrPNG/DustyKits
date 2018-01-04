@@ -7,10 +7,10 @@ import br.com.dusty.dkits.inventory.ClanVsClanMenu
 import br.com.dusty.dkits.kit.Kit
 import br.com.dusty.dkits.util.*
 import br.com.dusty.dkits.util.entity.gamer
-import br.com.dusty.dkits.util.text.Text
-import br.com.dusty.dkits.util.text.TextColor
 import br.com.dusty.dkits.util.stdlib.clearFormatting
 import br.com.dusty.dkits.util.stdlib.millisToPeriod
+import br.com.dusty.dkits.util.text.Text
+import br.com.dusty.dkits.util.text.TextColor
 import br.com.dusty.dkits.util.world.*
 import br.com.dusty.dkits.warp.OneVsOneWarp.FightState.INVITATION
 import br.com.dusty.dkits.warp.OneVsOneWarp.FightState.ONGOING

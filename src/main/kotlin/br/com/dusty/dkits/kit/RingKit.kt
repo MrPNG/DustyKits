@@ -16,13 +16,13 @@ object RingKit: Kit() {
 	init {
 		name = "Ring"
 
-		icon = ItemStack(Material.GOLD_BOOTS).enchant(Pair(Enchantment.DURABILITY, 1))
+		icon = ItemStack(Material.GOLD_BOOTS).enchant(Enchantment.DURABILITY to 1)
 		icon.rename(Text.of(name).color(TextColor.GOLD).toString())
 		icon.description(description, true)
 
 		weapon = ItemStack(Material.GOLD_SWORD)
 		armor = arrayOf(null, null, ItemStack(Material.LEATHER_CHESTPLATE).color(0xFFE100), null)
-		items = arrayOf(ItemStack(Material.GOLD_BOOTS).enchant(Pair(Enchantment.DURABILITY, 1)).rename("Botas de Invisibilidade"))
+		items = arrayOf(ItemStack(Material.GOLD_BOOTS).enchant(Enchantment.DURABILITY to 1).rename("Botas de Invisibilidade"))
 
 		ability = RingAbility
 

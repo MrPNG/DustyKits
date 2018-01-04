@@ -11,6 +11,8 @@ import org.bukkit.entity.Player
 
 object ChatCommand: PlayerCustomCommand(EnumRank.MODPLUS, "chat") {
 
+	val COMPLETIONS = arrayListOf("clear", "restrict")
+
 	val CHAT_CLEAR_MESSAGE = buildString { for (i in 1 .. 128) append(" \n") }
 
 	override fun execute(sender: Player, alias: String, args: Array<String>): Boolean {
@@ -50,5 +52,11 @@ object ChatCommand: PlayerCustomCommand(EnumRank.MODPLUS, "chat") {
 		}
 
 		return false
+	}
+
+	override fun tabComplete(sender: Player, alias: String, args: Array<String>) = when {
+		args.size == 1 -> COMPLETIONS.filter { it.startsWith(args[0], true) }.toMutableList()
+		args.size == 2 -> EnumRank.values().filter { it.name.startsWith(args[1], true) }.map { it.name.toLowerCase() }.toMutableList()
+		else           -> arrayListOf()
 	}
 }

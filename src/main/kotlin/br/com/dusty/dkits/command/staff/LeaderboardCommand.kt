@@ -5,8 +5,8 @@ import br.com.dusty.dkits.gamer.EnumRank
 import br.com.dusty.dkits.leaderboard.Leaderboard
 import br.com.dusty.dkits.leaderboard.Leaderboards
 import br.com.dusty.dkits.util.Tasks
-import br.com.dusty.dkits.util.world.normalize
 import br.com.dusty.dkits.util.text.Text
+import br.com.dusty.dkits.util.world.normalize
 import org.bukkit.entity.Player
 
 object LeaderboardCommand: PlayerCustomCommand(EnumRank.ADMIN, "leaderboard") {
