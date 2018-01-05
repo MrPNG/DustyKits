@@ -16,7 +16,7 @@ object Tags {
 			val ping = Protocols.ping(this)
 			val gameMode = EnumWrappers.NativeGameMode.fromBukkit(gameMode)
 
-			val gameProfileOld = WrappedGameProfile.fromPlayer(player)
+			val gameProfileOld = WrappedGameProfile.fromPlayer(this)
 
 			val packetPlayOutPlayerInfoRemove = PacketContainer(PacketType.Play.Server.PLAYER_INFO).apply {
 				playerInfoAction.write(0, EnumWrappers.PlayerInfoAction.REMOVE_PLAYER)
@@ -46,16 +46,14 @@ object Tags {
 				dataWatcherModifier.write(0, WrappedDataWatcher.getEntityWatcher(this@run))
 			}
 
-			Protocols.PROTOCOL_MANAGER!!.run {
-				otherGamers.forEach {
-					if (it != gamer) {
-						val otherPlayer = it.player
+			with(Protocols.PROTOCOL_MANAGER!!) {
+				otherGamers.filter { it.player != this@run && it.player.canSee(this@run) }.forEach {
+					val otherPlayer = it.player
 
-						sendServerPacket(otherPlayer, packetPlayOutPlayerInfoRemove)
-						sendServerPacket(otherPlayer, packetPlayOutPlayerInfoAdd)
-						sendServerPacket(otherPlayer, packetPlayOutEntityDestroy)
-						sendServerPacket(otherPlayer, packetPlayOutNamedEntitySpawn)
-					}
+					sendServerPacket(otherPlayer, packetPlayOutPlayerInfoRemove)
+					sendServerPacket(otherPlayer, packetPlayOutPlayerInfoAdd)
+					sendServerPacket(otherPlayer, packetPlayOutEntityDestroy)
+					sendServerPacket(otherPlayer, packetPlayOutNamedEntitySpawn)
 				}
 			}
 		}

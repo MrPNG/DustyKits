@@ -89,7 +89,11 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 			val otherPlayer = otherGamer.player
 
 			if (!shouldSee(otherGamer)) player.hidePlayer(otherPlayer)
-			else player.showPlayer(otherPlayer)
+			else {
+				player.showPlayer(otherPlayer)
+
+				Tasks.sync(Runnable { Tags.updateNameAboveHead(otherGamer, arrayListOf(this)) })
+			}
 		}
 	}
 
@@ -100,6 +104,8 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 			if (!otherGamer.shouldSee(this)) otherPlayer.hidePlayer(player)
 			else otherPlayer.showPlayer(player)
 		}
+
+		Tasks.sync(Runnable { Tags.updateNameAboveHead(this, GamerRegistry.onlineGamers()) })
 	}
 
 	var mode = EnumMode.PLAY
