@@ -44,6 +44,7 @@ object Commands {
 		CUSTOM_COMMANDS.add(DebugCommand)
 		CUSTOM_COMMANDS.add(DisableCommand)
 		CUSTOM_COMMANDS.add(EnableCommand)
+		CUSTOM_COMMANDS.add(FakeListCommand)
 		CUSTOM_COMMANDS.add(FlyCommand)
 		CUSTOM_COMMANDS.add(ForceCommand)
 		CUSTOM_COMMANDS.add(GamerCommand)
