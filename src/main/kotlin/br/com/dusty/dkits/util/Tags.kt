@@ -11,7 +11,9 @@ object Tags {
 
 	fun updateNameAboveHead(gamer: Gamer, otherGamers: Collection<Gamer>) {
 		gamer.player.run {
-			val tag = gamer.tag.format(gamer.displayName) + TextStyle.RESET
+			var tag = gamer.tag.format(gamer.displayName)
+
+			if (tag.length > 16) tag = tag.substring(0, 16)
 
 			val ping = Protocols.ping(this)
 			val gameMode = EnumWrappers.NativeGameMode.fromBukkit(gameMode)

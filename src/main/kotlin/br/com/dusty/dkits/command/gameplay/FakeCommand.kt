@@ -24,28 +24,31 @@ object FakeCommand: PlayerCustomCommand(EnumRank.YOUTUBER, "fake", "unfake") {
 				else {
 					val name = args[0].clearFormatting()
 
-					if (GamerRegistry.onlineGamers().any {
-						it.player.name == name || it.displayName.equals(name, true)
-					}) sender.sendMessage(Text.negativePrefix().negative("Já").basic(" existe um jogador com o nick ").negative(name).basic("!").toString())
-					else {
-						val onNext = Consumer<String> {
-							if (MojangAPI.profile(it) != null) sender.sendMessage(Text.negativePrefix().negative("Já").basic(" existe um jogador com o nick ").negative(it).basic("!").toString())
-							else {
-								gamer.run {
-									displayName = it
+					when {
+						name.length > 14 -> sender.sendMessage(Text.negativePrefix().basic("O nick ").negative(name).basic(" é muito ").negative("longo").basic("!").toString())
+						GamerRegistry.onlineGamers().any {
+							it.player.name == name || it.displayName.equals(name, true)
+						}                -> sender.sendMessage(Text.negativePrefix().negative("Já").basic(" existe um jogador com o nick ").negative(name).basic("!").toString())
+						else             -> {
+							val onNext = Consumer<String> {
+								if (MojangAPI.profile(it) != null) sender.sendMessage(Text.negativePrefix().negative("Já").basic(" existe um jogador com o nick ").negative(it).basic("!").toString())
+								else {
+									gamer.run {
+										displayName = it
 
-									Tasks.sync(Runnable { refreshTag() })
+										Tasks.sync(Runnable { refreshTag() })
+									}
+
+									sender.sendMessage(Text.positivePrefix().basic("Agora seu ").positive("nick").basic(" é ").positive(it).basic("!").toString())
 								}
-
-								sender.sendMessage(Text.positivePrefix().basic("Agora seu ").positive("nick").basic(" é ").positive(it).basic("!").toString())
 							}
-						}
 
-						val onError = Consumer<Throwable> {
-							sender.sendMessage(Text.negativePrefix().positive("Não").basic(" foi ").negative("possível").basic(" alterar o seu ").positive("nick").basic("!").toString())
-						}
+							val onError = Consumer<Throwable> {
+								sender.sendMessage(Text.negativePrefix().positive("Não").basic(" foi ").negative("possível").basic(" alterar o seu ").positive("nick").basic("!").toString())
+							}
 
-						Observable.just(name).subscribeOn(Schedulers.io()).subscribe(onNext, onError)
+							Observable.just(name).subscribeOn(Schedulers.io()).subscribe(onNext, onError)
+						}
 					}
 				}
 			}
