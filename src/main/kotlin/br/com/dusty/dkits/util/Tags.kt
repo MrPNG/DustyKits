@@ -9,7 +9,7 @@ import com.comphenix.protocol.wrappers.*
 
 object Tags {
 
-	fun updateTag(gamer: Gamer, otherGamers: Collection<Gamer>) {
+	fun updateNameAboveHead(gamer: Gamer, otherGamers: Collection<Gamer>) {
 		gamer.player.run {
 			val tag = gamer.tag.format(gamer.displayName) + TextStyle.RESET
 
@@ -42,7 +42,7 @@ object Tags {
 				integers.write(3, (location.z * 32.0).toInt())
 				bytes.write(0, (location.yaw * 256.0 / 360.0).toByte())
 				bytes.write(1, (location.pitch * 256.0 / 360.0).toByte())
-				integers.write(4, inventory.heldItemSlot)
+				integers.write(4, 0)
 				dataWatcherModifier.write(0, WrappedDataWatcher.getEntityWatcher(this@run))
 			}
 

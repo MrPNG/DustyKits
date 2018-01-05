@@ -51,7 +51,7 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 		player.displayName = tag
 		player.playerListName = tag
 
-		Tags.updateTag(this, GamerRegistry.onlineGamers())
+		Tags.updateNameAboveHead(this, GamerRegistry.onlineGamers())
 	}
 
 	/**

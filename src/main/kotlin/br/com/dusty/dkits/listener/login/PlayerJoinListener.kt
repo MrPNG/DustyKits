@@ -63,7 +63,7 @@ object PlayerJoinListener: Listener {
 
 				tag = rank
 
-				GamerRegistry.onlineGamers().forEach { Tags.updateTag(it, arrayListOf(gamer)) }
+				GamerRegistry.onlineGamers().forEach { Tags.updateNameAboveHead(it, arrayListOf(gamer)) }
 
 				hidePlayers()
 
