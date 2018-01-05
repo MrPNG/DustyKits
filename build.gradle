@@ -28,7 +28,7 @@ ext {
 }
 
 //Force resources processing
-processResources.outputs.upToDateWhen { false }
+processResources.outputs.upToDateWhen { !gradle.taskGraph.hasTask(":${project.name}:shadowJar") }
 
 //Token replacing with plugin info for 'plugin.yml'
 processResources {
