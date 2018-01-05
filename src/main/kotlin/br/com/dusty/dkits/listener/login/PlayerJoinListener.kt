@@ -2,7 +2,9 @@ package br.com.dusty.dkits.listener.login
 
 import br.com.dusty.dkits.gamer.EnumMode
 import br.com.dusty.dkits.gamer.EnumRank
+import br.com.dusty.dkits.gamer.GamerRegistry
 import br.com.dusty.dkits.scoreboard.Scoreboards
+import br.com.dusty.dkits.util.Tags
 import br.com.dusty.dkits.util.Tasks
 import br.com.dusty.dkits.util.bossbar.BossBars
 import br.com.dusty.dkits.util.entity.gamer
@@ -54,14 +56,17 @@ object PlayerJoinListener: Listener {
 
 		Tasks.sync(Runnable {
 			gamer.run {
-				tag = rank
-
 				when {
 					rank.isLowerThan(EnumRank.MOD) -> player.gameMode = GameMode.ADVENTURE
 					else                           -> mode = EnumMode.ADMIN
 				}
 
+				tag = rank
+
+				GamerRegistry.onlineGamers().forEach { Tags.updateTag(it, arrayListOf(gamer)) }
+
 				hidePlayers()
+
 				createScoreboard()
 			}
 

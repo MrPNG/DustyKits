@@ -1,46 +1,63 @@
 package br.com.dusty.dkits.util
 
-import br.com.dusty.dkits.Main
+import br.com.dusty.dkits.gamer.Gamer
 import br.com.dusty.dkits.util.protocol.Protocols
+import br.com.dusty.dkits.util.text.TextStyle
 import com.comphenix.protocol.PacketType
-import com.comphenix.protocol.events.PacketAdapter
-import com.comphenix.protocol.events.PacketEvent
-import com.comphenix.protocol.wrappers.EnumWrappers
-import com.comphenix.protocol.wrappers.PlayerInfoData
-import com.comphenix.protocol.wrappers.WrappedGameProfile
-import org.bukkit.Bukkit
+import com.comphenix.protocol.events.PacketContainer
+import com.comphenix.protocol.wrappers.*
 
 object Tags {
 
-	val PLAYER_INFO_ACTIONS = arrayOf(EnumWrappers.PlayerInfoAction.ADD_PLAYER, EnumWrappers.PlayerInfoAction.UPDATE_DISPLAY_NAME)
+	fun updateTag(gamer: Gamer, otherGamers: Collection<Gamer>) {
+		gamer.player.run {
+			val tag = gamer.tag.format(gamer.displayName) + TextStyle.RESET
 
-	fun registerPacketListener() {
-		Protocols.PROTOCOL_MANAGER!!.addPacketListener(object: PacketAdapter(Main.INSTANCE, PacketType.Play.Server.PLAYER_INFO) {
+			val ping = Protocols.ping(this)
+			val gameMode = EnumWrappers.NativeGameMode.fromBukkit(gameMode)
 
-			override fun onPacketSending(event: PacketEvent?) {
-				event?.run {
-					if (packet.playerInfoAction.read(0) in PLAYER_INFO_ACTIONS) {
-						val newPlayerInfoDataList = arrayListOf<PlayerInfoData>()
+			val gameProfileOld = WrappedGameProfile.fromPlayer(player)
 
-						packet.playerInfoDataLists.read(0).forEach {
-							val player = Bukkit.getPlayer(it.profile.uuid)
+			val packetPlayOutPlayerInfoRemove = PacketContainer(PacketType.Play.Server.PLAYER_INFO).apply {
+				playerInfoAction.write(0, EnumWrappers.PlayerInfoAction.REMOVE_PLAYER)
+				playerInfoDataLists.write(0, arrayListOf(PlayerInfoData(gameProfileOld, ping, gameMode, WrappedChatComponent.fromText(name))))
+			}
 
-							if (player != null) {
-								val gameProfile = WrappedGameProfile(it.profile.uuid, player.displayName.run { if (length > 16) substring(0, 15) else this }).apply {
-									properties.replaceValues("textures", it.profile.properties["textures"])
-								}
-								val latency = it.latency
-								val gameMode = it.gameMode
-								val displayName = it.displayName
+			val gameProfileNew = WrappedGameProfile(uniqueId, tag).apply { properties.replaceValues("textures", gameProfileOld.properties["textures"]) }
 
-								newPlayerInfoDataList.add(PlayerInfoData(gameProfile, latency, gameMode, displayName))
-							}
-						}
+			val packetPlayOutPlayerInfoAdd = PacketContainer(PacketType.Play.Server.PLAYER_INFO).apply {
+				playerInfoAction.write(0, EnumWrappers.PlayerInfoAction.ADD_PLAYER)
+				playerInfoDataLists.write(0, arrayListOf(PlayerInfoData(gameProfileNew, ping, gameMode, WrappedChatComponent.fromText(tag))))
+			}
 
-						packet.playerInfoDataLists.write(0, newPlayerInfoDataList)
+			val packetPlayOutEntityDestroy = PacketContainer(PacketType.Play.Server.ENTITY_DESTROY).apply {
+				integerArrays.write(0, intArrayOf(entityId))
+			}
+
+			val packetPlayOutNamedEntitySpawn = PacketContainer(PacketType.Play.Server.NAMED_ENTITY_SPAWN).apply {
+				integers.write(0, entityId)
+				uuiDs.write(0, uniqueId)
+				integers.write(1, (location.x * 32.0).toInt())
+				integers.write(2, (location.y * 32.0).toInt())
+				integers.write(3, (location.z * 32.0).toInt())
+				bytes.write(0, (location.yaw * 256.0 / 360.0).toByte())
+				bytes.write(1, (location.pitch * 256.0 / 360.0).toByte())
+				integers.write(4, inventory.heldItemSlot)
+				dataWatcherModifier.write(0, WrappedDataWatcher.getEntityWatcher(this@run))
+			}
+
+			Protocols.PROTOCOL_MANAGER!!.run {
+				otherGamers.forEach {
+					if (it != gamer) {
+						val otherPlayer = it.player
+
+						sendServerPacket(otherPlayer, packetPlayOutPlayerInfoRemove)
+						sendServerPacket(otherPlayer, packetPlayOutPlayerInfoAdd)
+						sendServerPacket(otherPlayer, packetPlayOutEntityDestroy)
+						sendServerPacket(otherPlayer, packetPlayOutNamedEntitySpawn)
 					}
 				}
 			}
-		})
+		}
 	}
 }

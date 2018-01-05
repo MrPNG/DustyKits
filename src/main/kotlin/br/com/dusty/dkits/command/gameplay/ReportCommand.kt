@@ -4,10 +4,11 @@ import br.com.dusty.dkits.command.PlayerCustomCommand
 import br.com.dusty.dkits.gamer.EnumRank
 import br.com.dusty.dkits.gamer.GamerRegistry
 import br.com.dusty.dkits.util.Tasks
+import br.com.dusty.dkits.util.entity.Players
+import br.com.dusty.dkits.util.stdlib.clearFormatting
 import br.com.dusty.dkits.util.text.Text
 import br.com.dusty.dkits.util.web.WebAPI
 import com.google.common.collect.HashMultimap
-import org.bukkit.Bukkit
 import org.bukkit.Sound
 import org.bukkit.entity.Player
 import java.util.*
@@ -22,18 +23,19 @@ object ReportCommand: PlayerCustomCommand(EnumRank.DEFAULT, "dustyreport") {
 		if (args.size < 2) {
 			sender.sendMessage(Text.negativePrefix().basic("Uso: /report ").negative("<jogador> <motivo>").toString())
 		} else {
-			val player = Bukkit.getPlayerExact(args[0])
+			val player = Players[args[0]]
 
 			when {
-				player == null                                                  -> sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um jogador online com o nome \"").negative(
-						args[0]).basic("\"!").toString())
+				player == null                                                  -> sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um jogador online com o nome \"").negative(args[0]).basic(
+						"\"!").toString())
 				REPORTS_BY_UUID.containsEntry(sender.uniqueId,
-				                              player.uniqueId)                  -> sender.sendMessage(Text.negativePrefix().basic("Você ").negative("já").basic(" reportou o jogador ").negative(
-						player.name).basic("!").toString())
+				                              player.uniqueId)                  -> sender.sendMessage(Text.negativePrefix().basic("Você ").negative("já").basic(" reportou o jogador ").negative(player.name).basic(
+						"!").toString())
 				else                                                            -> {
 					val reason = args.copyOfRange(1, args.size).joinToString(separator = " ")
 
-					sender.sendMessage(Text.positivePrefix().basic("Você ").positive("reportou").basic(" o jogador ").positive(player.name).basic(" por ").positive(reason).basic("!").toString())
+					sender.sendMessage(Text.positivePrefix().basic("Você ").positive("reportou").basic(" o jogador ").positive(player.displayName.clearFormatting()).basic(" por ").positive(reason).basic(
+							"!").toString())
 
 					GamerRegistry.onlineGamers().forEach {
 						if (it.rank.isHigherThanOrEquals(EnumRank.MOD)) {
@@ -57,6 +59,8 @@ object ReportCommand: PlayerCustomCommand(EnumRank.DEFAULT, "dustyreport") {
 		return false
 	}
 
-	override fun tabComplete(sender: Player, alias: String, args: Array<String>) = if (args.isEmpty()) Bukkit.getOnlinePlayers().filter { sender.canSee(it) }.map { it.name }.toMutableList()
+	override fun tabComplete(sender: Player, alias: String, args: Array<String>) = if (args.size == 1) GamerRegistry.onlineGamers().filter {
+		sender.canSee(it.player) && it.displayName.startsWith(args[0], true)
+	}.map { it.displayName }.toMutableList()
 	else COMPLETIONS.filter { it.startsWith(args.last(), true) }.toMutableList()
 }

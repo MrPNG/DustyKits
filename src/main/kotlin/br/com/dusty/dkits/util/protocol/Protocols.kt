@@ -26,8 +26,12 @@ object Protocols {
 		}
 
 	var constructor_ChatMessage: Constructor<*>
+
 	var method_CraftPlayer_getHandle: Method
-	var field_playerConnection: Field
+
+	var field_EntityPlayer_ping: Field
+	var field_EntityPlayer_playerConnection: Field
+
 	var method_PlayerConnection_sendPacket: Method
 
 	var method_ProtocolSupportAPI_getProtocolVersion: Method
@@ -43,7 +47,8 @@ object Protocols {
 		method_CraftPlayer_getHandle = class_CraftPlayer.getDeclaredMethod("getHandle")
 
 		val class_EntityPlayer = NMSClass("EntityPlayer")
-		field_playerConnection = class_EntityPlayer.getDeclaredField("playerConnection")
+		field_EntityPlayer_ping = class_EntityPlayer.getDeclaredField("ping")
+		field_EntityPlayer_playerConnection = class_EntityPlayer.getDeclaredField("playerConnection")
 
 		val class_PlayerConnection = NMSClass("PlayerConnection")
 		method_PlayerConnection_sendPacket = class_PlayerConnection.getDeclaredMethod("sendPacket", class_Packet)
@@ -68,13 +73,13 @@ object Protocols {
 
 	fun chatMessage(s: String): Any = constructor_ChatMessage.newInstance(s, arrayOfNulls<Any>(0))
 
-	fun protocolVersion(player: Player): Int? {
-		val object_ProtocolVersion = method_ProtocolSupportAPI_getProtocolVersion.invoke(null, player)
+	fun ping(player: Player) = field_EntityPlayer_ping[method_CraftPlayer_getHandle.invoke(player)] as Int? ?: -1
 
-		return method_ProtocolVersion_getId.invoke(object_ProtocolVersion) as Int
-	}
+	fun protocolVersion(player: Player) = method_ProtocolVersion_getId.invoke(method_ProtocolSupportAPI_getProtocolVersion.invoke(null, player)) as Int? ?: -1
 
 	fun sendPacket(object_Packet: Any, vararg players: Player) {
-		players.map { method_CraftPlayer_getHandle.invoke(it) }.map { field_playerConnection.get(it) }.forEach { method_PlayerConnection_sendPacket.invoke(it, object_Packet) }
+		players.asSequence().map { method_CraftPlayer_getHandle.invoke(it) }.map { field_EntityPlayer_playerConnection[it] }.forEach {
+			method_PlayerConnection_sendPacket.invoke(it, object_Packet)
+		}
 	}
 }

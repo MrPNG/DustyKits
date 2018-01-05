@@ -63,6 +63,7 @@ object Commands {
 		//Gameplay
 		CUSTOM_COMMANDS.add(BuyCommand)
 		CUSTOM_COMMANDS.add(ClanCommand)
+		CUSTOM_COMMANDS.add(FakeCommand)
 		CUSTOM_COMMANDS.add(ProfileCommand)
 		CUSTOM_COMMANDS.add(ReportCommand)
 		CUSTOM_COMMANDS.add(ShopCommand)

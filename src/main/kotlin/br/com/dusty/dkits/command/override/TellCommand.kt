@@ -2,10 +2,11 @@ package br.com.dusty.dkits.command.override
 
 import br.com.dusty.dkits.command.PlayerCustomCommand
 import br.com.dusty.dkits.gamer.EnumRank
+import br.com.dusty.dkits.gamer.GamerRegistry
+import br.com.dusty.dkits.util.entity.Players
 import br.com.dusty.dkits.util.entity.gamer
 import br.com.dusty.dkits.util.stdlib.clearFormatting
 import br.com.dusty.dkits.util.text.Text
-import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
 object TellCommand: PlayerCustomCommand(EnumRank.DEFAULT, "tell", "msg", "w", "r") {
@@ -18,7 +19,7 @@ object TellCommand: PlayerCustomCommand(EnumRank.DEFAULT, "tell", "msg", "w", "r
 				if (args.size < 2) {
 					sender.sendMessage(Text.negativePrefix().basic("Uso: /tell ").negative("<jogador> <mensagem>").toString())
 				} else {
-					val player = Bukkit.getPlayerExact(args[0])
+					val player = Players[args[0]]
 
 					if (player == null) {
 						sender.sendMessage(Text.negativePrefix().negative("Não").basic(" há um jogador online com o nome \"").negative(args[0]).basic("\"!").toString())
@@ -68,7 +69,7 @@ object TellCommand: PlayerCustomCommand(EnumRank.DEFAULT, "tell", "msg", "w", "r
 		return false
 	}
 
-	override fun tabComplete(sender: Player, alias: String, args: Array<String>) = Bukkit.getOnlinePlayers().filter {
-		sender.canSee(it) && (args.size > 1 || it.name.startsWith(args[0], true))
-	}.map { it.name }.toMutableList()
+	override fun tabComplete(sender: Player, alias: String, args: Array<String>) = GamerRegistry.onlineGamers().filter {
+		sender.canSee(it.player) && (args.size > 1 || it.displayName.startsWith(args[0], true))
+	}.map { it.displayName }.toMutableList()
 }
