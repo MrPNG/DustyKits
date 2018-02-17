@@ -19,6 +19,7 @@ object Abilities {
 		ABILITIES.add(GladiatorAbility)
 		ABILITIES.add(KangarooAbility)
 		ABILITIES.add(NinjaAbility)
+		ABILITIES.add(OdinAbility)
 		ABILITIES.add(PoseidonAbility)
 		ABILITIES.add(RingAbility)
 		ABILITIES.add(SnailAbility)

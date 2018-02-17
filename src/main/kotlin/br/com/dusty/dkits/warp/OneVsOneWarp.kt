@@ -1,5 +1,6 @@
 package br.com.dusty.dkits.warp
 
+import br.com.dusty.dkits.ability.GladiatorAbility
 import br.com.dusty.dkits.command.gameplay.WarpCommand
 import br.com.dusty.dkits.command.staff.LocationCommand
 import br.com.dusty.dkits.gamer.Gamer
@@ -28,6 +29,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.scheduler.BukkitRunnable
+import org.bukkit.scheduler.BukkitTask
 
 object OneVsOneWarp: Warp() {
 
@@ -160,7 +162,7 @@ object OneVsOneWarp: Warp() {
 					event.isCancelled = true
 
 					itemStack.itemMeta?.lore?.run {
-						val clan = ClanRegistry.clan(last().clearFormatting())
+						val clan = Clans.clan(last().clearFormatting())
 
 						when {
 							clan == null                        -> player.sendMessage(CLAN_IS_OFFLINE)
@@ -258,10 +260,10 @@ object OneVsOneWarp: Warp() {
 			host.sendMessage(Text.negativePrefix().basic("Você ainda deve ").negative("esperar").basic(" mais ").negative(oldFight.expiresOn.millisToPeriod().toInt()).basic(" segundos antes de convidar esse ").negative(
 					"jogador").basic(" para uma luta novamente!").toString())
 		} else {
-			FIGHTS.put(host, OneVsOneFight(host.gamer(), guest.gamer(), System.currentTimeMillis() + 10000L, type, INVITATION))
+			FIGHTS.put(host, OneVsOneFight(host.gamer(), guest.gamer(), System.currentTimeMillis() + 10000L, type, INVITATION, null))
 
-			host.sendMessage(Text.positivePrefix().basic("Você ").positive("convidou").basic(" o jogador ").positive(guest.displayName.clearFormatting()).basic(" para uma luta do tipo ").positive(
-					type.string).basic("!").toString())
+			host.sendMessage(Text.positivePrefix().basic("Você ").positive("convidou").basic(" o jogador ").positive(guest.displayName.clearFormatting()).basic(" para uma luta do tipo ").positive(type.string).basic(
+					"!").toString())
 
 			guest.sendMessage(Text.positivePrefix().basic("Você foi ").positive("convidado").basic(" pelo jogador ").positive(host.displayName.clearFormatting()).basic(" para uma luta do tipo ").positive(
 					type.string).basic("!").toString())
@@ -337,6 +339,21 @@ object OneVsOneWarp: Warp() {
 
 			hostPlayer.teleport(locations.second)
 			guestPlayer.teleport(locations.third)
+
+			fight.task = Tasks.sync(object: BukkitRunnable() {
+
+				override fun run() {
+					hostPlayer.addPotionEffect(GladiatorAbility.WITHER_EFFECT)
+					guestPlayer.addPotionEffect(GladiatorAbility.WITHER_EFFECT)
+
+					locations.first.clone().add(1.0, 1.0, 1.0).destroyArena(13, 8, 13)
+
+					val message = Text.negativePrefix().basic("A ").negative("luta").basic(" já está ficando muito ").negative("longa").basic("!").toString()
+
+					hostPlayer.sendMessage(message)
+					guestPlayer.sendMessage(message)
+				}
+			}, 20L * 60L * 2L)
 		} else {
 			hostPlayer.teleport(oneVsOneFirst)
 			guestPlayer.teleport(oneVsOneSecond)
@@ -509,23 +526,17 @@ object OneVsOneWarp: Warp() {
 
 		var fight: OneVsOneFight? = null
 
-		FIGHTS.remove(loserPlayer)?.run {
-			this as OneVsOneFight
-
-			if ((host == loser && guest == winner) || (host == winner && guest == loser)) fight = this
-		}
-		FIGHTS.remove(winnerPlayer)?.run {
-			this as OneVsOneFight
-
-			if ((host == loser && guest == winner) || (host == winner && guest == loser)) fight = this
-		}
+		FIGHTS.remove(loserPlayer)?.run { if ((host == loser && guest == winner) || (host == winner && guest == loser)) fight = this }
+		FIGHTS.remove(winnerPlayer)?.run { if ((host == loser && guest == winner) || (host == winner && guest == loser)) fight = this }
 
 		if (fight?.type == GLADIATOR) {
-			ARENAS.remove(loserPlayer)?.destroyGlassArena(15, 10, 15)
-			ARENAS.remove(winnerPlayer)?.destroyGlassArena(15, 10, 15)
+			ARENAS.remove(loserPlayer)?.destroyArena(15, 10, 15)
+			ARENAS.remove(winnerPlayer)?.destroyArena(15, 10, 15)
 
 			loserPlayer.gameMode = GameMode.ADVENTURE
 			winnerPlayer.gameMode = GameMode.ADVENTURE
+
+			fight!!.task!!.cancel()
 		}
 
 		loser.addOneVsOneLoss()
@@ -621,8 +632,6 @@ object OneVsOneWarp: Warp() {
 		}
 	}
 
-	class OneVsOneFight(val host: Gamer, val guest: Gamer, val expiresOn: Long, val type: FightType, var state: FightState)
-
 	enum class FightType(val string: String, val kit: Kit, val item: ItemStack) {
 
 		STANDARD("Clássico",
@@ -696,6 +705,8 @@ object OneVsOneWarp: Warp() {
 		ONGOING,
 		TERMINATED
 	}
+
+	class OneVsOneFight(val host: Gamer, val guest: Gamer, val expiresOn: Long, val type: FightType, var state: FightState, var task: BukkitTask?)
 
 	data class OneVsOneData(var oneVsOneFirst: SimpleLocation = SimpleLocation(),
 	                        var oneVsOneSecond: SimpleLocation = SimpleLocation(),

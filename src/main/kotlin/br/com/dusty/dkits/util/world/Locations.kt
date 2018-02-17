@@ -37,14 +37,14 @@ fun Location.generateGlassArena(width: Int, height: Int, length: Int, randomColo
 		data = 0
 	}
 
-	val startLocation = this.clone()
+	val startLocation = clone()
 
 	if (highestBlock) {
 		var highestBlockY = 0
 
 		for (x in 0 until width) {
 			for (z in 0 until length) {
-				val location = this.clone()
+				val location = clone()
 				location.x += x
 				location.z += z
 
@@ -141,8 +141,8 @@ fun Location.generateGlassArena(width: Int, height: Int, length: Int, randomColo
 	return Triple(startLocation, firstPosition, secondPosition)
 }
 
-fun Location.destroyGlassArena(width: Int, height: Int, length: Int) {
-	for (x in 0 until width) for (y in 0 until height) for (z in 0 until length) this.clone().add(x.toDouble(), y.toDouble(), z.toDouble()).block.type = Material.AIR
+fun Location.destroyArena(width: Int, height: Int, length: Int) {
+	for (x in 0 until width) for (y in 0 until height) for (z in 0 until length) clone().add(x.toDouble(), y.toDouble(), z.toDouble()).block.type = Material.AIR
 }
 
 object Locations {

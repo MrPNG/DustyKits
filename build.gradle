@@ -2,8 +2,8 @@ import org.ajoberstar.grgit.Grgit
 import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "1.2.10"
-    id "com.github.johnrengelman.shadow" version "1.2.4"
+    id "org.jetbrains.kotlin.jvm" version "1.2.21"
+    id "com.github.johnrengelman.shadow" version "2.0.2"
     id "org.ajoberstar.grgit" version "1.7.2"
 }
 
@@ -28,7 +28,7 @@ ext {
 }
 
 //Force resources processing
-processResources.outputs.upToDateWhen { false }
+processResources.outputs.upToDateWhen { !gradle.taskGraph.hasTask(shadowJar) }
 
 //Token replacing with plugin info for 'plugin.yml'
 processResources {
@@ -62,7 +62,9 @@ repositories {
 }
 
 dependencies {
-    compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jre8:1.2.10"
+    compileOnly project(":DustyCommon")
+
+    compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.21"
 
     compileOnly "org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT"
 

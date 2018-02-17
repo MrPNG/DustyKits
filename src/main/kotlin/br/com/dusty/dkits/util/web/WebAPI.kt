@@ -8,6 +8,7 @@ import br.com.dusty.dkits.util.stdlib.removeUuidDashes
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.message.BasicNameValuePair
+import java.lang.Exception
 import java.util.*
 
 object WebAPI {
@@ -33,12 +34,22 @@ object WebAPI {
 
 	fun updatePurchase(pseudoPurchase: Store.PseudoPurchase) = HttpGet(URL + "?type=addcompra&action=update&id=${pseudoPurchase.id}&json=" + HttpClients.GSON.toJson(pseudoPurchase)).response()
 
+	fun bug(string: String) = HttpGet("http://api.dusty.com.br/reportbug.php?bug=$string").response()
+
 	fun report(name: String, reporter: String, reason: String) = HttpGet("http://api.dusty.com.br/report.php?player=$name&reportby=$reporter&reason=${reason.replace(" ", "%20")}").response()
 
 	fun leaderboard(leaderboard: Leaderboard): List<Pair<String, Int>> {
 		val type = leaderboard.type.name.toLowerCase()
 
-		return HttpClients.JSON_PARSER.parse(HttpGet("http://api.dusty.com.br/handler.php?type=getLeaderboard&tipo=$type&max=${leaderboard.amount}&ordem=${if (leaderboard.descending) "desc" else "asc"}").response()).asJsonArray.map {
+		val json = HttpGet("http://api.dusty.com.br/handler.php?type=getLeaderboard&tipo=$type&max=${leaderboard.amount}&ordem=${if (leaderboard.descending) "desc" else "asc"}").response()
+
+		try {
+			HttpClients.JSON_PARSER.parse(json).asJsonArray
+		} catch (e: Exception) {
+			bug("Erro na API de leaderboards porque isso não é um JSON válido: " + json)
+		}
+
+		return HttpClients.JSON_PARSER.parse(json).asJsonArray.map {
 			val jsonObject = it.asJsonObject
 
 			(MojangAPI.profile(jsonObject["uuid"].asString.removeUuidDashes())?.name ?: "null") to jsonObject[type].asInt

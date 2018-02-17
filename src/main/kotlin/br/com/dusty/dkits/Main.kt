@@ -28,8 +28,6 @@ class Main: JavaPlugin() {
 		Abilities.registerAll()
 		Leaderboards.registerAll()
 
-		Tags.registerPacketListener()
-
 		Config.data.serverStatus = Config.EnumServerStatus.ONLINE
 	}
 

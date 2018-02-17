@@ -7,6 +7,7 @@ import br.com.dusty.dkits.scoreboard.Scoreboards
 import br.com.dusty.dkits.store.EnumAdvantage
 import br.com.dusty.dkits.store.Store
 import br.com.dusty.dkits.util.Inventories
+import br.com.dusty.dkits.util.Tags
 import br.com.dusty.dkits.util.Tasks
 import br.com.dusty.dkits.util.protocol.EnumProtocolVersion
 import br.com.dusty.dkits.util.protocol.HeaderFooters
@@ -41,11 +42,17 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 		set(value) {
 			field = value
 
-			val tag = value.format(displayName) + TextStyle.RESET
-
-			player.displayName = tag
-			player.playerListName = tag
+			refreshTag()
 		}
+
+	fun refreshTag() {
+		val tag = tag.format(displayName) + TextStyle.RESET
+
+		player.displayName = tag
+		player.playerListName = tag
+
+		Tags.updateNameAboveHead(this, GamerRegistry.onlineGamers())
+	}
 
 	/**
 	 * Menor [EnumRank] que pode ver este jogador.
@@ -82,7 +89,11 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 			val otherPlayer = otherGamer.player
 
 			if (!shouldSee(otherGamer)) player.hidePlayer(otherPlayer)
-			else player.showPlayer(otherPlayer)
+			else {
+				player.showPlayer(otherPlayer)
+
+				Tasks.sync(Runnable { Tags.updateNameAboveHead(otherGamer, arrayListOf(this)) })
+			}
 		}
 	}
 
@@ -93,6 +104,8 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 			if (!otherGamer.shouldSee(this)) otherPlayer.hidePlayer(player)
 			else otherPlayer.showPlayer(player)
 		}
+
+		Tasks.sync(Runnable { Tags.updateNameAboveHead(this, GamerRegistry.onlineGamers()) })
 	}
 
 	var mode = EnumMode.PLAY
@@ -240,8 +253,8 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 		val absAmount = Math.abs(amount)
 
 		xp += if (advantage) {
-			player.sendMessage(Text.positiveOf("+").positive(Math.round(absAmount).toInt()).append("x2").color(TextColor.GOLD).basic(" = ").append(Math.round(absAmount * 2).toInt()).color(
-					TextColor.GOLD).basic(" XP!").toString())
+			player.sendMessage(Text.positiveOf("+").positive(Math.round(absAmount).toInt()).append("x2").color(TextColor.GOLD).basic(" = ").append(Math.round(absAmount * 2).toInt()).color(TextColor.GOLD).basic(
+					" XP!").toString())
 
 			absAmount * 2
 		} else {
@@ -272,8 +285,8 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 		val absAmount = Math.abs(amount)
 
 		primitiveGamer.money += if (advantage) {
-			player.sendMessage(Text.positiveOf("+").positive(Math.round(absAmount).toInt()).append("x2").color(TextColor.GOLD).basic(" = ").append(Math.round(absAmount * 2).toInt()).color(
-					TextColor.GOLD).basic(" créditos!").toString())
+			player.sendMessage(Text.positiveOf("+").positive(Math.round(absAmount).toInt()).append("x2").color(TextColor.GOLD).basic(" = ").append(Math.round(absAmount * 2).toInt()).color(TextColor.GOLD).basic(
+					" créditos!").toString())
 
 			absAmount * 2
 		} else {
@@ -473,8 +486,8 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 
 	fun canUse() = mode == EnumMode.PLAY && !Worlds.REGION_MANAGER!!.getApplicableRegions(player.location).allows(DefaultFlag.INVINCIBILITY)
 
-	fun canUse(otherGamer: Gamer) = this != otherGamer && canUse() && otherGamer.mode == EnumMode.PLAY && otherGamer.player.canSee(player) && !Worlds.REGION_MANAGER!!.getApplicableRegions(
-			otherGamer.player.location).allows(DefaultFlag.INVINCIBILITY)
+	fun canUse(otherGamer: Gamer) = this != otherGamer && canUse() && otherGamer.mode == EnumMode.PLAY && otherGamer.player.canSee(player) && !Worlds.REGION_MANAGER!!.getApplicableRegions(otherGamer.player.location).allows(
+			DefaultFlag.INVINCIBILITY)
 
 	var warp: Warp = Warps.LOBBY
 	var warpTask: BukkitTask? = null
@@ -507,8 +520,8 @@ class Gamer(val player: Player, var primitiveGamer: PrimitiveGamer) {
 				sendToWarp(warp, true, announce)
 			}, ticks)
 
-			player.sendMessage(if (seconds < 60 * 60 * 24) Text.neutralPrefix().basic("Você será teleportado em ").neutral(seconds).basic(if (seconds == 1) " segundo, " else " segundos, ").neutral(
-					"não").basic(" se ").neutral("mova").basic("!").toString() else Text.negativePrefix().basic("Você ").negative("não").basic(" pode ir para essa ").negative("warp").basic(" nesse momento!").toString())
+			player.sendMessage(if (seconds < 60 * 60 * 24) Text.neutralPrefix().basic("Você será teleportado em ").neutral(seconds).basic(if (seconds == 1) " segundo, " else " segundos, ").neutral("não").basic(
+					" se ").neutral("mova").basic("!").toString() else Text.negativePrefix().basic("Você ").negative("não").basic(" pode ir para essa ").negative("warp").basic(" nesse momento!").toString())
 		}
 	}
 
