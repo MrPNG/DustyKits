@@ -44,6 +44,7 @@ object Kits {
 		KITS.add(GRANDPA)
 		KITS.add(KANGAROO)
 		KITS.add(NINJA)
+		KITS.add(OdinKit)
 		KITS.add(POSEIDON)
 		KITS.add(RING)
 		KITS.add(SNAIL)
