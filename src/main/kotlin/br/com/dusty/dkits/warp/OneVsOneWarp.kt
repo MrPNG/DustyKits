@@ -162,7 +162,7 @@ object OneVsOneWarp: Warp() {
 					event.isCancelled = true
 
 					itemStack.itemMeta?.lore?.run {
-						val clan = ClanRegistry.clan(last().clearFormatting())
+						val clan = Clans.clan(last().clearFormatting())
 
 						when {
 							clan == null                        -> player.sendMessage(CLAN_IS_OFFLINE)
